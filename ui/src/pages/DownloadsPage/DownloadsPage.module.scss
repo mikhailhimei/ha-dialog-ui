@@ -1,0 +1,13 @@
+.grid { min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px; }
+.card { box-sizing: border-box; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
+.card h2 { overflow-wrap: anywhere; margin: 0 0 20px; font-size: 20px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.description { margin: 0 0 20px; color: var(--text-secondary); line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .page { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+  .card { padding: 18px; }
+  .actions { flex-direction: column; }
+  .actions > button { width: 100%; min-width: 0; max-width: 100%; white-space: normal; height: auto; min-height: 46px; padding: 12px; overflow-wrap: anywhere; }
+}

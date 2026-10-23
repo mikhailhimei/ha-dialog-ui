@@ -1,0 +1,220 @@
+send_command:
+  name: Ответить в диалог
+  description: >-
+    Передаёт результат скрипта в ожидающий диалог. Тип результата выбирает
+    настроенный текст ответа, а variables подставляет в него значения.
+    Озвучку выполняет TTS текущего Assist-пайплайна.
+  fields:
+    clientId:
+      name: ID клиента
+      description: >-
+        Клиент, который ожидает ответ. Передайте {{ dialog_payload.client_id }}
+        из запущенного интеграцией скрипта. Значение должно совпадать с исходным запросом.
+      required: true
+      example: "{{ dialog_payload.client_id }}"
+      selector:
+        text:
+    deviceId:
+      name: ID устройства
+      description: >-
+        Устройство исходного запроса. Передайте {{ dialog_payload.device_id }}
+        без изменений. Не заменяйте его на media_player или ID другой колонки:
+        ответ сопоставляется одновременно по ID клиента и ID устройства.
+      required: true
+      example: "{{ dialog_payload.device_id }}"
+      selector:
+        text:
+    actionType:
+      name: Тип результата скрипта
+      description: >-
+        Тип ответа, настроенный в команде, например success или room_required.
+        Для настройки «Если ничего не нашёл» с полем «Текст озвучки» укажите success.
+        Это тип результата, а не UUID команды и не текст для произнесения.
+      required: true
+      example: success
+      selector:
+        text:
+    variables:
+      name: Переменные ответа
+      description: >-
+        Объект с данными для подстановки в текст ответа. Например,
+        {"temperature": 22, "reply": "Свет включён"}. В тексте используйте
+        ${temperature} или ${reply}: имя должно совпадать с ключом объекта.
+        В YAML можно передать словарь, в текстовом поле — JSON-объект.
+      required: false
+      example: '{"reply": "Свет включён", "temperature": 22}'
+      selector:
+        text:
+          multiline: true
+    useDeclension:
+      name: Подготовить текст к озвучке
+      description: >-
+        Преобразует числа, даты и время в форму для произнесения.
+        Включено по умолчанию. Выключите, если подготовили текст самостоятельно
+        и хотите передать его в Assist без этой обработки.
+      required: false
+      default: true
+      example: true
+      selector:
+        boolean: {}
+
+alarm_create:
+  name: Alarm create
+  description: Create a Dialog Custom UI alarm from Home Assistant YAML scripts.
+  fields:
+    hh:
+      name: HH
+      description: Alarm hour. Accepts a number or a Home Assistant template/variable.
+      required: false
+      example: "{{ alarm_hh }}"
+      selector:
+        text:
+    mm:
+      name: MM
+      description: Alarm minute. Accepts a number or a Home Assistant template/variable.
+      required: false
+      example: "{{ alarm_mm }}"
+      selector:
+        text:
+    clientId:
+      name: Client ID
+      description: Optional client identifier. Defaults to integration client_id.
+      required: false
+      selector:
+        text:
+    deviceId:
+      name: Device ID
+      description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
+      required: false
+      selector:
+        text:
+    repeat_type:
+      name: Repeat
+      description: Alarm repeat mode.
+      required: false
+      default: once
+      selector:
+        select:
+          options:
+            - value: once
+              label: Один раз
+            - value: daily
+              label: Повторять каждый день
+            - value: weekdays
+              label: По будням
+            - value: weekends
+              label: По выходным
+            - value: custom
+              label: Кастом
+    repeat_days:
+      name: Custom days
+      description: Custom repeat days used only when Repeat is custom.
+      required: false
+      selector:
+        select:
+          multiple: true
+          mode: dropdown
+          options:
+            - value: monday
+              label: Понедельник
+            - value: tuesday
+              label: Вторник
+            - value: wednesday
+              label: Среда
+            - value: thursday
+              label: Четверг
+            - value: friday
+              label: Пятница
+            - value: saturday
+              label: Суббота
+            - value: sunday
+              label: Воскресенье
+    convert_day_period:
+      name: Convert morning/evening
+      description: Convert an entered morning hour to evening time by adding 12 hours.
+      required: false
+      default: false
+      selector:
+        boolean: {}
+
+alarm_info:
+  name: Alarm info
+  description: List Dialog Custom UI alarms. Returns JSON items with time, uuid, and clientId.
+  fields:
+    clientId:
+      name: Client ID
+      description: Optional client identifier. Defaults to integration client_id.
+      required: false
+      selector:
+        text:
+
+alarm_delete:
+  name: Alarm delete
+  description: Delete a Dialog Custom UI alarm by UUID.
+  fields:
+    uuid:
+      name: UUID
+      description: Alarm UUID from the info list to delete.
+      required: true
+      selector:
+        text:
+
+timer_create:
+  name: Timer create
+  description: Create a Dialog Custom UI timer from Home Assistant YAML scripts.
+  fields:
+    hh:
+      name: HH
+      description: Timer hours. Accepts a number or a Home Assistant template/variable.
+      required: false
+      example: "{{ timer_hh }}"
+      selector:
+        text:
+    mm:
+      name: MM
+      description: Timer minutes. Accepts a number or a Home Assistant template/variable.
+      required: false
+      example: "{{ timer_mm }}"
+      selector:
+        text:
+    ss:
+      name: SS
+      description: Timer seconds. Accepts a number or a Home Assistant template/variable.
+      required: false
+      example: "{{ timer_ss }}"
+      selector:
+        text:
+    clientId:
+      name: Client ID
+      description: Optional client identifier. Defaults to integration client_id.
+      required: false
+      selector:
+        text:
+    deviceId:
+      name: Device ID
+      description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
+      required: false
+      selector:
+        text:
+
+timer_info:
+  name: Timer info
+  description: List Dialog Custom UI timers. Returns JSON items with uuid, clientId, current remaining timer duration (time/remaining_timer/remaining_seconds), and original timer duration (count_timer/total_seconds).
+  fields:
+    clientId:
+      name: Client ID
+      description: Optional client identifier. Defaults to integration client_id.
+      required: false
+      selector:
+        text:
+
+timer_delete:
+  name: Timer delete
+  description: Delete a Dialog Custom UI timer by UUID.
+  fields:
+    uuid:
+      name: UUID
+      description: Timer UUID from the info list to delete.
+      required: true
+      selector:
+        text:

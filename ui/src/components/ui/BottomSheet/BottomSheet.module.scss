@@ -1,0 +1,61 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: flex-end;
+
+  background: var(--sheet-backdrop);
+
+  z-index: 3000;
+
+  animation: fade .15s ease;
+}
+
+.sheet {
+  width: 100%;
+
+  background: var(--surface-elevated);
+
+  border-top: 1px solid var(--border);
+
+  border-radius: 20px 20px 0 0;
+
+  padding: 16px;
+
+  box-shadow:
+    0 -16px 48px var(--shadow-floating);
+
+  animation: sheet .18s ease;
+}
+
+.handle {
+  width: 42px;
+  height: 4px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 999px;
+
+  background: var(--surface-elevated);
+}
+
+@keyframes sheet {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

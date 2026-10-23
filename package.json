@@ -1,0 +1,35 @@
+{
+  "name": "ha-dialog-ui",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite --config ui/vite.config.mjs",
+    "dev:ha": "vite build --watch --config ui/vite.config.mjs --mode=development",
+    "build": "npm run typecheck && vite build --config ui/vite.config.mjs --mode=production",
+    "test:ui": "node tests/test_frontend_ui.mjs",
+    "typecheck": "tsc --project ui/tsconfig.json",
+    "test:unit": "node --experimental-strip-types --test tests/test_timer_frontend.mjs tests/test_data_transfer.mjs tests/test_ui_api.mjs tests/test_ui_errors.mjs"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.0.1",
+    "@mui/material": "^9.0.1",
+    "home-assistant-js-websocket": "^9.6.0",
+    "lucide-react": "^1.23.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intersection-observer": "^10.0.3",
+    "react-remove-scroll": "^2.7.2",
+    "react-router-dom": "^7.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "playwright": "^1.64.1",
+    "sass": "^1.101.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.0"
+  }
+}

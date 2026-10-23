@@ -1,0 +1,27 @@
+{
+  "domain": "ha_dialog_ui",
+  "name": "HA Dialog UI",
+  "codeowners": [],
+  "dependencies": [
+    "conversation"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/mikhailhimei/ha-dialog-ui",
+  "integration_type": "service",
+  "iot_class": "local_polling",
+  "requirements": [
+    "beautifulsoup4",
+    "deep-translator",
+    "dateparser",
+    "fastapi",
+    "pydantic",
+    "uvicorn",
+    "astral",
+    "pytz",
+    "httpx",
+    "num2words",
+    "pymorphy3",
+    "words2numsrus"
+  ],
+  "version": "0.3.8"
+}

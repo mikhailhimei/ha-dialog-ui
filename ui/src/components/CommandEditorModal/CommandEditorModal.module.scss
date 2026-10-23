@@ -1,0 +1,66 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  resize: vertical;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.arrayItem {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  margin-bottom: 12px;
+}
+.form p { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.5; }
+.logicTabs { display: flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.logicTabs button { flex: 1; min-width: 0; padding: 12px 8px; border: 0; border-radius: 8px; background: transparent; color: var(--text-secondary); font: inherit; cursor: pointer; overflow-wrap: anywhere; }
+.logicTabs button[aria-selected="true"] { background: var(--accent-background); color: var(--text); box-shadow: inset 0 0 0 1px var(--accent-border); }
+.logicTabs button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+@media (max-width: 400px) { .logicTabs button { padding: 10px 4px; font-size: 12px; } }
+
+.sectionTitle { margin: 0; font-size: 14px; font-weight: 600; color: var(--text); }
+
+.footerActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.footerActions > button {
+  min-width: 0;
+  min-height: 46px;
+  height: auto;
+  padding: 12px;
+  white-space: normal;
+}
+
+.phraseMode { display: flex; align-items: center; gap: 8px; }
+.phraseMode > label { flex: 1; min-width: 0; }
+.phraseMode > label > span:first-of-type { flex-shrink: 0; }
+
+@media (max-width: 768px) { .directTabLabel { white-space: pre-line; } }
+
+.linkActions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; align-items: center; }

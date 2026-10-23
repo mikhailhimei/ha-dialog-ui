@@ -1,0 +1,1270 @@
+{
+  "Без названия": {
+    "ru": "Без названия",
+    "en": "Untitled"
+  },
+  "Будильник": {
+    "ru": "Будильник",
+    "en": "Alarm"
+  },
+  "Быстрое создание": {
+    "ru": "Быстрое создание",
+    "en": "Quick create"
+  },
+  "Включена": {
+    "ru": "Включена",
+    "en": "Enabled"
+  },
+  "Включить": {
+    "ru": "Включить",
+    "en": "Enable"
+  },
+  "Вс": {
+    "ru": "Вс",
+    "en": "Sun"
+  },
+  "Вт": {
+    "ru": "Вт",
+    "en": "Tue"
+  },
+  "Второстепенные": {
+    "ru": "Второстепенные",
+    "en": "Secondary"
+  },
+  "Второстепенные команды": {
+    "ru": "Второстепенные команды",
+    "en": "Secondary commands"
+  },
+  "Выберите": {
+    "ru": "Выберите",
+    "en": "Select"
+  },
+  "Выберите устройство": {
+    "ru": "Выберите устройство",
+    "en": "Select a device"
+  },
+  "Выключена": {
+    "ru": "Выключена",
+    "en": "Disabled"
+  },
+  "Выключить": {
+    "ru": "Выключить",
+    "en": "Disable"
+  },
+  "Готово": {
+    "ru": "Готово",
+    "en": "Done"
+  },
+  "Действия": {
+    "ru": "Действия",
+    "en": "Actions"
+  },
+  "Длительность таймера": {
+    "ru": "Длительность таймера",
+    "en": "Timer duration"
+  },
+  "Добавить ещё": {
+    "ru": "Добавить ещё",
+    "en": "Add another"
+  },
+  "Добавить сценарий": {
+    "ru": "Добавить сценарий",
+    "en": "Add scenario"
+  },
+  "Ежедневно": {
+    "ru": "Ежедневно",
+    "en": "Daily"
+  },
+  "Заведен на": {
+    "ru": "Заведен на",
+    "en": "Duration"
+  },
+  "Завершать диалог": {
+    "ru": "Завершать диалог",
+    "en": "End conversation"
+  },
+  "Загрузка...": {
+    "ru": "Загрузка...",
+    "en": "Loading..."
+  },
+  "Изменить": {
+    "ru": "Изменить",
+    "en": "Edit"
+  },
+  "Использует фразы из раздела «Список ответов».": {
+    "ru": "Использует фразы из раздела «Список ответов».",
+    "en": "Uses phrases from the response list."
+  },
+  "Источник ответа": {
+    "ru": "Источник ответа",
+    "en": "Response source"
+  },
+  "Кастом": {
+    "ru": "Кастом",
+    "en": "Custom"
+  },
+  "Ключ доступа для API endpoints": {
+    "ru": "Ключ доступа для API endpoints",
+    "en": "API access token"
+  },
+  "Команды": {
+    "ru": "Команды",
+    "en": "Commands"
+  },
+  "Комманды": {
+    "ru": "Команды",
+    "en": "Commands"
+  },
+  "Круговая чч мм": {
+    "ru": "Круговая чч мм",
+    "en": "Circular hours and minutes"
+  },
+  "Музыка на сервере не найдена.": {
+    "ru": "Музыка на сервере не найдена.",
+    "en": "No music found on the server."
+  },
+  "Нажмите для редактирования": {
+    "ru": "Нажмите для редактирования",
+    "en": "Click to edit"
+  },
+  "Название": {
+    "ru": "Название",
+    "en": "Name"
+  },
+  "Название команды": {
+    "ru": "Название команды",
+    "en": "Command name"
+  },
+  "Настройки": {
+    "ru": "Настройки",
+    "en": "Settings"
+  },
+  "Настройки команд": {
+    "ru": "Настройки команд",
+    "en": "Command settings"
+  },
+  "Начните вводить title или uuid": {
+    "ru": "Начните вводить title или uuid",
+    "en": "Start typing a name or UUID"
+  },
+  "Не выбрано": {
+    "ru": "Не выбрано",
+    "en": "Not selected"
+  },
+  "Нет будильников.": {
+    "ru": "Нет будильников.",
+    "en": "No alarms."
+  },
+  "Нет быстрых значений.": {
+    "ru": "Нет быстрых значений.",
+    "en": "No presets."
+  },
+  "Нет запущенных таймеров.": {
+    "ru": "Нет запущенных таймеров.",
+    "en": "No running timers."
+  },
+  "Обновить": {
+    "ru": "Обновить",
+    "en": "Update"
+  },
+  "Общие": {
+    "ru": "Общие",
+    "en": "General"
+  },
+  "Обязательное поле": {
+    "ru": "Обязательное поле",
+    "en": "Required field"
+  },
+  "Однократно": {
+    "ru": "Однократно",
+    "en": "Once"
+  },
+  "Основной": {
+    "ru": "Основной",
+    "en": "Main"
+  },
+  "Основные": {
+    "ru": "Основные",
+    "en": "Main"
+  },
+  "Ответ из скрипта": {
+    "ru": "Ответ из скрипта",
+    "en": "Script response"
+  },
+  "Ответ из списка фраз": {
+    "ru": "Ответ из списка фраз",
+    "en": "Response from phrase list"
+  },
+  "Ответное сообщение": {
+    "ru": "Ответное сообщение",
+    "en": "Response message"
+  },
+  "Отправить команду как есть": {
+    "ru": "Отправить команду как есть",
+    "en": "Send command unchanged"
+  },
+  "Передать команду серверу": {
+    "ru": "Передать команду серверу",
+    "en": "Forward command to server"
+  },
+  "Передаёт данные команды в Home Assistant и ожидает ответ от скрипта.": {
+    "ru": "Передаёт данные команды в Home Assistant и ожидает ответ от скрипта.",
+    "en": "Sends command data to Home Assistant and waits for a script response."
+  },
+  "Перейти": {
+    "ru": "Перейти",
+    "en": "Go"
+  },
+  "Пн": {
+    "ru": "Пн",
+    "en": "Mon"
+  },
+  "По будням": {
+    "ru": "По будням",
+    "en": "Weekdays"
+  },
+  "По выходным": {
+    "ru": "По выходным",
+    "en": "Weekends"
+  },
+  "Повторы": {
+    "ru": "Повторы",
+    "en": "Repeat"
+  },
+  "Подключение к Home Assistant...": {
+    "ru": "Подключение к Home Assistant...",
+    "en": "Connecting to Home Assistant..."
+  },
+  "Поиск...": {
+    "ru": "Поиск...",
+    "en": "Searching..."
+  },
+  "Предыдущая страница": {
+    "ru": "Предыдущая страница",
+    "en": "Previous page"
+  },
+  "Продолжение диалога": {
+    "ru": "Продолжение диалога",
+    "en": "Continue conversation"
+  },
+  "Прямые": {
+    "ru": "Прямые",
+    "en": "Direct"
+  },
+  "Прямые команды": {
+    "ru": "Прямые команды",
+    "en": "Direct commands"
+  },
+  "Прямые команды шаблоны": {
+    "ru": "Прямые команды шаблоны",
+    "en": "Direct command templates"
+  },
+  "Пт": {
+    "ru": "Пт",
+    "en": "Fri"
+  },
+  "Ранее заводимые": {
+    "ru": "Ранее заводимые",
+    "en": "Recent presets"
+  },
+  "Редактировать": {
+    "ru": "Редактировать",
+    "en": "Edit"
+  },
+  "Редактировать будильник": {
+    "ru": "Редактировать будильник",
+    "en": "Edit alarm"
+  },
+  "Редактировать сценарий": {
+    "ru": "Редактировать сценарий",
+    "en": "Edit scenario"
+  },
+  "Сб": {
+    "ru": "Сб",
+    "en": "Sat"
+  },
+  "Связанные прямые команды для сопоставления значений во фразе. Например, имя «Миша» в команде «Привет ${name}».": {
+    "ru": "Связанные прямые команды для сопоставления значений во фразе. Например, имя «Миша» в команде «Привет ${name}».",
+    "en": "Linked direct commands match values in a phrase, such as the name “Misha” in “Hello ${name}”."
+  },
+  "Скачать": {
+    "ru": "Скачать",
+    "en": "Download"
+  },
+  "Скачать настройки": {
+    "ru": "Скачать настройки",
+    "en": "Download settings"
+  },
+  "Скачать скрипты": {
+    "ru": "Скачать скрипты",
+    "en": "Download scripts"
+  },
+  "Скачать сценарии": {
+    "ru": "Скачать сценарии",
+    "en": "Download scenarios"
+  },
+  "Скрипт": {
+    "ru": "Скрипт",
+    "en": "Script"
+  },
+  "Скрипты": {
+    "ru": "Скрипты",
+    "en": "Scripts"
+  },
+  "Следующая страница": {
+    "ru": "Следующая страница",
+    "en": "Next page"
+  },
+  "Создавайте автоматизации для управления устройствами и объединяйте действия в единые сценарии.": {
+    "ru": "Создавайте автоматизации для управления устройствами и объединяйте действия в единые сценарии.",
+    "en": "Create automations to control devices and combine actions into scenarios."
+  },
+  "Создавайте будильники, настраивайте повторы, устройство и громкость.": {
+    "ru": "Создавайте будильники, настраивайте повторы, устройство и громкость.",
+    "en": "Create alarms and set repeats, playback device and volume."
+  },
+  "Создавайте и редактируйте голосовые команды ассистента.": {
+    "ru": "Создавайте и редактируйте голосовые команды ассистента.",
+    "en": "Create and edit assistant voice commands."
+  },
+  "Создавайте команды для управления устройствами и объединяйте действия в единые сценарии.": {
+    "ru": "Создавайте команды для управления устройствами и объединяйте действия в единые сценарии.",
+    "en": "Create commands to control devices and combine actions into scenarios."
+  },
+  "Создавайте таймеры через модальное окно и отслеживайте запущенные отсчеты.": {
+    "ru": "Создавайте таймеры через модальное окно и отслеживайте запущенные отсчеты.",
+    "en": "Create timers and track running countdowns."
+  },
+  "Создать": {
+    "ru": "Создать",
+    "en": "Create"
+  },
+  "Создать будильник": {
+    "ru": "Создать будильник",
+    "en": "Create alarm"
+  },
+  "Создать сценарий": {
+    "ru": "Создать сценарий",
+    "en": "Create scenario"
+  },
+  "Создать таймер": {
+    "ru": "Создать таймер",
+    "en": "Create timer"
+  },
+  "Сохранить": {
+    "ru": "Сохранить",
+    "en": "Save"
+  },
+  "Список ответов": {
+    "ru": "Список ответов",
+    "en": "Response list"
+  },
+  "Ср": {
+    "ru": "Ср",
+    "en": "Wed"
+  },
+  "Стартовая громкость": {
+    "ru": "Стартовая громкость",
+    "en": "Starting volume"
+  },
+  "Страница": {
+    "ru": "Страница",
+    "en": "Page"
+  },
+  "Страницы списка": {
+    "ru": "Страницы списка",
+    "en": "List pages"
+  },
+  "Сценарии": {
+    "ru": "Сценарии",
+    "en": "Scenarios"
+  },
+  "Таймер": {
+    "ru": "Таймер",
+    "en": "Timer"
+  },
+  "Удалить": {
+    "ru": "Удалить",
+    "en": "Delete"
+  },
+  "Уникальный идентификатор клиента": {
+    "ru": "Уникальный идентификатор клиента",
+    "en": "Unique client identifier"
+  },
+  "Условия": {
+    "ru": "Условия",
+    "en": "Conditions"
+  },
+  "Устройство воспроизведения": {
+    "ru": "Устройство воспроизведения",
+    "en": "Playback device"
+  },
+  "Фразы для запуска": {
+    "ru": "Фразы для запуска",
+    "en": "Trigger phrases"
+  },
+  "Чт": {
+    "ru": "Чт",
+    "en": "Thu"
+  },
+  "Шаблон": {
+    "ru": "Шаблон",
+    "en": "Template"
+  },
+  "ежедневно": {
+    "ru": "ежедневно",
+    "en": "daily"
+  },
+  "из": {
+    "ru": "из",
+    "en": "of"
+  },
+  "кастом": {
+    "ru": "кастом",
+    "en": "custom"
+  },
+  "мин": {
+    "ru": "мин",
+    "en": "min"
+  },
+  "мм": {
+    "ru": "мм",
+    "en": "mm"
+  },
+  "однократно": {
+    "ru": "однократно",
+    "en": "once"
+  },
+  "по будням": {
+    "ru": "по будням",
+    "en": "weekdays"
+  },
+  "по выходным": {
+    "ru": "по выходным",
+    "en": "weekends"
+  },
+  "сс": {
+    "ru": "сс",
+    "en": "ss"
+  },
+  "чч": {
+    "ru": "чч",
+    "en": "hh"
+  },
+  "🗑 Удалить условие": {
+    "ru": "🗑 Удалить условие",
+    "en": "🗑 Delete condition"
+  },
+  "🞢 Добавить сценарий": {
+    "ru": "🞢 Добавить сценарий",
+    "en": "🞢 Add scenario"
+  },
+  "🞢 Создать": {
+    "ru": "🞢 Создать",
+    "en": "🞢 Create"
+  },
+  "+ Добавить условие": {
+    "ru": "+ Добавить условие",
+    "en": "+ Add condition"
+  },
+  "Theme": {
+    "ru": "Тема",
+    "en": "Theme"
+  },
+  "dark": {
+    "ru": "Тёмная",
+    "en": "Dark"
+  },
+  "light": {
+    "ru": "Светлая",
+    "en": "Light"
+  },
+  "Client ID": {
+    "ru": "Идентификатор клиента",
+    "en": "Client ID"
+  },
+  "Is admin": {
+    "ru": "Администратор",
+    "en": "Administrator"
+  },
+  "Active remout": {
+    "ru": "Удалённый сервер",
+    "en": "Remote server"
+  },
+  "Enable API (/api/dialog/commands, /api/dialog/events, /api/dialog/event)": {
+    "ru": "Включить API (/api/dialog/commands, /api/dialog/events, /api/dialog/event)",
+    "en": "Enable API (/api/dialog/commands, /api/dialog/events, /api/dialog/event)"
+  },
+  "API Commands Token": {
+    "ru": "Токен API команд",
+    "en": "Commands API token"
+  },
+  "Global music timer": {
+    "ru": "Звук таймера по умолчанию",
+    "en": "Default timer sound"
+  },
+  "Global music alarm": {
+    "ru": "Звук будильника по умолчанию",
+    "en": "Default alarm sound"
+  },
+  "Timer / Alarm": {
+    "ru": "Таймеры и будильники",
+    "en": "Timers and alarms"
+  },
+  "Base URL": {
+    "ru": "Адрес сервера",
+    "en": "Server URL"
+  },
+  "Token": {
+    "ru": "Токен",
+    "en": "Token"
+  },
+  "actionType": {
+    "ru": "Тип действия",
+    "en": "Action type"
+  },
+  "actionTypeComponent": {
+    "ru": "Ветка диалога",
+    "en": "Conversation branch"
+  },
+  "voiceResponse": {
+    "ru": "Текст ответа",
+    "en": "Response text"
+  },
+  "uuid": {
+    "ru": "Команда",
+    "en": "Command"
+  },
+  "mappingType": {
+    "ru": "Название переменной",
+    "en": "Variable name"
+  },
+  "parent_type": {
+    "ru": "Основная команда",
+    "en": "Main command"
+  },
+  "children_type": {
+    "ru": "Второстепенная команда",
+    "en": "Secondary command"
+  },
+  "children_direct_type": {
+    "ru": "Прямая команда",
+    "en": "Direct command"
+  },
+  "Язык интерфейса": {
+    "ru": "Язык интерфейса",
+    "en": "Interface language"
+  },
+  "subVoiceCommands": {
+    "ru": "Дополнительные фразы",
+    "en": "Additional phrases"
+  },
+  "Hide password": {
+    "ru": "Скрыть пароль",
+    "en": "Hide password"
+  },
+  "Show password": {
+    "ru": "Показать пароль",
+    "en": "Show password"
+  },
+  "Условие": {
+    "ru": "Условие",
+    "en": "Condition"
+  },
+  "Remote": {
+    "ru": "Удалённый сервер",
+    "en": "Remote server"
+  },
+  "subDirectControl": {
+    "ru": "Вложенные команды",
+    "en": "Nested commands"
+  },
+  "subMappingType": {
+    "ru": "Тип вложенного значения",
+    "en": "Nested value type"
+  },
+  "valueType": {
+    "ru": "Тип данных",
+    "en": "Data type"
+  },
+  "manual": {
+    "ru": "Вручную",
+    "en": "Manual"
+  },
+  "mappingType:": {
+    "ru": "Тип значения:",
+    "en": "Value type:"
+  },
+  "Редактировать прямую команду": {
+    "ru": "Редактировать прямую команду",
+    "en": "Edit direct command"
+  },
+  "Создать прямую команду": {
+    "ru": "Создать прямую команду",
+    "en": "Create direct command"
+  },
+  "all": {
+    "ru": "Любой",
+    "en": "Any"
+  },
+  "All": {
+    "ru": "Любой",
+    "en": "Any"
+  },
+  "string": {
+    "ru": "Текст",
+    "en": "Text"
+  },
+  "int": {
+    "ru": "Число",
+    "en": "Number"
+  },
+  "date": {
+    "ru": "Дата",
+    "en": "Date"
+  },
+  "time": {
+    "ru": "Время",
+    "en": "Time"
+  },
+  "Значения шаблона": {
+    "ru": "Значения шаблона",
+    "en": "Template values"
+  },
+  "Код значения": {
+    "ru": "Код значения",
+    "en": "Value identifier"
+  },
+  "Варианты произношения": {
+    "ru": "Варианты произношения",
+    "en": "Spoken variants"
+  },
+  "Раздел прямых команд": {
+    "ru": "Раздел прямых команд",
+    "en": "Direct command section"
+  },
+  "Не удалось сохранить настройки. Попробуйте ещё раз.": {
+    "ru": "Не удалось сохранить настройки. Попробуйте ещё раз.",
+    "en": "Could not save settings. Please try again."
+  },
+  "Не удалось открыть панель. Попробуйте ещё раз.": {
+    "ru": "Не удалось открыть панель. Попробуйте ещё раз.",
+    "en": "Could not open the panel. Please try again."
+  },
+  "Открыть повторно": {
+    "ru": "Открыть повторно",
+    "en": "Try again"
+  },
+  "Импорт и экспорт": {
+    "ru": "Импорт и экспорт",
+    "en": "Import and export"
+  },
+  "Загрузить скрипты": {
+    "ru": "Загрузить скрипты",
+    "en": "Upload scripts"
+  },
+  "Загрузить сценарии": {
+    "ru": "Загрузить сценарии",
+    "en": "Upload scenarios"
+  },
+  "Загрузить настройки": {
+    "ru": "Загрузить настройки",
+    "en": "Upload settings"
+  },
+  "Данные загружены.": {
+    "ru": "Данные загружены.",
+    "en": "Data imported."
+  },
+  "Обработка файла...": {
+    "ru": "Обработка файла...",
+    "en": "Processing file..."
+  },
+  "Скачивайте и загружайте JSON-файлы. Записи с совпадающим ID обновляются, остальные добавляются. Другие записи сохраняются.": {
+    "ru": "Скачивайте и загружайте JSON-файлы. Записи с совпадающим ID обновляются, остальные добавляются. Другие записи сохраняются.",
+    "en": "Download and upload JSON files. Matching IDs are updated; new records are added. Other records are kept."
+  },
+  "Некорректный JSON-файл.": {
+    "ru": "Некорректный JSON-файл.",
+    "en": "Invalid JSON file."
+  },
+  "Файл не содержит корректные настройки.": {
+    "ru": "Файл не содержит корректные настройки.",
+    "en": "The file does not contain valid settings."
+  },
+  "Ожидается массив записей JSON.": {
+    "ru": "Ожидается массив записей JSON.",
+    "en": "Expected a JSON array of records."
+  },
+  "Некорректные или повторяющиеся ID записей.": {
+    "ru": "Некорректные или повторяющиеся ID записей.",
+    "en": "Invalid or duplicate record IDs."
+  },
+  "Нужен файл с полными записями. Краткий список названий загрузить нельзя.": {
+    "ru": "Нужен файл с полными записями. Краткий список названий загрузить нельзя.",
+    "en": "A full export is required. A list of names cannot be imported."
+  },
+  "Не удалось выполнить операцию. Попробуйте ещё раз.": {
+    "ru": "Не удалось выполнить операцию. Попробуйте ещё раз.",
+    "en": "Operation failed. Please try again."
+  },
+  "Сценарии включают все разделы «Команды»: основные, второстепенные, прямые, шаблоны и настройки команд. Скрипты Home Assistant не переносятся.": {
+    "ru": "Сценарии включают все разделы «Команды»: основные, второстепенные, прямые, шаблоны и настройки команд. Скрипты Home Assistant не переносятся.",
+    "en": "Scenarios include all Commands sections: main, secondary, direct, templates and command settings. Home Assistant scripts are not transferred."
+  },
+  "Некорректный файл сценариев или неподдерживаемая версия.": {
+    "ru": "Некорректный файл сценариев или неподдерживаемая версия.",
+    "en": "Invalid scenario file or unsupported version."
+  },
+  "Запуск скриптов": {
+    "ru": "Запуск скриптов",
+    "en": "Script triggers"
+  },
+  "Таймеры": {
+    "ru": "Таймеры",
+    "en": "Timers"
+  },
+  "Будильники": {
+    "ru": "Будильники",
+    "en": "Alarms"
+  },
+  "Основные команды": {
+    "ru": "Основные команды",
+    "en": "Main commands"
+  },
+  "Шаблоны значений": {
+    "ru": "Шаблоны значений",
+    "en": "Value templates"
+  },
+  "Ответы по умолчанию": {
+    "ru": "Ответы по умолчанию",
+    "en": "Default responses"
+  },
+  "Настройки интеграции": {
+    "ru": "Настройки интеграции",
+    "en": "Integration settings"
+  },
+  "Свяжите распознанную команду со скриптом Home Assistant. Выберите скрипт и задайте условия его запуска.": {
+    "ru": "Свяжите распознанную команду со скриптом Home Assistant. Выберите скрипт и задайте условия его запуска.",
+    "en": "Link a recognized command to a Home Assistant script. Select the script and set its trigger conditions."
+  },
+  "Задайте фразы, с которых начинается диалог, и ответ ассистента. При необходимости добавьте продолжение диалога или прямую команду.": {
+    "ru": "Задайте фразы, с которых начинается диалог, и ответ ассистента. При необходимости добавьте продолжение диалога или прямую команду.",
+    "en": "Define phrases that start a dialog and the assistant response. Add a dialog continuation or direct command when needed."
+  },
+  "Настройте команды для следующего шага диалога. Подключите их в «Продолжении диалога» основной или другой второстепенной команды.": {
+    "ru": "Настройте команды для следующего шага диалога. Подключите их в «Продолжении диалога» основной или другой второстепенной команды.",
+    "en": "Define commands for the next dialog step. Link them from the Dialog continuation section of a main or another secondary command."
+  },
+  "Опишите значения, которые ассистент должен распознавать во фразе, например имя или комнату. Задайте варианты произношения вручную или выберите шаблон.": {
+    "ru": "Опишите значения, которые ассистент должен распознавать во фразе, например имя или комнату. Задайте варианты произношения вручную или выберите шаблон.",
+    "en": "Define values the assistant should recognize in a phrase, such as a name or room. Enter spoken variants manually or select a template."
+  },
+  "Соберите набор значений и вариантов произношения, например названия комнат. Выбирайте этот шаблон в прямых командах, чтобы использовать набор повторно.": {
+    "ru": "Соберите набор значений и вариантов произношения, например названия комнат. Выбирайте этот шаблон в прямых командах, чтобы использовать набор повторно.",
+    "en": "Create a reusable set of values and spoken variants, such as room names. Select this template in direct commands to reuse the set."
+  },
+  "Изменяйте встроенные ответы для случаев, когда команда не найдена или диалог нужно начать заново. Набор этих настроек фиксирован: новые записи не создаются.": {
+    "ru": "Изменяйте встроенные ответы для случаев, когда команда не найдена или диалог нужно начать заново. Набор этих настроек фиксирован: новые записи не создаются.",
+    "en": "Edit built-in responses for an unrecognized command or a dialog restart. These settings are fixed; new entries cannot be added."
+  },
+  "Задайте длительность и выберите колонку для сигнала. Здесь отображаются оставшееся время и устройство каждого таймера.": {
+    "ru": "Задайте длительность и выберите колонку для сигнала. Здесь отображаются оставшееся время и устройство каждого таймера.",
+    "en": "Set a duration and select a speaker for the alert. View the remaining time and device for each timer here."
+  },
+  "Выберите время, дни повтора и колонку для сигнала. Нажмите на будильник, чтобы изменить, включить или удалить его.": {
+    "ru": "Выберите время, дни повтора и колонку для сигнала. Нажмите на будильник, чтобы изменить, включить или удалить его.",
+    "en": "Choose the time, repeat days and speaker for the alert. Select an alarm to edit, enable or delete it."
+  },
+  "Настройте язык, тему, подключение к удалённому серверу и звуки таймеров и будильников. Нажмите «Сохранить», чтобы применить изменения.": {
+    "ru": "Настройте язык, тему, подключение к удалённому серверу и звуки таймеров и будильников. Нажмите «Сохранить», чтобы применить изменения.",
+    "en": "Set the language, theme, remote server connection and timer/alarm sounds. Select Save to apply changes."
+  },
+  "Привязки команд к скриптам Home Assistant и условия запуска. Самих скриптов HA в файле нет.": {
+    "ru": "Привязки команд к скриптам Home Assistant и условия запуска. Самих скриптов HA в файле нет.",
+    "en": "Command-to-script links and trigger conditions. The Home Assistant scripts themselves are not included."
+  },
+  "Все разделы «Команды»: основные, второстепенные, прямые, шаблоны и ответы по умолчанию. ID и связи сохраняются.": {
+    "ru": "Все разделы «Команды»: основные, второстепенные, прямые, шаблоны и ответы по умолчанию. ID и связи сохраняются.",
+    "en": "All Commands sections: main, secondary, direct, templates and default responses. IDs and links are preserved."
+  },
+  "Тема, параметры подключения, API и звуки таймеров и будильников. Язык интерфейса в файл не входит.": {
+    "ru": "Тема, параметры подключения, API и звуки таймеров и будильников. Язык интерфейса в файл не входит.",
+    "en": "Theme, connection settings, API and timer/alarm sounds. The interface language is not included."
+  },
+  "Скачайте JSON-файл для сохранения или переноса данных. Для восстановления выберите «Загрузить» в нужном разделе. Существующие записи обновятся, новые добавятся; встроенные настройки только редактируются.": {
+    "ru": "Скачайте JSON-файл для сохранения или переноса данных. Для восстановления выберите «Загрузить» в нужном разделе. Существующие записи обновятся, новые добавятся; встроенные настройки только редактируются.",
+    "en": "Download a JSON file to save or transfer data. To restore it, select Upload in the matching section. Existing entries are updated, new ones are added; built-in settings can only be edited."
+  },
+  "Повторить загрузку": {
+    "ru": "Повторить загрузку",
+    "en": "Retry loading"
+  },
+  "Недостаточно прав. Войдите как администратор Home Assistant.": {
+    "ru": "Недостаточно прав. Войдите как администратор Home Assistant.",
+    "en": "Insufficient permissions. Sign in as a Home Assistant administrator."
+  },
+  "Запись больше не существует. Обновите список.": {
+    "ru": "Запись больше не существует. Обновите список.",
+    "en": "This entry no longer exists. Reload the list."
+  },
+  "Home Assistant не ответил вовремя. Проверьте подключение и повторите загрузку.": {
+    "ru": "Home Assistant не ответил вовремя. Проверьте подключение и повторите загрузку.",
+    "en": "Home Assistant did not respond in time. Check the connection and retry loading."
+  },
+  "Соединение с Home Assistant потеряно. Проверьте подключение и повторите загрузку.": {
+    "ru": "Соединение с Home Assistant потеряно. Проверьте подключение и повторите загрузку.",
+    "en": "Connection to Home Assistant was lost. Check the connection and retry loading."
+  },
+  "Данные сохранены, но не удалось обновить интеграцию. Обновите список перед следующими изменениями.": {
+    "ru": "Данные сохранены, но не удалось обновить интеграцию. Обновите список перед следующими изменениями.",
+    "en": "Data was saved, but the integration could not reload. Reload the list before making further changes."
+  },
+  "Не удалось импортировать данные. Проверьте журнал Home Assistant и текущее состояние записей.": {
+    "ru": "Не удалось импортировать данные. Проверьте журнал Home Assistant и текущее состояние записей.",
+    "en": "Data import failed. Check the Home Assistant log and the current records."
+  },
+  "Команда API недоступна. Обновите интеграцию и перезапустите Home Assistant.": {
+    "ru": "Команда API недоступна. Обновите интеграцию и перезапустите Home Assistant.",
+    "en": "The API command is unavailable. Update the integration and restart Home Assistant."
+  },
+  "Некорректные данные запроса. Обновите страницу и проверьте введённые значения.": {
+    "ru": "Некорректные данные запроса. Обновите страницу и проверьте введённые значения.",
+    "en": "Invalid request data. Refresh the page and check the entered values."
+  },
+  "Некорректные данные запроса. Проверьте файл или введённые значения.": {
+    "ru": "Некорректные данные запроса. Проверьте файл или введённые значения.",
+    "en": "Invalid request data. Check the file or entered values."
+  },
+  "Не удалось выполнить операцию. Проверьте подключение к Home Assistant.": {
+    "ru": "Не удалось выполнить операцию. Проверьте подключение к Home Assistant.",
+    "en": "The operation failed. Check the connection to Home Assistant."
+  },
+  "Не удалось загрузить список. Проверьте подключение к Home Assistant.": {
+    "ru": "Не удалось загрузить список. Проверьте подключение к Home Assistant.",
+    "en": "The list could not be loaded. Check the connection to Home Assistant."
+  },
+  "По умолчанию": {
+    "ru": "По умолчанию",
+    "en": "Default"
+  },
+  "По типу ответа": {
+    "ru": "По типу ответа",
+    "en": "By response type"
+  },
+  "Вид продолжения": {
+    "ru": "Вид продолжения",
+    "en": "Continuation mode"
+  },
+  "Если подходящего продолжения нет, диалог завершается. Переход по типу ответа имеет приоритет.": {
+    "ru": "Если подходящего продолжения нет, диалог завершается. Переход по типу ответа имеет приоритет.",
+    "en": "The dialog ends if no continuation matches. A matching response type takes priority."
+  },
+  "Скрипт Home Assistant": {
+    "ru": "Скрипт Home Assistant",
+    "en": "Home Assistant script"
+  },
+  "Не запускать скрипт": {
+    "ru": "Не запускать скрипт",
+    "en": "Do not run a script"
+  },
+  "Скрипт запускается для прямой команды или финального ответа. При ответе из скрипта запускается всегда с ожиданием результата.": {
+    "ru": "Скрипт запускается для прямой команды или финального ответа. При ответе из скрипта запускается всегда с ожиданием результата.",
+    "en": "Runs for a direct command or a final response. For a script response, always runs and waits for the result."
+  },
+  "Действия удалённых команд": {
+    "ru": "Действия удалённых команд",
+    "en": "Remote command actions"
+  },
+  "Выберите скрипт Home Assistant и укажите типы команд, приходящие с удалённого сервера. Типы вводятся вручную.": {
+    "ru": "Выберите скрипт Home Assistant и укажите типы команд, приходящие с удалённого сервера. Типы вводятся вручную.",
+    "en": "Choose a Home Assistant script and enter the command types received from the remote server. Enter types manually."
+  },
+  "Использовать существующие сценарии": {
+    "ru": "Использовать существующие сценарии",
+    "en": "Use existing scenarios"
+  },
+  "Все разделы": {
+    "ru": "Все разделы",
+    "en": "All sections"
+  },
+  "Разделы команд": {
+    "ru": "Разделы команд",
+    "en": "Command sections"
+  },
+  "Основная навигация": {
+    "ru": "Основная навигация",
+    "en": "Main navigation"
+  },
+  "Настроить логику": {
+    "ru": "Настроить логику",
+    "en": "Configure logic"
+  },
+  "Настройки логики": {
+    "ru": "Настройки логики",
+    "en": "Logic settings"
+  },
+  "Ответы": {
+    "ru": "Ответы",
+    "en": "Responses"
+  },
+  "Продолжения": {
+    "ru": "Продолжения",
+    "en": "Continuations"
+  },
+  "Вернуться к команде": {
+    "ru": "Вернуться к команде",
+    "en": "Back to command"
+  },
+  "Укажите тип действия в настройках логики.": {
+    "ru": "Укажите тип действия в настройках логики.",
+    "en": "Set the action type in logic settings."
+  },
+  "Ответ выбирается из настроенных фраз.": {
+    "ru": "Ответ выбирается из настроенных фраз.",
+    "en": "The response is selected from configured phrases."
+  },
+  "Ожидаем результат скрипта и выбираем ответ по его типу.": {
+    "ru": "Ожидаем результат скрипта и выбираем ответ по его типу.",
+    "en": "Wait for the script result and select the response by its type."
+  },
+  "Назад": {
+    "ru": "Назад",
+    "en": "Back"
+  },
+  "default — основной ответ, в том числе для фразы с подстановкой ${…}.": {
+    "ru": "default — основной ответ, в том числе для фразы с подстановкой ${…}.",
+    "en": "default — the standard response, including phrases with a ${…} placeholder."
+  },
+  "default_next_step — сначала ищется для обычной команды. Если такого ответа нет, используется default.": {
+    "ru": "default_next_step — сначала ищется для обычной команды. Если такого ответа нет, используется default.",
+    "en": "default_next_step — checked first for a regular command. If no such response exists, default is used."
+  },
+  "При ожидании скрипта тип ответа берётся из typeVoice, затем из actionType. Если тип не передан, используется выбор выше.": {
+    "ru": "При ожидании скрипта тип ответа берётся из typeVoice, затем из actionType. Если тип не передан, используется выбор выше.",
+    "en": "When waiting for a script, the response type comes from typeVoice, then actionType. If no type is provided, the rules above apply."
+  },
+  "По типу результата скрипта": {
+    "ru": "По типу результата скрипта",
+    "en": "By script result type"
+  },
+  "Тип результата скрипта": {
+    "ru": "Тип результата скрипта",
+    "en": "Script result type"
+  },
+  "Например, room_required": {
+    "ru": "Например, room_required",
+    "en": "For example, room_required"
+  },
+  "Выберите команду": {
+    "ru": "Выберите команду",
+    "en": "Choose a command"
+  },
+  "Выбранная команда недоступна": {
+    "ru": "Выбранная команда недоступна",
+    "en": "Selected command is unavailable"
+  },
+  "Открыть меню Home Assistant": {
+    "ru": "Открыть меню Home Assistant",
+    "en": "Open Home Assistant menu"
+  },
+  "Подсказка": {
+    "ru": "Подсказка",
+    "en": "Help"
+  },
+  "Закрыть подсказку": {
+    "ru": "Закрыть подсказку",
+    "en": "Close help"
+  },
+  "По типу ответа скрипта": {
+    "ru": "По типу ответа скрипта",
+    "en": "By script response type"
+  },
+  "Название помогает найти команду в списке. Оно не используется для распознавания речи.": {
+    "ru": "Название помогает найти команду в списке. Оно не используется для распознавания речи.",
+    "en": "The name helps you find the command in the list. It is not used for speech recognition."
+  },
+  "Укажите варианты фразы через точку с запятой (;). Например: включи свет; зажги свет.\nВарианты окончаний запишите в скобках через |: свет(а|у|ом). Знак ? после скобок делает окончание необязательным: свет(а|у|ом)? распознаёт также слово «свет».\nДля подстановки значения используйте переменную, например: установи таймер на ${timer}.": {
+    "ru": "Укажите варианты фразы через точку с запятой (;). Например: включи свет; зажги свет.\nВарианты окончаний запишите в скобках через |: свет(а|у|ом). Знак ? после скобок делает окончание необязательным: свет(а|у|ом)? распознаёт также слово «свет».\nДля подстановки значения используйте переменную, например: установи таймер на ${timer}.",
+    "en": "Separate alternative phrases with semicolons (;), for example: turn on the light; switch on the light.\nUse parentheses and | for alternative endings: свет(а|у|ом). Add ? after the parentheses to make the ending optional: свет(а|у|ом)? also matches «свет».\nUse a variable to capture a value, for example: set a timer for ${timer}."
+  },
+  "Ответ из списка фраз — интеграция выбирает текст из раздела «Ответы» этой команды.\nОтвет из скрипта — добавьте в HA-скрипт действие интеграции, возвращающее тип результата. По этому типу выбирается соответствующий текст из раздела «Ответы».": {
+    "ru": "Ответ из списка фраз — интеграция выбирает текст из раздела «Ответы» этой команды.\nОтвет из скрипта — добавьте в HA-скрипт действие интеграции, возвращающее тип результата. По этому типу выбирается соответствующий текст из раздела «Ответы».",
+    "en": "Response from phrase list: the integration selects text from this command’s Responses section.\nResponse from script: add an integration action to your HA script that returns a result type. This type selects the matching text from the Responses section."
+  },
+  "Выберите HA-скрипт для выполнения действия. При ответе из скрипта интеграция ждёт его результат. При ответе из списка скрипт запускается для распознанной прямой команды или финального ответа без обычного продолжения.": {
+    "ru": "Выберите HA-скрипт для выполнения действия. При ответе из скрипта интеграция ждёт его результат. При ответе из списка скрипт запускается для распознанной прямой команды или финального ответа без обычного продолжения.",
+    "en": "Choose an HA script to perform the action. For a script response, the integration waits for its result. For a phrase-list response, the script runs when direct values are recognized or the local response has no default continuation."
+  },
+  "Укажите тип, который возвращает HA-скрипт, например room_required. Значение должно совпадать с типом результата скрипта.": {
+    "ru": "Укажите тип, который возвращает HA-скрипт, например room_required. Значение должно совпадать с типом результата скрипта.",
+    "en": "Enter the type returned by the HA script, for example room_required. It must match the script’s result type."
+  },
+  "Текст, который произнесёт ассистент, когда выбран этот ответ.": {
+    "ru": "Текст, который произнесёт ассистент, когда выбран этот ответ.",
+    "en": "The text the assistant will say when this response is selected."
+  },
+  "Название переменной во фразе. Например, для ${room} укажите room, а для ${timer} — timer, без ${}.": {
+    "ru": "Название переменной во фразе. Например, для ${room} укажите room, а для ${timer} — timer, без ${}.",
+    "en": "The variable name in the phrase. For ${room}, enter room; for ${timer}, enter timer, without ${}."
+  },
+  "Выберите, что распознавать в переменной: текст, число, дату, время или любое значение. Название переменной и тип данных — разные настройки.": {
+    "ru": "Выберите, что распознавать в переменной: текст, число, дату, время или любое значение. Название переменной и тип данных — разные настройки.",
+    "en": "Choose what to recognize in the variable: text, a number, a date, a time, or any value. Variable name and data type are separate settings."
+  },
+  "Выберите команду по названию. В прямых командах она распознаёт значение переменной, а в продолжениях — следующую реплику диалога.": {
+    "ru": "Выберите команду по названию. В прямых командах она распознаёт значение переменной, а в продолжениях — следующую реплику диалога.",
+    "en": "Select a command by name. A direct command recognizes a variable value; a continuation recognizes the next utterance in the dialog."
+  },
+  "Код распознанного варианта, который получит HA-скрипт в matched_codes. Например, _hall для фразы «в зале».": {
+    "ru": "Код распознанного варианта, который получит HA-скрипт в matched_codes. Например, _hall для фразы «в зале».",
+    "en": "The code of the recognized option sent to the HA script in matched_codes, for example _hall for “in the hall”."
+  },
+  "Выберите шаблон со списком значений переменной и вариантами их произношения.": {
+    "ru": "Выберите шаблон со списком значений переменной и вариантами их произношения.",
+    "en": "Choose a template containing variable values and the phrases used to recognize them."
+  },
+  "Типы ответов": {
+    "ru": "Типы ответов",
+    "en": "Response types"
+  },
+  "Ответ для продолжения диалога": {
+    "ru": "Ответ для продолжения диалога",
+    "en": "Response for dialog continuation"
+  },
+  "Основной — используется для команд без продолжения диалога.\nОтвет для продолжения диалога — используется, когда у команды есть продолжение.\nПо типу результата скрипта — выбирает ответ с типом, который передал скрипт. Если скрипт не передал тип, используется основной ответ или ответ для продолжения диалога.": {
+    "ru": "Основной — используется для команд без продолжения диалога.\nОтвет для продолжения диалога — используется, когда у команды есть продолжение.\nПо типу результата скрипта — выбирает ответ с типом, который передал скрипт. Если скрипт не передал тип, используется основной ответ или ответ для продолжения диалога.",
+    "en": "Main: used for commands without a dialog continuation.\nResponse for dialog continuation: used when the command has a continuation.\nBy script result type: selects the response matching the type returned by the script. If the script returns no type, the main or continuation response is used."
+  },
+  "По умолчанию — обычное продолжение диалога. Используется, если нет подходящего продолжения по типу ответа скрипта. Следующая фраза пользователя определяет, какая команда продолжения сработает.\nПо типу ответа скрипта — выбирает продолжение по значению типа, который вернул скрипт.": {
+    "ru": "По умолчанию — обычное продолжение диалога. Используется, если нет подходящего продолжения по типу ответа скрипта. Следующая фраза пользователя определяет, какая команда продолжения сработает.\nПо типу ответа скрипта — выбирает продолжение по значению типа, который вернул скрипт.",
+    "en": "Default: a regular dialog continuation, used when no continuation matches the script result type. The user’s next phrase determines which continuation command matches.\nBy script response type: selects a continuation using the type returned by the script."
+  },
+  "Запасной сценарий: если обычные команды не подошли, передаёт текст пользователя как есть, без сравнения с фразами запуска этой команды и без разбора прямых значений.": {
+    "ru": "Запасной сценарий: если обычные команды не подошли, передаёт текст пользователя как есть, без сравнения с фразами запуска этой команды и без разбора прямых значений.",
+    "en": "Fallback: if ordinary commands do not match, forwards the user’s text unchanged, without comparing it against this command’s trigger phrases or extracting direct values."
+  },
+  "Переменная для фраз запуска. Например, используйте ${room} во фразе, если здесь указано room.": {
+    "ru": "Переменная для фраз запуска. Например, используйте ${room} во фразе, если здесь указано room.",
+    "en": "The variable for trigger phrases. For example, use ${room} in a phrase if this field shows room."
+  },
+  "Вложенные команды": {
+    "ru": "Вложенные команды",
+    "en": "Nested commands"
+  },
+  "Варианты вложенных команд": {
+    "ru": "Варианты вложенных команд",
+    "en": "Nested command options"
+  },
+  "Без вложенных команд": {
+    "ru": "Без вложенных команд",
+    "en": "No nested commands"
+  },
+  "Сохранённые вложенные команды": {
+    "ru": "Сохранённые вложенные команды",
+    "en": "Saved nested commands"
+  },
+  "Выберите набор из раздела «Вложенные команды». Его варианты можно переиспользовать в нескольких прямых командах.": {
+    "ru": "Выберите набор из раздела «Вложенные команды». Его варианты можно переиспользовать в нескольких прямых командах.",
+    "en": "Choose a set from Nested commands. Its options can be reused by multiple direct commands."
+  },
+  "Фразы прямой команды — общая часть перед вложенными командами. Например: в основной команде «включи ${свет}», здесь — «свет», во вложенных командах — «в зале» и «в спальне». Получатся «включи свет в зале» и «включи свет в спальне».\nПоле можно оставить пустым: тогда используются только фразы вложенных команд. Один набор вложенных команд можно подключать к разным прямым командам.": {
+    "ru": "Фразы прямой команды — общая часть перед вложенными командами. Например: в основной команде «включи ${свет}», здесь — «свет», во вложенных командах — «в зале» и «в спальне». Получатся «включи свет в зале» и «включи свет в спальне».\nПоле можно оставить пустым: тогда используются только фразы вложенных команд. Один набор вложенных команд можно подключать к разным прямым командам.",
+    "en": "Direct-command phrases are the common part placed before nested commands. For example, the main command is “turn on ${light}”, this field is “light”, and nested commands contain “in the hall” and “in the bedroom”. Together they recognize “turn on light in the hall” and “turn on light in the bedroom”.\nYou can leave this field empty to use only the nested command phrases. The same nested command set can be linked to multiple direct commands."
+  },
+  "Команда": {
+    "ru": "Команда",
+    "en": "Command"
+  },
+  "Укажите варианты одного значения через ; или с новой строки. Например: зал; в зале.\nСкобки с | задают варианты окончаний: кухн(я|ю|е) распознаёт «кухня», «кухню» и «кухне».\nЗнак ? после скобок делает окончание необязательным: зал(а|е)? распознаёт «зал», «зала» и «зале».": {
+    "ru": "Укажите варианты одного значения через ; или с новой строки. Например: зал; в зале.\nСкобки с | задают варианты окончаний: кухн(я|ю|е) распознаёт «кухня», «кухню» и «кухне».\nЗнак ? после скобок делает окончание необязательным: зал(а|е)? распознаёт «зал», «зала» и «зале».",
+    "en": "Separate alternative phrases for the same value with ; or new lines, for example: hall; in the hall.\nParentheses with | specify alternative endings: кухн(я|ю|е) matches «кухня», «кухню» and «кухне».\nA ? after the parentheses makes the ending optional: зал(а|е)? matches «зал», «зала» and «зале»."
+  },
+  "Часы": {
+    "ru": "Часы",
+    "en": "Hours"
+  },
+  "Минуты": {
+    "ru": "Минуты",
+    "en": "Minutes"
+  },
+  "Время будильника": {
+    "ru": "Время будильника",
+    "en": "Alarm time"
+  },
+  "Ранее заданное время": {
+    "ru": "Ранее заданное время",
+    "en": "Previously used times"
+  },
+  "Выбранные дни": {
+    "ru": "Выбранные дни",
+    "en": "Selected days"
+  },
+  "Дни повтора": {
+    "ru": "Дни повтора",
+    "en": "Repeat days"
+  },
+  "Подключаться к удалённому серверу": {
+    "ru": "Подключаться к удалённому серверу",
+    "en": "Connect to a remote server"
+  },
+  "Подключения": {
+    "ru": "Подключения",
+    "en": "Connections"
+  },
+  "Включить API": {
+    "ru": "Включить API",
+    "en": "Enable API"
+  },
+  "Не удалось прочитать медиатеку Home Assistant. Проверьте раздел «Медиа» и настройку media_dirs.": {
+    "ru": "Не удалось прочитать медиатеку Home Assistant. Проверьте раздел «Медиа» и настройку media_dirs.",
+    "en": "Unable to browse Home Assistant media. Check Media and the media_dirs configuration."
+  },
+  "Ошибка на стороне Home Assistant. Подробности — в журнале сервера.": {
+    "ru": "Ошибка на стороне Home Assistant. Подробности — в журнале сервера.",
+    "en": "Home Assistant encountered an error. See the server log for details."
+  },
+  "Не удалось выполнить операцию. Проверьте журнал Home Assistant и повторите попытку.": {
+    "ru": "Не удалось выполнить операцию. Проверьте журнал Home Assistant и повторите попытку.",
+    "en": "Unable to complete the operation. Check the Home Assistant log and try again."
+  },
+  "Секунды": {
+    "ru": "Секунды",
+    "en": "Seconds"
+  },
+  "Поиск по названию": {
+    "ru": "Поиск по названию",
+    "en": "Search by name"
+  },
+  "Введите часть названия": {
+    "ru": "Введите часть названия",
+    "en": "Enter part of a name"
+  },
+  "Ничего не найдено": {
+    "ru": "Ничего не найдено",
+    "en": "No results found"
+  },
+  "Перейти к команде": {
+    "ru": "Перейти к команде",
+    "en": "Open command"
+  },
+  "Назад к предыдущей команде": {
+    "ru": "Назад к предыдущей команде",
+    "en": "Back to previous command"
+  },
+  "Разделы": {
+    "ru": "Разделы",
+    "en": "Sections"
+  },
+  "Открыть меню разделов": {
+    "ru": "Открыть меню разделов",
+    "en": "Open section menu"
+  },
+  "Закрыть меню разделов": {
+    "ru": "Закрыть меню разделов",
+    "en": "Close section menu"
+  },
+  "Навигация интеграции": {
+    "ru": "Навигация интеграции",
+    "en": "Integration navigation"
+  },
+  "Текст озвучки": {
+    "ru": "Текст озвучки",
+    "en": "Speech text"
+  },
+  "Можно использовать переменные из ответа скрипта: например, ${reply}. Скрипт должен вернуть тип success.": {
+    "ru": "Можно использовать переменные из ответа скрипта: например, ${reply}. Скрипт должен вернуть тип success.",
+    "en": "You can use variables from the script response, for example ${reply}. The script must return the success type."
+  },
+  "Например: ${reply}": {
+    "ru": "Например: ${reply}",
+    "en": "For example: ${reply}"
+  },
+  "Ожидается ответ скрипта с типом success. После его получения будет озвучен текст из поля ниже.": {
+    "ru": "Ожидается ответ скрипта с типом success. После его получения будет озвучен текст из поля ниже.",
+    "en": "A script response with type success is expected. Once received, the text in the field below will be spoken."
+  },
+  "Текст, который произнесёт ассистент. Можно подставлять значения в формате ${имя}: например, «Температура ${temperature} градусов». При ответе из скрипта передайте temperature в поле variables действия ha_dialog_ui.send_command. Имя в тексте должно совпадать с ключом переменной. Для ответа из списка доступны распознанные значения команды.": {
+    "ru": "Текст, который произнесёт ассистент. Можно подставлять значения в формате ${имя}: например, «Температура ${temperature} градусов». При ответе из скрипта передайте temperature в поле variables действия ha_dialog_ui.send_command. Имя в тексте должно совпадать с ключом переменной. Для ответа из списка доступны распознанные значения команды.",
+    "en": "The text spoken by the assistant. Insert values with ${name}, for example “Temperature: ${temperature} degrees”. For script responses, pass temperature in the variables field of ha_dialog_ui.send_command. The placeholder name must match the variable key. List-based responses can use recognized command values."
+  },
+  "Обычный текст служебного ответа. В ответах команд значения подставляются через ${имя}, например ${temperature}. Чтобы озвучить данные из скрипта в настройке «Если ничего не нашёл», включите «Передать команду серверу» и задайте шаблон в поле «Текст озвучки».": {
+    "ru": "Обычный текст служебного ответа. В ответах команд значения подставляются через ${имя}, например ${temperature}. Чтобы озвучить данные из скрипта в настройке «Если ничего не нашёл», включите «Передать команду серверу» и задайте шаблон в поле «Текст озвучки».",
+    "en": "The plain text of a built-in response. Command responses support ${name} placeholders, such as ${temperature}. To speak script data in the “Nothing matched” setting, enable forwarding and enter a template in the “Speech text” field."
+  },
+  "Можно подставить данные из скрипта через ${имя}. Например, для текста «Ответ: ${reply}» передайте reply в поле variables действия ha_dialog_ui.send_command. Имена должны совпадать. Скрипт должен вернуть тип success.": {
+    "ru": "Можно подставить данные из скрипта через ${имя}. Например, для текста «Ответ: ${reply}» передайте reply в поле variables действия ha_dialog_ui.send_command. Имена должны совпадать. Скрипт должен вернуть тип success.",
+    "en": "Insert script data with ${name}. For example, for “Reply: ${reply}”, pass reply in the variables field of ha_dialog_ui.send_command. The names must match. The script must return the success type."
+  },
+  "Если ничего не нашёл": {
+    "ru": "Если ничего не нашёл",
+    "en": "When no command matches"
+  },
+  "Если не распознано продолжение": {
+    "ru": "Если не распознано продолжение",
+    "en": "When a follow-up is not recognized"
+  },
+  "Если продолжение не распознано несколько раз": {
+    "ru": "Если продолжение не распознано несколько раз",
+    "en": "After repeated unrecognized follow-ups"
+  },
+  "Позволяет внешним приложениям отправлять команды в интеграцию и обмениваться с ней событиями по HTTP API. Адреса: /api/dialog/commands, /api/dialog/events, /api/dialog/event. Для доступа нужен токен API команд из поля ниже.": {
+    "ru": "Позволяет внешним приложениям отправлять команды в интеграцию и обмениваться с ней событиями по HTTP API. Адреса: /api/dialog/commands, /api/dialog/events, /api/dialog/event. Для доступа нужен токен API команд из поля ниже.",
+    "en": "Allows external applications to send commands to the integration and exchange events over HTTP API. Endpoints: /api/dialog/commands, /api/dialog/events, /api/dialog/event. Access requires the API commands token from the field below."
+  },
+  "Интеграция подключается к существующему удалённому серверу и получает от него команды по SSE. Для их выполнения используются «Действия удалённых команд», а локальные разделы команд скрываются. Этот переключатель не запускает новый сервер.": {
+    "ru": "Интеграция подключается к существующему удалённому серверу и получает от него команды по SSE. Для их выполнения используются «Действия удалённых команд», а локальные разделы команд скрываются. Этот переключатель не запускает новый сервер.",
+    "en": "The integration connects to an existing remote server and receives commands over SSE. Remote command actions are used to execute them, while local command sections are hidden. This switch does not start a new server."
+  },
+  "🞢 Добавить второстепенную команду": {
+    "ru": "🞢 Добавить второстепенную команду",
+    "en": "🞢 Add child command condition"
+  },
+  "🞢 Добавить прямую команду": {
+    "ru": "🞢 Добавить прямую команду",
+    "en": "🞢 Add direct command condition"
+  },
+  "Убрать второстепенную команду": {
+    "ru": "Убрать второстепенную команду",
+    "en": "Remove child command condition"
+  },
+  "Убрать прямую команду": {
+    "ru": "Убрать прямую команду",
+    "en": "Remove direct command condition"
+  },
+  "Логи": {
+    "ru": "Логи",
+    "en": "Logs"
+  },
+  "Запросов к API пока нет.": {
+    "ru": "Запросов к API пока нет.",
+    "en": "No API requests yet."
+  },
+  "SSE подключён": {
+    "ru": "SSE подключён",
+    "en": "SSE connected"
+  },
+  "Событие SSE": {
+    "ru": "Событие SSE",
+    "en": "SSE event"
+  },
+  "Запрос завершён": {
+    "ru": "Запрос завершён",
+    "en": "Request completed"
+  },
+  "мс": {
+    "ru": "мс",
+    "en": "ms"
+  },
+  "Последние 200 записей API с телами запросов и ответов. Обновление каждые 3 секунды. После перезапуска журнал очищается. Секретные поля и настроенные токены скрыты.": {
+    "ru": "Последние 200 записей API с телами запросов и ответов. Обновление каждые 3 секунды. После перезапуска журнал очищается. Секретные поля и настроенные токены скрыты.",
+    "en": "Latest 200 API entries with request and response bodies. Refreshes every 3 seconds. The log is cleared on restart. Sensitive fields and configured tokens are hidden."
+  },
+  "Тело запроса": {
+    "ru": "Тело запроса",
+    "en": "Request body"
+  },
+  "Тело ответа": {
+    "ru": "Тело ответа",
+    "en": "Response body"
+  }
+}

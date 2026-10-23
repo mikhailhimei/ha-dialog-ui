@@ -1,0 +1,13 @@
+.container { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.rows { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.rows:empty { display: none; }
+.hidden { visibility: hidden; }
+.overlay { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; }
+.card { box-sizing: border-box; min-height: 88px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; justify-content: center; gap: 10px; overflow: hidden; }
+.overlay .card { flex: 1; min-height: 0; }
+.title, .subtitle { display: block; border-radius: 4px; background: var(--control-background-hover); animation: pulse 1.4s ease-in-out infinite; }
+.title { width: 45%; max-width: 320px; height: 18px; }
+.subtitle { width: 25%; max-width: 180px; height: 13px; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@keyframes pulse { 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .title, .subtitle { animation: none; } }
