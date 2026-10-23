@@ -1299,6 +1299,37 @@ try {
   assert(await headerSearch.evaluate(input=>Boolean(input.closest('header'))));
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'/tmp/mobile-integrated-search.png',animations:'disabled'});
+  console.log('Checking sticky header with an auto-height HA parent and a toolbar offset');
+  await panel.evaluate(element=>{
+    const frame=document.createElement('div');
+    frame.id='auto-height-panel-parent';
+    frame.style.paddingTop='56px';
+    element.before(frame);
+    frame.append(element);
+    element.style.height='';
+    element.scrollTop=0;
+  });
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.waitForFunction(()=>{
+    const host=document.querySelector('ha-dialog-ui-panel');
+    return host.scrollHeight>host.clientHeight && host.getBoundingClientRect().bottom<=innerHeight+1;
+  });
+  const autoHeaderTop=await headerSearch.evaluate(input=>input.closest('header').getBoundingClientRect().top);
+  await panel.evaluate(element=>{element.scrollTop=140});
+  await page.waitForFunction(()=>document.querySelector('ha-dialog-ui-panel').scrollTop>=100);
+  assert(Math.abs(await headerSearch.evaluate(input=>input.closest('header').getBoundingClientRect().top)-autoHeaderTop)<1,'Header stays visible without a fixed height on the HA parent');
+  assert(await panel.getByRole('button',{name:'Открыть меню разделов',exact:true}).isVisible());
+  await page.waitForFunction(()=>{
+    const root=document.querySelector('ha-dialog-ui-panel').shadowRoot;
+    const create=[...root.querySelectorAll('button')].find(button=>button.textContent.trim()==='Добавить сценарий');
+    return create && getComputedStyle(create.parentElement).pointerEvents==='auto';
+  });
+  await panel.evaluate(element=>{
+    element.scrollTop=0;
+    const frame=element.parentElement;
+    frame.replaceWith(element);
+  });
+  await page.evaluate(()=>window.scrollTo(0,0));
   console.log('Checking sticky header inside a height-constrained Home Assistant panel');
   await panel.evaluate(element=>{element.style.height='420px';element.scrollTop=0});
   assert.equal(await panel.evaluate(element=>getComputedStyle(element).overflowY),'auto');

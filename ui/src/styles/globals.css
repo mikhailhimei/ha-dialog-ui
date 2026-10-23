@@ -1,6 +1,7 @@
 :host {
   display: block;
   height: 100%;
+  max-height: var(--ha-dialog-ui-available-height, 100dvh);
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;

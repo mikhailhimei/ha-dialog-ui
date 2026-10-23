@@ -12,8 +12,14 @@ const STYLE_ID = "ha-dialog-ui-style";
 class DialogCustomUiPanel extends HTMLElement {
   private root?: ReactDOM.Root;
   private container?: HTMLDivElement;
+  private layoutObserver?: ResizeObserver;
+  private updateViewport = () => {
+    const top = Math.max(0, this.getBoundingClientRect().top + window.scrollY);
+    this.style.setProperty("--ha-dialog-ui-available-height", `${Math.max(0, window.innerHeight - top)}px`);
+  };
   private resume = () => {
     if (document.visibilityState !== "hidden" && this.isConnected) {
+      this.updateViewport();
       this.loadStyles();
       this.render();
     }
@@ -46,6 +52,10 @@ class DialogCustomUiPanel extends HTMLElement {
   }
 
   connectedCallback() {
+    this.updateViewport();
+    window.addEventListener("resize", this.updateViewport);
+    this.layoutObserver = new ResizeObserver(this.updateViewport);
+    if (this.parentElement) this.layoutObserver.observe(this.parentElement);
     document.addEventListener("visibilitychange", this.resume);
     window.addEventListener("pageshow", this.resume);
     this.ensureShadowRoot();
@@ -54,6 +64,9 @@ class DialogCustomUiPanel extends HTMLElement {
   }
 
   disconnectedCallback() {
+    window.removeEventListener("resize", this.updateViewport);
+    this.layoutObserver?.disconnect();
+    this.layoutObserver = undefined;
     document.removeEventListener("visibilitychange", this.resume);
     window.removeEventListener("pageshow", this.resume);
     if (this.renderTimer !== undefined) {

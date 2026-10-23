@@ -24,6 +24,7 @@ export const BottomSlideButton = ({
 
     const handleScroll = () => {
       const currentScrollY = scrollY();
+      if (currentScrollY === lastScrollY) return;
 
       if (
         currentScrollY > lastScrollY &&
@@ -37,15 +38,15 @@ export const BottomSlideButton = ({
       lastScrollY = currentScrollY;
     };
 
+    host?.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("scroll", handleScroll, {
       passive: true,
     });
 
-    return () =>
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
+    return () => {
+      host?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [offset]);
 
   return (
