@@ -35,7 +35,7 @@ export function useCommandEditor(kind: keyof typeof endpoints, createEmptyComman
   const openEditModal = (uuid: string) => feedback.run(async () => {
     const response = await getCommandDetails(endpoint.detail, uuid);
     setIsEdit(true);
-    const data = response.data;
+    const data = { ...response.data, status: response.data.status ?? false };
     for (const key of ["componentDialog", "subComponentDialog"] as const) {
       const component = data[key];
       if (component) {

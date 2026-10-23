@@ -1,7 +1,7 @@
 import type { CommandDetails, DialogComponentKey } from "../types/commandTypes";
 
 export const createDialogCommand = (componentKey: DialogComponentKey): CommandDetails => ({
-  status: false,
+  status: true,
   title: "",
   [componentKey]: {
     endStatus: true,

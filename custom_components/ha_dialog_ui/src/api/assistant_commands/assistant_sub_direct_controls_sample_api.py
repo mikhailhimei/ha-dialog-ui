@@ -211,7 +211,7 @@ async def _ws_get_assistant_sub_direct_control_sample(hass, connection, msg):
 @websocket_api.async_response
 @serialize_collection_mutation("assistant_sub_direct_control_samples")
 async def _ws_save_assistant_sub_direct_control_sample(hass, connection, msg):
-    assistant_sub_direct_control_sample = msg["data"]
+    assistant_sub_direct_control_sample = {"status": True, **msg["data"]}
 
     missing = _missing_required(
         assistant_sub_direct_control_sample,

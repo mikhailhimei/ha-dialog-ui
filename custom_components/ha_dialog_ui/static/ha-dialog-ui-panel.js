@@ -19,7 +19,7 @@ function mh() {
   if (Ud) return fe;
   Ud = 1;
   var r = Symbol.for("react.element"), l = Symbol.for("react.portal"), i = Symbol.for("react.fragment"), c = Symbol.for("react.strict_mode"), d = Symbol.for("react.profiler"), f = Symbol.for("react.provider"), m = Symbol.for("react.context"), h = Symbol.for("react.forward_ref"), g = Symbol.for("react.suspense"), x = Symbol.for("react.memo"), y = Symbol.for("react.lazy"), _ = Symbol.iterator;
-  function k(R) {
+  function S(R) {
     return R === null || typeof R != "object" ? null : (R = _ && R[_] || R["@@iterator"], typeof R == "function" ? R : null);
   }
   var C = { isMounted: function() {
@@ -99,7 +99,7 @@ function mh() {
       var je = ce + Ee(ye, xe);
       Se += he(ye, F, ie, je, ve);
     }
-    else if (je = k(R), typeof je == "function") for (R = je.call(R), xe = 0; !(ye = R.next()).done; ) ye = ye.value, je = ce + Ee(ye, xe++), Se += he(ye, F, ie, je, ve);
+    else if (je = S(R), typeof je == "function") for (R = je.call(R), xe = 0; !(ye = R.next()).done; ) ye = ye.value, je = ce + Ee(ye, xe++), Se += he(ye, F, ie, je, ve);
     else if (ye === "object") throw F = String(R), Error("Objects are not valid as a React child (found: " + (F === "[object Object]" ? "object with keys {" + Object.keys(R).join(", ") + "}" : F) + "). If you meant to render a collection of children, use an array instead.");
     return Se;
   }
@@ -228,11 +228,11 @@ function hh() {
   Wd = 1;
   var r = $i(), l = Symbol.for("react.element"), i = Symbol.for("react.fragment"), c = Object.prototype.hasOwnProperty, d = r.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, f = { key: !0, ref: !0, __self: !0, __source: !0 };
   function m(h, g, x) {
-    var y, _ = {}, k = null, C = null;
-    x !== void 0 && (k = "" + x), g.key !== void 0 && (k = "" + g.key), g.ref !== void 0 && (C = g.ref);
+    var y, _ = {}, S = null, C = null;
+    x !== void 0 && (S = "" + x), g.key !== void 0 && (S = "" + g.key), g.ref !== void 0 && (C = g.ref);
     for (y in g) c.call(g, y) && !f.hasOwnProperty(y) && (_[y] = g[y]);
     if (h && h.defaultProps) for (y in g = h.defaultProps, g) _[y] === void 0 && (_[y] = g[y]);
-    return { $$typeof: l, type: h, key: k, ref: C, props: _, _owner: d.current };
+    return { $$typeof: l, type: h, key: S, ref: C, props: _, _owner: d.current };
   }
   return Es.Fragment = i, Es.jsx = m, Es.jsxs = m, Es;
 }
@@ -296,7 +296,7 @@ function yh() {
         return m.now() - h;
       };
     }
-    var g = [], x = [], y = 1, _ = null, k = 3, C = !1, P = !1, N = !1, E = typeof setTimeout == "function" ? setTimeout : null, A = typeof clearTimeout == "function" ? clearTimeout : null, O = typeof setImmediate < "u" ? setImmediate : null;
+    var g = [], x = [], y = 1, _ = null, S = 3, C = !1, P = !1, N = !1, E = typeof setTimeout == "function" ? setTimeout : null, A = typeof clearTimeout == "function" ? clearTimeout : null, O = typeof setImmediate < "u" ? setImmediate : null;
     typeof navigator < "u" && navigator.scheduling !== void 0 && navigator.scheduling.isInputPending !== void 0 && navigator.scheduling.isInputPending.bind(navigator.scheduling);
     function I(D) {
       for (var X = i(x); X !== null; ) {
@@ -315,12 +315,12 @@ function yh() {
     }
     function W(D, X) {
       P = !1, N && (N = !1, A(B), B = -1), C = !0;
-      var Y = k;
+      var Y = S;
       try {
         for (I(X), _ = i(g); _ !== null && (!(_.expirationTime > X) || D && !de()); ) {
           var R = _.callback;
           if (typeof R == "function") {
-            _.callback = null, k = _.priorityLevel;
+            _.callback = null, S = _.priorityLevel;
             var F = R(_.expirationTime <= X);
             X = r.unstable_now(), typeof F == "function" ? _.callback = F : _ === i(g) && c(g), I(X);
           } else c(g);
@@ -333,7 +333,7 @@ function yh() {
         }
         return ie;
       } finally {
-        _ = null, k = Y, C = !1;
+        _ = null, S = Y, C = !1;
       }
     }
     var L = !1, J = null, B = -1, K = 5, pe = -1;
@@ -379,25 +379,25 @@ function yh() {
     }, r.unstable_forceFrameRate = function(D) {
       0 > D || 125 < D ? console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported") : K = 0 < D ? Math.floor(1e3 / D) : 5;
     }, r.unstable_getCurrentPriorityLevel = function() {
-      return k;
+      return S;
     }, r.unstable_getFirstCallbackNode = function() {
       return i(g);
     }, r.unstable_next = function(D) {
-      switch (k) {
+      switch (S) {
         case 1:
         case 2:
         case 3:
           var X = 3;
           break;
         default:
-          X = k;
+          X = S;
       }
-      var Y = k;
-      k = X;
+      var Y = S;
+      S = X;
       try {
         return D();
       } finally {
-        k = Y;
+        S = Y;
       }
     }, r.unstable_pauseExecution = function() {
     }, r.unstable_requestPaint = function() {
@@ -412,12 +412,12 @@ function yh() {
         default:
           D = 3;
       }
-      var Y = k;
-      k = D;
+      var Y = S;
+      S = D;
       try {
         return X();
       } finally {
-        k = Y;
+        S = Y;
       }
     }, r.unstable_scheduleCallback = function(D, X, Y) {
       var R = r.unstable_now();
@@ -439,14 +439,14 @@ function yh() {
       }
       return F = Y + F, D = { id: y++, callback: X, priorityLevel: D, startTime: Y, expirationTime: F, sortIndex: -1 }, Y > R ? (D.sortIndex = Y, l(x, D), i(g) === null && D === i(x) && (N ? (A(B), B = -1) : N = !0, H(z, Y - R))) : (D.sortIndex = F, l(g, D), P || C || (P = !0, Ce(W))), D;
     }, r.unstable_shouldYield = de, r.unstable_wrapCallback = function(D) {
-      var X = k;
+      var X = S;
       return function() {
-        var Y = k;
-        k = X;
+        var Y = S;
+        S = X;
         try {
           return D.apply(this, arguments);
         } finally {
-          k = Y;
+          S = Y;
         }
       };
     };
@@ -482,7 +482,7 @@ function _h() {
     for (d[e] = t, e = 0; e < t.length; e++) c.add(t[e]);
   }
   var h = !(typeof window > "u" || typeof window.document > "u" || typeof window.document.createElement > "u"), g = Object.prototype.hasOwnProperty, x = /^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/, y = {}, _ = {};
-  function k(e) {
+  function S(e) {
     return g.call(_, e) ? !0 : g.call(y, e) ? !1 : x.test(e) ? _[e] = !0 : (y[e] = !0, !1);
   }
   function C(e, t, n, s) {
@@ -559,7 +559,7 @@ function _h() {
   });
   function I(e, t, n, s) {
     var o = E.hasOwnProperty(t) ? E[t] : null;
-    (o !== null ? o.type !== 0 : s || !(2 < t.length) || t[0] !== "o" && t[0] !== "O" || t[1] !== "n" && t[1] !== "N") && (P(t, n, o, s) && (n = null), s || o === null ? k(t) && (n === null ? e.removeAttribute(t) : e.setAttribute(t, "" + n)) : o.mustUseProperty ? e[o.propertyName] = n === null ? o.type === 3 ? !1 : "" : n : (t = o.attributeName, s = o.attributeNamespace, n === null ? e.removeAttribute(t) : (o = o.type, n = o === 3 || o === 4 && n === !0 ? "" : "" + n, s ? e.setAttributeNS(s, t, n) : e.setAttribute(t, n))));
+    (o !== null ? o.type !== 0 : s || !(2 < t.length) || t[0] !== "o" && t[0] !== "O" || t[1] !== "n" && t[1] !== "N") && (P(t, n, o, s) && (n = null), s || o === null ? S(t) && (n === null ? e.removeAttribute(t) : e.setAttribute(t, "" + n)) : o.mustUseProperty ? e[o.propertyName] = n === null ? o.type === 3 ? !1 : "" : n : (t = o.attributeName, s = o.attributeNamespace, n === null ? e.removeAttribute(t) : (o = o.type, n = o === 3 || o === 4 && n === !0 ? "" : "" + n, s ? e.setAttributeNS(s, t, n) : e.setAttribute(t, n))));
   }
   var z = r.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, W = Symbol.for("react.element"), L = Symbol.for("react.portal"), J = Symbol.for("react.fragment"), B = Symbol.for("react.strict_mode"), K = Symbol.for("react.profiler"), pe = Symbol.for("react.provider"), de = Symbol.for("react.context"), Te = Symbol.for("react.forward_ref"), Ee = Symbol.for("react.suspense"), he = Symbol.for("react.suspense_list"), ge = Symbol.for("react.memo"), Ce = Symbol.for("react.lazy"), H = Symbol.for("react.offscreen"), D = Symbol.iterator;
   function X(e) {
@@ -5993,7 +5993,7 @@ function Ef() {
     Si.delete(r);
   }), () => bi);
 }
-function S(r) {
+function k(r) {
   if (typeof r != "string") return r;
   const l = Qh[r];
   return (l == null ? void 0 : l[bi]) ?? r;
@@ -6043,8 +6043,8 @@ class tv extends v.Component {
   }
   render() {
     return this.state.failed ? /* @__PURE__ */ a.jsxs("div", { role: "alert", className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: [
-      /* @__PURE__ */ a.jsx("p", { children: S("Не удалось открыть панель. Попробуйте ещё раз.") }),
-      /* @__PURE__ */ a.jsx(ae, { onClick: () => this.setState({ failed: !1 }), children: S("Открыть повторно") })
+      /* @__PURE__ */ a.jsx("p", { children: k("Не удалось открыть панель. Попробуйте ещё раз.") }),
+      /* @__PURE__ */ a.jsx(ae, { onClick: () => this.setState({ failed: !1 }), children: k("Открыть повторно") })
     ] }) : this.props.children;
   }
 }
@@ -6171,7 +6171,7 @@ function sv(r, l, i, c = {}) {
     let E = y(), A = E == null ? null : E - x;
     x = E, g && g({ action: h, location: N.location, delta: A });
   }
-  function k(E, A) {
+  function S(E, A) {
     h = "PUSH";
     let O = Xd(E) ? E : ki(N.location, E, A);
     i && i(O, E), x = y() + 1;
@@ -6221,7 +6221,7 @@ function sv(r, l, i, c = {}) {
         hash: A.hash
       };
     },
-    push: k,
+    push: S,
     replace: C,
     go(E) {
       return m.go(E);
@@ -6271,7 +6271,7 @@ function Tf(r, l = [], i = [], c = "", d = !1) {
         `Absolute route path "${y.relativePath}" nested under path "${c}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       ), y.relativePath = y.relativePath.slice(c.length);
     }
-    let _ = Dt([c, y.relativePath]), k = i.concat(y);
+    let _ = Dt([c, y.relativePath]), S = i.concat(y);
     m.children && m.children.length > 0 && ($e(
       // Our types know better, but runtime JS may not!
       // @ts-expect-error
@@ -6280,13 +6280,13 @@ function Tf(r, l = [], i = [], c = "", d = !1) {
     ), Tf(
       m.children,
       l,
-      k,
+      S,
       _,
       g
     )), !(m.path == null && !m.index) && l.push({
       path: _,
       score: hv(_, m.index),
-      routesMeta: k
+      routesMeta: S
     });
   };
   return r.forEach((m, h) => {
@@ -6348,7 +6348,7 @@ function yv(r, l, i = !1) {
     let g = c[h], x = h === c.length - 1, y = f === "/" ? l : l.slice(f.length) || "/", _ = nl(
       { path: g.relativePath, caseSensitive: g.caseSensitive, end: x },
       y
-    ), k = g.route;
+    ), S = g.route;
     if (!_ && x && i && !c[c.length - 1].route.index && (_ = nl(
       {
         path: g.relativePath,
@@ -6365,7 +6365,7 @@ function yv(r, l, i = !1) {
       pathnameBase: kv(
         Dt([f, _.pathnameBase])
       ),
-      route: k
+      route: S
     }), _.pathnameBase !== "/" && (f = Dt([f, _.pathnameBase]));
   }
   return m;
@@ -6381,12 +6381,12 @@ function nl(r, l) {
   let f = d[0], m = f.replace(/(.)\/+$/, "$1"), h = d.slice(1);
   return {
     params: c.reduce(
-      (x, { paramName: y, isOptional: _ }, k) => {
+      (x, { paramName: y, isOptional: _ }, S) => {
         if (y === "*") {
-          let P = h[k] || "";
+          let P = h[S] || "";
           m = f.slice(0, f.length - P.length).replace(/(.)\/+$/, "$1");
         }
-        const C = h[k];
+        const C = h[S];
         return _ && !C ? x[y] = void 0 : x[y] = (C || "").replace(/%2F/g, "/"), x;
       },
       {}
@@ -6483,10 +6483,10 @@ function ul(r, l, i, c = !1) {
   else {
     let _ = l.length - 1;
     if (!c && m.startsWith("..")) {
-      let k = m.split("/");
-      for (; k[0] === ".."; )
-        k.shift(), _ -= 1;
-      d.pathname = k.join("/");
+      let S = m.split("/");
+      for (; S[0] === ".."; )
+        S.shift(), _ -= 1;
+      d.pathname = S.join("/");
     }
     h = _ >= 0 ? l[_] : "/";
   }
@@ -6716,10 +6716,10 @@ Please change the parent <Route path="${A}"> to <Route path="${A === "/" ? "*" :
     ), _ = A;
   } else
     _ = y;
-  let k = _.pathname || "/", C = k;
+  let S = _.pathname || "/", C = S;
   if (g !== "/") {
     let A = g.replace(/^\//, "").split("/");
-    C = "/" + k.replace(/^\//, "").split("/").slice(A.length).join("/");
+    C = "/" + S.replace(/^\//, "").split("/").slice(A.length).join("/");
   }
   let P = i && i.state.matches.length ? (
     // If we're in a data router, use the matches we've already identified but ensure
@@ -6909,7 +6909,7 @@ function Wv(r, l = [], i) {
     for (let y = 0; y < d.length; y++) {
       let _ = d[y];
       if ((_.route.HydrateFallback || _.route.hydrateFallbackElement) && (h = y), _.route.id) {
-        let { loaderData: k, errors: C } = c, P = _.route.loader && !k.hasOwnProperty(_.route.id) && (!C || C[_.route.id] === void 0);
+        let { loaderData: S, errors: C } = c, P = _.route.loader && !S.hasOwnProperty(_.route.id) && (!C || C[_.route.id] === void 0);
         if (_.route.lazy || P) {
           i.isStatic && (m = !0), h >= 0 ? d = d.slice(0, h + 1) : d = [d[0]];
           break;
@@ -6918,23 +6918,23 @@ function Wv(r, l = [], i) {
     }
   }
   let g = i == null ? void 0 : i.onError, x = c && g ? (y, _) => {
-    var k, C;
+    var S, C;
     g(y, {
       location: c.location,
-      params: ((C = (k = c.matches) == null ? void 0 : k[0]) == null ? void 0 : C.params) ?? {},
+      params: ((C = (S = c.matches) == null ? void 0 : S[0]) == null ? void 0 : C.params) ?? {},
       pattern: Tv(c.matches),
       errorInfo: _
     });
   } : void 0;
   return d.reduceRight(
-    (y, _, k) => {
+    (y, _, S) => {
       let C, P = !1, N = null, E = null;
-      c && (C = f && _.route.id ? f[_.route.id] : void 0, N = _.route.errorElement || Hv, m && (h < 0 && k === 0 ? (Hf(
+      c && (C = f && _.route.id ? f[_.route.id] : void 0, N = _.route.errorElement || Hv, m && (h < 0 && S === 0 ? (Hf(
         "route-fallback",
         !1,
         "No `HydrateFallback` element provided to render during initial hydration"
-      ), P = !0, E = null) : h === k && (P = !0, E = _.route.hydrateFallbackElement || null)));
-      let A = l.concat(d.slice(0, k + 1)), O = () => {
+      ), P = !0, E = null) : h === S && (P = !0, E = _.route.hydrateFallbackElement || null)));
+      let A = l.concat(d.slice(0, S + 1)), O = () => {
         let I;
         return C ? I = N : P ? I = E : _.route.Component ? I = /* @__PURE__ */ v.createElement(_.route.Component, null) : _.route.element ? I = _.route.element : I = y, /* @__PURE__ */ v.createElement(
           Bv,
@@ -6949,7 +6949,7 @@ function Wv(r, l = [], i) {
           }
         );
       };
-      return c && (_.route.ErrorBoundary || _.route.errorElement || k === 0) ? /* @__PURE__ */ v.createElement(
+      return c && (_.route.ErrorBoundary || _.route.errorElement || S === 0) ? /* @__PURE__ */ v.createElement(
         Ff,
         {
           location: c.location,
@@ -7102,7 +7102,7 @@ function Xv({
     pathname: x = "/",
     search: y = "",
     hash: _ = "",
-    state: k = null,
+    state: S = null,
     key: C = "default",
     mask: P
   } = i, N = v.useMemo(() => {
@@ -7112,13 +7112,13 @@ function Xv({
         pathname: E,
         search: y,
         hash: _,
-        state: k,
+        state: S,
         key: C,
         mask: P
       },
       navigationType: c
     };
-  }, [h, x, y, _, k, C, c, P]);
+  }, [h, x, y, _, S, C, c, P]);
   return Tt(
     N != null,
     `<Router basename="${h}"> is not able to match the URL "${x}${y}${_}" because it does not start with the basename, so the <Router> won't render anything.`
@@ -7236,8 +7236,8 @@ function ay(r, l) {
     if (c = g ? sn(g, l) : null, i = r.getAttribute("formmethod") || h.getAttribute("method") || el, d = vi(r.getAttribute("formenctype")) || vi(h.getAttribute("enctype")) || tl, f = new FormData(h, r), !oy()) {
       let { name: x, type: y, value: _ } = r;
       if (y === "image") {
-        let k = x ? `${x}.` : "";
-        f.append(`${k}x`, "0"), f.append(`${k}y`, "0");
+        let S = x ? `${x}.` : "";
+        f.append(`${S}x`, "0"), f.append(`${S}y`, "0");
       } else x && f.append(x, _);
     }
   } else {
@@ -7320,7 +7320,7 @@ function rf(r, l, i, c, d, f) {
     if (m(g, x) || h(g, x))
       return !0;
     if (g.route.shouldRevalidate) {
-      let k = g.route.shouldRevalidate({
+      let S = g.route.shouldRevalidate({
         currentUrl: new URL(
           d.pathname + d.search + d.hash,
           window.origin
@@ -7330,8 +7330,8 @@ function rf(r, l, i, c, d, f) {
         nextParams: g.params,
         defaultShouldRevalidate: !0
       });
-      if (typeof k == "boolean")
-        return k;
+      if (typeof S == "boolean")
+        return S;
     }
     return !0;
   }) : [];
@@ -7386,7 +7386,7 @@ function Ui() {
   ), r;
 }
 function vy(r, l) {
-  let i = v.useContext(Hi), [c, d] = v.useState(!1), [f, m] = v.useState(!1), { onFocus: h, onBlur: g, onMouseEnter: x, onMouseLeave: y, onTouchStart: _ } = l, k = v.useRef(null);
+  let i = v.useContext(Hi), [c, d] = v.useState(!1), [f, m] = v.useState(!1), { onFocus: h, onBlur: g, onMouseEnter: x, onMouseLeave: y, onTouchStart: _ } = l, S = v.useRef(null);
   v.useEffect(() => {
     if (r === "render" && m(!0), r === "viewport") {
       let N = (A) => {
@@ -7394,7 +7394,7 @@ function vy(r, l) {
           m(O.isIntersecting);
         });
       }, E = new IntersectionObserver(N, { threshold: 0.5 });
-      return k.current && E.observe(k.current), () => {
+      return S.current && E.observe(S.current), () => {
         E.disconnect();
       };
     }
@@ -7413,9 +7413,9 @@ function vy(r, l) {
   }, P = () => {
     d(!1), m(!1);
   };
-  return i ? r !== "intent" ? [f, k, {}] : [
+  return i ? r !== "intent" ? [f, S, {}] : [
     f,
-    k,
+    S,
     {
       onFocus: Ns(h, C),
       onBlur: Ns(g, P),
@@ -7423,7 +7423,7 @@ function vy(r, l) {
       onMouseLeave: Ns(y, P),
       onTouchStart: Ns(_, C)
     }
-  ] : [!1, k, {}];
+  ] : [!1, S, {}];
 }
 function Ns(r, l) {
   return (i) => {
@@ -7501,7 +7501,7 @@ function xy({
       "assets"
     ),
     [r, l, x, f, c]
-  ), k = v.useMemo(() => {
+  ), S = v.useMemo(() => {
     if (r === c.pathname + c.search + c.hash)
       return [];
     let N = /* @__PURE__ */ new Set(), E = !1;
@@ -7535,7 +7535,7 @@ function xy({
     () => dy(_, f),
     [_, f]
   ), P = gy(_);
-  return /* @__PURE__ */ v.createElement(v.Fragment, null, k.map((N) => /* @__PURE__ */ v.createElement("link", { key: N, rel: "prefetch", as: "fetch", href: N, ...i })), C.map((N) => /* @__PURE__ */ v.createElement("link", { key: N, rel: "modulepreload", href: N, ...i })), P.map(({ key: N, link: E }) => (
+  return /* @__PURE__ */ v.createElement(v.Fragment, null, S.map((N) => /* @__PURE__ */ v.createElement("link", { key: N, rel: "prefetch", as: "fetch", href: N, ...i })), C.map((N) => /* @__PURE__ */ v.createElement("link", { key: N, rel: "modulepreload", href: N, ...i })), P.map(({ key: N, link: E }) => (
     // these don't spread `linkProps` because they are full link descriptors
     // already with their own props
     /* @__PURE__ */ v.createElement(
@@ -7604,7 +7604,7 @@ var Bf = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, Wf = v.forwardRef(
     target: x,
     to: y,
     preventScrollReset: _,
-    viewTransition: k,
+    viewTransition: S,
     defaultShouldRevalidate: C,
     ...P
   }, N) {
@@ -7630,7 +7630,7 @@ var Bf = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, Wf = v.forwardRef(
       target: x,
       preventScrollReset: _,
       relative: d,
-      viewTransition: k,
+      viewTransition: S,
       defaultShouldRevalidate: C,
       useTransitions: O
     });
@@ -7668,9 +7668,9 @@ var Et = v.forwardRef(
     children: g,
     ...x
   }, y) {
-    let _ = Is(m, { relative: x.relative }), k = pt(), C = v.useContext(cl), { navigator: P, basename: N } = v.useContext(gt), E = C != null && // Conditional usage is OK here because the usage of a data router is static
+    let _ = Is(m, { relative: x.relative }), S = pt(), C = v.useContext(cl), { navigator: P, basename: N } = v.useContext(gt), E = C != null && // Conditional usage is OK here because the usage of a data router is static
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    Ay(_) && h === !0, A = P.encodeLocation ? P.encodeLocation(_).pathname : _.pathname, O = k.pathname, I = C && C.navigation && C.navigation.location ? C.navigation.location.pathname : null;
+    Ay(_) && h === !0, A = P.encodeLocation ? P.encodeLocation(_).pathname : _.pathname, O = S.pathname, I = C && C.navigation && C.navigation.location ? C.navigation.location.pathname : null;
     i || (O = O.toLowerCase(), I = I ? I.toLowerCase() : null, A = A.toLowerCase()), I && N && (I = sn(I, N) || I);
     const z = A !== "/" && A.endsWith("/") ? A.length - 1 : A.length;
     let W = O === A || !d && O.startsWith(A) && O.charAt(z) === "/", L = I != null && (I === A || !d && I.startsWith(A) && I.charAt(A.length) === "/"), J = {
@@ -7715,7 +7715,7 @@ var Cy = v.forwardRef(
     relative: x,
     preventScrollReset: y,
     viewTransition: _,
-    defaultShouldRevalidate: k,
+    defaultShouldRevalidate: S,
     ...C
   }, P) => {
     let { useTransitions: N } = v.useContext(gt), E = Ry(), A = Py(h, { relative: x }), O = m.toLowerCase() === "get" ? "get" : "post", I = typeof h == "string" && Bf.test(h), z = (W) => {
@@ -7730,7 +7730,7 @@ var Cy = v.forwardRef(
         relative: x,
         preventScrollReset: y,
         viewTransition: _,
-        defaultShouldRevalidate: k
+        defaultShouldRevalidate: S
       });
       N && i !== !1 ? v.startTransition(() => B()) : B();
     };
@@ -7766,12 +7766,12 @@ function Ey(r, {
   defaultShouldRevalidate: g,
   useTransitions: x
 } = {}) {
-  let y = Ii(), _ = pt(), k = Is(r, { relative: m });
+  let y = Ii(), _ = pt(), S = Is(r, { relative: m });
   return v.useCallback(
     (C) => {
       if (sy(C, l)) {
         C.preventDefault();
-        let P = i !== void 0 ? i : Ls(_) === Ls(k), N = () => y(r, {
+        let P = i !== void 0 ? i : Ls(_) === Ls(S), N = () => y(r, {
           replace: P,
           mask: c,
           state: d,
@@ -7786,7 +7786,7 @@ function Ey(r, {
     [
       _,
       y,
-      k,
+      S,
       i,
       c,
       d,
@@ -7813,8 +7813,8 @@ function Ry() {
         l
       );
       if (m.navigate === !1) {
-        let k = m.fetcherKey || Ty();
-        await c(k, i, m.action || h, {
+        let S = m.fetcherKey || Ty();
+        await c(S, i, m.action || h, {
           defaultShouldRevalidate: m.defaultShouldRevalidate,
           preventScrollReset: m.preventScrollReset,
           formData: y,
@@ -7879,12 +7879,12 @@ const ji = "ha-dialog-ui-api-enabled-change", Qf = v.createContext(!1), Bi = () 
   label: My
 }, Ds = ({ label: r = "Загрузка...", fullscreen: l = !1 }) => /* @__PURE__ */ a.jsxs("div", { className: `${Yo.loader} ${l ? Yo.fullscreen : ""}`, role: "status", "aria-live": "polite", children: [
   /* @__PURE__ */ a.jsx("span", { className: Yo.spinner, "aria-hidden": "true" }),
-  r && /* @__PURE__ */ a.jsx("span", { className: Yo.label, children: S(r) })
+  r && /* @__PURE__ */ a.jsx("span", { className: Yo.label, children: k(r) })
 ] }), Iy = "_error_fi1f1_1", Dy = {
   error: Iy
 }, qe = ({ error: r, retry: l, busy: i = !1 }) => r ? /* @__PURE__ */ a.jsxs("div", { role: "alert", className: Dy.error, children: [
-  /* @__PURE__ */ a.jsx("p", { children: S(r) }),
-  l && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", disabled: i, onClick: l, children: S("Повторить загрузку") })
+  /* @__PURE__ */ a.jsx("p", { children: k(r) }),
+  l && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", disabled: i, onClick: l, children: k("Повторить загрузку") })
 ] }) : null, sf = {
   unauthorized: "Недостаточно прав. Войдите как администратор Home Assistant.",
   not_allowed: "Недостаточно прав. Войдите как администратор Home Assistant.",
@@ -7903,13 +7903,13 @@ function Jn(r, l = "Не удалось выполнить операцию. П�
   return r && typeof r == "object" && "code" in r && typeof r.code == "string" ? sf[r.code] ?? l : r instanceof Error && /connection|network|fetch|disconnected/i.test(r.message) ? sf.connection_lost : l;
 }
 function qt() {
-  const [r, l] = v.useState(null), [i, c] = v.useState(!1), [d, f] = v.useState(!1), m = v.useRef(0), h = v.useRef(null), g = v.useCallback(async (_, k = {}) => {
-    if (k.exclusive && m.current > 0) return !1;
+  const [r, l] = v.useState(null), [i, c] = v.useState(!1), [d, f] = v.useState(!1), m = v.useRef(0), h = v.useRef(null), g = v.useCallback(async (_, S = {}) => {
+    if (S.exclusive && m.current > 0) return !1;
     m.current += 1, c(!0), l(null), f(!1);
     try {
       return await _(), h.current = null, !0;
     } catch (C) {
-      return l(Jn(C, k.fallback)), h.current = k.retryable ? _ : null, f(!!k.retryable), !1;
+      return l(Jn(C, S.fallback)), h.current = S.retryable ? _ : null, f(!!S.retryable), !1;
     } finally {
       m.current -= 1, c(m.current > 0);
     }
@@ -7997,7 +7997,7 @@ const Fy = (r) => {
       size: x = 24,
       strokeWidth: y = 2,
       absoluteStrokeWidth: _ = !1,
-      color: k = "currentColor",
+      color: S = "currentColor",
       className: C = ""
     } = Uy() ?? {}, P = c ?? _ ? Number(i ?? y) * 24 / Number(l ?? x) : i ?? y;
     return v.createElement(
@@ -8007,7 +8007,7 @@ const Fy = (r) => {
         ...yi,
         width: l ?? x ?? yi.width,
         height: l ?? x ?? yi.height,
-        stroke: r ?? k,
+        stroke: r ?? S,
         strokeWidth: P,
         className: Yf("lucide", C, d),
         ...!f && !Fy(h) && { "aria-hidden": "true" },
@@ -8371,7 +8371,7 @@ const Rg = "_overlay_tb5vv_1", Pg = "_sheet_tb5vv_11", Ag = "_handle_tb5vv_21", 
   children: d
 }) => {
   rp(r, c);
-  const [f, m] = v.useState(r), [h, g] = v.useState(r), x = v.useRef(0), y = v.useRef(0), [_, k] = v.useState(0);
+  const [f, m] = v.useState(r), [h, g] = v.useState(r), x = v.useRef(0), y = v.useRef(0), [_, S] = v.useState(0);
   v.useEffect(() => {
     const E = document.body.style.overflow;
     if (r)
@@ -8394,9 +8394,9 @@ const Rg = "_overlay_tb5vv_1", Pg = "_sheet_tb5vv_11", Ag = "_handle_tb5vv_21", 
   }, P = (E) => {
     y.current = E.touches[0].clientY;
     const A = y.current - x.current;
-    A > 0 && k(A);
+    A > 0 && S(A);
   }, N = () => {
-    _ > 120 && c(), k(0);
+    _ > 120 && c(), S(0);
   };
   return v.useEffect(() => {
     const E = (A) => {
@@ -8474,31 +8474,31 @@ function Hg({ open: r, onClose: l }) {
   return v.useEffect(() => {
     if (!r) return;
     const x = requestAnimationFrame(() => {
-      var y, _, k;
-      return (k = ((y = h.current) == null ? void 0 : y.querySelector('[aria-current="page"]')) ?? ((_ = h.current) == null ? void 0 : _.querySelector("a"))) == null ? void 0 : k.focus();
+      var y, _, S;
+      return (S = ((y = h.current) == null ? void 0 : y.querySelector('[aria-current="page"]')) ?? ((_ = h.current) == null ? void 0 : _.querySelector("a"))) == null ? void 0 : S.focus();
     });
     return () => cancelAnimationFrame(x);
   }, [r]), /* @__PURE__ */ a.jsx(Vi, { open: r, onClose: l, labelledBy: m, className: nn.overlay, children: /* @__PURE__ */ a.jsxs("div", { ref: h, onKeyDown: (x) => {
     if (x.key !== "Tab") return;
-    const y = [...h.current.querySelectorAll("button, a")], _ = y[0], k = y[y.length - 1];
-    x.shiftKey && x.target === _ ? (x.preventDefault(), k.focus()) : !x.shiftKey && x.target === k && (x.preventDefault(), _.focus());
+    const y = [...h.current.querySelectorAll("button, a")], _ = y[0], S = y[y.length - 1];
+    x.shiftKey && x.target === _ ? (x.preventDefault(), S.focus()) : !x.shiftKey && x.target === S && (x.preventDefault(), _.focus());
   }, children: [
     /* @__PURE__ */ a.jsxs("div", { className: nn.heading, children: [
-      /* @__PURE__ */ a.jsx("h2", { id: m, children: S("Разделы") }),
-      /* @__PURE__ */ a.jsx("button", { type: "button", className: nn.close, "aria-label": S("Закрыть меню разделов"), onClick: l, children: /* @__PURE__ */ a.jsx(Eg, { size: 20 }) })
+      /* @__PURE__ */ a.jsx("h2", { id: m, children: k("Разделы") }),
+      /* @__PURE__ */ a.jsx("button", { type: "button", className: nn.close, "aria-label": k("Закрыть меню разделов"), onClick: l, children: /* @__PURE__ */ a.jsx(Eg, { size: 20 }) })
     ] }),
-    /* @__PURE__ */ a.jsx("nav", { className: nn.nav, "aria-label": S("Навигация интеграции"), children: g.map(({ to: x, label: y, icon: _ }) => /* @__PURE__ */ a.jsxs(
+    /* @__PURE__ */ a.jsx("nav", { className: nn.nav, "aria-label": k("Навигация интеграции"), children: g.map(({ to: x, label: y, icon: _ }) => /* @__PURE__ */ a.jsxs(
       Et,
       {
         to: x,
         end: !0,
-        className: ({ isActive: k }) => `${nn.item} ${k ? nn.active : ""}`,
-        onClick: (k) => {
-          f === x && k.preventDefault(), l();
+        className: ({ isActive: S }) => `${nn.item} ${S ? nn.active : ""}`,
+        onClick: (S) => {
+          f === x && S.preventDefault(), l();
         },
         children: [
           /* @__PURE__ */ a.jsx("span", { className: nn.icon, children: /* @__PURE__ */ a.jsx(_, { size: 20, strokeWidth: 1.8 }) }),
-          /* @__PURE__ */ a.jsx("span", { className: nn.label, children: S(y) }),
+          /* @__PURE__ */ a.jsx("span", { className: nn.label, children: k(y) }),
           f === x ? /* @__PURE__ */ a.jsx(Gy, { size: 18, "aria-hidden": "true" }) : /* @__PURE__ */ a.jsx(Ky, { size: 16, className: nn.arrow, "aria-hidden": "true" })
         ]
       },
@@ -8516,8 +8516,8 @@ function Mr({ value: r, onChange: l }) {
       "input",
       {
         type: "search",
-        "aria-label": S("Поиск по названию"),
-        placeholder: S("Поиск по названию"),
+        "aria-label": k("Поиск по названию"),
+        placeholder: k("Поиск по названию"),
         value: r,
         onChange: (i) => l(i.target.value)
       }
@@ -8545,19 +8545,19 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
           "button",
           {
             type: "button",
-            "aria-label": S("Открыть меню Home Assistant"),
+            "aria-label": k("Открыть меню Home Assistant"),
             className: qn.menuButton,
             onClick: (g) => g.currentTarget.dispatchEvent(new CustomEvent("hass-toggle-menu", { bubbles: !0, composed: !0 })),
             children: /* @__PURE__ */ a.jsx(mg, { size: 20 })
           }
         ),
-        /* @__PURE__ */ a.jsx("h1", { className: qn.title, children: S(r) }),
+        /* @__PURE__ */ a.jsx("h1", { className: qn.title, children: k(r) }),
         /* @__PURE__ */ a.jsx(
           "button",
           {
             type: "button",
             ref: m,
-            "aria-label": S("Открыть меню разделов"),
+            "aria-label": k("Открыть меню разделов"),
             "aria-haspopup": "dialog",
             "aria-expanded": d,
             className: `${qn.menuButton} ${d ? qn.active : ""}`,
@@ -8602,7 +8602,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
           className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab,
           children: [
             /* @__PURE__ */ a.jsx(lg, { size: 16, strokeWidth: 2 }),
-            /* @__PURE__ */ a.jsx("span", { children: S(c ? "Действия удалённых команд" : "Запуск скриптов") })
+            /* @__PURE__ */ a.jsx("span", { children: k(c ? "Действия удалённых команд" : "Запуск скриптов") })
           ]
         }
       ),
@@ -8627,13 +8627,13 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
                 onClick: () => m((y) => !y),
                 onKeyDown: (y) => {
                   y.key === "ArrowDown" && (y.preventDefault(), m(!0), requestAnimationFrame(() => {
-                    var _, k;
-                    return (k = (_ = h.current) == null ? void 0 : _.querySelector("a")) == null ? void 0 : k.focus();
+                    var _, S;
+                    return (S = (_ = h.current) == null ? void 0 : _.querySelector("a")) == null ? void 0 : S.focus();
                   }));
                 },
                 children: [
                   /* @__PURE__ */ a.jsx(rg, { size: 16, strokeWidth: 2 }),
-                  /* @__PURE__ */ a.jsx("span", { children: S("Команды") }),
+                  /* @__PURE__ */ a.jsx("span", { children: k("Команды") }),
                   /* @__PURE__ */ a.jsx(Jf, { size: 14, className: me.chevron })
                 ]
               }
@@ -8643,7 +8643,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
               {
                 id: x,
                 className: me.menu,
-                "aria-label": S("Разделы команд"),
+                "aria-label": k("Разделы команд"),
                 onClick: () => m(!1),
                 children: [
                   /* @__PURE__ */ a.jsx(
@@ -8651,7 +8651,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
                     {
                       to: "/commands/main",
                       className: ({ isActive: y }) => y ? `${me.menuItem} ${me.active}` : me.menuItem,
-                      children: S("Основные команды")
+                      children: k("Основные команды")
                     }
                   ),
                   /* @__PURE__ */ a.jsx(
@@ -8659,7 +8659,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
                     {
                       to: "/commands/sub",
                       className: ({ isActive: y }) => y ? `${me.menuItem} ${me.active}` : me.menuItem,
-                      children: S("Второстепенные команды")
+                      children: k("Второстепенные команды")
                     }
                   ),
                   /* @__PURE__ */ a.jsx(
@@ -8667,7 +8667,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
                     {
                       to: "/commands/direct/main",
                       className: ({ isActive: y }) => y ? `${me.menuItem} ${me.active}` : me.menuItem,
-                      children: S("Прямые команды")
+                      children: k("Прямые команды")
                     }
                   ),
                   /* @__PURE__ */ a.jsx(
@@ -8675,7 +8675,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
                     {
                       to: "/commands/settings",
                       className: ({ isActive: y }) => y ? `${me.menuItem} ${me.active}` : me.menuItem,
-                      children: S("Ответы по умолчанию")
+                      children: k("Ответы по умолчанию")
                     }
                   )
                 ]
@@ -8691,7 +8691,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
           className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab,
           children: [
             /* @__PURE__ */ a.jsx(kg, { size: 16, strokeWidth: 2 }),
-            /* @__PURE__ */ a.jsx("span", { children: S("Таймеры") })
+            /* @__PURE__ */ a.jsx("span", { children: k("Таймеры") })
           ]
         }
       ),
@@ -8702,15 +8702,15 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
           className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab,
           children: [
             /* @__PURE__ */ a.jsx(Gf, { size: 16, strokeWidth: 2 }),
-            /* @__PURE__ */ a.jsx("span", { children: S("Будильники") })
+            /* @__PURE__ */ a.jsx("span", { children: k("Будильники") })
           ]
         }
       ),
       i && /* @__PURE__ */ a.jsxs(Et, { to: "/downloads", className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab, children: [
         /* @__PURE__ */ a.jsx(Xf, { size: 16 }),
-        /* @__PURE__ */ a.jsx("span", { children: S("Импорт и экспорт") })
+        /* @__PURE__ */ a.jsx("span", { children: k("Импорт и экспорт") })
       ] }),
-      l && i && /* @__PURE__ */ a.jsx(Et, { to: "/logs", className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab, children: S("Логи") }),
+      l && i && /* @__PURE__ */ a.jsx(Et, { to: "/logs", className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab, children: k("Логи") }),
       /* @__PURE__ */ a.jsxs(
         Et,
         {
@@ -8718,7 +8718,7 @@ const Wg = "_header_1pxju_1", Vg = "_bar_1pxju_9", qg = "_tools_1pxju_18", Qg = 
           className: ({ isActive: y }) => y ? `${me.tab} ${me.active}` : me.tab,
           children: [
             /* @__PURE__ */ a.jsx(Zf, { size: 16, strokeWidth: 2 }),
-            /* @__PURE__ */ a.jsx("span", { children: S("Настройки") })
+            /* @__PURE__ */ a.jsx("span", { children: k("Настройки") })
           ]
         }
       )
@@ -8767,13 +8767,13 @@ function T_() {
       d = !1, clearTimeout(f);
     };
   }, [r, l.run]), /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
-    /* @__PURE__ */ a.jsx(zt, { title: S("Логи") }),
+    /* @__PURE__ */ a.jsx(zt, { title: k("Логи") }),
     /* @__PURE__ */ a.jsxs("main", { className: G.page, children: [
       /* @__PURE__ */ a.jsx(Ot, {}),
-      /* @__PURE__ */ a.jsx("h1", { className: Nn.heading, children: S("Логи") }),
-      /* @__PURE__ */ a.jsx("p", { className: Nn.note, children: S("Последние 200 записей API с телами запросов и ответов. Обновление каждые 3 секунды. После перезапуска журнал очищается. Секретные поля и настроенные токены скрыты.") }),
+      /* @__PURE__ */ a.jsx("h1", { className: Nn.heading, children: k("Логи") }),
+      /* @__PURE__ */ a.jsx("p", { className: Nn.note, children: k("Последние 200 записей API с телами запросов и ответов. Обновление каждые 3 секунды. После перезапуска журнал очищается. Секретные поля и настроенные токены скрыты.") }),
       /* @__PURE__ */ a.jsx(qe, { ...l }),
-      !i.length && !l.busy && !l.error && /* @__PURE__ */ a.jsx("p", { children: S("Запросов к API пока нет.") }),
+      !i.length && !l.busy && !l.error && /* @__PURE__ */ a.jsx("p", { children: k("Запросов к API пока нет.") }),
       /* @__PURE__ */ a.jsx("div", { className: Nn.entries, children: i.map((d) => /* @__PURE__ */ a.jsxs("article", { className: Nn.entry, children: [
         /* @__PURE__ */ a.jsxs("div", { className: Nn.line, children: [
           /* @__PURE__ */ a.jsx("time", { dateTime: d.timestamp, children: new Date(d.timestamp).toLocaleString() }),
@@ -8784,7 +8784,7 @@ function T_() {
           ] })
         ] }),
         /* @__PURE__ */ a.jsxs("div", { className: Nn.line, children: [
-          /* @__PURE__ */ a.jsx("span", { children: S({ connected: "SSE подключён", event: "Событие SSE", completed: "Запрос завершён" }[d.phase] ?? d.phase) }),
+          /* @__PURE__ */ a.jsx("span", { children: k({ connected: "SSE подключён", event: "Событие SSE", completed: "Запрос завершён" }[d.phase] ?? d.phase) }),
           d.status !== null && /* @__PURE__ */ a.jsxs("span", { className: d.status >= 400 ? Nn.error : void 0, children: [
             "HTTP ",
             d.status
@@ -8792,13 +8792,13 @@ function T_() {
           d.duration_ms !== null && /* @__PURE__ */ a.jsxs("span", { children: [
             d.duration_ms,
             " ",
-            S("мс")
+            k("мс")
           ] }),
           d.event && /* @__PURE__ */ a.jsx("code", { children: d.event })
         ] }),
         [["Тело запроса", d.request_body], ["Тело ответа", d.response_body]].map(
           ([f, m]) => m != null && /* @__PURE__ */ a.jsxs("details", { className: Nn.body, children: [
-            /* @__PURE__ */ a.jsx("summary", { children: S(f) }),
+            /* @__PURE__ */ a.jsx("summary", { children: k(f) }),
             /* @__PURE__ */ a.jsx("pre", { children: JSON.stringify(m, null, 2) })
           ] }, f)
         )
@@ -8870,7 +8870,7 @@ function L_({
   onChange: x
 } = {}) {
   var y;
-  const [_, k] = v.useState(null), C = v.useRef(x), P = v.useRef(h), [N, E] = v.useState({
+  const [_, S] = v.useState(null), C = v.useRef(x), P = v.useRef(h), [N, E] = v.useState({
     inView: !!h,
     entry: void 0
   });
@@ -8920,7 +8920,7 @@ function L_({
     inView: !!h,
     entry: void 0
   }), P.current = h);
-  const I = [k, N.inView, N.entry];
+  const I = [S, N.inView, N.entry];
   return I.ref = I[0], I.inView = I[1], I.entry = I[2], I;
 }
 function Ir(r, l, i, c) {
@@ -8939,7 +8939,7 @@ const gi = (r) => ({
   total_items: r.total_items ?? 0
 });
 function sp(r) {
-  const l = _t(), [i, c] = v.useState(null), [d, f] = v.useState(""), m = v.useRef(""), h = v.useRef(0), [g, x] = v.useState(!0), [y, _] = v.useState(null), k = v.useRef(), C = v.useRef(1), P = v.useRef(!1), N = v.useRef(), E = v.useCallback(async (I, z = !1) => {
+  const l = _t(), [i, c] = v.useState(null), [d, f] = v.useState(""), m = v.useRef(""), h = v.useRef(0), [g, x] = v.useState(!0), [y, _] = v.useState(null), S = v.useRef(), C = v.useRef(1), P = v.useRef(!1), N = v.useRef(), E = v.useCallback(async (I, z = !1) => {
     const W = ++h.current, L = m.current.trim(), J = I === void 0 && P.current, B = I ?? C.current;
     _(null), x(!0);
     try {
@@ -8950,10 +8950,10 @@ function sp(r) {
         K = { ...K, data: [...de.flatMap((Te) => Te.data), ...K.data] };
       }
       if (W !== h.current) return;
-      J || (P.current = z), k.current = void 0, C.current = K.page, c((de) => z && de ? { ...K, data: [...de.data, ...K.data] } : K);
+      J || (P.current = z), S.current = void 0, C.current = K.page, c((de) => z && de ? { ...K, data: [...de.data, ...K.data] } : K);
     } catch (K) {
       if (W !== h.current) return;
-      k.current = { page: I, append: z }, _(Jn(K, "Не удалось загрузить список. Проверьте подключение к Home Assistant."));
+      S.current = { page: I, append: z }, _(Jn(K, "Не удалось загрузить список. Проверьте подключение к Home Assistant."));
     } finally {
       W === h.current && x(!1);
     }
@@ -8972,7 +8972,7 @@ function sp(r) {
   }, []);
   return { query: d, setQuery: f, page: i, loading: g, loadPage: E, updateItems: A, error: y, retry: () => {
     var I, z;
-    E((I = k.current) == null ? void 0 : I.page, ((z = k.current) == null ? void 0 : z.append) ?? !1);
+    E((I = S.current) == null ? void 0 : I.page, ((z = S.current) == null ? void 0 : z.append) ?? !1);
   } };
 }
 function M_() {
@@ -9005,7 +9005,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
     children: [
       /* @__PURE__ */ a.jsxs("div", { className: Tr.content, children: [
         /* @__PURE__ */ a.jsx("div", { className: Tr.title, children: r }),
-        l && /* @__PURE__ */ a.jsx("div", { className: Tr.subtitle, children: S(l) })
+        l && /* @__PURE__ */ a.jsx("div", { className: Tr.subtitle, children: k(l) })
       ] }),
       /* @__PURE__ */ a.jsx("div", { className: Tr.arrow, "aria-hidden": "true", children: "→" })
     ]
@@ -9025,7 +9025,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
   ])).sort((f, m) => f - m), d = (f) => {
     Number.isInteger(f) && f >= 1 && f <= l && f !== r && i(f);
   };
-  return /* @__PURE__ */ a.jsx("nav", { className: Qn.pagination, "aria-label": S("Страницы списка"), children: /* @__PURE__ */ a.jsxs("div", { className: Qn.pages, children: [
+  return /* @__PURE__ */ a.jsx("nav", { className: Qn.pagination, "aria-label": k("Страницы списка"), children: /* @__PURE__ */ a.jsxs("div", { className: Qn.pages, children: [
     /* @__PURE__ */ a.jsx(
       "button",
       {
@@ -9033,7 +9033,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
         className: Qn.button,
         disabled: r <= 1,
         onClick: () => d(r - 1),
-        "aria-label": S("Предыдущая страница"),
+        "aria-label": k("Предыдущая страница"),
         children: "‹"
       }
     ),
@@ -9044,7 +9044,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
         {
           type: "button",
           className: `${Qn.button} ${f === r ? Qn.active : ""}`,
-          "aria-label": `${S("Страница")} ${f}`,
+          "aria-label": `${k("Страница")} ${f}`,
           "aria-current": f === r ? "page" : void 0,
           onClick: () => d(f),
           children: f
@@ -9058,7 +9058,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
         className: Qn.button,
         disabled: r >= l,
         onClick: () => d(r + 1),
-        "aria-label": S("Следующая страница"),
+        "aria-label": k("Следующая страница"),
         children: "›"
       }
     )
@@ -9122,15 +9122,15 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
               {
                 variant: "ghost",
                 className: ft.close,
-                "aria-label": S("Назад к предыдущей команде"),
+                "aria-label": k("Назад к предыдущей команде"),
                 onClick: d,
                 children: /* @__PURE__ */ a.jsx(qy, { size: 20, "aria-hidden": "true" })
               }
             ),
             f && (m ? /* @__PURE__ */ a.jsxs("div", { className: ft.heading, children: [
-              /* @__PURE__ */ a.jsx("h2", { className: ft.title, children: S(f) }),
+              /* @__PURE__ */ a.jsx("h2", { className: ft.title, children: k(f) }),
               m
-            ] }) : /* @__PURE__ */ a.jsx("h2", { className: ft.title, children: S(f) })),
+            ] }) : /* @__PURE__ */ a.jsx("h2", { className: ft.title, children: k(f) })),
             /* @__PURE__ */ a.jsx(
               ae,
               {
@@ -9164,7 +9164,7 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
     ] }),
     /* @__PURE__ */ a.jsx("div", { className: `${Rs.actions} ${m === "row" && !h ? Rs.row : ""}`, children: d.map((y) => /* @__PURE__ */ a.jsx(ae, { fullWidth: !0, variant: y.variant, onClick: () => {
       y.onClick(), c();
-    }, children: S(y.label) }, y.label)) })
+    }, children: k(y.label) }, y.label)) })
   ] });
   return h ? /* @__PURE__ */ a.jsx(Vi, { open: r, onClose: c, children: x }) : /* @__PURE__ */ a.jsx(on, { open: r, onClose: c, title: l, subtitle: g, size: f, children: x });
 }, f1 = ({ uuid: r, title: l, open: i, onClose: c, onEdit: d, onDelete: f }) => r ? /* @__PURE__ */ a.jsx(qi, { open: i, title: l, uuid: r, onClose: c, size: "sm", layout: "row", actions: [
@@ -9202,10 +9202,10 @@ const I_ = "_subtitle_c1esh_1", D_ = "_card_c1esh_6", z_ = "_content_c1esh_32", 
 };
 function lp(r) {
   var l;
-  return (l = Object.entries(op).find(([i]) => r === i || r === S(i))) == null ? void 0 : l[1];
+  return (l = Object.entries(op).find(([i]) => r === i || r === k(i))) == null ? void 0 : l[1];
 }
 function fl(r) {
-  const l = S(op["Название команды"]);
+  const l = k(op["Название команды"]);
   return r ? `${l}
 UUID: ${r}` : l;
 }
@@ -9219,7 +9219,7 @@ const p1 = "_labelRow_1w41x_1", m1 = "_helpButton_1w41x_12", h1 = "_tooltip_1w41
 function Qi({ label: r, htmlFor: l, className: i, hint: c }) {
   const d = c ?? lp(r);
   return /* @__PURE__ */ a.jsxs("div", { className: bs.labelRow, children: [
-    /* @__PURE__ */ a.jsx("label", { htmlFor: l, className: i, children: S(r) }),
+    /* @__PURE__ */ a.jsx("label", { htmlFor: l, className: i, children: k(r) }),
     d && /* @__PURE__ */ a.jsx(ll, { label: r, description: d })
   ] });
 }
@@ -9228,7 +9228,7 @@ function ll({ label: r, description: l = lp(r) ?? "" }) {
   const i = ot(), [c, d] = v.useState(!1), [f, m] = v.useState({ left: 12, top: 12 }), h = v.useRef(null), g = v.useRef(null), x = v.useRef(), y = v.useId(), _ = () => {
     var A;
     d(!1), i && ((A = h.current) == null || A.focus());
-  }, k = () => {
+  }, S = () => {
     clearTimeout(x.current), d(!0);
   }, C = () => {
     x.current = setTimeout(() => d(!1), 150);
@@ -9264,30 +9264,30 @@ function ll({ label: r, description: l = lp(r) ?? "" }) {
         ref: h,
         type: "button",
         className: bs.helpButton,
-        "aria-label": `${S("Подсказка")}: ${S(r)}`,
+        "aria-label": `${k("Подсказка")}: ${k(r)}`,
         "aria-describedby": c && !i ? y : void 0,
         "aria-haspopup": i ? "dialog" : void 0,
         "aria-expanded": i ? c : void 0,
         onMouseEnter: () => {
-          i || k();
+          i || S();
         },
         onMouseLeave: () => {
           i || C();
         },
         onFocus: () => {
-          i || k();
+          i || S();
         },
         onBlur: () => {
           i || C();
         },
-        onClick: k,
+        onClick: S,
         children: /* @__PURE__ */ a.jsx(Zy, { size: 16, "aria-hidden": "true" })
       }
     ),
     c && P && qf.createPortal(i ? /* @__PURE__ */ a.jsx(Vi, { open: !0, onClose: _, className: bs.helpOverlay, labelledBy: y, children: /* @__PURE__ */ a.jsxs("div", { className: bs.sheetContent, children: [
-      /* @__PURE__ */ a.jsx("h3", { id: y, children: S(r) }),
-      /* @__PURE__ */ a.jsx("p", { children: S(l) }),
-      /* @__PURE__ */ a.jsx(ae, { autoFocus: !0, variant: "secondary", onClick: _, children: S("Закрыть подсказку") })
+      /* @__PURE__ */ a.jsx("h3", { id: y, children: k(r) }),
+      /* @__PURE__ */ a.jsx("p", { children: k(l) }),
+      /* @__PURE__ */ a.jsx(ae, { autoFocus: !0, variant: "secondary", onClick: _, children: k("Закрыть подсказку") })
     ] }) }) : /* @__PURE__ */ a.jsx(
       "div",
       {
@@ -9296,9 +9296,9 @@ function ll({ label: r, description: l = lp(r) ?? "" }) {
         role: "tooltip",
         className: bs.tooltip,
         style: f,
-        onMouseEnter: k,
+        onMouseEnter: S,
         onMouseLeave: C,
-        children: S(l)
+        children: k(l)
       }
     ), P)
   ] });
@@ -9322,7 +9322,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
   type: m,
   ...h
 }) => {
-  const g = v.useId(), [x, y] = v.useState(!1), _ = f ?? g, k = m === "password" && x ? "text" : m;
+  const g = v.useId(), [x, y] = v.useState(!1), _ = f ?? g, S = m === "password" && x ? "text" : m;
   return /* @__PURE__ */ a.jsxs("div", { className: Tn.field, children: [
     r && /* @__PURE__ */ a.jsx(Qi, { label: r, htmlFor: _, className: Tn.label, hint: l }),
     /* @__PURE__ */ a.jsxs("div", { className: Tn.inputWrapper, children: [
@@ -9331,7 +9331,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
         {
           id: _,
           disabled: c,
-          type: k,
+          type: S,
           ...h,
           "aria-invalid": i ? !0 : h["aria-invalid"],
           "aria-describedby": [h["aria-describedby"], i ? `${_}-error` : void 0].filter(Boolean).join(" ") || void 0,
@@ -9355,7 +9355,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
         }
       )
     ] }),
-    i && /* @__PURE__ */ a.jsx("span", { id: `${_}-error`, className: Tn.errorText, children: S(i) })
+    i && /* @__PURE__ */ a.jsx("span", { id: `${_}-error`, className: Tn.errorText, children: k(i) })
   ] });
 }, E1 = "_accordion_5owbj_1", N1 = "_header_5owbj_7", T1 = "_content_5owbj_20", Xo = {
   accordion: E1,
@@ -9381,7 +9381,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
             onClick: () => d((f) => !f),
             "aria-expanded": c,
             children: [
-              /* @__PURE__ */ a.jsx("span", { children: S(r) }),
+              /* @__PURE__ */ a.jsx("span", { children: k(r) }),
               /* @__PURE__ */ a.jsx("span", { className: Xo.icon, children: c ? "−" : "+" })
             ]
           }
@@ -9408,7 +9408,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
   getSelectedValue: h,
   error: g
 }) => {
-  const x = _t(), y = JSON.stringify(c), _ = v.useMemo(() => JSON.parse(y), [y]), [k, C] = v.useState(null), P = h ? "" : i || ((k == null ? void 0 : k.uuid) === l ? k.title : "");
+  const x = _t(), y = JSON.stringify(c), _ = v.useMemo(() => JSON.parse(y), [y]), [S, C] = v.useState(null), P = h ? "" : i || ((S == null ? void 0 : S.uuid) === l ? S.title : "");
   v.useEffect(() => {
     var X;
     if (!l || i || h || (X = de.current) != null && X.contains(document.activeElement)) return;
@@ -9500,7 +9500,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
         label: r,
         value: P || l,
         autoComplete: "off",
-        placeholder: S("Начните вводить title или uuid"),
+        placeholder: k("Начните вводить title или uuid"),
         error: g,
         onBlur: () => {
           pe(!1), window.setTimeout(() => L(!1), 150);
@@ -9526,7 +9526,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
             /* @__PURE__ */ a.jsx("span", { className: Kn.title, children: D.title || "Без названия" }),
             /* @__PURE__ */ a.jsx("span", { className: Kn.uuid, children: D.uuid }),
             D.mappingType && /* @__PURE__ */ a.jsxs("span", { className: Kn.uuid, children: [
-              S("mappingType:"),
+              k("mappingType:"),
               D.mappingType
             ] })
           ]
@@ -9539,7 +9539,7 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
       var D, X;
       ge.current = "", (X = (D = de.current) == null ? void 0 : D.querySelector("input")) == null || X.focus(), O((Y) => Y + 1);
     } }),
-    J && /* @__PURE__ */ a.jsx("span", { className: Kn.hint, children: S("Поиск...") })
+    J && /* @__PURE__ */ a.jsx("span", { className: Kn.hint, children: k("Поиск...") })
   ] });
 }, D1 = "_field_1esqu_1", z1 = "_row_1esqu_5", O1 = "_inputWrapper_1esqu_11", F1 = "_clearButton_1esqu_22", H1 = "_rowError_1esqu_31", It = {
   field: D1,
@@ -9553,10 +9553,10 @@ const g1 = "_field_1vuim_1", _1 = "_label_1vuim_10", x1 = "_inputWrapper_1vuim_1
   children_direct_type: "search_assistant_sub_direct_controls"
 };
 function _i({ field: r, value: l, error: i, onChange: c }) {
-  return Lr() ? /* @__PURE__ */ a.jsx(Ye, { label: S(r), value: l, error: i, onChange: (f) => c(f.target.value) }) : /* @__PURE__ */ a.jsx(
+  return Lr() ? /* @__PURE__ */ a.jsx(Ye, { label: k(r), value: l, error: i, onChange: (f) => c(f.target.value) }) : /* @__PURE__ */ a.jsx(
     I1,
     {
-      label: S(r),
+      label: k(r),
       value: l,
       error: i,
       searchSource: [U1[r]],
@@ -9589,7 +9589,7 @@ const B1 = ({
   return /* @__PURE__ */ a.jsxs(
     R1,
     {
-      title: `${S("Условие")} ${l + 1}`,
+      title: `${k("Условие")} ${l + 1}`,
       defaultOpen: i,
       children: [
         /* @__PURE__ */ a.jsx("div", { className: It.field, children: /* @__PURE__ */ a.jsx(
@@ -9621,7 +9621,7 @@ const B1 = ({
                   type: "button",
                   variant: "ghost",
                   className: It.clearButton,
-                  "aria-label": S("Убрать второстепенную команду"),
+                  "aria-label": k("Убрать второстепенную команду"),
                   onClick: x,
                   children: "×"
                 }
@@ -9637,7 +9637,7 @@ const B1 = ({
               ...r,
               children_type: ""
             }),
-            children: S("🞢 Добавить второстепенную команду")
+            children: k("🞢 Добавить второстепенную команду")
           }
         ) }),
         /* @__PURE__ */ a.jsx("div", { className: It.field, children: g ? /* @__PURE__ */ a.jsxs(
@@ -9660,7 +9660,7 @@ const B1 = ({
                   type: "button",
                   variant: "ghost",
                   className: It.clearButton,
-                  "aria-label": S("Убрать прямую команду"),
+                  "aria-label": k("Убрать прямую команду"),
                   onClick: y,
                   children: "×"
                 }
@@ -9676,7 +9676,7 @@ const B1 = ({
               ...r,
               children_direct_type: ""
             }),
-            children: S("🞢 Добавить прямую команду")
+            children: k("🞢 Добавить прямую команду")
           }
         ) }),
         f > 1 && /* @__PURE__ */ a.jsx(
@@ -9685,7 +9685,7 @@ const B1 = ({
             type: "button",
             variant: "remove",
             onClick: d,
-            children: S("Удалить")
+            children: k("Удалить")
           }
         )
       ]
@@ -9715,7 +9715,7 @@ function Pr({
       {
         htmlFor: m,
         className: Yn.label,
-        children: S(r)
+        children: k(r)
       }
     ),
     /* @__PURE__ */ a.jsxs("div", { className: Yn.wrapper, children: [
@@ -9730,7 +9730,7 @@ function Pr({
           value: i,
           onChange: (h) => f == null ? void 0 : f(h.target.value),
           children: [
-            /* @__PURE__ */ a.jsx("option", { value: "", disabled: !0, children: S(c) }),
+            /* @__PURE__ */ a.jsx("option", { value: "", disabled: !0, children: k(c) }),
             l.map((h) => /* @__PURE__ */ a.jsx(
               "option",
               {
@@ -9750,7 +9750,7 @@ function Pr({
         }
       )
     ] }),
-    d && /* @__PURE__ */ a.jsx("span", { className: Yn.errorText, children: S(d) })
+    d && /* @__PURE__ */ a.jsx("span", { className: Yn.errorText, children: k(d) })
   ] });
 }
 const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_18", ex = "_conditions_1ogov_27", tx = "_addCondition_1ogov_33", Rr = {
@@ -9795,10 +9795,10 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
       conditions: []
     });
   }, [i, r]);
-  const k = (A) => {
+  const S = (A) => {
     x(A);
   }, C = () => {
-    k({
+    S({
       ...g,
       conditions: [
         ...g.conditions,
@@ -9809,7 +9809,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
     });
   }, P = (A, O) => {
     const I = [...g.conditions];
-    I[A] = O, k({
+    I[A] = O, S({
       ...g,
       conditions: I
     });
@@ -9817,7 +9817,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
     const O = g.conditions.filter(
       (I, z) => z !== A
     );
-    k({
+    S({
       ...g,
       conditions: O.length > 0 ? O : [
         {
@@ -9852,7 +9852,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
           onClick: () => {
             E() && (m == null || m(g));
           },
-          children: S("Сохранить")
+          children: k("Сохранить")
         }
       ),
       children: /* @__PURE__ */ a.jsxs("div", { className: Rr.form, children: [
@@ -9860,10 +9860,10 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
           /* @__PURE__ */ a.jsx(
             Ye,
             {
-              label: S("Название"),
+              label: k("Название"),
               value: g.name,
               error: y.name,
-              onChange: (A) => k({
+              onChange: (A) => S({
                 ...g,
                 name: A.target.value
               })
@@ -9872,7 +9872,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
           /* @__PURE__ */ a.jsx(
             Pr,
             {
-              label: S("Скрипт"),
+              label: k("Скрипт"),
               error: y.script_entity_id,
               options: c.map(
                 (A) => ({
@@ -9881,7 +9881,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
                 })
               ),
               value: g.script_entity_id,
-              onSelect: (A) => k({
+              onSelect: (A) => S({
                 ...g,
                 script_entity_id: A
               })
@@ -9889,7 +9889,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
           )
         ] }),
         /* @__PURE__ */ a.jsxs("div", { className: Rr.section, children: [
-          /* @__PURE__ */ a.jsx("h3", { className: Rr.sectionTitle, children: S("Условия") }),
+          /* @__PURE__ */ a.jsx("h3", { className: Rr.sectionTitle, children: k("Условия") }),
           /* @__PURE__ */ a.jsx("div", { className: Rr.conditions, children: g.conditions.map(
             (A, O, I) => /* @__PURE__ */ a.jsx(
               B1,
@@ -9914,7 +9914,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
               type: "button",
               className: Rr.addCondition,
               onClick: C,
-              children: S("+ Добавить условие")
+              children: k("+ Добавить условие")
             }
           )
         ] })
@@ -9933,7 +9933,7 @@ const J1 = "_form_1ogov_1", X1 = "_section_1ogov_7", Z1 = "_sectionTitle_1ogov_1
 };
 function Or({ loading: r, itemCount: l, append: i = !1, children: c }) {
   const d = r && l > 0 && !i, f = r && /* @__PURE__ */ a.jsxs("div", { className: d ? rn.overlay : rn.rows, role: "status", children: [
-    /* @__PURE__ */ a.jsx("span", { className: rn.srOnly, children: S("Загрузка...") }),
+    /* @__PURE__ */ a.jsx("span", { className: rn.srOnly, children: k("Загрузка...") }),
     Array.from({ length: d ? l : i && l > 0 ? 3 : 10 }, (m, h) => /* @__PURE__ */ a.jsxs("div", { className: rn.card, "aria-hidden": "true", children: [
       /* @__PURE__ */ a.jsx("span", { className: rn.title }),
       /* @__PURE__ */ a.jsx("span", { className: rn.subtitle })
@@ -9958,8 +9958,8 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
     const m = (_ = c.current) == null ? void 0 : _.getRootNode(), h = m instanceof ShadowRoot ? m.host : null, g = () => window.scrollY + ((h == null ? void 0 : h.scrollTop) ?? 0);
     let x = g();
     const y = () => {
-      const k = g();
-      k > x && k > l ? f(!0) : f(!1), x = k;
+      const S = g();
+      S > x && S > l ? f(!0) : f(!1), x = S;
     };
     return window.addEventListener("scroll", y, {
       passive: !0
@@ -9976,7 +9976,7 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
     }
   );
 }, px = () => {
-  const r = qt(), l = Lr(), i = l ? "Действия удалённых команд" : "Запуск скриптов", c = ot(), [d, f] = v.useState(), [m, h] = v.useState(!1), [g, x] = v.useState(!1), [y, _] = v.useState({ uuid: "", title: "" }), [k, C] = v.useState(!1), {
+  const r = qt(), l = Lr(), i = l ? "Действия удалённых команд" : "Запуск скриптов", c = ot(), [d, f] = v.useState(), [m, h] = v.useState(!1), [g, x] = v.useState(!1), [y, _] = v.useState({ uuid: "", title: "" }), [S, C] = v.useState(!1), {
     query: P,
     setQuery: N,
     error: E,
@@ -10003,7 +10003,7 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
     f(D), h(!0);
   }, { retryable: !0 }), ge = async (H) => {
     await r.run(async () => {
-      if (k) {
+      if (S) {
         if (!H.uuid) return;
         const { uuid: D, ...X } = H;
         await J(H.uuid, X);
@@ -10027,22 +10027,22 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
       /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: `${G.header} ${G.collectionHeader}`, children: [
         /* @__PURE__ */ a.jsxs("div", { className: G.heading, children: [
-          c ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S(i) }),
-          /* @__PURE__ */ a.jsx("p", { className: G.description, children: S(l ? "Выберите скрипт Home Assistant и укажите типы команд, приходящие с удалённого сервера. Типы вводятся вручную." : "Свяжите распознанную команду со скриптом Home Assistant. Выберите скрипт и задайте условия его запуска.") })
+          c ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k(i) }),
+          /* @__PURE__ */ a.jsx("p", { className: G.description, children: k(l ? "Выберите скрипт Home Assistant и укажите типы команд, приходящие с удалённого сервера. Типы вводятся вручную." : "Свяжите распознанную команду со скриптом Home Assistant. Выберите скрипт и задайте условия его запуска.") })
         ] }),
         /* @__PURE__ */ a.jsx("div", { className: G.actions, children: c ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: Te,
-            children: S("Добавить сценарий")
+            children: k("Добавить сценарий")
           }
         ) }) : /* @__PURE__ */ a.jsx(a.Fragment, { children: /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: Te,
-            children: S("🞢 Добавить сценарий")
+            children: k("🞢 Добавить сценарий")
           }
         ) }) }),
         !c && /* @__PURE__ */ a.jsx(Mr, { value: P, onChange: N })
@@ -10057,7 +10057,7 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
           },
           H.uuid
         )) }),
-        !O && !E && P.trim() && !(I != null && I.script_actions.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Ничего не найдено") }),
+        !O && !E && P.trim() && !(I != null && I.script_actions.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Ничего не найдено") }),
         c ? /* @__PURE__ */ a.jsx("div", { ref: pe, className: G.listSentinel }) : /* @__PURE__ */ a.jsx(a.Fragment, {})
       ] }),
       c ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx(
@@ -10085,7 +10085,7 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
           feedback: de,
           open: m,
           initialData: d,
-          isEdit: k,
+          isEdit: S,
           availableScripts: z(),
           loading: O,
           onCancel: () => h(!1),
@@ -10097,7 +10097,7 @@ const dx = "_container_9wouv_1", fx = "_visible_9wouv_20", cf = {
     ] })
   ] });
 }, ap = (r) => ({
-  status: !1,
+  status: !0,
   title: "",
   [r]: {
     endStatus: !0,
@@ -10128,12 +10128,12 @@ const mx = {
   template: { list: "get_assistant_sub_direct_control_samples_short", detail: "get_assistant_sub_direct_control_sample", create: "save_assistant_sub_direct_control_sample", update: "update_assistant_sub_direct_control_sample", remove: "delete_assistant_sub_direct_control_sample" }
 };
 function pl(r, l) {
-  const i = mx[r], { query: c, setQuery: d, commands: f, loading: m, loadCommands: h, getCommandDetails: g, saveCommand: x, updateCommand: y, deleteCommand: _, setCommandStatus: k, error: C, retry: P } = ip(i.list), N = qt(), [E, A] = v.useState(!1), [O, I] = v.useState(!1), [z, W] = v.useState(l), [L, J] = v.useState(null), B = () => {
+  const i = mx[r], { query: c, setQuery: d, commands: f, loading: m, loadCommands: h, getCommandDetails: g, saveCommand: x, updateCommand: y, deleteCommand: _, setCommandStatus: S, error: C, retry: P } = ip(i.list), N = qt(), [E, A] = v.useState(!1), [O, I] = v.useState(!1), [z, W] = v.useState(l), [L, J] = v.useState(null), B = () => {
     N.clearError(), I(!1), W(l()), A(!0);
   }, K = (he) => N.run(async () => {
     const ge = await g(i.detail, he);
     I(!0);
-    const Ce = ge.data;
+    const Ce = { ...ge.data, status: ge.data.status ?? !1 };
     for (const H of ["componentDialog", "subComponentDialog"]) {
       const D = Ce[H];
       D && (D.nextAction = (D.nextAction ?? []).filter(
@@ -10142,7 +10142,7 @@ function pl(r, l) {
     }
     W(Ce), A(!0);
   }, { retryable: !0 }), pe = (he, ge) => N.run(async () => {
-    i.status && await k(i.status, he, ge);
+    i.status && await S(i.status, he, ge);
   }, { exclusive: !0 }), de = (he) => N.run(async () => {
     await _(i.remove, he), await h();
   }, { exclusive: !0 }), Te = () => N.run(async () => {
@@ -10200,7 +10200,7 @@ const hx = "_field_1iloj_1", vx = "_label_1iloj_8", yx = "_select_1iloj_14", xi 
         className: `${xi.select} ${c}`,
         children: [
           !y && /* @__PURE__ */ a.jsx("option", { value: x, children: x }),
-          i.map((_) => /* @__PURE__ */ a.jsx("option", { value: _.value, children: S(_.label) }, _.value))
+          i.map((_) => /* @__PURE__ */ a.jsx("option", { value: _.value, children: k(_.label) }, _.value))
         ]
       }
     )
@@ -10234,21 +10234,21 @@ const hx = "_field_1iloj_1", vx = "_label_1iloj_8", yx = "_select_1iloj_14", xi 
         `
       }
     ),
-    i && /* @__PURE__ */ a.jsx("span", { className: Ps.errorText, children: S(i) })
+    i && /* @__PURE__ */ a.jsx("span", { className: Ps.errorText, children: k(i) })
   ] });
 };
 function Ti({ kind: r, value: l, title: i, onSelect: c }) {
-  const d = _t(), [f, m] = v.useState([]), [h, g] = v.useState(!0), [x, y] = v.useState(!1), [_, k] = v.useState(null), [C, P] = v.useState(0), N = v.useRef(null), E = v.useRef(0);
+  const d = _t(), [f, m] = v.useState([]), [h, g] = v.useState(!0), [x, y] = v.useState(!1), [_, S] = v.useState(null), [C, P] = v.useState(0), N = v.useRef(null), E = v.useRef(0);
   v.useEffect(() => () => {
     E.current += 1;
   }, []), v.useEffect(() => {
     let z = !1;
-    g(!0), k(null);
+    g(!0), S(null);
     const W = r === "nested" ? ["get_assistant_sub_direct_control_samples_short"] : r === "direct" ? ["get_assistant_sub_direct_controls_short"] : ["get_assistant_commands_short", "get_assistant_sub_commands_short"];
     return Promise.all(W.map((L) => d.getAllRecords(L))).then((L) => {
       z || m([...new Map(L.flat().map((J) => [J.uuid, J])).values()]);
     }).catch((L) => {
-      z || (k(Jn(L)), N.current = () => P((J) => J + 1));
+      z || (S(Jn(L)), N.current = () => P((J) => J + 1));
     }).finally(() => {
       z || g(!1);
     }), () => {
@@ -10260,13 +10260,13 @@ function Ti({ kind: r, value: l, title: i, onSelect: c }) {
   const A = async (z) => {
     var J;
     if (!z) {
-      E.current += 1, k(null), c({ uuid: "", title: "" });
+      E.current += 1, S(null), c({ uuid: "", title: "" });
       return;
     }
     const W = f.find((B) => B.uuid === z);
     if (!W) return;
     const L = ++E.current;
-    if (k(null), r !== "direct") {
+    if (S(null), r !== "direct") {
       c(W);
       return;
     }
@@ -10275,15 +10275,15 @@ function Ti({ kind: r, value: l, title: i, onSelect: c }) {
       const B = await d.getRecord(z, "get_assistant_sub_direct_control");
       L === E.current && c({ ...W, mappingType: ((J = B.data.directControl) == null ? void 0 : J.mappingType) ?? "" });
     } catch (B) {
-      L === E.current && (k(Jn(B)), N.current = () => {
+      L === E.current && (S(Jn(B)), N.current = () => {
         A(z);
       });
     } finally {
       L === E.current && y(!1);
     }
-  }, O = f.map((z) => ({ value: z.uuid, label: z.title || S("Без названия") }));
-  l && !f.some((z) => z.uuid === l) && O.unshift({ value: l, label: i || S("Выбранная команда недоступна") });
-  const I = S(r === "nested" ? "subDirectControl" : "uuid");
+  }, O = f.map((z) => ({ value: z.uuid, label: z.title || k("Без названия") }));
+  l && !f.some((z) => z.uuid === l) && O.unshift({ value: l, label: i || k("Выбранная команда недоступна") });
+  const I = k(r === "nested" ? "subDirectControl" : "uuid");
   return /* @__PURE__ */ a.jsxs("div", { children: [
     /* @__PURE__ */ a.jsx(
       Xn,
@@ -10292,7 +10292,7 @@ function Ti({ kind: r, value: l, title: i, onSelect: c }) {
         "aria-label": I,
         value: l,
         disabled: h || x,
-        options: [{ value: "", label: S(h ? "Загрузка..." : r === "nested" ? "Без вложенных команд" : "Выберите команду") }, ...O],
+        options: [{ value: "", label: k(h ? "Загрузка..." : r === "nested" ? "Без вложенных команд" : "Выберите команду") }, ...O],
         onChange: (z) => {
           A(z.target.value);
         }
@@ -10354,7 +10354,7 @@ const kx = [
       return;
     }
     x(""), m();
-  }, _ = v.useMemo(() => d.directControl ?? df(), [d]), k = (C) => {
+  }, _ = v.useMemo(() => d.directControl ?? df(), [d]), S = (C) => {
     f((P) => ({
       ...P,
       directControl: {
@@ -10371,12 +10371,12 @@ const kx = [
       onClose: i,
       onBack: h,
       title: c,
-      footer: /* @__PURE__ */ a.jsx("div", { className: Ve.form, children: /* @__PURE__ */ a.jsx(ae, { onClick: y, children: S("Сохранить") }) }),
+      footer: /* @__PURE__ */ a.jsx("div", { className: Ve.form, children: /* @__PURE__ */ a.jsx(ae, { onClick: y, children: k("Сохранить") }) }),
       children: /* @__PURE__ */ a.jsxs("div", { className: Ve.form, children: [
         /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("Название команды"),
+            label: k("Название команды"),
             hint: fl(d.uuid),
             required: !0,
             error: g,
@@ -10390,9 +10390,9 @@ const kx = [
         /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("mappingType"),
+            label: k("mappingType"),
             value: _.mappingType,
-            onChange: (C) => k({
+            onChange: (C) => S({
               mappingType: C.target.value
             })
           }
@@ -10400,10 +10400,10 @@ const kx = [
         /* @__PURE__ */ a.jsx(
           Xn,
           {
-            label: S("valueType"),
+            label: k("valueType"),
             value: _.valueType,
             options: Cx,
-            onChange: (C) => k({
+            onChange: (C) => S({
               valueType: C.target.value
             })
           }
@@ -10412,12 +10412,12 @@ const kx = [
           /* @__PURE__ */ a.jsx("div", { className: Ve.field, children: /* @__PURE__ */ a.jsx(
             Ar,
             {
-              label: S("Фразы для запуска"),
-              hint: S("Фразы прямой команды — общая часть перед вложенными командами. Например: в основной команде «включи ${свет}», здесь — «свет», во вложенных командах — «в зале» и «в спальне». Получатся «включи свет в зале» и «включи свет в спальне».\nПоле можно оставить пустым: тогда используются только фразы вложенных команд. Один набор вложенных команд можно подключать к разным прямым командам."),
+              label: k("Фразы для запуска"),
+              hint: k("Фразы прямой команды — общая часть перед вложенными командами. Например: в основной команде «включи ${свет}», здесь — «свет», во вложенных командах — «в зале» и «в спальне». Получатся «включи свет в зале» и «включи свет в спальне».\nПоле можно оставить пустым: тогда используются только фразы вложенных команд. Один набор вложенных команд можно подключать к разным прямым командам."),
               rows: 6,
               value: (_.voiceCommands ?? []).join(`
 `),
-              onChange: (C) => k({
+              onChange: (C) => S({
                 voiceCommands: C.target.value.split(`
 `)
               })
@@ -10428,8 +10428,8 @@ const kx = [
             {
               kind: "nested",
               value: Array.isArray(_.subDirectControl) ? _.subDirectControl.length ? "__inline__" : "" : _.subDirectControl,
-              title: Array.isArray(_.subDirectControl) ? S("Сохранённые вложенные команды") : _.subDirectControlTitle,
-              onSelect: (C) => k({
+              title: Array.isArray(_.subDirectControl) ? k("Сохранённые вложенные команды") : _.subDirectControlTitle,
+              onSelect: (C) => S({
                 manual: !1,
                 subDirectControl: C.uuid,
                 subDirectControlTitle: C.title
@@ -10446,24 +10446,24 @@ function Mx({ target: r, onBack: l, onSaved: i }) {
   v.useEffect(() => {
     let y = !1;
     return d.run(async () => {
-      let _ = r.kind === "direct" ? "direct" : "main", k;
-      if (r.kind === "direct") k = await c.getRecord(r.uuid, "get_assistant_sub_direct_control");
+      let _ = r.kind === "direct" ? "direct" : "main", S;
+      if (r.kind === "direct") S = await c.getRecord(r.uuid, "get_assistant_sub_direct_control");
       else
         try {
-          k = await c.getRecord(r.uuid, "get_assistant_command");
+          S = await c.getRecord(r.uuid, "get_assistant_command");
         } catch (C) {
           if (!(C && typeof C == "object" && "code" in C && C.code === "not_found")) throw C;
-          _ = "sub", k = await c.getRecord(r.uuid, "get_assistant_sub_command");
+          _ = "sub", S = await c.getRecord(r.uuid, "get_assistant_sub_command");
         }
-      y || (m(k.data), g(_));
+      y || (m({ ...S.data, status: S.data.status ?? !1 }), g(_));
     }, { retryable: !0 }), () => {
       y = !0;
     };
   }, [c, r.uuid, r.kind, d.run]);
   const x = () => d.run(async () => {
     if (!h) return;
-    const y = h === "direct" ? "update_assistant_sub_direct_control" : h === "main" ? "update_assistant_command" : "update_assistant_sub_command", { uuid: _, ...k } = f;
-    await c.updateRecord(r.uuid, y, k), i(f), l();
+    const y = h === "direct" ? "update_assistant_sub_direct_control" : h === "main" ? "update_assistant_command" : "update_assistant_sub_command", { uuid: _, ...S } = f;
+    await c.updateRecord(r.uuid, y, S), i(f), l();
   }, { exclusive: !0 });
   return h ? h === "direct" ? /* @__PURE__ */ a.jsx(
     up,
@@ -10491,7 +10491,7 @@ function Mx({ target: r, onBack: l, onSaved: i }) {
       onSave: x,
       onUpdate: x
     }
-  ) : /* @__PURE__ */ a.jsx(on, { open: !0, onClose: l, onBack: l, title: "Перейти к команде", feedback: d, children: d.busy && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Загрузка...") }) });
+  ) : /* @__PURE__ */ a.jsx(on, { open: !0, onClose: l, onBack: l, title: "Перейти к команде", feedback: d, children: d.busy && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Загрузка...") }) });
 }
 const Ix = [
   { value: "default", label: "Основной" },
@@ -10504,8 +10504,8 @@ function Dx({ response: r, onChange: l }) {
     /* @__PURE__ */ a.jsx(
       Xn,
       {
-        label: S("Типы ответов"),
-        "aria-label": S("Типы ответов"),
+        label: k("Типы ответов"),
+        "aria-label": k("Типы ответов"),
         value: c,
         options: Ix,
         onChange: (d) => l({ actionType: d.target.value === "custom" ? "" : d.target.value })
@@ -10514,8 +10514,8 @@ function Dx({ response: r, onChange: l }) {
     c === "custom" ? /* @__PURE__ */ a.jsx(
       Ye,
       {
-        label: S("Тип результата скрипта"),
-        placeholder: S("Например, room_required"),
+        label: k("Тип результата скрипта"),
+        placeholder: k("Например, room_required"),
         value: r.actionType ?? "",
         onChange: (d) => l({ actionType: d.target.value })
       }
@@ -10523,7 +10523,7 @@ function Dx({ response: r, onChange: l }) {
     /* @__PURE__ */ a.jsx(
       Ar,
       {
-        label: S("voiceResponse"),
+        label: k("voiceResponse"),
         value: r.voiceResponse,
         onChange: (d) => l({ voiceResponse: d.target.value })
       }
@@ -10539,7 +10539,7 @@ const zx = "_switchRow_1hmmz_1", Ox = "_input_1hmmz_11", Fx = "_track_1hmmz_22",
 }, Zn = ({ label: r, className: l = "", ...i }) => /* @__PURE__ */ a.jsxs("label", { className: `${As.switchRow} ${l}`, children: [
   /* @__PURE__ */ a.jsx("input", { ...i, type: "checkbox", className: As.input }),
   /* @__PURE__ */ a.jsx("span", { className: As.track, "aria-hidden": "true", children: /* @__PURE__ */ a.jsx("span", { className: As.thumb }) }),
-  /* @__PURE__ */ a.jsx("span", { className: As.label, children: S(r) })
+  /* @__PURE__ */ a.jsx("span", { className: As.label, children: k(r) })
 ] }), Bx = [
   { key: "direct", label: "Прямые команды" },
   { key: "continuations", label: "Продолжения" }
@@ -10547,7 +10547,7 @@ const zx = "_switchRow_1hmmz_1", Ox = "_input_1hmmz_11", Fx = "_track_1hmmz_22",
 function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addComponentArrayItem: c, removeComponentArrayItem: d }) {
   const f = v.useId(), [m, h] = v.useState("direct"), g = Bx.filter((y) => y.key !== "direct" || !r.forwardText), x = r.forwardText && m === "direct" ? "continuations" : m;
   return /* @__PURE__ */ a.jsxs("div", { className: Ve.form, children: [
-    /* @__PURE__ */ a.jsx("div", { className: Ve.logicTabs, role: "tablist", "aria-label": S("Настройки логики"), children: g.map((y) => /* @__PURE__ */ a.jsx(
+    /* @__PURE__ */ a.jsx("div", { className: Ve.logicTabs, role: "tablist", "aria-label": k("Настройки логики"), children: g.map((y) => /* @__PURE__ */ a.jsx(
       "button",
       {
         type: "button",
@@ -10555,15 +10555,15 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
         tabIndex: x === y.key ? 0 : -1,
         onKeyDown: (_) => {
           var P, N;
-          const k = g.findIndex((E) => E.key === y.key), C = _.key === "ArrowRight" ? (k + 1) % g.length : _.key === "ArrowLeft" ? (k + g.length - 1) % g.length : _.key === "Home" ? 0 : _.key === "End" ? g.length - 1 : -1;
+          const S = g.findIndex((E) => E.key === y.key), C = _.key === "ArrowRight" ? (S + 1) % g.length : _.key === "ArrowLeft" ? (S + g.length - 1) % g.length : _.key === "Home" ? 0 : _.key === "End" ? g.length - 1 : -1;
           C < 0 || (_.preventDefault(), h(g[C].key), (N = (P = _.currentTarget.parentElement) == null ? void 0 : P.querySelectorAll('[role="tab"]')[C]) == null || N.focus());
         },
         id: `${f}-command-logic-tab-${y.key}`,
         "aria-selected": x === y.key,
         "aria-controls": `${f}-command-logic-panel-${y.key}`,
         onClick: () => h(y.key),
-        children: y.key === "direct" ? /* @__PURE__ */ a.jsx("span", { className: Ve.directTabLabel, children: S(y.label).replace(" ", `
-`) }) : S(y.label)
+        children: y.key === "direct" ? /* @__PURE__ */ a.jsx("span", { className: Ve.directTabLabel, children: k(y.label).replace(" ", `
+`) }) : k(y.label)
       },
       y.key
     )) }),
@@ -10572,22 +10572,22 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
         /* @__PURE__ */ a.jsx(
           Xn,
           {
-            label: S("Вид продолжения"),
+            label: k("Вид продолжения"),
             value: y.actionTypeComponent || "children",
             options: jx,
-            onChange: (k) => i("nextAction", _, {
-              actionTypeComponent: k.target.value
+            onChange: (S) => i("nextAction", _, {
+              actionTypeComponent: S.target.value
             })
           }
         ),
         y.actionTypeComponent == "custom" ? /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("Тип результата скрипта"),
-            placeholder: S("Например, room_required"),
+            label: k("Тип результата скрипта"),
+            placeholder: k("Например, room_required"),
             value: y.actionType ?? "",
-            onChange: (k) => i("nextAction", _, {
-              actionType: k.target.value
+            onChange: (S) => i("nextAction", _, {
+              actionType: S.target.value
             })
           }
         ) : /* @__PURE__ */ a.jsx(a.Fragment, {}),
@@ -10597,22 +10597,22 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
             kind: "continuation",
             value: y.uuid,
             title: y.title,
-            onSelect: (k) => i("nextAction", _, {
-              uuid: k.uuid,
-              title: k.title ?? "",
+            onSelect: (S) => i("nextAction", _, {
+              uuid: S.uuid,
+              title: S.title ?? "",
               actionTypeComponent: y.actionTypeComponent || "children"
             })
           }
         ),
         /* @__PURE__ */ a.jsxs("div", { className: Ve.linkActions, children: [
-          y.uuid && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => l({ uuid: y.uuid, kind: "continuation" }, _), children: S("Перейти к команде") }),
+          y.uuid && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => l({ uuid: y.uuid, kind: "continuation" }, _), children: k("Перейти к команде") }),
           /* @__PURE__ */ a.jsx(
             ae,
             {
               type: "button",
               variant: "remove",
               onClick: () => d("nextAction", _),
-              children: S("Удалить")
+              children: k("Удалить")
             }
           )
         ] })
@@ -10630,7 +10630,7 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
             uuid: "",
             title: ""
           }),
-          children: S("Добавить ещё")
+          children: k("Добавить ещё")
         }
       )
     ] }),
@@ -10642,31 +10642,31 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
             kind: "direct",
             value: y.uuid,
             title: y.title,
-            onSelect: (k) => i("nextDirectControl", _, {
-              uuid: k.uuid,
-              mappingType: k.mappingType ?? "",
-              title: k.title ?? ""
+            onSelect: (S) => i("nextDirectControl", _, {
+              uuid: S.uuid,
+              mappingType: S.mappingType ?? "",
+              title: S.title ?? ""
             })
           }
         ),
         y.uuid && /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("mappingType"),
-            hint: S("Переменная для фраз запуска. Например, используйте ${room} во фразе, если здесь указано room."),
+            label: k("mappingType"),
+            hint: k("Переменная для фраз запуска. Например, используйте ${room} во фразе, если здесь указано room."),
             readOnly: !0,
             value: y.mappingType ?? ""
           }
         ),
         /* @__PURE__ */ a.jsxs("div", { className: Ve.linkActions, children: [
-          y.uuid && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => l({ uuid: y.uuid, kind: "direct" }, _), children: S("Перейти к команде") }),
+          y.uuid && /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => l({ uuid: y.uuid, kind: "direct" }, _), children: k("Перейти к команде") }),
           /* @__PURE__ */ a.jsx(
             ae,
             {
               type: "button",
               variant: "remove",
               onClick: () => d("nextDirectControl", _),
-              children: S("Удалить")
+              children: k("Удалить")
             }
           )
         ] })
@@ -10683,7 +10683,7 @@ function Wx({ component: r, onOpenCommand: l, updateComponentArray: i, addCompon
             actionType: "",
             title: ""
           }),
-          children: S("Добавить ещё")
+          children: k("Добавить ещё")
         }
       )
     ] })
@@ -10709,7 +10709,7 @@ const ff = () => ({
   onSave: g,
   onUpdate: x
 }) => {
-  const _ = _t().getScripts(), k = v.useMemo(() => c[d] ?? ff(), [c, d]);
+  const _ = _t().getScripts(), S = v.useMemo(() => c[d] ?? ff(), [c, d]);
   v.useEffect(() => {
     r && f((B) => {
       var pe;
@@ -10737,17 +10737,17 @@ const ff = () => ({
       }
     }));
   }, z = (B, K, pe) => {
-    const de = [...k[B] ?? []];
+    const de = [...S[B] ?? []];
     de[K] = { ...de[K], ...pe }, I({
       [B]: de
     });
   }, W = (B, K) => {
     I({
-      [B]: [...k[B] ?? [], K]
+      [B]: [...S[B] ?? [], K]
     });
   }, L = (B, K) => {
     I({
-      [B]: (k[B] ?? []).filter(
+      [B]: (S[B] ?? []).filter(
         (pe, de) => de !== K
       )
     });
@@ -10765,17 +10765,17 @@ const ff = () => ({
         onClose: m,
         onBack: h,
         title: N ? "Настроить логику" : i ? "Редактировать" : "Создать",
-        footer: /* @__PURE__ */ a.jsx("div", { className: Ve.form, children: N ? /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => E(!1), children: S("Назад") }) : /* @__PURE__ */ a.jsxs("div", { className: Ve.footerActions, children: [
-          /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => E(!0), children: S("Настроить логику") }),
+        footer: /* @__PURE__ */ a.jsx("div", { className: Ve.form, children: N ? /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => E(!1), children: k("Назад") }) : /* @__PURE__ */ a.jsxs("div", { className: Ve.footerActions, children: [
+          /* @__PURE__ */ a.jsx(ae, { variant: "secondary", onClick: () => E(!0), children: k("Настроить логику") }),
           /* @__PURE__ */ a.jsx(ae, { onClick: () => {
             J() && (i ? x() : g());
-          }, children: S(i ? "Обновить" : "Сохранить") })
+          }, children: k(i ? "Обновить" : "Сохранить") })
         ] }) }),
         children: N ? /* @__PURE__ */ a.jsx(
           Wx,
           {
             onOpenCommand: (B, K) => P({ ...B, index: K }),
-            component: k,
+            component: S,
             updateComponentArray: z,
             addComponentArrayItem: W,
             removeComponentArrayItem: L
@@ -10784,7 +10784,7 @@ const ff = () => ({
           /* @__PURE__ */ a.jsx(
             Ye,
             {
-              label: S("Название команды"),
+              label: k("Название команды"),
               hint: fl(c.uuid),
               value: c.title,
               error: A.title,
@@ -10797,8 +10797,8 @@ const ff = () => ({
           /* @__PURE__ */ a.jsx(
             Xn,
             {
-              label: S("Источник ответа"),
-              value: ["ha_storage", "ha", "external"].includes(k.answerType) ? "script_response" : k.answerType,
+              label: k("Источник ответа"),
+              value: ["ha_storage", "ha", "external"].includes(S.answerType) ? "script_response" : S.answerType,
               options: kx,
               onChange: (B) => I({
                 answerType: B.target.value
@@ -10808,11 +10808,11 @@ const ff = () => ({
           /* @__PURE__ */ a.jsx(
             Xn,
             {
-              label: S("Скрипт Home Assistant"),
-              value: k.script_entity_id ?? "__legacy__",
+              label: k("Скрипт Home Assistant"),
+              value: S.script_entity_id ?? "__legacy__",
               options: [
-                ...k.script_entity_id === void 0 ? [{ label: S("Использовать существующие сценарии"), value: "__legacy__" }] : [],
-                { label: S("Не запускать скрипт"), value: "" },
+                ...S.script_entity_id === void 0 ? [{ label: k("Использовать существующие сценарии"), value: "__legacy__" }] : [],
+                { label: k("Не запускать скрипт"), value: "" },
                 ..._.map((B) => ({ label: B.name, value: B.entity_id }))
               ],
               onChange: (B) => I({ script_entity_id: B.target.value })
@@ -10822,18 +10822,18 @@ const ff = () => ({
             /* @__PURE__ */ a.jsx(
               Zn,
               {
-                label: S("Отправить команду как есть"),
-                checked: !!k.forwardText,
+                label: k("Отправить команду как есть"),
+                checked: !!S.forwardText,
                 onChange: (B) => I({ forwardText: B.target.checked })
               }
             ),
             /* @__PURE__ */ a.jsx(ll, { label: "Отправить команду как есть" })
           ] }),
-          !(d === "subComponentDialog" && k.forwardText) && /* @__PURE__ */ a.jsx("div", { className: Ve.field, children: /* @__PURE__ */ a.jsx(
+          !(d === "subComponentDialog" && S.forwardText) && /* @__PURE__ */ a.jsx("div", { className: Ve.field, children: /* @__PURE__ */ a.jsx(
             Ar,
             {
-              label: S("Фразы для запуска"),
-              value: (k.voiceCommands == null ? [] : typeof k.voiceCommands != "object" ? k == null ? void 0 : k.voiceCommands.split(";") : k == null ? void 0 : k.voiceCommands).join(`
+              label: k("Фразы для запуска"),
+              value: (S.voiceCommands == null ? [] : typeof S.voiceCommands != "object" ? S == null ? void 0 : S.voiceCommands.split(";") : S == null ? void 0 : S.voiceCommands).join(`
 `),
               onChange: (B) => I({
                 voiceCommands: B.target.value.split(`
@@ -10841,9 +10841,9 @@ const ff = () => ({
               })
             }
           ) }),
-          /* @__PURE__ */ a.jsxs("section", { className: Ve.form, "aria-label": S("Ответы"), children: [
-            /* @__PURE__ */ a.jsx("h3", { className: Ve.sectionTitle, children: S("Ответы") }),
-            (k.voiceResponseArray ?? []).map((B, K) => /* @__PURE__ */ a.jsxs("div", { className: Ve.arrayItem, children: [
+          /* @__PURE__ */ a.jsxs("section", { className: Ve.form, "aria-label": k("Ответы"), children: [
+            /* @__PURE__ */ a.jsx("h3", { className: Ve.sectionTitle, children: k("Ответы") }),
+            (S.voiceResponseArray ?? []).map((B, K) => /* @__PURE__ */ a.jsxs("div", { className: Ve.arrayItem, children: [
               /* @__PURE__ */ a.jsx(
                 Dx,
                 {
@@ -10857,7 +10857,7 @@ const ff = () => ({
                   type: "button",
                   variant: "remove",
                   onClick: () => L("voiceResponseArray", K),
-                  children: S("Удалить")
+                  children: k("Удалить")
                 }
               )
             ] }, K)),
@@ -10872,7 +10872,7 @@ const ff = () => ({
                   actionType: "default",
                   voiceResponse: ""
                 }),
-                children: S("Добавить ещё")
+                children: k("Добавить ещё")
               }
             )
           ] })
@@ -10909,7 +10909,7 @@ const ff = () => ({
     setModalOpen: x,
     isEdit: y,
     formData: _,
-    setFormData: k,
+    setFormData: S,
     actionsCommand: C,
     setActionsCommand: P,
     openCreateModal: N,
@@ -10931,8 +10931,8 @@ const ff = () => ({
       !g && /* @__PURE__ */ a.jsx(qe, { ...c }),
       /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: `${G.header} ${G.collectionHeader}`, children: [
-        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Основные команды") }) }),
-        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Основные команды") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ a.jsx(Mr, { value: l, onChange: i })
       ] }),
       /* @__PURE__ */ a.jsxs("div", { className: G.list, children: [
@@ -10945,7 +10945,7 @@ const ff = () => ({
           },
           L.uuid
         )) }),
-        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Ничего не найдено") }),
+        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Ничего не найдено") }),
         r ? /* @__PURE__ */ a.jsx("div", { ref: W, className: G.listSentinel }) : /* @__PURE__ */ a.jsx(a.Fragment, {})
       ] }),
       r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx(
@@ -10964,7 +10964,7 @@ const ff = () => ({
           isEdit: y,
           formData: _,
           componentKey: "componentDialog",
-          setFormData: k,
+          setFormData: S,
           onClose: () => x(!1),
           onSave: I,
           onUpdate: z
@@ -10996,7 +10996,7 @@ const ff = () => ({
     setModalOpen: x,
     isEdit: y,
     formData: _,
-    setFormData: k,
+    setFormData: S,
     actionsCommand: C,
     setActionsCommand: P,
     openCreateModal: N,
@@ -11018,8 +11018,8 @@ const ff = () => ({
       !g && /* @__PURE__ */ a.jsx(qe, { ...c }),
       r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: `${G.header} ${G.collectionHeader}`, children: [
-        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Второстепенные команды") }) }),
-        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(a.Fragment, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("🞢 Добавить сценарий") }) }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Второстепенные команды") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(a.Fragment, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("🞢 Добавить сценарий") }) }) }),
         !r && /* @__PURE__ */ a.jsx(Mr, { value: l, onChange: i })
       ] }),
       /* @__PURE__ */ a.jsxs("div", { className: G.list, children: [
@@ -11032,7 +11032,7 @@ const ff = () => ({
           },
           L.uuid
         )) }),
-        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Ничего не найдено") })
+        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Ничего не найдено") })
       ] }),
       r ? /* @__PURE__ */ a.jsx("div", { ref: W, className: G.listSentinel }) : /* @__PURE__ */ a.jsx(
         zr,
@@ -11050,7 +11050,7 @@ const ff = () => ({
           isEdit: y,
           formData: _,
           componentKey: "subComponentDialog",
-          setFormData: k,
+          setFormData: S,
           onClose: () => x(!1),
           onSave: I,
           onUpdate: z
@@ -11074,19 +11074,19 @@ const ff = () => ({
   { path: "/commands/direct/template", label: "Вложенные команды" }
 ], al = () => {
   const { pathname: r } = pt(), l = Ii();
-  return /* @__PURE__ */ a.jsx("div", { className: G.innerTabs, role: "group", "aria-label": S("Раздел прямых команд"), children: Yx.map((i) => /* @__PURE__ */ a.jsx(
+  return /* @__PURE__ */ a.jsx("div", { className: G.innerTabs, role: "group", "aria-label": k("Раздел прямых команд"), children: Yx.map((i) => /* @__PURE__ */ a.jsx(
     "button",
     {
       type: "button",
       "aria-pressed": r === i.path,
       className: `${G.innerTab} ${r === i.path ? G.activeInnerTab : ""}`,
       onClick: () => l(i.path),
-      children: S(i.label)
+      children: k(i.label)
     },
     i.path
   )) });
 }, Gx = () => ({
-  status: !1,
+  status: !0,
   title: "",
   directControl: {
     mappingType: "",
@@ -11109,7 +11109,7 @@ const ff = () => ({
     setModalOpen: x,
     isEdit: y,
     formData: _,
-    setFormData: k,
+    setFormData: S,
     actionsCommand: C,
     setActionsCommand: P,
     openCreateModal: N,
@@ -11133,10 +11133,10 @@ const ff = () => ({
       r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: `${G.header} ${G.collectionHeader}`, children: [
         /* @__PURE__ */ a.jsxs("div", { className: G.heading, children: [
-          r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Прямые команды") }),
+          r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Прямые команды") }),
           !r && /* @__PURE__ */ a.jsx(al, {})
         ] }),
-        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ a.jsx(Mr, { value: l, onChange: i })
       ] }),
       /* @__PURE__ */ a.jsxs("div", { className: G.list, children: [
@@ -11149,7 +11149,7 @@ const ff = () => ({
           },
           L.uuid
         )) }),
-        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Ничего не найдено") })
+        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Ничего не найдено") })
       ] }),
       r ? /* @__PURE__ */ a.jsx("div", { ref: W, className: G.listSentinel }) : /* @__PURE__ */ a.jsx(
         zr,
@@ -11165,9 +11165,9 @@ const ff = () => ({
           feedback: c,
           open: g,
           onClose: () => x(!1),
-          title: S(y ? "Редактировать прямую команду" : "Создать прямую команду"),
+          title: k(y ? "Редактировать прямую команду" : "Создать прямую команду"),
           formData: _,
-          setFormData: k,
+          setFormData: S,
           onSave: y ? z : I
         }
       ),
@@ -11216,7 +11216,7 @@ const ff = () => ({
       ...E,
       subDirectControl: N
     }));
-  }, k = (N, E) => {
+  }, S = (N, E) => {
     const A = [...y];
     A[N] = {
       ...A[N],
@@ -11242,12 +11242,12 @@ const ff = () => ({
       open: r,
       onClose: i,
       title: c,
-      footer: /* @__PURE__ */ a.jsx(ae, { onClick: x, children: S("Сохранить") }),
+      footer: /* @__PURE__ */ a.jsx(ae, { onClick: x, children: k("Сохранить") }),
       children: /* @__PURE__ */ a.jsxs("div", { className: Zo.form, children: [
         /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("Название команды"),
+            label: k("Название команды"),
             hint: fl(d.uuid),
             required: !0,
             error: h,
@@ -11258,8 +11258,8 @@ const ff = () => ({
             }))
           }
         ),
-        /* @__PURE__ */ a.jsxs("section", { className: Zo.form, "aria-label": S("Варианты вложенных команд"), children: [
-          /* @__PURE__ */ a.jsx("h3", { className: Zo.sectionTitle, children: S("Варианты вложенных команд") }),
+        /* @__PURE__ */ a.jsxs("section", { className: Zo.form, "aria-label": k("Варианты вложенных команд"), children: [
+          /* @__PURE__ */ a.jsx("h3", { className: Zo.sectionTitle, children: k("Варианты вложенных команд") }),
           y.map((N, E) => /* @__PURE__ */ a.jsxs(
             "div",
             {
@@ -11268,9 +11268,9 @@ const ff = () => ({
                 /* @__PURE__ */ a.jsx(
                   Ye,
                   {
-                    label: S("Код значения"),
+                    label: k("Код значения"),
                     value: N.subMappingType ?? "",
-                    onChange: (A) => k(E, {
+                    onChange: (A) => S(E, {
                       subMappingType: A.target.value
                     })
                   }
@@ -11278,11 +11278,11 @@ const ff = () => ({
                 /* @__PURE__ */ a.jsx(
                   Ar,
                   {
-                    label: S("Варианты произношения"),
+                    label: k("Варианты произношения"),
                     rows: 3,
                     value: (Array.isArray(N.subVoiceCommands) ? N.subVoiceCommands : []).join(`
 `),
-                    onChange: (A) => k(E, {
+                    onChange: (A) => S(E, {
                       subVoiceCommands: A.target.value.split(`
 `).filter(Boolean)
                     })
@@ -11294,7 +11294,7 @@ const ff = () => ({
                     type: "button",
                     variant: "remove",
                     onClick: () => P(E),
-                    children: S("Удалить")
+                    children: k("Удалить")
                   }
                 )
               ]
@@ -11309,7 +11309,7 @@ const ff = () => ({
               fullWidth: !0,
               leftIcon: /* @__PURE__ */ a.jsx("span", { "aria-hidden": "true", children: "+" }),
               onClick: C,
-              children: S("Добавить ещё")
+              children: k("Добавить ещё")
             }
           )
         ] })
@@ -11317,7 +11317,7 @@ const ff = () => ({
     }
   );
 }, n0 = () => ({
-  status: !1,
+  status: !0,
   title: "",
   subDirectControl: []
 }), r0 = () => {
@@ -11333,7 +11333,7 @@ const ff = () => ({
     setModalOpen: x,
     isEdit: y,
     formData: _,
-    setFormData: k,
+    setFormData: S,
     actionsCommand: C,
     setActionsCommand: P,
     openCreateModal: N,
@@ -11356,10 +11356,10 @@ const ff = () => ({
       !r && /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: `${G.header} ${G.collectionHeader}`, children: [
         /* @__PURE__ */ a.jsxs("div", { className: G.heading, children: [
-          r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Вложенные команды") }),
+          r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Вложенные команды") }),
           !r && /* @__PURE__ */ a.jsx(al, {})
         ] }),
-        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: S("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { children: /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("Добавить сценарий") }) }) : /* @__PURE__ */ a.jsx(ae, { variant: "primary", onClick: N, children: k("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ a.jsx(Mr, { value: l, onChange: i })
       ] }),
       /* @__PURE__ */ a.jsxs("div", { className: G.list, children: [
@@ -11371,7 +11371,7 @@ const ff = () => ({
           },
           W.uuid
         )) }),
-        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Ничего не найдено") })
+        !m && !d && l.trim() && !(f != null && f.data.length) && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Ничего не найдено") })
       ] }),
       r ? /* @__PURE__ */ a.jsx(
         "div",
@@ -11397,7 +11397,7 @@ const ff = () => ({
           onClose: () => x(!1),
           title: y ? "Редактировать" : "Создать",
           formData: _,
-          setFormData: k,
+          setFormData: S,
           onSave: y ? I : O
         }
       ),
@@ -11419,7 +11419,7 @@ const ff = () => ({
   finish_miss: "Если продолжение не распознано несколько раз"
 };
 function cp(r) {
-  return r.actionType && pf[r.actionType] ? S(pf[r.actionType]) : r.title;
+  return r.actionType && pf[r.actionType] ? k(pf[r.actionType]) : r.title;
 }
 const s0 = "_form_1i0x1_1", o0 = {
   form: s0
@@ -11432,7 +11432,7 @@ const s0 = "_form_1i0x1_1", o0 = {
   onClose: f,
   onUpdate: m
 }) => {
-  var _, k;
+  var _, S;
   const h = c, g = _t().getScripts(), x = h.actionType === "default_main" && !!h.forwardCommandToServer, y = (C) => {
     d((P) => ({
       ...P,
@@ -11446,12 +11446,12 @@ const s0 = "_form_1i0x1_1", o0 = {
       open: r,
       onClose: f,
       title: i ? "Редактировать" : "Создать",
-      footer: /* @__PURE__ */ a.jsx(ae, { onClick: m, children: S("Обновить") }),
+      footer: /* @__PURE__ */ a.jsx(ae, { onClick: m, children: k("Обновить") }),
       children: /* @__PURE__ */ a.jsxs("div", { className: o0.form, children: [
         /* @__PURE__ */ a.jsx(
           Ye,
           {
-            label: S("Название команды"),
+            label: k("Название команды"),
             hint: fl(c.uuid),
             value: cp(c),
             readOnly: !0
@@ -11460,7 +11460,7 @@ const s0 = "_form_1i0x1_1", o0 = {
         /* @__PURE__ */ a.jsx(
           Zn,
           {
-            label: S("Завершать диалог"),
+            label: k("Завершать диалог"),
             checked: !!h.endStatus,
             onChange: (C) => y({
               endStatus: C.target.checked
@@ -11470,7 +11470,7 @@ const s0 = "_form_1i0x1_1", o0 = {
         h.actionType === "default_main" && /* @__PURE__ */ a.jsx(
           Zn,
           {
-            label: S("Передать команду серверу"),
+            label: k("Передать команду серверу"),
             checked: !!h.forwardCommandToServer,
             onChange: (C) => y({
               forwardCommandToServer: C.target.checked
@@ -11480,10 +11480,10 @@ const s0 = "_form_1i0x1_1", o0 = {
         h.actionType === "default_main" && h.forwardCommandToServer && /* @__PURE__ */ a.jsx(
           Xn,
           {
-            label: S("Скрипт Home Assistant"),
+            label: k("Скрипт Home Assistant"),
             value: h.script_entity_id ?? "",
             options: [
-              { value: "", label: S("Использовать существующие сценарии") },
+              { value: "", label: k("Использовать существующие сценарии") },
               ...g.map((C) => ({ value: C.entity_id, label: C.name })),
               ...h.script_entity_id && !g.some((C) => C.entity_id === h.script_entity_id) ? [{ value: h.script_entity_id, label: h.script_entity_id }] : []
             ],
@@ -11494,20 +11494,20 @@ const s0 = "_form_1i0x1_1", o0 = {
           /* @__PURE__ */ a.jsx(
             Ye,
             {
-              label: S("Тип результата скрипта"),
+              label: k("Тип результата скрипта"),
               value: "success",
               readOnly: !0,
-              hint: S("Ожидается ответ скрипта с типом success. После его получения будет озвучен текст из поля ниже.")
+              hint: k("Ожидается ответ скрипта с типом success. После его получения будет озвучен текст из поля ниже.")
             }
           ),
           /* @__PURE__ */ a.jsx(
             Ar,
             {
               rows: 8,
-              label: S("Текст озвучки"),
-              hint: S("Можно подставить данные из скрипта через ${имя}. Например, для текста «Ответ: ${reply}» передайте reply в поле variables действия ha_dialog_ui.send_command. Имена должны совпадать. Скрипт должен вернуть тип success."),
-              placeholder: S("Например: ${reply}"),
-              value: ((k = (_ = h.voiceResponseArray) == null ? void 0 : _.find((C) => C.actionType === "success")) == null ? void 0 : k.voiceResponse) ?? "",
+              label: k("Текст озвучки"),
+              hint: k("Можно подставить данные из скрипта через ${имя}. Например, для текста «Ответ: ${reply}» передайте reply в поле variables действия ha_dialog_ui.send_command. Имена должны совпадать. Скрипт должен вернуть тип success."),
+              placeholder: k("Например: ${reply}"),
+              value: ((S = (_ = h.voiceResponseArray) == null ? void 0 : _.find((C) => C.actionType === "success")) == null ? void 0 : S.voiceResponse) ?? "",
               onChange: (C) => y({ voiceResponseArray: [{ actionType: "success", voiceResponse: C.target.value }] })
             }
           )
@@ -11515,8 +11515,8 @@ const s0 = "_form_1i0x1_1", o0 = {
           Ar,
           {
             rows: 8,
-            "aria-label": S("Ответное сообщение"),
-            label: S("Ответное сообщение"),
+            "aria-label": k("Ответное сообщение"),
+            label: k("Ответное сообщение"),
             value: h.voiceResponse,
             onChange: (C) => y({
               voiceResponse: C.target.value
@@ -11532,14 +11532,14 @@ const s0 = "_form_1i0x1_1", o0 = {
     retry: x,
     loading: y,
     loadCommands: _,
-    getCommandDetails: k,
+    getCommandDetails: S,
     updateCommand: C,
     commands: P
   } = ip("get_assistant_settings_short"), N = Ir(P, y || !!g, _, l), E = { error: r.error ?? g, busy: r.busy, retry: r.error ? r.retry ?? (() => {
     r.clearError(), x();
   }) : x }, A = (I) => r.run(async () => {
     f(!0);
-    const z = await k("get_assistant_setting", I.uuid);
+    const z = await S("get_assistant_setting", I.uuid);
     h(z.data), c(!0);
   }, { retryable: !0 }), O = () => r.run(async () => {
     await C("update_assistant_setting", m), c(!1);
@@ -11554,7 +11554,7 @@ const s0 = "_form_1i0x1_1", o0 = {
     /* @__PURE__ */ a.jsxs("div", { className: G.page, children: [
       !i && /* @__PURE__ */ a.jsx(qe, { ...E }),
       l ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx(Ot, {}),
-      /* @__PURE__ */ a.jsx("div", { className: `${G.header} ${G.collectionHeader}`, children: /* @__PURE__ */ a.jsx("div", { className: G.headerTop, children: /* @__PURE__ */ a.jsx("div", { className: G.heading, children: !l && /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Ответы по умолчанию") }) }) }) }),
+      /* @__PURE__ */ a.jsx("div", { className: `${G.header} ${G.collectionHeader}`, children: /* @__PURE__ */ a.jsx("div", { className: G.headerTop, children: /* @__PURE__ */ a.jsx("div", { className: G.heading, children: !l && /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Ответы по умолчанию") }) }) }) }),
       /* @__PURE__ */ a.jsx("div", { className: G.list, children: /* @__PURE__ */ a.jsx(Or, { loading: y, itemCount: (P == null ? void 0 : P.data.length) ?? 0, append: l, children: P == null ? void 0 : P.data.map((I) => /* @__PURE__ */ a.jsx(
         Dr,
         {
@@ -11661,7 +11661,7 @@ const f0 = "_grid_fc8hl_1", p0 = "_card_fc8hl_8", m0 = "_actions_fc8hl_23", h0 =
   { kind: "scenarios", title: "Сценарии", description: "Все разделы «Команды»: основные, второстепенные, прямые, шаблоны и ответы по умолчанию. ID и связи сохраняются.", download: "Скачать сценарии", upload: "Загрузить сценарии" },
   { kind: "settings", title: "Настройки интеграции", description: "Тема, параметры подключения, API и звуки таймеров и будильников. Язык интерфейса в файл не входит.", download: "Скачать настройки", upload: "Загрузить настройки" }
 ], g0 = () => {
-  const r = _t(), l = Lr(), i = ot(), [c, d] = v.useState(!1), [f, m] = v.useState(""), [h, g] = v.useState(!1), x = v.useRef(null), y = v.useRef(null), _ = v.useRef("scripts"), k = async (C, P = !1) => {
+  const r = _t(), l = Lr(), i = ot(), [c, d] = v.useState(!1), [f, m] = v.useState(""), [h, g] = v.useState(!1), x = v.useRef(null), y = v.useRef(null), _ = v.useRef("scripts"), S = async (C, P = !1) => {
     x.current = P ? C : null, d(!0), m(""), g(!1);
     try {
       await C();
@@ -11672,36 +11672,36 @@ const f0 = "_grid_fc8hl_1", p0 = "_card_fc8hl_8", m0 = "_actions_fc8hl_23", h0 =
     }
   };
   return /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
-    /* @__PURE__ */ a.jsx(zt, { title: S("Импорт и экспорт") }),
+    /* @__PURE__ */ a.jsx(zt, { title: k("Импорт и экспорт") }),
     /* @__PURE__ */ a.jsxs("div", { className: `${G.page} ${$s.page}`, children: [
       /* @__PURE__ */ a.jsx(Ot, {}),
-      !i && /* @__PURE__ */ a.jsx("h1", { children: S("Импорт и экспорт") }),
+      !i && /* @__PURE__ */ a.jsx("h1", { children: k("Импорт и экспорт") }),
       /* @__PURE__ */ a.jsx("div", { className: $s.grid, children: y0.filter((C) => C.kind === "scripts" ? l === !0 : C.kind !== "scenarios" || l === !1).map((C) => /* @__PURE__ */ a.jsxs("section", { className: $s.card, children: [
-        /* @__PURE__ */ a.jsx("h2", { children: S(C.title) }),
-        /* @__PURE__ */ a.jsx("p", { className: $s.description, children: S(C.description) }),
+        /* @__PURE__ */ a.jsx("h2", { children: k(C.title) }),
+        /* @__PURE__ */ a.jsx("p", { className: $s.description, children: k(C.description) }),
         /* @__PURE__ */ a.jsxs("div", { className: $s.actions, children: [
-          /* @__PURE__ */ a.jsx(ae, { disabled: c, onClick: () => k(async () => {
+          /* @__PURE__ */ a.jsx(ae, { disabled: c, onClick: () => S(async () => {
             i0(`ha-dialog-ui-${C.kind}.json`, await u0(r, C.kind));
-          }, !0), children: S(C.download) }),
+          }, !0), children: k(C.download) }),
           /* @__PURE__ */ a.jsx(ae, { variant: "secondary", disabled: c, onClick: () => {
             var P;
             _.current = C.kind, (P = y.current) == null || P.click();
-          }, children: S(C.upload) })
+          }, children: k(C.upload) })
         ] })
       ] }, C.kind)) }),
       /* @__PURE__ */ a.jsx("input", { ref: y, type: "file", accept: ".json,application/json", hidden: !0, onChange: (C) => {
         var E;
         const P = (E = C.target.files) == null ? void 0 : E[0], N = _.current;
-        C.target.value = "", P && k(async () => {
+        C.target.value = "", P && S(async () => {
           const A = await d0(r, N, await P.text());
           N === "settings" && A !== null && typeof A == "object" && !Array.isArray(A) && (typeof A.theme == "string" && window.dispatchEvent(new CustomEvent("ha-dialog-ui-theme-change", { detail: A.theme })), typeof A.active_remout == "boolean" && window.dispatchEvent(new CustomEvent(sl, { detail: A.active_remout }))), m("Данные загружены.");
         });
       } }),
-      c && /* @__PURE__ */ a.jsx("p", { role: "status", children: S("Обработка файла...") }),
+      c && /* @__PURE__ */ a.jsx("p", { role: "status", children: k("Обработка файла...") }),
       /* @__PURE__ */ a.jsx(qe, { error: h ? f : null, busy: c, retry: x.current ? () => {
-        x.current && k(x.current, !0);
+        x.current && S(x.current, !0);
       } : void 0 }),
-      !h && f && /* @__PURE__ */ a.jsx("p", { role: "status", children: S(f) })
+      !h && f && /* @__PURE__ */ a.jsx("p", { role: "status", children: k(f) })
     ] })
   ] });
 };
@@ -11736,8 +11736,8 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
     });
   };
   return /* @__PURE__ */ a.jsxs("div", { className: tt.form, children: [
-    /* @__PURE__ */ a.jsx(Ye, { label: S("Base URL"), value: r.base_url ?? "", placeholder: S("http://192.168.31.83:9379"), onChange: (c) => i("base_url", c.target.value) }),
-    /* @__PURE__ */ a.jsx(Ye, { label: S("Token"), value: r.token ?? "", placeholder: S("Bearer ..."), onChange: (c) => i("token", c.target.value) })
+    /* @__PURE__ */ a.jsx(Ye, { label: k("Base URL"), value: r.base_url ?? "", placeholder: k("http://192.168.31.83:9379"), onChange: (c) => i("base_url", c.target.value) }),
+    /* @__PURE__ */ a.jsx(Ye, { label: k("Token"), value: r.token ?? "", placeholder: k("Bearer ..."), onChange: (c) => i("token", c.target.value) })
   ] });
 }, N0 = ({ data: r, musicOptions: l, musicUnavailable: i, onChange: c }) => {
   const d = (m, h) => {
@@ -11748,7 +11748,7 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
   }, f = (m, h, g = "") => {
     const x = l.some((y) => y.value === g);
     return /* @__PURE__ */ a.jsxs("label", { className: tt.field, children: [
-      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: S(m) }),
+      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: k(m) }),
       /* @__PURE__ */ a.jsxs(
         "select",
         {
@@ -11756,7 +11756,7 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
           value: g,
           onChange: (y) => d(h, y.target.value),
           children: [
-            /* @__PURE__ */ a.jsx("option", { value: "", children: S("Не выбрано") }),
+            /* @__PURE__ */ a.jsx("option", { value: "", children: k("Не выбрано") }),
             g && !x && /* @__PURE__ */ a.jsx("option", { value: g, children: g }),
             l.map((y) => /* @__PURE__ */ a.jsx("option", { value: y.value, children: y.label }, y.value))
           ]
@@ -11775,7 +11775,7 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
       "global_music_alarm",
       r.global_music_alarm
     ),
-    l.length === 0 && !i && /* @__PURE__ */ a.jsx("span", { className: tt.help, children: S("Музыка на сервере не найдена.") })
+    l.length === 0 && !i && /* @__PURE__ */ a.jsx("span", { className: tt.help, children: k("Музыка на сервере не найдена.") })
   ] });
 }, T0 = ({ data: r, onChange: l }) => {
   const i = Ef(), c = (d, f) => {
@@ -11786,7 +11786,7 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
   };
   return /* @__PURE__ */ a.jsxs("div", { className: tt.form, children: [
     /* @__PURE__ */ a.jsxs("label", { className: tt.field, children: [
-      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: S("Язык интерфейса") }),
+      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: k("Язык интерфейса") }),
       /* @__PURE__ */ a.jsxs(
         "select",
         {
@@ -11803,39 +11803,39 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
     /* @__PURE__ */ a.jsx(
       Ye,
       {
-        label: S("Client ID"),
+        label: k("Client ID"),
         value: r.client_id ?? "",
         onChange: (d) => c("client_id", d.target.value),
-        placeholder: S("Уникальный идентификатор клиента")
+        placeholder: k("Уникальный идентификатор клиента")
       }
     ),
     /* @__PURE__ */ a.jsxs("label", { className: tt.field, children: [
-      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: S("Theme") }),
+      /* @__PURE__ */ a.jsx("span", { className: tt.label, children: k("Theme") }),
       /* @__PURE__ */ a.jsxs("select", { className: tt.input, value: r.theme ?? "dark", onChange: (d) => c("theme", d.target.value), children: [
-        /* @__PURE__ */ a.jsx("option", { value: "dark", children: S("dark") }),
-        /* @__PURE__ */ a.jsx("option", { value: "light", children: S("light") })
+        /* @__PURE__ */ a.jsx("option", { value: "dark", children: k("dark") }),
+        /* @__PURE__ */ a.jsx("option", { value: "light", children: k("light") })
       ] })
     ] }),
-    /* @__PURE__ */ a.jsx(Zn, { label: S("Is admin"), checked: !!r.is_admin, onChange: (d) => c("is_admin", d.target.checked) })
+    /* @__PURE__ */ a.jsx(Zn, { label: k("Is admin"), checked: !!r.is_admin, onChange: (d) => c("is_admin", d.target.checked) })
   ] });
 }, R0 = ({ data: r, onChange: l }) => {
   const i = (c, d) => l({ ...r, [c]: d });
   return /* @__PURE__ */ a.jsxs("div", { className: tt.form, children: [
     /* @__PURE__ */ a.jsxs("div", { className: tt.toggleHelp, children: [
-      /* @__PURE__ */ a.jsx(Zn, { label: S("Подключаться к удалённому серверу"), checked: !!r.active_remout, onChange: (c) => i("active_remout", c.target.checked) }),
+      /* @__PURE__ */ a.jsx(Zn, { label: k("Подключаться к удалённому серверу"), checked: !!r.active_remout, onChange: (c) => i("active_remout", c.target.checked) }),
       /* @__PURE__ */ a.jsx(ll, { label: "Подключаться к удалённому серверу", description: "Интеграция подключается к существующему удалённому серверу и получает от него команды по SSE. Для их выполнения используются «Действия удалённых команд», а локальные разделы команд скрываются. Этот переключатель не запускает новый сервер." })
     ] }),
     /* @__PURE__ */ a.jsxs("div", { className: tt.toggleHelp, children: [
-      /* @__PURE__ */ a.jsx(Zn, { label: S("Включить API"), checked: !!r.api_commands_enabled, onChange: (c) => i("api_commands_enabled", c.target.checked) }),
+      /* @__PURE__ */ a.jsx(Zn, { label: k("Включить API"), checked: !!r.api_commands_enabled, onChange: (c) => i("api_commands_enabled", c.target.checked) }),
       /* @__PURE__ */ a.jsx(ll, { label: "Включить API", description: "Позволяет внешним приложениям отправлять команды в интеграцию и обмениваться с ней событиями по HTTP API. Адреса: /api/dialog/commands, /api/dialog/events, /api/dialog/event. Для доступа нужен токен API команд из поля ниже." })
     ] }),
     r.api_commands_enabled && /* @__PURE__ */ a.jsx(
       Ye,
       {
-        label: S("API Commands Token"),
+        label: k("API Commands Token"),
         value: r.api_commands_token ?? "",
         onChange: (c) => i("api_commands_token", c.target.value),
-        placeholder: S("Ключ доступа для API endpoints"),
+        placeholder: k("Ключ доступа для API endpoints"),
         type: "password"
       }
     )
@@ -11894,25 +11894,25 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
     i((N) => ({ ...N, ...P })), P.theme && P.theme !== l.theme && (window.dispatchEvent(new CustomEvent("ha-dialog-ui-theme-change", { detail: P.theme })), await c.run(async () => {
       await g({ theme: P.theme }), f((N) => ({ ...N, theme: P.theme }));
     }, { exclusive: !0 }));
-  }, k = () => c.run(async () => {
+  }, S = () => c.run(async () => {
     await g(vf(l, d)), f(l);
   }, { exclusive: !0 }), C = !!m && Object.keys(vf(l, d)).length > 0;
   return /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
     /* @__PURE__ */ a.jsx(
       zt,
       {
-        title: S("Настройки")
+        title: k("Настройки")
       }
     ),
     /* @__PURE__ */ a.jsxs("div", { className: G.page, children: [
       /* @__PURE__ */ a.jsx(Ot, {}),
-      r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { children: S("Настройки") }),
+      r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { children: k("Настройки") }),
       /* @__PURE__ */ a.jsxs("div", { className: G.settingsSections, children: [
         /* @__PURE__ */ a.jsx(qe, { ...x }),
         /* @__PURE__ */ a.jsx(qe, { ...y }),
         /* @__PURE__ */ a.jsx(qe, { ...c }),
-        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": S("Общие"), children: [
-          /* @__PURE__ */ a.jsx("h2", { children: S("Общие") }),
+        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": k("Общие"), children: [
+          /* @__PURE__ */ a.jsx("h2", { children: k("Общие") }),
           /* @__PURE__ */ a.jsx(
             T0,
             {
@@ -11925,8 +11925,8 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
             }
           )
         ] }),
-        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": S("Подключения"), children: [
-          /* @__PURE__ */ a.jsx("h2", { children: S("Подключения") }),
+        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": k("Подключения"), children: [
+          /* @__PURE__ */ a.jsx("h2", { children: k("Подключения") }),
           /* @__PURE__ */ a.jsxs("div", { className: G.connectionFields, children: [
             /* @__PURE__ */ a.jsx(R0, { data: l, onChange: _ }),
             l.active_remout && /* @__PURE__ */ a.jsx(
@@ -11938,8 +11938,8 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
             )
           ] })
         ] }),
-        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": S("Timer / Alarm"), children: [
-          /* @__PURE__ */ a.jsx("h2", { children: S("Timer / Alarm") }),
+        /* @__PURE__ */ a.jsxs("section", { className: G.settingsSection, "aria-label": k("Timer / Alarm"), children: [
+          /* @__PURE__ */ a.jsx("h2", { children: k("Timer / Alarm") }),
           /* @__PURE__ */ a.jsx(
             N0,
             {
@@ -11956,10 +11956,10 @@ const x0 = "_form_1ijxr_1", w0 = "_field_1ijxr_7", S0 = "_input_1ijxr_13", k0 = 
         {
           variant: "primary",
           disabled: c.busy || x.busy || !m,
-          onClick: k,
-          children: S("Сохранить")
+          onClick: S,
+          children: k("Сохранить")
         }
-      ) }) : /* @__PURE__ */ a.jsx("div", { className: G.settingsActions, children: /* @__PURE__ */ a.jsx(ae, { disabled: c.busy || x.busy || !m, onClick: k, children: S("Сохранить") }) }))
+      ) }) : /* @__PURE__ */ a.jsx("div", { className: G.settingsActions, children: /* @__PURE__ */ a.jsx(ae, { disabled: c.busy || x.busy || !m, onClick: S, children: k("Сохранить") }) }))
     ] })
   ] });
 }, Ri = (r) => {
@@ -11997,7 +11997,7 @@ function pp() {
       })
     );
     c(L.filter((J) => !!J && J.action_type === "create_timer"));
-  }, [r]), k = v.useCallback(async () => {
+  }, [r]), S = v.useCallback(async () => {
     const W = await r.getPage("get_alarm_requests_short", 1, 100), L = await Promise.all(
       gf(W).map(async (J) => {
         var K;
@@ -12019,12 +12019,12 @@ function pp() {
     x(!0);
     try {
       await l.run(async () => {
-        await Promise.all([_(), k(), C()]);
+        await Promise.all([_(), S(), C()]);
       }, { retryable: !0 });
     } finally {
       x(!1);
     }
-  }, [k, C, _, l.run]);
+  }, [S, C, _, l.run]);
   v.useEffect(() => {
     P();
   }, []);
@@ -12037,10 +12037,10 @@ function pp() {
     };
     return N(() => r.saveData({ name: `Таймер ${yf(L)}`, action_type: "create_timer", device_id: W, timer_time: B, volume_start: J }, "save_timer_request"), _);
   }, A = async (W) => N(() => r.deleteRecord(W.uuid, "delete_timer_request"), _), O = async (W, L, J = 0.3, B = "once", K = []) => N(() => r.saveData({ name: `Будильник ${L}`, action_type: "create_alarm", device_id: W, status: "on", time: L, volume_start: J, repeat_type: B, repeat_days: K }, "save_alarm_request"), async () => {
-    await Promise.all([k(), C()]);
+    await Promise.all([S(), C()]);
   }), I = async (W, L) => N(() => r.updateRecord(W.uuid, "update_alarm_request", { ...W, action_type: "edit_alarm", ...L }), async () => {
-    await Promise.all([k(), C()]);
-  }), z = async (W) => N(() => r.deleteRecord(W.uuid, "delete_alarm_request"), k);
+    await Promise.all([S(), C()]);
+  }), z = async (W) => N(() => r.deleteRecord(W.uuid, "delete_alarm_request"), S);
   return {
     feedback: { ...l, retry: l.error ? l.retry ?? (() => {
       P();
@@ -12092,7 +12092,7 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
   minutes: Math.floor(r % 3600 / 60),
   seconds: r % 60
 }), cw = () => {
-  const r = ot(), { feedback: l, createTimer: i, devices: c, loading: d, stopTimer: f, timers: m, toTimerSeconds: h } = pp(), [g, x] = v.useState(!1), [y, _] = v.useState(""), [k, C] = v.useState(0.3), [P, N] = v.useState({ hours: 0, minutes: 5, seconds: 0 }), [E, A] = v.useState({});
+  const r = ot(), { feedback: l, createTimer: i, devices: c, loading: d, stopTimer: f, timers: m, toTimerSeconds: h } = pp(), [g, x] = v.useState(!1), [y, _] = v.useState(""), [S, C] = v.useState(0.3), [P, N] = v.useState({ hours: 0, minutes: 5, seconds: 0 }), [E, A] = v.useState({});
   v.useEffect(() => {
     A(Object.fromEntries(m.map((L) => [L.uuid, h(L.timer_time, L.status)])));
   }, [m, h]), v.useEffect(() => {
@@ -12105,28 +12105,28 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
     return () => window.clearInterval(L);
   }, [m]);
   const O = v.useMemo(() => new Map(c.map((L) => [L.id, L.name])), [c]), I = iw(P.hours, P.minutes, P.seconds), z = async () => {
-    y && await i(y, I, k) && x(!1);
+    y && await i(y, I, S) && x(!1);
   }, W = (L) => N(uw(L * 60));
   return /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
-    /* @__PURE__ */ a.jsx(zt, { title: S("Таймеры") }),
+    /* @__PURE__ */ a.jsx(zt, { title: k("Таймеры") }),
     /* @__PURE__ */ a.jsxs("div", { className: G.page, children: [
       !g && /* @__PURE__ */ a.jsx(qe, { ...l }),
       /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: G.header, children: [
-        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Таймеры") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Таймеры") }) }),
         /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { startVisible: !0, children: /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: () => x(!0),
-            children: S("Добавить сценарий")
+            children: k("Добавить сценарий")
           }
         ) }) : /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: () => x(!0),
-            children: S("🞢 Создать")
+            children: k("🞢 Создать")
           }
         ) })
       ] }),
@@ -12139,7 +12139,7 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
             /* @__PURE__ */ a.jsxs("div", { children: [
               /* @__PURE__ */ a.jsx("h2", { className: le.cardTitle, children: _f(E[L.uuid] ?? J) }),
               /* @__PURE__ */ a.jsxs("div", { className: le.meta, children: [
-                S("Заведен на"),
+                k("Заведен на"),
                 " ",
                 _f(B),
                 " • ",
@@ -12147,12 +12147,12 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ a.jsx(ae, { variant: "remove", onClick: () => f(L), children: S("Удалить") })
+          /* @__PURE__ */ a.jsx(ae, { variant: "remove", onClick: () => f(L), children: k("Удалить") })
         ] }) }, L.uuid);
-      }) : !d && !l.error && /* @__PURE__ */ a.jsx("div", { className: le.empty, children: S("Нет запущенных таймеров.") }) }),
-      /* @__PURE__ */ a.jsx(on, { feedback: l, open: g, onClose: () => x(!1), title: S("Создать таймер"), footer: /* @__PURE__ */ a.jsx("div", { className: le.footerActions, children: /* @__PURE__ */ a.jsx(ae, { className: le.saveButton, onClick: z, disabled: !y, children: S("Создать") }) }), children: /* @__PURE__ */ a.jsxs("div", { className: le.form, children: [
-        /* @__PURE__ */ a.jsx("div", { className: le.wheelPicker, "aria-label": S("Длительность таймера"), children: ["hours", "minutes", "seconds"].map((L) => /* @__PURE__ */ a.jsxs("label", { className: le.wheelColumn, children: [
-          /* @__PURE__ */ a.jsx("span", { className: le.label, children: S(L === "hours" ? "Часы" : L === "minutes" ? "Минуты" : "Секунды") }),
+      }) : !d && !l.error && /* @__PURE__ */ a.jsx("div", { className: le.empty, children: k("Нет запущенных таймеров.") }) }),
+      /* @__PURE__ */ a.jsx(on, { feedback: l, open: g, onClose: () => x(!1), title: k("Создать таймер"), footer: /* @__PURE__ */ a.jsx("div", { className: le.footerActions, children: /* @__PURE__ */ a.jsx(ae, { className: le.saveButton, onClick: z, disabled: !y, children: k("Создать") }) }), children: /* @__PURE__ */ a.jsxs("div", { className: le.form, children: [
+        /* @__PURE__ */ a.jsx("div", { className: le.wheelPicker, "aria-label": k("Длительность таймера"), children: ["hours", "minutes", "seconds"].map((L) => /* @__PURE__ */ a.jsxs("label", { className: le.wheelColumn, children: [
+          /* @__PURE__ */ a.jsx("span", { className: le.label, children: k(L === "hours" ? "Часы" : L === "minutes" ? "Минуты" : "Секунды") }),
           /* @__PURE__ */ a.jsx(
             "input",
             {
@@ -12170,18 +12170,18 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
           )
         ] }, L)) }),
         /* @__PURE__ */ a.jsxs("div", { className: le.field, children: [
-          /* @__PURE__ */ a.jsx("span", { className: le.label, children: S("Быстрое создание") }),
+          /* @__PURE__ */ a.jsx("span", { className: le.label, children: k("Быстрое создание") }),
           /* @__PURE__ */ a.jsx("div", { className: le.quickTabs, children: aw.map((L) => /* @__PURE__ */ a.jsxs("button", { type: "button", className: `${le.quickTab} ${I === L * 60 ? le.activeQuickTab : ""}`, onClick: () => W(L), children: [
             L,
             " ",
-            S("мин")
+            k("мин")
           ] }, L)) })
         ] }),
         /* @__PURE__ */ a.jsx(
           Pr,
           {
-            label: S("Устройство воспроизведения"),
-            placeholder: S("Выберите устройство"),
+            label: k("Устройство воспроизведения"),
+            placeholder: k("Выберите устройство"),
             value: y,
             options: c.map((L) => ({ value: L.id, label: L.name })),
             onSelect: _
@@ -12189,14 +12189,14 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
         ),
         /* @__PURE__ */ a.jsxs("label", { className: le.field, children: [
           /* @__PURE__ */ a.jsxs("span", { className: `${le.label} ${le.volumeLabel}`, children: [
-            S("Стартовая громкость"),
+            k("Стартовая громкость"),
             " ",
             /* @__PURE__ */ a.jsxs("span", { className: le.volumeValue, children: [
-              Math.round(k * 100),
+              Math.round(S * 100),
               "%"
             ] })
           ] }),
-          /* @__PURE__ */ a.jsx("input", { className: le.input, type: "range", min: "0", max: "1", step: "0.05", value: k, onChange: (L) => C(Number(L.target.value)) })
+          /* @__PURE__ */ a.jsx("input", { className: le.input, type: "range", min: "0", max: "1", step: "0.05", value: S, onChange: (L) => C(Number(L.target.value)) })
         ] })
       ] }) })
     ] })
@@ -12226,11 +12226,11 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
   { value: "weekdays", label: "По будням" },
   { value: "weekends", label: "По выходным" },
   { value: "custom", label: "Выбранные дни" }
-], mw = (r = "once", l = []) => r === "daily" ? S("ежедневно") : r === "weekdays" ? S("по будням") : r === "weekends" ? S("по выходным") : r === "custom" ? l.length ? l.map((i) => {
+], mw = (r = "once", l = []) => r === "daily" ? k("ежедневно") : r === "weekdays" ? k("по будням") : r === "weekends" ? k("по выходным") : r === "custom" ? l.length ? l.map((i) => {
   var c;
-  return (c = Ai.find((d) => d.key === i)) != null && c.label ? S(Ai.find((d) => d.key === i).label) : i;
-}).join(", ") : S("кастом") : S("однократно"), hw = () => {
-  const r = ot(), { feedback: l, alarmTimeWidgets: i, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: m, devices: h, loading: g, updateAlarm: x } = pp(), [y, _] = v.useState(!1), [k, C] = v.useState(null), [P, N] = v.useState(null), [E, A] = v.useState(""), [O, I] = v.useState("08:00"), [z, W] = v.useState(0.3), [L, J] = v.useState("once"), [B, K] = v.useState([]), pe = v.useMemo(() => Array.from(new Set([...i.flatMap((H) => H.time || []), ...d.map((H) => H.time)].map(fw).filter((H) => H !== null))), [i, d]), de = v.useMemo(() => new Map(h.map((H) => [H.id, H.name])), [h]), Te = d.find((H) => H.uuid === k) || null, Ee = async () => {
+  return (c = Ai.find((d) => d.key === i)) != null && c.label ? k(Ai.find((d) => d.key === i).label) : i;
+}).join(", ") : k("кастом") : k("однократно"), hw = () => {
+  const r = ot(), { feedback: l, alarmTimeWidgets: i, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: m, devices: h, loading: g, updateAlarm: x } = pp(), [y, _] = v.useState(!1), [S, C] = v.useState(null), [P, N] = v.useState(null), [E, A] = v.useState(""), [O, I] = v.useState("08:00"), [z, W] = v.useState(0.3), [L, J] = v.useState("once"), [B, K] = v.useState([]), pe = v.useMemo(() => Array.from(new Set([...i.flatMap((H) => H.time || []), ...d.map((H) => H.time)].map(fw).filter((H) => H !== null))), [i, d]), de = v.useMemo(() => new Map(h.map((H) => [H.id, H.name])), [h]), Te = d.find((H) => H.uuid === S) || null, Ee = async () => {
     if (!E || !O) return;
     const H = d.find((D) => D.uuid === P);
     if (H) {
@@ -12243,25 +12243,25 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
     I(H.time), A(H.device_id), W(H.volume_start ?? 0.3), J(H.repeat_type ?? "once"), K(H.repeat_days ?? []), c(), N(H.uuid), C(null), _(!0);
   }, Ce = (H) => K((D) => D.includes(H) ? D.filter((X) => X !== H) : [...D, H]);
   return /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
-    /* @__PURE__ */ a.jsx(zt, { title: S("Будильники") }),
+    /* @__PURE__ */ a.jsx(zt, { title: k("Будильники") }),
     /* @__PURE__ */ a.jsxs("div", { className: G.page, children: [
       !y && /* @__PURE__ */ a.jsx(qe, { ...l }),
       /* @__PURE__ */ a.jsx(Ot, {}),
       /* @__PURE__ */ a.jsxs("div", { className: G.header, children: [
-        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: S("Будильники") }) }),
+        /* @__PURE__ */ a.jsx("div", { className: G.heading, children: r ? /* @__PURE__ */ a.jsx(a.Fragment, {}) : /* @__PURE__ */ a.jsx("h1", { className: G.title, children: k("Будильники") }) }),
         /* @__PURE__ */ a.jsx("div", { className: G.actions, children: r ? /* @__PURE__ */ a.jsx(tr, { startVisible: !0, children: /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: he,
-            children: S("Добавить сценарий")
+            children: k("Добавить сценарий")
           }
         ) }) : /* @__PURE__ */ a.jsx(
           ae,
           {
             variant: "primary",
             onClick: he,
-            children: S("🞢 Создать")
+            children: k("🞢 Создать")
           }
         ) })
       ] }),
@@ -12283,18 +12283,18 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
           {
             onClick: (D) => D.stopPropagation(),
             onMouseDown: (D) => D.stopPropagation(),
-            children: /* @__PURE__ */ a.jsx(Zn, { label: S(""), checked: H.status !== "off", onClick: (D) => D.stopPropagation(), onChange: (D) => x(H, { status: D.currentTarget.checked ? "on" : "off" }) })
+            children: /* @__PURE__ */ a.jsx(Zn, { label: k(""), checked: H.status !== "off", onClick: (D) => D.stopPropagation(), onChange: (D) => x(H, { status: D.currentTarget.checked ? "on" : "off" }) })
           }
         )
-      ] }) }, H.uuid)) : !g && !l.error && /* @__PURE__ */ a.jsx("div", { className: le.empty, children: S("Нет будильников.") }) }),
+      ] }) }, H.uuid)) : !g && !l.error && /* @__PURE__ */ a.jsx("div", { className: le.empty, children: k("Нет будильников.") }) }),
       /* @__PURE__ */ a.jsx(on, { feedback: l, open: y, onClose: () => {
         _(!1), N(null);
-      }, title: P ? "Редактировать будильник" : "Создать будильник", footer: /* @__PURE__ */ a.jsx("div", { className: le.footerActions, children: /* @__PURE__ */ a.jsx(ae, { className: le.saveButton, onClick: Ee, disabled: !E || !O, children: S("Сохранить") }) }), children: /* @__PURE__ */ a.jsxs("div", { className: le.form, children: [
-        /* @__PURE__ */ a.jsxs("div", { className: le.alarmTimeFields, role: "group", "aria-label": S("Время будильника"), children: [
+      }, title: P ? "Редактировать будильник" : "Создать будильник", footer: /* @__PURE__ */ a.jsx("div", { className: le.footerActions, children: /* @__PURE__ */ a.jsx(ae, { className: le.saveButton, onClick: Ee, disabled: !E || !O, children: k("Сохранить") }) }), children: /* @__PURE__ */ a.jsxs("div", { className: le.form, children: [
+        /* @__PURE__ */ a.jsxs("div", { className: le.alarmTimeFields, role: "group", "aria-label": k("Время будильника"), children: [
           /* @__PURE__ */ a.jsx(
             Pr,
             {
-              label: S("Часы"),
+              label: k("Часы"),
               value: O.split(":")[0],
               options: Array.from({ length: 24 }, (H, D) => ({ value: String(D).padStart(2, "0"), label: String(D).padStart(2, "0") })),
               onSelect: (H) => I(`${H}:${O.split(":")[1]}`)
@@ -12303,7 +12303,7 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
           /* @__PURE__ */ a.jsx(
             Pr,
             {
-              label: S("Минуты"),
+              label: k("Минуты"),
               value: O.split(":")[1],
               options: Array.from({ length: 60 }, (H, D) => ({ value: String(D).padStart(2, "0"), label: String(D).padStart(2, "0") })),
               onSelect: (H) => I(`${O.split(":")[0]}:${H}`)
@@ -12311,34 +12311,34 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
           )
         ] }),
         /* @__PURE__ */ a.jsxs("div", { className: le.field, children: [
-          /* @__PURE__ */ a.jsx("span", { className: le.label, children: S("Ранее заданное время") }),
-          /* @__PURE__ */ a.jsx("div", { className: le.quickTabs, children: pe.length ? pe.map((H) => /* @__PURE__ */ a.jsx("button", { type: "button", className: `${le.quickTab} ${O === H ? le.activeQuickTab : ""}`, onClick: () => I(H), children: H }, H)) : /* @__PURE__ */ a.jsx("span", { className: le.meta, children: S("Нет быстрых значений.") }) })
+          /* @__PURE__ */ a.jsx("span", { className: le.label, children: k("Ранее заданное время") }),
+          /* @__PURE__ */ a.jsx("div", { className: le.quickTabs, children: pe.length ? pe.map((H) => /* @__PURE__ */ a.jsx("button", { type: "button", className: `${le.quickTab} ${O === H ? le.activeQuickTab : ""}`, onClick: () => I(H), children: H }, H)) : /* @__PURE__ */ a.jsx("span", { className: le.meta, children: k("Нет быстрых значений.") }) })
         ] }),
         /* @__PURE__ */ a.jsx(
           Pr,
           {
-            label: S("Повторы"),
+            label: k("Повторы"),
             value: L,
-            options: pw.map((H) => ({ ...H, label: S(H.label) })),
+            options: pw.map((H) => ({ ...H, label: k(H.label) })),
             onSelect: (H) => J(H)
           }
         ),
-        L === "custom" && /* @__PURE__ */ a.jsx("div", { className: le.quickTabs, role: "group", "aria-label": S("Дни повтора"), children: Ai.map((H) => /* @__PURE__ */ a.jsx(
+        L === "custom" && /* @__PURE__ */ a.jsx("div", { className: le.quickTabs, role: "group", "aria-label": k("Дни повтора"), children: Ai.map((H) => /* @__PURE__ */ a.jsx(
           "button",
           {
             type: "button",
             "aria-pressed": B.includes(H.key),
             className: `${le.quickTab} ${B.includes(H.key) ? le.activeQuickTab : ""}`,
             onClick: () => Ce(H.key),
-            children: S(H.label)
+            children: k(H.label)
           },
           H.key
         )) }),
         /* @__PURE__ */ a.jsx(
           Pr,
           {
-            label: S("Устройство воспроизведения"),
-            placeholder: S("Выберите устройство"),
+            label: k("Устройство воспроизведения"),
+            placeholder: k("Выберите устройство"),
             value: E,
             options: h.map((H) => ({ value: H.id, label: H.name })),
             onSelect: A
@@ -12346,7 +12346,7 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
         ),
         /* @__PURE__ */ a.jsxs("label", { className: le.field, children: [
           /* @__PURE__ */ a.jsxs("span", { className: `${le.label} ${le.volumeLabel}`, children: [
-            S("Стартовая громкость"),
+            k("Стартовая громкость"),
             " ",
             /* @__PURE__ */ a.jsxs("span", { className: le.volumeValue, children: [
               Math.round(z * 100),
@@ -12499,17 +12499,17 @@ const D0 = "_grid_w5y3x_31", z0 = "_card_w5y3x_38", O0 = "_empty_w5y3x_38", F0 =
   return v.useEffect(() => {
     yw(h);
   }, [h]), v.useEffect(() => {
-    let x = !0, y = !1, _ = !1, k = !1;
+    let x = !0, y = !1, _ = !1, S = !1;
     r.run(async () => {
       const E = await i.getSettings();
-      x && (y || g(wi(E.theme)), k || d(!!E.api_commands_enabled), _ || m(!!E.active_remout));
+      x && (y || g(wi(E.theme)), S || d(!!E.api_commands_enabled), _ || m(!!E.active_remout));
     }, { retryable: !0 });
     const C = (E) => {
       y = !0, g(wi(E.detail));
     }, P = (E) => {
       _ = !0, m(E.detail);
     }, N = (E) => {
-      k = !0, d(!!E.detail);
+      S = !0, d(!!E.detail);
     };
     return window.addEventListener(ji, N), window.addEventListener(sl, P), window.addEventListener("ha-dialog-ui-theme-change", C), () => {
       x = !1, window.removeEventListener(ji, N), window.removeEventListener(sl, P), window.removeEventListener("ha-dialog-ui-theme-change", C);
@@ -12617,11 +12617,11 @@ class _w {
         type: "media_source/browse_media",
         media_content_id: x
       }), _ = Array.isArray(y == null ? void 0 : y.children) ? y.children : [];
-      await Promise.all(_.map(async (k) => {
+      await Promise.all(_.map(async (S) => {
         var N;
-        const C = String((k == null ? void 0 : k.media_content_id) || ""), P = String((k == null ? void 0 : k.title) || C);
+        const C = String((S == null ? void 0 : S.media_content_id) || ""), P = String((S == null ? void 0 : S.title) || C);
         if (C) {
-          if (k != null && k.can_expand) {
+          if (S != null && S.can_expand) {
             try {
               await g(C);
             } catch (E) {
@@ -12629,7 +12629,7 @@ class _w {
             }
             return;
           }
-          if (l.test(P) || l.test(C) || (k == null ? void 0 : k.media_content_type) === "music" || (N = k == null ? void 0 : k.media_content_type) != null && N.startsWith("audio/")) {
+          if (l.test(P) || l.test(C) || (S == null ? void 0 : S.media_content_type) === "music" || (N = S == null ? void 0 : S.media_content_type) != null && N.startsWith("audio/")) {
             const E = "media-source://media_source/local/", A = C.startsWith(E) ? C.slice(E.length) : C;
             d.set(A, {
               value: A,
@@ -12683,19 +12683,19 @@ function ww({
   return v.useEffect(() => {
     let _ = !0;
     c(null);
-    async function k() {
+    async function S() {
       const C = l ? hp(l) : await xw();
       if (!_) return;
       m.current ? m.current.setHass(C) : m.current = new _w(C);
       const P = C.user ?? await C.connection.sendMessagePromise({ type: "auth/current_user" });
       _ && (g((P == null ? void 0 : P.is_admin) === !0), y(!0));
     }
-    return k().catch((C) => {
+    return S().catch((C) => {
       _ && c(Jn(C));
     }), () => {
       _ = !1;
     };
-  }, [l, d]), i ? /* @__PURE__ */ a.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ a.jsx(qe, { error: i, retry: () => f((_) => _ + 1) }) }) : !x || !m.current ? /* @__PURE__ */ a.jsx(Ds, { label: S("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ a.jsx(Kf.Provider, { value: m.current, children: /* @__PURE__ */ a.jsx(tp.Provider, { value: h, children: r }) });
+  }, [l, d]), i ? /* @__PURE__ */ a.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ a.jsx(qe, { error: i, retry: () => f((_) => _ + 1) }) }) : !x || !m.current ? /* @__PURE__ */ a.jsx(Ds, { label: k("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ a.jsx(Kf.Provider, { value: m.current, children: /* @__PURE__ */ a.jsx(tp.Provider, { value: h, children: r }) });
 }
 function Sw({ hass: r }) {
   return /* @__PURE__ */ a.jsx(ky, { children: /* @__PURE__ */ a.jsx(ww, { hass: r, children: /* @__PURE__ */ a.jsx(gw, {}) }) });

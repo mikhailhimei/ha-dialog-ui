@@ -24,7 +24,7 @@ import { CommandDetails } from "@/types/commandTypes";
 import styles from "@/pages/GlobalsPage.module.scss";
 
 const createEmptyCommand = (): CommandDetails => ({
-  status: false,
+  status: true,
   title: "",
   subDirectControl: [],
 });

@@ -32,7 +32,7 @@ export function LinkedCommandEditor({ target, onBack, onSaved }: {
           response = await api.getRecord<CommandDetails>(target.uuid, "get_assistant_sub_command");
         }
       }
-      if (!cancelled) { setFormData(response.data); setKind(loadedKind); }
+      if (!cancelled) { setFormData({ ...response.data, status: response.data.status ?? false }); setKind(loadedKind); }
     }, { retryable: true });
     return () => { cancelled = true; };
   }, [api, target.uuid, target.kind, feedback.run]);

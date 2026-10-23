@@ -720,7 +720,7 @@ try {
     }
     await panel.getByLabel('Название команды',{exact:true}).fill('Новая команда');
     await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
-    await panel.getByRole('button',{name:/Новая команда.*Выключена/}).waitFor();
+    await panel.getByRole('button',{name:/Новая команда.*Включена/}).waitFor();
     await panel.getByRole('button',{name:/Команда 2.*Включена/}).waitFor();
   }
   await page.setViewportSize({width:1100,height:900});
@@ -728,7 +728,7 @@ try {
   await panel.getByText(/Заведен на/).waitFor();
   await page.evaluate(()=>{window.crudRecords[1].componentDialog=window.crudRecords[0].componentDialog;location.hash='/commands/main'});
   await panel.getByRole('button',{name:'Страница 2',exact:true}).click();
-  await panel.getByRole('button',{name:/Новая команда.*Выключена/}).click();
+  await panel.getByRole('button',{name:/Новая команда.*Включена/}).click();
   await panel.getByRole('button',{name:'Изменить',exact:true}).click();
   await panel.getByLabel('Название команды',{exact:true}).fill('Изменено на второй странице');
   await panel.getByRole('button',{name:'Обновить',exact:true}).click();
@@ -819,6 +819,7 @@ try {
     await page.waitForFunction(()=>window.createdTemplate?.title==='Новый шаблон');
     const createdTemplate = await page.evaluate(()=>window.createdTemplate);
     assert.deepEqual(createdTemplate.subDirectControl,[]);
+    assert.equal(createdTemplate.status,true);
     assert.equal('directTemplate' in createdTemplate,false);
     await page.evaluate(()=>{window.createdTemplate=null});
 
@@ -1353,6 +1354,7 @@ try {
     await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
     await panel.getByRole('tab',{name:'Прямые команды',exact:true}).waitFor();
     assert.equal(await page.evaluate(()=>window.savedLinkedDirect.title),'Изменённая прямая');
+    assert.equal(await page.evaluate(()=>window.savedLinkedDirect.status),false,'Editing a legacy direct command sends the same disabled status used in the list');
     assert.equal(await panel.getByRole('combobox',{name:'Команда',exact:true}).locator('option:checked').textContent(),'Изменённая прямая');
     await panel.getByRole('tab',{name:'Продолжения',exact:true}).click();
     await panel.getByRole('button',{name:'Перейти к команде',exact:true}).click();

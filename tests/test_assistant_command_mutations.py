@@ -129,3 +129,56 @@ async def test_create_and_update_without_action_type_keep_generated_uuid(runtime
     assert normalize_command(items[0], key)['actionType'] == command_id
     assert 'actionType' not in items[0][key]
     connection.send_error.assert_not_called()
+
+
+@pytest.mark.parametrize('collection', ['command', 'subcommand', 'direct'])
+@pytest.mark.parametrize('status', [None, False, True])
+async def test_edit_legacy_record_without_status_preserves_explicit_states(runtime, collection, status):
+    hass, _ = runtime
+    module, suffix, dialog_key = {
+        'command': (api, 'assistant_command', 'componentDialog'),
+        'subcommand': (assistant_sub_commands_api, 'assistant_sub_command', 'subComponentDialog'),
+        'direct': (assistant_sub_direct_controls_api, 'assistant_sub_direct_control', 'directControl'),
+    }[collection]
+    item = command('legacy', 'В доме', dialog_key)
+    if status is None:
+        item.pop('status')
+    else:
+        item['status'] = status
+    load = getattr(module, 'async_load_' + suffix + 's')
+    save = getattr(module, 'async_save_' + suffix + 's')
+    await save(hass, [item])
+    connection = SimpleNamespace(send_result=Mock(), send_error=Mock())
+    handler = async_handler(getattr(module, '_ws_update_' + suffix))
+    await handler(hass, connection, {'id': 61, 'uuid': 'legacy', 'data': {'title': 'В доме после правки'}})
+    connection.send_error.assert_not_called()
+    connection.send_result.assert_called_once()
+    stored = (await load(hass))[0]
+    assert stored['status'] is (False if status is None else status)
+    assert stored['title'] == 'В доме после правки'
+    assert stored[dialog_key] == item[dialog_key]
+
+
+@pytest.mark.parametrize('collection', ['command', 'subcommand', 'direct', 'template'])
+@pytest.mark.parametrize('explicit_status', [None, False, True])
+async def test_create_defaults_to_enabled_and_preserves_explicit_status(runtime, collection, explicit_status):
+    from custom_components.ha_dialog_ui.src.api.assistant_commands import assistant_sub_direct_controls_sample_api as samples
+    hass, _ = runtime
+    module, suffix, key = {
+        'command': (api, 'assistant_command', 'componentDialog'),
+        'subcommand': (assistant_sub_commands_api, 'assistant_sub_command', 'subComponentDialog'),
+        'direct': (assistant_sub_direct_controls_api, 'assistant_sub_direct_control', 'directControl'),
+        'template': (samples, 'assistant_sub_direct_control_sample', None),
+    }[collection]
+    item = command('ignored', 'Новая команда', key) if key else {'title': 'Набор комнат', 'subDirectControl': []}
+    item.pop('status', None)
+    if explicit_status is not None:
+        item['status'] = explicit_status
+    before = deepcopy(item)
+    connection = SimpleNamespace(send_result=Mock(), send_error=Mock())
+    await async_handler(getattr(module, '_ws_save_' + suffix))(hass, connection, {'id': 1, 'data': item})
+    connection.send_error.assert_not_called()
+    connection.send_result.assert_called_once()
+    stored = (await getattr(module, 'async_load_' + suffix + 's')(hass))[0]
+    assert stored['status'] is (True if explicit_status is None else explicit_status)
+    assert item == before

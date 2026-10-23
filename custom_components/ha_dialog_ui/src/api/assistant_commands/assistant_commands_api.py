@@ -163,7 +163,7 @@ async def _ws_get_assistant_command(hass, connection, msg):
 @websocket_api.async_response
 @serialize_collection_mutation("assistant_commands")
 async def _ws_save_assistant_command(hass, connection, msg):
-    assistant_command = msg["data"]
+    assistant_command = {"status": True, **msg["data"]}
 
     missing = _missing_required(assistant_command, include_uuid=False)
     if missing:
@@ -201,6 +201,8 @@ async def _ws_update_assistant_command(hass, connection, msg):
 
     updated = _deep_merge(existing, assistant_command)
     updated["uuid"] = _normalize_value(msg["uuid"])
+    # Older imported records may omit status; the list already treats them as disabled.
+    updated.setdefault("status", False)
 
     missing = _missing_required(updated, include_uuid=True)
     if missing:

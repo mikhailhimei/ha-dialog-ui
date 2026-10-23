@@ -235,7 +235,7 @@ async def _ws_get_assistant_sub_direct_control(hass, connection, msg):
 @websocket_api.async_response
 @serialize_collection_mutation("assistant_sub_direct_controls")
 async def _ws_save_assistant_sub_direct_control(hass, connection, msg):
-    assistant_sub_direct_control = msg["data"]
+    assistant_sub_direct_control = {"status": True, **msg["data"]}
 
     missing = _missing_required(assistant_sub_direct_control, include_uuid=False)
     if missing:
@@ -290,6 +290,8 @@ async def _ws_update_assistant_sub_direct_control(hass, connection, msg):
 
     updated = _deep_merge(existing, assistant_sub_direct_control)
     updated["uuid"] = _normalize_value(msg["uuid"])
+    # Older imported records may omit status; the list already treats them as disabled.
+    updated.setdefault("status", False)
 
     missing = _missing_required(updated, include_uuid=True)
     if missing:

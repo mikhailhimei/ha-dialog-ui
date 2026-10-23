@@ -23,7 +23,7 @@ import { CommandDirectModal } from '@/components/CommandEditorModal/CommandEdito
 import styles from "@/pages/GlobalsPage.module.scss";
 
 const createEmptyCommand = (): CommandDetails => ({
-  status: false,
+  status: true,
   title: "",
   directControl: {
     mappingType: "",
