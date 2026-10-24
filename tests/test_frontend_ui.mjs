@@ -24,6 +24,15 @@ try {
     window.hass = { user: {is_admin:true}, states: {'script.bound':{entity_id:'script.bound',state:'off',attributes:{friendly_name:'Управление светом'}}}, connection: { sendMessagePromise: async message => {
       window.apiRequests.push(message.type);
       const requestType = message.type.split('/').pop();
+      if (requestType==='get_whisper_prompt') return window.whisperSettings || {url:'',initial_prompt:'',has_token:false};
+      if (requestType==='read_whisper_prompt') return {initial_prompt:'Пылесос, коридор, коты.'};
+      if (requestType==='save_whisper_prompt') {
+        if (window.whisperSaveFailure) throw {code:'whisper_prompt_error',message:'Whisper отклонил токен доступа'};
+        window.whisperSaveRequest=message.data;
+        window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt,has_token:true};
+        return {initial_prompt:message.data.initial_prompt,applied:true};
+      }
+
       if (window.pauseCommandList && requestType === 'get_assistant_commands_short') {
         await new Promise(resolve => { window.releaseCommandList = resolve; });
       }
@@ -1439,6 +1448,41 @@ try {
     await themeSelect.waitFor();
   }
   await page.evaluate(()=>{window.namedCommandFixtures=false});
+  console.log('Checking Whisper prompt tabs, live save feedback, mobile layout and admin gating');
+  for (const width of [1100,390]) {
+    await page.setViewportSize({width,height:900});
+    await page.evaluate(()=>{location.hash='/commands/settings'});
+    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).click();
+    const whisperUrl=panel.getByLabel('Адрес API Whisper',{exact:true});
+    const whisperToken=panel.getByLabel('Токен API Whisper',{exact:true});
+    const whisperText=panel.getByLabel('Промпт распознавания',{exact:true});
+    await whisperUrl.waitFor();
+    await whisperUrl.fill('http://whisper.local:10301');
+    await whisperToken.fill('test-token');
+    await panel.getByRole('button',{name:'Прочитать из Whisper',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('ha-dialog-ui-panel').shadowRoot.querySelector('textarea')?.value==='Пылесос, коридор, коты.');
+    await whisperText.fill('Включи свет. Насыпь еды.');
+    await page.evaluate(()=>{window.whisperSaveFailure=true});
+    await panel.getByRole('button',{name:'Сохранить и применить',exact:true}).click();
+    await panel.getByText('Whisper отклонил токен доступа',{exact:true}).waitFor();
+    assert.equal(await whisperText.inputValue(),'Включи свет. Насыпь еды.','API failure preserves the prompt draft');
+    await page.evaluate(()=>{window.whisperSaveFailure=false});
+    await panel.getByRole('button',{name:'Сохранить и применить',exact:true}).click();
+    await panel.getByText('Сохранено и применено в Whisper. Перезапуск контейнера не нужен.',{exact:true}).waitFor();
+    assert.equal(await whisperToken.inputValue(),'','Saved token is not redisplayed');
+    assert.deepEqual(await page.evaluate(()=>window.whisperSaveRequest),{url:'http://whisper.local:10301',token:'test-token',initial_prompt:'Включи свет. Насыпь еды.'});
+    assert.equal(await panel.locator('.appShell').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,'Prompt form fits the viewport');
+    await panel.getByRole('button',{name:'Ответы по умолчанию',exact:true}).click();
+    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).click();
+    await whisperToken.waitFor();
+    assert.equal(await whisperToken.inputValue(),'');
+    await panel.evaluate(element=>{element.hass={...window.hass,user:{is_admin:false}}});
+    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).waitFor({state:'hidden'});
+    assert.equal(await whisperUrl.count(),0,'Non-admin cannot access the prompt form');
+    await panel.evaluate(element=>{element.hass=window.hass});
+    await page.evaluate(()=>{location.hash='/settings'});
+    await themeSelect.waitFor();
+  }
   console.log('Checking API logs navigation, responsive entries and disabled route guard');
   await page.setViewportSize({width:1100,height:900});
   assert.equal(await panel.getByRole('link',{name:'Логи',exact:true}).count(),0);

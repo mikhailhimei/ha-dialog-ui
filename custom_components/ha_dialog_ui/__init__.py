@@ -28,6 +28,7 @@ from .src.api.assistant_commands.assistant_settings import async_register_assist
 from .src.api.settings.settings_api import async_register_settings_websockets
 from .timer_alarm.websocket import async_register_timer_alarm_websockets
 from .storage.legacy_migration import async_migrate_legacy_storage
+from .whisper_prompt import async_register_whisper_prompt_websockets
 from .panel import async_register_panel
 from .services import async_register_services, async_unregister_services
 from .src.service.dialog_state import (
@@ -52,6 +53,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     _initialize_domain_runtime(hass)
     async_register_command_transfer_websockets(hass)
     async_register_logs_websockets(hass)
+    async_register_whisper_prompt_websockets(hass)
     async_register_script_actions_websockets(hass)
     async_register_timer_requests_websockets(hass)
     async_register_alarm_requests_websockets(hass)

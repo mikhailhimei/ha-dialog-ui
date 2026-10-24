@@ -1266,5 +1266,81 @@
   "Тело ответа": {
     "ru": "Тело ответа",
     "en": "Response body"
+  },
+  "Промпт распознавания": {
+    "ru": "Промпт распознавания",
+    "en": "Recognition prompt"
+  },
+  "Адрес API Whisper": {
+    "ru": "Адрес API Whisper",
+    "en": "Whisper API URL"
+  },
+  "Токен API Whisper": {
+    "ru": "Токен API Whisper",
+    "en": "Whisper API token"
+  },
+  "Прочитать из Whisper": {
+    "ru": "Прочитать из Whisper",
+    "en": "Read from Whisper"
+  },
+  "Сохранить и применить": {
+    "ru": "Сохранить и применить",
+    "en": "Save and apply"
+  },
+  "Токен сохранён; оставьте пустым, чтобы сохранить его": {
+    "ru": "Токен сохранён; оставьте пустым, чтобы сохранить его",
+    "en": "Token saved; leave blank to keep it"
+  },
+  "Сохранено и применено в Whisper. Перезапуск контейнера не нужен.": {
+    "ru": "Сохранено и применено в Whisper. Перезапуск контейнера не нужен.",
+    "en": "Saved and applied in Whisper. No container restart is required."
+  },
+  "Адрес контейнера Whisper с API промпта, например http://192.168.1.10:10301. Это отдельный HTTP-порт, не Wyoming-порт 10300.": {
+    "ru": "Адрес контейнера Whisper с API промпта, например http://192.168.1.10:10301. Это отдельный HTTP-порт, не Wyoming-порт 10300.",
+    "en": "Address of the Whisper container prompt API, for example http://192.168.1.10:10301. This is a separate HTTP port, not the Wyoming port 10300."
+  },
+  "Значение WHISPER_PROMPT_TOKEN из .env контейнера, без префикса Bearer. Сохранённый токен не показывается. При смене адреса укажите токен заново.": {
+    "ru": "Значение WHISPER_PROMPT_TOKEN из .env контейнера, без префикса Bearer. Сохранённый токен не показывается. При смене адреса укажите токен заново.",
+    "en": "WHISPER_PROMPT_TOKEN from the container .env file, without the Bearer prefix. The saved token is not displayed. Enter the token again when changing the server address."
+  },
+  "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.": {
+    "ru": "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.",
+    "en": "Whisper initial_prompt hint: vocabulary, names and example phrases, such as “Feed the cats. Start the vacuum. Turn on the hallway light.” It guides speech recognition, not the dialog. Empty text disables the hint. Saved changes apply to the next transcription without reloading the model."
+  },
+  "Укажите адрес API Whisper, например http://192.168.1.10:10301": {
+    "ru": "Укажите адрес API Whisper, например http://192.168.1.10:10301",
+    "en": "Enter the Whisper API URL, for example http://192.168.1.10:10301"
+  },
+  "Укажите токен API Whisper": {
+    "ru": "Укажите токен API Whisper",
+    "en": "Enter the Whisper API token"
+  },
+  "Whisper отклонил токен доступа": {
+    "ru": "Whisper отклонил токен доступа",
+    "en": "Whisper rejected the access token"
+  },
+  "API Whisper вернул некорректный ответ": {
+    "ru": "API Whisper вернул некорректный ответ",
+    "en": "Whisper API returned an invalid response"
+  },
+  "Промпт Whisper слишком длинный": {
+    "ru": "Промпт Whisper слишком длинный",
+    "en": "The Whisper prompt is too long"
+  },
+  "Ответ API Whisper слишком большой": {
+    "ru": "Ответ API Whisper слишком большой",
+    "en": "The Whisper API response is too large"
+  },
+  "Whisper не подтвердил применение промпта": {
+    "ru": "Whisper не подтвердил применение промпта",
+    "en": "Whisper did not confirm the prompt update"
+  },
+  "Не удалось подключиться к API Whisper. Проверьте адрес, порт и доступность контейнера.": {
+    "ru": "Не удалось подключиться к API Whisper. Проверьте адрес, порт и доступность контейнера.",
+    "en": "Could not connect to the Whisper API. Check the address, port and container availability."
+  },
+  "Промпт применён в Whisper, но не удалось сохранить настройки Home Assistant. Повторите сохранение.": {
+    "ru": "Промпт применён в Whisper, но не удалось сохранить настройки Home Assistant. Повторите сохранение.",
+    "en": "The prompt was applied in Whisper, but Home Assistant could not save the settings. Save again."
   }
 }

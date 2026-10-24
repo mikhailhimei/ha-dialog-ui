@@ -1,3 +1,5 @@
+import { useIsAdmin } from "@/context/AdminContext";
+import { WhisperPromptForm } from "@/components/WhisperPromptForm/WhisperPromptForm";
 import { assistantSettingTitle } from "@/utils/assistantSettingLabels";
 import { ApiError } from "@/components/ui/ApiError/ApiError";
 import { useApiFeedback } from "@/hooks/useApiFeedback";
@@ -19,6 +21,16 @@ import { CommandSettingEditorModal } from '@/components/CommandSettingEditorModa
 import styles from "@/pages/GlobalsPage.module.scss";
 
 export const CommandSettingsPage = () => {
+  const isAdmin = useIsAdmin();
+  const [tab, setTab] = useState<"responses" | "whisper">("responses");
+  const showPrompt = isAdmin && tab === "whisper";
+  const pageTitle = showPrompt ? "Промпт распознавания" : "Ответы по умолчанию";
+  const tabs = isAdmin ? <div className={styles.innerTabs} role="group" aria-label={t("Настройки команд")}>
+    {([ ["responses", "Ответы по умолчанию"], ["whisper", "Промпт распознавания"] ] as const).map(([key, label]) =>
+      <button key={key} type="button" aria-pressed={tab === key} className={`${styles.innerTab} ${tab === key ? styles.activeInnerTab : ""}`}
+        onClick={()=>setTab(key)}>{t(label)}</button>
+    )}
+  </div> : null;
   const action = useApiFeedback();
   const isMobile = useIsMobile();
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,7 +69,8 @@ export const CommandSettingsPage = () => {
   return (
     <>
       <MobileHeader
-        title={"Ответы по умолчанию"}
+        title={pageTitle}
+        beforeSearch={tabs}
       />
 
       <div className={styles.page}>
@@ -68,11 +81,13 @@ export const CommandSettingsPage = () => {
         <div className={`${styles.header} ${styles.collectionHeader}`}>
           <div className={styles.headerTop}>
             <div className={styles.heading}>
-              {!isMobile && <h1 className={styles.title}>{t("Ответы по умолчанию")}</h1>}
+              {!isMobile && <h1 className={styles.title}>{t(pageTitle)}</h1>}
             </div>
           </div>
         </div>
 
+        {!isMobile && tabs}
+        {showPrompt ? <WhisperPromptForm /> : <>
         <div className={styles.list}>
           <ListSkeleton loading={loading} itemCount={commands?.data.length ?? 0} append={isMobile}>
           {commands?.data.map((command) => (
@@ -103,6 +118,7 @@ export const CommandSettingsPage = () => {
           onClose={() => setModalOpen(false)}
           onUpdate={handleUpdateCommand}
         />
+        </>}
 
       </div>
 

@@ -14,6 +14,7 @@ const messages: Record<string, string> = {
 };
 export function formatApiError(error: unknown, fallback = "Не удалось выполнить операцию. Проверьте журнал Home Assistant и повторите попытку."): string {
   if (error && typeof error === "object" && "code" in error && typeof error.code === "string") {
+    if (error.code === "whisper_prompt_error" && "message" in error && typeof error.message === "string") return error.message;
     return messages[error.code] ?? fallback;
   }
   if (error instanceof Error && /connection|network|fetch|disconnected/i.test(error.message)) {
