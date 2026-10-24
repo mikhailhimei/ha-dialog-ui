@@ -8,7 +8,7 @@ export class DialogApi {
     return this.monitorSubscribe(callback, { type: "ha_dialog_ui/monitor/watch", view_id: viewId });
   }
   monitorAudio(nodeId: string, callback: (event: import("../types/monitor").MonitorAudioEvent) => void) {
-    return this.monitorSubscribe(callback, { type: "voice_pe_monitor/listen", node_id: nodeId });
+    return this.monitorSubscribe(callback, { type: "ha_dialog_ui/monitor/listen", node_id: nodeId });
   }
   private monitorSubscribe<T>(callback: (event: T) => void, message: import("../types/api").WebSocketMessage) {
     const connection = this.hass.connection;

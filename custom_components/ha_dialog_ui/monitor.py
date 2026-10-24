@@ -1,4 +1,4 @@
-"""Optional monitor UI adapter. Existing Voice PE Monitor HA services stay authoritative."""
+"""Built-in monitor UI, capability discovery and view ownership."""
 
 from __future__ import annotations
 
@@ -14,16 +14,19 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.util import slugify
 
-DOMAIN = "voice_pe_monitor"
+DOMAIN = "ha_dialog_ui"
 _LOGGER = logging.getLogger(__name__)
 
 
 def snapshot(hass):
     available = all(
         hass.services.has_service(DOMAIN, action)
-        for action in ("start_source", "start_listener", "stop")
+        for action in ("monitor_start_source", "monitor_start_listener", "monitor_stop")
     )
-    receivers = hass.data.get(DOMAIN, {})
+    runtime = hass.data.get("ha_dialog_ui_monitor_runtime")
+    if runtime is not None:
+        available = available and runtime.running
+    receivers = hass.data.get("ha_dialog_ui_monitor_receivers", {})
     devices = []
     if available:
         entities = er.async_get(hass)
@@ -86,7 +89,7 @@ def snapshot(hass):
                     }
                 )
                 break
-    manager = hass.data.get("voice_pe_monitor_sessions")
+    manager = hass.data.get("ha_dialog_ui_monitor_sessions")
     sessions = [
         {"source_device_id": item["source"], "listener_device_id": item["listener"]}
         for item in getattr(manager, "sessions", {}).values()
@@ -113,7 +116,7 @@ class MonitorView:
             source = self.source
             await self.hass.services.async_call(
                 DOMAIN,
-                "stop",
+                "monitor_stop",
                 {"device_id": source},
                 blocking=True,
                 context=self.context,
@@ -131,7 +134,7 @@ class MonitorView:
             if self.source:
                 try:
                     await self.hass.services.async_call(
-                        DOMAIN, "stop", {"device_id": self.source}, blocking=True
+                        DOMAIN, "monitor_stop", {"device_id": self.source}, blocking=True
                     )
                 except HomeAssistantError:
                     _LOGGER.warning(
@@ -280,7 +283,7 @@ async def start(hass, connection, msg):
         view.source = source["id"]
         await hass.services.async_call(
             DOMAIN,
-            "start_source",
+            "monitor_start_source",
             {"device_id": source["id"]},
             blocking=True,
             context=view.context,
@@ -288,7 +291,7 @@ async def start(hass, connection, msg):
         if not view.closed and listener_id:
             await hass.services.async_call(
                 DOMAIN,
-                "start_listener",
+                "monitor_start_listener",
                 {"source_device_id": source["id"], "device_id": listener_id},
                 blocking=True,
                 context=view.context,
@@ -346,7 +349,7 @@ async def stop(hass, connection, msg):
     try:
         await hass.services.async_call(
             DOMAIN,
-            "stop",
+            "monitor_stop",
             {"device_id": msg["device_id"]},
             blocking=True,
             context=connection.context(msg),

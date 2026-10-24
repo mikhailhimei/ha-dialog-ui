@@ -1447,13 +1447,13 @@
     "ru": "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже.",
     "en": "This session was started outside this tab. Closing the window or tab will not stop it. Use Stop below."
   },
-  "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок.": {
-    "ru": "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок.",
-    "en": "Baby monitor requires Voice PE Monitor 0.2 and compatible speaker firmware."
+  "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124.": {
+    "ru": "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124.",
+    "en": "Baby monitor receiver is unavailable. Check the HA log and TCP port 8124."
   },
-  "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку.": {
-    "ru": "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку.",
-    "en": "No compatible speakers found. Add a source in Voice PE Monitor and update its firmware."
+  "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome.": {
+    "ru": "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome.",
+    "en": "No compatible speakers found. Install compatible firmware and connect the speaker to the ESPHome integration."
   },
   "Чтобы сменить устройство воспроизведения, сначала остановите сеанс.": {
     "ru": "Чтобы сменить устройство воспроизведения, сначала остановите сеанс.",

@@ -35,8 +35,8 @@ async def setup_monitor(runtime):
     await er.async_load(hass)
     calls = []
     receiver = SimpleNamespace(connected=False, upload_key="never-return-this")
-    hass.data["voice_pe_monitor"] = {"source": receiver}
-    hass.data["voice_pe_monitor_sessions"] = SimpleNamespace(sessions={})
+    hass.data["ha_dialog_ui_monitor_receivers"] = {"source": receiver}
+    hass.data["ha_dialog_ui_monitor_sessions"] = SimpleNamespace(sessions={})
     devices = {}
     for name, actions in [
         ("source", ["source", "listen", "stop"]),
@@ -79,7 +79,7 @@ async def setup_monitor(runtime):
         ("start_listener", listener),
         ("stop", stop),
     ]:
-        hass.services.async_register("voice_pe_monitor", name, handler)
+        hass.services.async_register("ha_dialog_ui", "monitor_" + name, handler)
     monitor.register_monitor(hass)
     conn = Connection()
     await async_handler(monitor.watch)(hass, conn, {"id": 1, "view_id": "view"})
@@ -92,7 +92,7 @@ async def setup_monitor(runtime):
 async def test_only_capable_devices_and_no_credentials(setup_monitor):
     hass, _conn, devices, _, receiver = setup_monitor
     receiver.connected = True
-    hass.data["voice_pe_monitor_sessions"].sessions["secret-ticket"] = {
+    hass.data["ha_dialog_ui_monitor_sessions"].sessions["secret-ticket"] = {
         "source": devices["source"],
         "listener": devices["listener"],
     }
@@ -167,7 +167,7 @@ async def test_close_during_start_never_launches_listener_and_stops_microphone(
         entered.set()
         await release.wait()
 
-    hass.services.async_register("voice_pe_monitor", "start_source", slow_source)
+    hass.services.async_register("ha_dialog_ui", "monitor_start_source", slow_source)
     task = asyncio.create_task(
         async_handler(monitor.start)(
             hass,
@@ -206,11 +206,11 @@ async def test_unsupported_targets_are_rejected_without_starting(setup_monitor):
     assert conn.send_error.call_args.args[1] == "monitor_error"
 
 
-async def test_adapter_does_not_register_or_replace_script_services(setup_monitor):
+async def test_view_cleanup_does_not_stop_script_started_source(setup_monitor):
     hass, conn, devices, calls, _ = setup_monitor
     await hass.services.async_call(
-        "voice_pe_monitor",
-        "start_source",
+        "ha_dialog_ui",
+        "monitor_start_source",
         {"device_id": devices["source"]},
         blocking=True,
     )
@@ -222,7 +222,7 @@ async def test_adapter_does_not_register_or_replace_script_services(setup_monito
 async def test_start_conflict_does_not_stop_a_script_owned_pair(setup_monitor):
     hass, conn, devices, calls, receiver = setup_monitor
     receiver.connected = True
-    hass.data["voice_pe_monitor_sessions"].sessions["existing"] = {
+    hass.data["ha_dialog_ui_monitor_sessions"].sessions["existing"] = {
         "source": devices["source"],
         "listener": devices["listener"],
     }

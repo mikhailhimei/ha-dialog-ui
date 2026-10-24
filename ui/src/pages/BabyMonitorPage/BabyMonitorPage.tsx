@@ -340,14 +340,14 @@ export function BabyMonitorPage() {
       {state && !state.available && (
         <div className={styles.empty}>
           {t(
-            "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок.",
+            "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124.",
           )}
         </div>
       )}
       {state?.available && sources.length === 0 && (
         <div className={styles.empty}>
           {t(
-            "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку.",
+            "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome.",
           )}
         </div>
       )}

@@ -8318,8 +8318,8 @@ A ? after the parentheses makes the ending optional: зал(а|е)? matches «з
   "Подключение:": { ru: "Подключение:", en: "Connecting:" },
   "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».": { ru: "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».", en: "Closing this window keeps listening active. Stop below or leave the Baby monitor tab." },
   "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже.": { ru: "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже.", en: "This session was started outside this tab. Closing the window or tab will not stop it. Use Stop below." },
-  "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок.": { ru: "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок.", en: "Baby monitor requires Voice PE Monitor 0.2 and compatible speaker firmware." },
-  "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку.": { ru: "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку.", en: "No compatible speakers found. Add a source in Voice PE Monitor and update its firmware." },
+  "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124.": { ru: "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124.", en: "Baby monitor receiver is unavailable. Check the HA log and TCP port 8124." },
+  "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome.": { ru: "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome.", en: "No compatible speakers found. Install compatible firmware and connect the speaker to the ESPHome integration." },
   "Чтобы сменить устройство воспроизведения, сначала остановите сеанс.": { ru: "Чтобы сменить устройство воспроизведения, сначала остановите сеанс.", en: "Stop the session before changing the playback device." },
   "Переподключение…": { ru: "Переподключение…", en: "Reconnecting…" },
   "Панель диалога": { ru: "Панель диалога", en: "Dialog panel" },
@@ -9715,11 +9715,11 @@ const k1 = "_subtitle_c1esh_1", j1 = "_card_c1esh_6", C1 = "_content_c1esh_32", 
 }, Z1 = ({ uuid: r, title: a, open: i, onClose: c, onEdit: d, onDelete: f }) => r ? /* @__PURE__ */ o.jsx(Jl, { open: i, title: a, uuid: r, onClose: c, size: "sm", layout: "row", actions: [
   { label: "Изменить", onClick: () => d(r) },
   { label: "Удалить", variant: "remove", onClick: () => f(r) }
-] }) : null, e0 = "_accordion_5owbj_1", t0 = "_header_5owbj_7", n0 = "_content_5owbj_20", Zo = {
-  accordion: e0,
-  header: t0,
-  content: n0
-}, r0 = ({
+] }) : null, ex = "_accordion_5owbj_1", tx = "_header_5owbj_7", nx = "_content_5owbj_20", Zo = {
+  accordion: ex,
+  header: tx,
+  content: nx
+}, rx = ({
   title: r,
   defaultOpen: a = !1,
   children: i
@@ -9748,14 +9748,14 @@ const k1 = "_subtitle_c1esh_1", j1 = "_card_c1esh_6", C1 = "_content_c1esh_32", 
       ]
     }
   );
-}, s0 = "_wrapper_1fgdg_1", o0 = "_dropdown_1fgdg_10", i0 = "_option_1fgdg_22", a0 = "_title_1fgdg_46", l0 = "_uuid_1fgdg_51", u0 = "_hint_1fgdg_52", Gn = {
-  wrapper: s0,
-  dropdown: o0,
-  option: i0,
-  title: a0,
-  uuid: l0,
-  hint: u0
-}, c0 = ({
+}, sx = "_wrapper_1fgdg_1", ox = "_dropdown_1fgdg_10", ix = "_option_1fgdg_22", ax = "_title_1fgdg_46", lx = "_uuid_1fgdg_51", ux = "_hint_1fgdg_52", Gn = {
+  wrapper: sx,
+  dropdown: ox,
+  option: ix,
+  title: ax,
+  uuid: lx,
+  hint: ux
+}, cx = ({
   label: r = "uuid",
   value: a,
   selectedTitle: i,
@@ -9899,32 +9899,32 @@ const k1 = "_subtitle_c1esh_1", j1 = "_card_c1esh_6", C1 = "_content_c1esh_32", 
     } }),
     X && /* @__PURE__ */ o.jsx("span", { className: Gn.hint, children: x("Поиск...") })
   ] });
-}, d0 = "_field_1esqu_1", f0 = "_row_1esqu_5", p0 = "_inputWrapper_1esqu_11", m0 = "_clearButton_1esqu_22", h0 = "_rowError_1esqu_31", Ft = {
-  field: d0,
-  row: f0,
-  inputWrapper: p0,
-  clearButton: m0,
-  rowError: h0
-}, v0 = {
+}, dx = "_field_1esqu_1", fx = "_row_1esqu_5", px = "_inputWrapper_1esqu_11", mx = "_clearButton_1esqu_22", hx = "_rowError_1esqu_31", Ft = {
+  field: dx,
+  row: fx,
+  inputWrapper: px,
+  clearButton: mx,
+  rowError: hx
+}, vx = {
   parent_type: "search_assistant_commands",
   children_type: "search_assistant_sub_commands",
   children_direct_type: "search_assistant_sub_direct_controls"
 };
 function wl({ field: r, value: a, error: i, onChange: c }) {
   return Ir() ? /* @__PURE__ */ o.jsx(Ue, { label: x(r), value: a, error: i, onChange: (f) => c(f.target.value) }) : /* @__PURE__ */ o.jsx(
-    c0,
+    cx,
     {
       label: x(r),
       value: a,
       error: i,
-      searchSource: [v0[r]],
+      searchSource: [vx[r]],
       minQueryLength: 3,
       onChange: c,
       getSelectedValue: (f) => (r === "children_direct_type" ? f.mappingType : f.actionType) ?? f.uuid
     }
   );
 }
-const y0 = ({
+const yx = ({
   condition: r,
   index: a,
   defaultOpen: i,
@@ -9945,7 +9945,7 @@ const y0 = ({
     });
   };
   return /* @__PURE__ */ o.jsxs(
-    r0,
+    rx,
     {
       title: `${x("Условие")} ${a + 1}`,
       defaultOpen: i,
@@ -10049,14 +10049,14 @@ const y0 = ({
       ]
     }
   );
-}, g0 = "_dropdown_3mupk_2", _0 = "_label_3mupk_11", x0 = "_wrapper_3mupk_19", w0 = "_select_3mupk_23", S0 = "_arrow_3mupk_65", k0 = "_error_3mupk_85", j0 = "_errorText_3mupk_103", Jn = {
-  dropdown: g0,
-  label: _0,
-  wrapper: x0,
-  select: w0,
-  arrow: S0,
-  error: k0,
-  errorText: j0
+}, gx = "_dropdown_3mupk_2", _x = "_label_3mupk_11", xx = "_wrapper_3mupk_19", wx = "_select_3mupk_23", Sx = "_arrow_3mupk_65", kx = "_error_3mupk_85", jx = "_errorText_3mupk_103", Jn = {
+  dropdown: gx,
+  label: _x,
+  wrapper: xx,
+  select: wx,
+  arrow: Sx,
+  error: kx,
+  errorText: jx
 };
 function $r({
   label: r,
@@ -10111,13 +10111,13 @@ function $r({
     d && /* @__PURE__ */ o.jsx("span", { className: Jn.errorText, children: x(d) })
   ] });
 }
-const C0 = "_form_1ogov_1", E0 = "_section_1ogov_7", N0 = "_sectionTitle_1ogov_18", T0 = "_conditions_1ogov_27", R0 = "_addCondition_1ogov_33", br = {
-  form: C0,
-  section: E0,
-  sectionTitle: N0,
-  conditions: T0,
-  addCondition: R0
-}, P0 = ({
+const Cx = "_form_1ogov_1", Ex = "_section_1ogov_7", Nx = "_sectionTitle_1ogov_18", Tx = "_conditions_1ogov_27", Rx = "_addCondition_1ogov_33", br = {
+  form: Cx,
+  section: Ex,
+  sectionTitle: Nx,
+  conditions: Tx,
+  addCondition: Rx
+}, Px = ({
   open: r,
   feedback: a,
   initialData: i,
@@ -10250,7 +10250,7 @@ const C0 = "_form_1ogov_1", E0 = "_section_1ogov_7", N0 = "_sectionTitle_1ogov_1
           /* @__PURE__ */ o.jsx("h3", { className: br.sectionTitle, children: x("Условия") }),
           /* @__PURE__ */ o.jsx("div", { className: br.conditions, children: g.conditions.map(
             (A, F, $) => /* @__PURE__ */ o.jsx(
-              y0,
+              yx,
               {
                 index: F,
                 condition: A,
@@ -10279,15 +10279,15 @@ const C0 = "_form_1ogov_1", E0 = "_section_1ogov_7", N0 = "_sectionTitle_1ogov_1
       ] })
     }
   );
-}, A0 = "_container_rqdjx_1", b0 = "_rows_rqdjx_9", $0 = "_hidden_rqdjx_20", M0 = "_overlay_rqdjx_24", I0 = "_card_rqdjx_32", L0 = "_title_rqdjx_51", D0 = "_subtitle_rqdjx_51", z0 = "_srOnly_rqdjx_70", ln = {
-  container: A0,
-  rows: b0,
-  hidden: $0,
-  overlay: M0,
-  card: I0,
-  title: L0,
-  subtitle: D0,
-  srOnly: z0
+}, Ax = "_container_rqdjx_1", bx = "_rows_rqdjx_9", $x = "_hidden_rqdjx_20", Mx = "_overlay_rqdjx_24", Ix = "_card_rqdjx_32", Lx = "_title_rqdjx_51", Dx = "_subtitle_rqdjx_51", zx = "_srOnly_rqdjx_70", ln = {
+  container: Ax,
+  rows: bx,
+  hidden: $x,
+  overlay: Mx,
+  card: Ix,
+  title: Lx,
+  subtitle: Dx,
+  srOnly: zx
 };
 function Hr({ loading: r, itemCount: a, append: i = !1, children: c }) {
   const d = r && a > 0 && !i, f = r && /* @__PURE__ */ o.jsxs("div", { className: d ? ln.overlay : ln.rows, role: "status", children: [
@@ -10302,9 +10302,9 @@ function Hr({ loading: r, itemCount: a, append: i = !1, children: c }) {
     f
   ] });
 }
-const O0 = "_container_9wouv_1", F0 = "_visible_9wouv_20", vf = {
-  container: O0,
-  visible: F0
+const Ox = "_container_9wouv_1", Fx = "_visible_9wouv_20", vf = {
+  container: Ox,
+  visible: Fx
 }, sr = ({
   children: r,
   offset: a = 10,
@@ -10332,7 +10332,7 @@ const O0 = "_container_9wouv_1", F0 = "_visible_9wouv_20", vf = {
       children: r
     }
   );
-}, H0 = () => {
+}, Hx = () => {
   const r = Wt(), a = Ir(), i = a ? "Действия удалённых команд" : "Запуск скриптов", c = Ze(), [d, f] = v.useState(), [p, h] = v.useState(!1), [g, w] = v.useState(!1), [y, _] = v.useState({ uuid: "", title: "" }), [S, j] = v.useState(!1), {
     query: T,
     setQuery: C,
@@ -10437,7 +10437,7 @@ const O0 = "_container_9wouv_1", F0 = "_visible_9wouv_20", vf = {
         }
       ),
       /* @__PURE__ */ o.jsx(
-        P0,
+        Px,
         {
           feedback: ce,
           open: p,
@@ -10478,14 +10478,14 @@ function vp(r) {
     return h(($) => $.map((O) => O.uuid === N ? { ...O, status: A } : O)), F;
   }, getCommandDetails: (C, N) => a.getRecord(N, C) };
 }
-const W0 = {
+const Wx = {
   main: { list: "get_assistant_commands_short", detail: "get_assistant_command", create: "save_assistant_command", update: "update_assistant_command", remove: "delete_assistant_command", status: "update_assistant_command_status" },
   sub: { list: "get_assistant_sub_commands_short", detail: "get_assistant_sub_command", create: "save_assistant_sub_command", update: "update_assistant_sub_command", remove: "delete_assistant_sub_command", status: "update_assistant_sub_command_status" },
   direct: { list: "get_assistant_sub_direct_controls_short", detail: "get_assistant_sub_direct_control", create: "save_assistant_sub_direct_control", update: "update_assistant_sub_direct_control", remove: "delete_assistant_sub_direct_control", status: "update_assistant_sub_direct_controls_status" },
   template: { list: "get_assistant_sub_direct_control_samples_short", detail: "get_assistant_sub_direct_control_sample", create: "save_assistant_sub_direct_control_sample", update: "update_assistant_sub_direct_control_sample", remove: "delete_assistant_sub_direct_control_sample" }
 };
 function mi(r, a) {
-  const i = W0[r], { query: c, setQuery: d, commands: f, loading: p, loadCommands: h, getCommandDetails: g, saveCommand: w, updateCommand: y, deleteCommand: _, setCommandStatus: S, error: j, retry: T } = vp(i.list), C = Wt(), [N, A] = v.useState(!1), [F, $] = v.useState(!1), [O, U] = v.useState(a), [I, X] = v.useState(null), B = () => {
+  const i = Wx[r], { query: c, setQuery: d, commands: f, loading: p, loadCommands: h, getCommandDetails: g, saveCommand: w, updateCommand: y, deleteCommand: _, setCommandStatus: S, error: j, retry: T } = vp(i.list), C = Wt(), [N, A] = v.useState(!1), [F, $] = v.useState(!1), [O, U] = v.useState(a), [I, X] = v.useState(null), B = () => {
     C.clearError(), $(!1), U(a()), A(!0);
   }, G = (he) => C.run(async () => {
     const ve = await g(i.detail, he);
@@ -10532,10 +10532,10 @@ function mi(r, a) {
     handleUpdate: Ee
   };
 }
-const B0 = "_field_1iloj_1", U0 = "_label_1iloj_8", V0 = "_select_1iloj_14", Sl = {
-  field: B0,
-  label: U0,
-  select: V0
+const Bx = "_field_1iloj_1", Ux = "_label_1iloj_8", Vx = "_select_1iloj_14", Sl = {
+  field: Bx,
+  label: Ux,
+  select: Vx
 }, er = ({
   label: r,
   hint: a,
@@ -10630,29 +10630,29 @@ function Pl({ kind: r, value: a, title: i, onSelect: c }) {
     } })
   ] });
 }
-const q0 = [
+const qx = [
   { label: "Ответ из списка фраз", value: "default" },
   { label: "Ответ из скрипта", value: "script_response" }
-], Q0 = [
+], Qx = [
   { label: "all", value: "all" },
   { label: "string", value: "string" },
   { label: "int", value: "int" },
   { label: "date", value: "date" },
   { label: "time", value: "time" },
   { label: "Вложенные команды", value: "command" }
-], K0 = [
+], Kx = [
   { label: "По умолчанию", value: "children" },
   { label: "По типу ответа скрипта", value: "custom" }
-], Y0 = "_form_1a1tt_1", G0 = "_field_1a1tt_7", J0 = "_arrayItem_1a1tt_29", X0 = "_logicTabs_1a1tt_46", Z0 = "_sectionTitle_1a1tt_85", ex = "_footerActions_1a1tt_92", tx = "_phraseMode_1a1tt_106", nx = "_directTabLabel_1a1tt_122", rx = "_linkActions_1a1tt_126", Ye = {
-  form: Y0,
-  field: G0,
-  arrayItem: J0,
-  logicTabs: X0,
-  sectionTitle: Z0,
-  footerActions: ex,
-  phraseMode: tx,
-  directTabLabel: nx,
-  linkActions: rx
+], Yx = "_form_1a1tt_1", Gx = "_field_1a1tt_7", Jx = "_arrayItem_1a1tt_29", Xx = "_logicTabs_1a1tt_46", Zx = "_sectionTitle_1a1tt_85", e0 = "_footerActions_1a1tt_92", t0 = "_phraseMode_1a1tt_106", n0 = "_directTabLabel_1a1tt_122", r0 = "_linkActions_1a1tt_126", Ye = {
+  form: Yx,
+  field: Gx,
+  arrayItem: Jx,
+  logicTabs: Xx,
+  sectionTitle: Zx,
+  footerActions: e0,
+  phraseMode: t0,
+  directTabLabel: n0,
+  linkActions: r0
 }, yf = () => ({
   mappingType: "",
   valueType: "",
@@ -10728,7 +10728,7 @@ const q0 = [
           {
             label: x("valueType"),
             value: _.valueType,
-            options: Q0,
+            options: Qx,
             onChange: (j) => S({
               valueType: j.target.value
             })
@@ -10767,7 +10767,7 @@ const q0 = [
     }
   );
 };
-function sx({ target: r, onBack: a, onSaved: i }) {
+function s0({ target: r, onBack: a, onSaved: i }) {
   const c = lt(), d = Wt(), [f, p] = v.useState({ title: "" }), [h, g] = v.useState();
   v.useEffect(() => {
     let y = !1;
@@ -10819,12 +10819,12 @@ function sx({ target: r, onBack: a, onSaved: i }) {
     }
   ) : /* @__PURE__ */ o.jsx(Jt, { open: !0, onClose: a, onBack: a, title: "Перейти к команде", feedback: d, children: d.busy && /* @__PURE__ */ o.jsx("p", { role: "status", children: x("Загрузка...") }) });
 }
-const ox = [
+const o0 = [
   { value: "default", label: "Основной" },
   { value: "default_next_step", label: "Ответ для продолжения диалога" },
   { value: "custom", label: "По типу результата скрипта" }
 ];
-function ix({ response: r, onChange: a }) {
+function i0({ response: r, onChange: a }) {
   const i = (r.actionType ?? "").trim().toLowerCase(), c = ["default", "direct", "default_direct", "next"].includes(i) ? "default" : i === "default_next_step" ? "default_next_step" : "custom";
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(
@@ -10833,7 +10833,7 @@ function ix({ response: r, onChange: a }) {
         label: x("Типы ответов"),
         "aria-label": x("Типы ответов"),
         value: c,
-        options: ox,
+        options: o0,
         onChange: (d) => a({ actionType: d.target.value === "custom" ? "" : d.target.value })
       }
     ),
@@ -10856,22 +10856,22 @@ function ix({ response: r, onChange: a }) {
     )
   ] });
 }
-const ax = "_switchRow_1hmmz_1", lx = "_input_1hmmz_11", ux = "_track_1hmmz_22", cx = "_thumb_1hmmz_33", dx = "_label_1hmmz_62", $s = {
-  switchRow: ax,
-  input: lx,
-  track: ux,
-  thumb: cx,
-  label: dx
+const a0 = "_switchRow_1hmmz_1", l0 = "_input_1hmmz_11", u0 = "_track_1hmmz_22", c0 = "_thumb_1hmmz_33", d0 = "_label_1hmmz_62", $s = {
+  switchRow: a0,
+  input: l0,
+  track: u0,
+  thumb: c0,
+  label: d0
 }, tr = ({ label: r, className: a = "", ...i }) => /* @__PURE__ */ o.jsxs("label", { className: `${$s.switchRow} ${a}`, children: [
   /* @__PURE__ */ o.jsx("input", { ...i, type: "checkbox", className: $s.input }),
   /* @__PURE__ */ o.jsx("span", { className: $s.track, "aria-hidden": "true", children: /* @__PURE__ */ o.jsx("span", { className: $s.thumb }) }),
   /* @__PURE__ */ o.jsx("span", { className: $s.label, children: x(r) })
-] }), fx = [
+] }), f0 = [
   { key: "direct", label: "Прямые команды" },
   { key: "continuations", label: "Продолжения" }
 ];
-function px({ component: r, onOpenCommand: a, updateComponentArray: i, addComponentArrayItem: c, removeComponentArrayItem: d }) {
-  const f = v.useId(), [p, h] = v.useState("direct"), g = fx.filter((y) => y.key !== "direct" || !r.forwardText), w = r.forwardText && p === "direct" ? "continuations" : p;
+function p0({ component: r, onOpenCommand: a, updateComponentArray: i, addComponentArrayItem: c, removeComponentArrayItem: d }) {
+  const f = v.useId(), [p, h] = v.useState("direct"), g = f0.filter((y) => y.key !== "direct" || !r.forwardText), w = r.forwardText && p === "direct" ? "continuations" : p;
   return /* @__PURE__ */ o.jsxs("div", { className: Ye.form, children: [
     /* @__PURE__ */ o.jsx("div", { className: Ye.logicTabs, role: "tablist", "aria-label": x("Настройки логики"), children: g.map((y) => /* @__PURE__ */ o.jsx(
       "button",
@@ -10900,7 +10900,7 @@ function px({ component: r, onOpenCommand: a, updateComponentArray: i, addCompon
           {
             label: x("Вид продолжения"),
             value: y.actionTypeComponent || "children",
-            options: K0,
+            options: Kx,
             onChange: (S) => i("nextAction", _, {
               actionTypeComponent: S.target.value
             })
@@ -11098,7 +11098,7 @@ const gf = () => ({
           }, children: x(i ? "Обновить" : "Сохранить") })
         ] }) }),
         children: C ? /* @__PURE__ */ o.jsx(
-          px,
+          p0,
           {
             onOpenCommand: (B, G) => T({ ...B, index: G }),
             component: S,
@@ -11125,7 +11125,7 @@ const gf = () => ({
             {
               label: x("Источник ответа"),
               value: ["ha_storage", "ha", "external"].includes(S.answerType) ? "script_response" : S.answerType,
-              options: q0,
+              options: qx,
               onChange: (B) => $({
                 answerType: B.target.value
               })
@@ -11171,7 +11171,7 @@ const gf = () => ({
             /* @__PURE__ */ o.jsx("h3", { className: Ye.sectionTitle, children: x("Ответы") }),
             (S.voiceResponseArray ?? []).map((B, G) => /* @__PURE__ */ o.jsxs("div", { className: Ye.arrayItem, children: [
               /* @__PURE__ */ o.jsx(
-                ix,
+                i0,
                 {
                   response: B,
                   onChange: (pe) => O("voiceResponseArray", G, pe)
@@ -11206,7 +11206,7 @@ const gf = () => ({
       }
     ),
     j && /* @__PURE__ */ o.jsx(
-      sx,
+      s0,
       {
         target: j,
         onBack: () => T(null),
@@ -11222,7 +11222,7 @@ const gf = () => ({
   ...c ? [{ label: r.status ? "Выключить" : "Включить", onClick: () => c(r.uuid, !r.status) }] : [],
   { label: "Изменить", variant: "secondary", onClick: () => d(r.uuid) },
   { label: "Удалить", variant: "remove", onClick: () => f(r.uuid) }
-] }) : null, mx = () => hp("componentDialog"), hx = () => {
+] }) : null, m0 = () => hp("componentDialog"), h0 = () => {
   const r = Ze(), {
     query: a,
     setQuery: i,
@@ -11244,7 +11244,7 @@ const gf = () => ({
     handleDelete: F,
     handleCreate: $,
     handleUpdate: O
-  } = mi("main", mx), U = zr(f, p || !!d, h, r);
+  } = mi("main", m0), U = zr(f, p || !!d, h, r);
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(
       _t,
@@ -11309,7 +11309,7 @@ const gf = () => ({
       )
     ] })
   ] });
-}, vx = () => hp("subComponentDialog"), yx = () => {
+}, v0 = () => hp("subComponentDialog"), y0 = () => {
   const r = Ze(), {
     query: a,
     setQuery: i,
@@ -11331,7 +11331,7 @@ const gf = () => ({
     handleDelete: F,
     handleCreate: $,
     handleUpdate: O
-  } = mi("sub", vx), U = zr(f, p || !!d, h, r);
+  } = mi("sub", v0), U = zr(f, p || !!d, h, r);
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(
       _t,
@@ -11395,12 +11395,12 @@ const gf = () => ({
       )
     ] })
   ] });
-}, gx = [
+}, g0 = [
   { path: "/commands/direct/main", label: "Команды" },
   { path: "/commands/direct/template", label: "Вложенные команды" }
 ], li = () => {
   const { pathname: r } = yt(), a = Dl();
-  return /* @__PURE__ */ o.jsx("div", { className: J.innerTabs, role: "group", "aria-label": x("Раздел прямых команд"), children: gx.map((i) => /* @__PURE__ */ o.jsx(
+  return /* @__PURE__ */ o.jsx("div", { className: J.innerTabs, role: "group", "aria-label": x("Раздел прямых команд"), children: g0.map((i) => /* @__PURE__ */ o.jsx(
     "button",
     {
       type: "button",
@@ -11411,7 +11411,7 @@ const gf = () => ({
     },
     i.path
   )) });
-}, _x = () => ({
+}, _0 = () => ({
   status: !0,
   title: "",
   directControl: {
@@ -11422,7 +11422,7 @@ const gf = () => ({
     subDirectControl: "",
     subDirectControlTitle: ""
   }
-}), xx = () => {
+}), x0 = () => {
   const r = Ze(), {
     query: a,
     setQuery: i,
@@ -11444,7 +11444,7 @@ const gf = () => ({
     handleDelete: F,
     handleCreate: $,
     handleUpdate: O
-  } = mi("direct", _x), U = zr(f, p || !!d, h, r);
+  } = mi("direct", _0), U = zr(f, p || !!d, h, r);
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(
       _t,
@@ -11510,11 +11510,11 @@ const gf = () => ({
       )
     ] })
   ] });
-}, wx = "_form_mn1ml_1", Sx = "_arrayItem_mn1ml_8", kx = "_sectionTitle_mn1ml_25", ei = {
-  form: wx,
-  arrayItem: Sx,
-  sectionTitle: kx
-}, jx = ({
+}, w0 = "_form_mn1ml_1", S0 = "_arrayItem_mn1ml_8", k0 = "_sectionTitle_mn1ml_25", ei = {
+  form: w0,
+  arrayItem: S0,
+  sectionTitle: k0
+}, j0 = ({
   open: r,
   feedback: a,
   onClose: i,
@@ -11642,11 +11642,11 @@ const gf = () => ({
       ] })
     }
   );
-}, Cx = () => ({
+}, C0 = () => ({
   status: !0,
   title: "",
   subDirectControl: []
-}), Ex = () => {
+}), E0 = () => {
   const r = Ze(), {
     query: a,
     setQuery: i,
@@ -11667,7 +11667,7 @@ const gf = () => ({
     handleDelete: A,
     handleCreate: F,
     handleUpdate: $
-  } = mi("template", Cx), O = zr(f, p || !!d, h, r);
+  } = mi("template", C0), O = zr(f, p || !!d, h, r);
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(
       _t,
@@ -11716,7 +11716,7 @@ const gf = () => ({
         }
       ),
       /* @__PURE__ */ o.jsx(
-        jx,
+        j0,
         {
           feedback: c,
           open: g,
@@ -11747,9 +11747,9 @@ const gf = () => ({
 function gp(r) {
   return r.actionType && _f[r.actionType] ? x(_f[r.actionType]) : r.title;
 }
-const Nx = "_form_1i0x1_1", Tx = {
-  form: Nx
-}, Rx = ({
+const N0 = "_form_1i0x1_1", T0 = {
+  form: N0
+}, R0 = ({
   open: r,
   feedback: a,
   isEdit: i,
@@ -11773,7 +11773,7 @@ const Nx = "_form_1i0x1_1", Tx = {
       onClose: f,
       title: i ? "Редактировать" : "Создать",
       footer: /* @__PURE__ */ o.jsx(se, { onClick: p, children: x("Обновить") }),
-      children: /* @__PURE__ */ o.jsxs("div", { className: Tx.form, children: [
+      children: /* @__PURE__ */ o.jsxs("div", { className: T0.form, children: [
         /* @__PURE__ */ o.jsx(
           Ue,
           {
@@ -11852,7 +11852,7 @@ const Nx = "_form_1i0x1_1", Tx = {
       ] })
     }
   );
-}, Px = () => {
+}, P0 = () => {
   const r = Wt(), a = Ze(), [i, c] = v.useState(!1), [d, f] = v.useState(!1), [p, h] = v.useState({ title: "" }), {
     error: g,
     retry: w,
@@ -11898,7 +11898,7 @@ const Nx = "_form_1i0x1_1", Tx = {
         }
       ),
       /* @__PURE__ */ o.jsx(
-        Rx,
+        R0,
         {
           feedback: N,
           open: i,
@@ -11911,7 +11911,7 @@ const Nx = "_form_1i0x1_1", Tx = {
       )
     ] })
   ] });
-}, Ax = (r, a) => {
+}, A0 = (r, a) => {
   const i = new Blob([JSON.stringify(a, null, 2)], {
     type: "application/json;charset=utf-8"
   }), c = URL.createObjectURL(i), d = document.createElement("a");
@@ -11923,7 +11923,7 @@ const _p = {
   scripts: { list: "get_script_actions_short", detail: "get_script_action", import: "import_script_actions" },
   scenarios: { list: "get_assistant_sub_commands_short", detail: "get_assistant_sub_command", import: "import_assistant_sub_commands" }
 }, Kt = (r) => r !== null && typeof r == "object" && !Array.isArray(r);
-async function bx(r, a) {
+async function b0(r, a) {
   if (a === "settings") {
     const d = await r.getData("get_settings"), f = Kt(d) && Kt(d.result) ? d.result : d;
     if (!Kt(f)) throw new At("Файл не содержит корректные настройки.");
@@ -11936,7 +11936,7 @@ async function bx(r, a) {
     return Kt(f) ? f.data : void 0;
   }));
 }
-function $x(r, a) {
+function $0(r, a) {
   let i;
   try {
     i = JSON.parse(r);
@@ -11972,21 +11972,21 @@ function $x(r, a) {
   }
   return i;
 }
-async function Mx(r, a, i) {
-  const c = $x(i, a);
+async function M0(r, a, i) {
+  const c = $0(i, a);
   return await r.saveData(c, a === "settings" ? "import_settings" : a === "scenarios" && !Array.isArray(c) ? "import_command_bundle" : _p[a].import), c;
 }
-const Ix = "_grid_fc8hl_1", Lx = "_card_fc8hl_8", Dx = "_actions_fc8hl_23", zx = "_description_fc8hl_29", Ox = "_page_fc8hl_36", Ms = {
-  grid: Ix,
-  card: Lx,
-  actions: Dx,
-  description: zx,
-  page: Ox
-}, Fx = [
+const I0 = "_grid_fc8hl_1", L0 = "_card_fc8hl_8", D0 = "_actions_fc8hl_23", z0 = "_description_fc8hl_29", O0 = "_page_fc8hl_36", Ms = {
+  grid: I0,
+  card: L0,
+  actions: D0,
+  description: z0,
+  page: O0
+}, F0 = [
   { kind: "scripts", title: "Действия удалённых команд", description: "Привязки команд к скриптам Home Assistant и условия запуска. Самих скриптов HA в файле нет.", download: "Скачать скрипты", upload: "Загрузить скрипты" },
   { kind: "scenarios", title: "Сценарии", description: "Все разделы «Команды»: основные, второстепенные, прямые, шаблоны и ответы по умолчанию. ID и связи сохраняются.", download: "Скачать сценарии", upload: "Загрузить сценарии" },
   { kind: "settings", title: "Настройки интеграции", description: "Тема, параметры подключения, API и звуки таймеров и будильников. Язык интерфейса в файл не входит.", download: "Скачать настройки", upload: "Загрузить настройки" }
-], Hx = () => {
+], H0 = () => {
   const r = lt(), a = Ir(), i = Ze(), [c, d] = v.useState(!1), [f, p] = v.useState(""), [h, g] = v.useState(!1), w = v.useRef(null), y = v.useRef(null), _ = v.useRef("scripts"), S = async (j, T = !1) => {
     w.current = T ? j : null, d(!0), p(""), g(!1);
     try {
@@ -12002,12 +12002,12 @@ const Ix = "_grid_fc8hl_1", Lx = "_card_fc8hl_8", Dx = "_actions_fc8hl_23", zx =
     /* @__PURE__ */ o.jsxs("div", { className: `${J.page} ${Ms.page}`, children: [
       /* @__PURE__ */ o.jsx(gt, {}),
       !i && /* @__PURE__ */ o.jsx("h1", { children: x("Импорт и экспорт") }),
-      /* @__PURE__ */ o.jsx("div", { className: Ms.grid, children: Fx.filter((j) => j.kind === "scripts" ? a === !0 : j.kind !== "scenarios" || a === !1).map((j) => /* @__PURE__ */ o.jsxs("section", { className: Ms.card, children: [
+      /* @__PURE__ */ o.jsx("div", { className: Ms.grid, children: F0.filter((j) => j.kind === "scripts" ? a === !0 : j.kind !== "scenarios" || a === !1).map((j) => /* @__PURE__ */ o.jsxs("section", { className: Ms.card, children: [
         /* @__PURE__ */ o.jsx("h2", { children: x(j.title) }),
         /* @__PURE__ */ o.jsx("p", { className: Ms.description, children: x(j.description) }),
         /* @__PURE__ */ o.jsxs("div", { className: Ms.actions, children: [
           /* @__PURE__ */ o.jsx(se, { disabled: c, onClick: () => S(async () => {
-            Ax(`ha-dialog-ui-${j.kind}.json`, await bx(r, j.kind));
+            A0(`ha-dialog-ui-${j.kind}.json`, await b0(r, j.kind));
           }, !0), children: x(j.download) }),
           /* @__PURE__ */ o.jsx(se, { variant: "secondary", disabled: c, onClick: () => {
             var T;
@@ -12019,7 +12019,7 @@ const Ix = "_grid_fc8hl_1", Lx = "_card_fc8hl_8", Dx = "_actions_fc8hl_23", zx =
         var N;
         const T = (N = j.target.files) == null ? void 0 : N[0], C = _.current;
         j.target.value = "", T && S(async () => {
-          const A = await Mx(r, C, await T.text());
+          const A = await M0(r, C, await T.text());
           C === "settings" && A !== null && typeof A == "object" && !Array.isArray(A) && (typeof A.theme == "string" && window.dispatchEvent(new CustomEvent("ha-dialog-ui-theme-change", { detail: A.theme })), typeof A.active_remout == "boolean" && window.dispatchEvent(new CustomEvent(oi, { detail: A.active_remout }))), p("Данные загружены.");
         });
       } }),
@@ -12031,7 +12031,7 @@ const Ix = "_grid_fc8hl_1", Lx = "_card_fc8hl_8", Dx = "_actions_fc8hl_23", zx =
     ] })
   ] });
 };
-function Wx() {
+function W0() {
   const r = lt(), [a, i] = v.useState(null), [c, d] = v.useState([]), f = Wt(), p = Wt(), h = v.useCallback(() => f.run(async () => {
     i(await r.getSettings());
   }, { retryable: !0 }), [r, f.run]), g = v.useCallback(() => p.run(async () => {
@@ -12047,14 +12047,14 @@ function Wx() {
   };
   return { loading: f.busy, settings: a, musicOptions: c, saveSettings: w, settingsFeedback: f, musicFeedback: p };
 }
-const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = "_label_1ijxr_29", Qx = "_help_1ijxr_35", Kx = "_toggleHelp_1ijxr_40", st = {
-  form: Bx,
-  field: Ux,
-  input: Vx,
-  label: qx,
-  help: Qx,
-  toggleHelp: Kx
-}, Yx = ({ data: r, onChange: a }) => {
+const B0 = "_form_1ijxr_1", U0 = "_field_1ijxr_7", V0 = "_input_1ijxr_13", q0 = "_label_1ijxr_29", Q0 = "_help_1ijxr_35", K0 = "_toggleHelp_1ijxr_40", st = {
+  form: B0,
+  field: U0,
+  input: V0,
+  label: q0,
+  help: Q0,
+  toggleHelp: K0
+}, Y0 = ({ data: r, onChange: a }) => {
   const i = (c, d) => {
     a({
       ...r,
@@ -12065,7 +12065,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
     /* @__PURE__ */ o.jsx(Ue, { label: x("Base URL"), value: r.base_url ?? "", placeholder: x("http://192.168.31.83:9379"), onChange: (c) => i("base_url", c.target.value) }),
     /* @__PURE__ */ o.jsx(Ue, { label: x("Token"), value: r.token ?? "", placeholder: x("Bearer ..."), onChange: (c) => i("token", c.target.value) })
   ] });
-}, Gx = ({ data: r, musicOptions: a, musicUnavailable: i, onChange: c }) => {
+}, G0 = ({ data: r, musicOptions: a, musicUnavailable: i, onChange: c }) => {
   const d = (p, h) => {
     c({
       ...r,
@@ -12103,7 +12103,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
     ),
     a.length === 0 && !i && /* @__PURE__ */ o.jsx("span", { className: st.help, children: x("Музыка на сервере не найдена.") })
   ] });
-}, Jx = ({ data: r, onChange: a }) => {
+}, J0 = ({ data: r, onChange: a }) => {
   const i = op(), c = (d, f) => {
     a({
       ...r,
@@ -12144,7 +12144,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
     ] }),
     /* @__PURE__ */ o.jsx(tr, { label: x("Is admin"), checked: !!r.is_admin, onChange: (d) => c("is_admin", d.target.checked) })
   ] });
-}, Xx = ({ data: r, onChange: a }) => {
+}, X0 = ({ data: r, onChange: a }) => {
   const i = (c, d) => a({ ...r, [c]: d });
   return /* @__PURE__ */ o.jsxs("div", { className: st.form, children: [
     /* @__PURE__ */ o.jsxs("div", { className: st.toggleHelp, children: [
@@ -12169,12 +12169,12 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
 }, ui = {
   base_url: "",
   token: ""
-}, Zx = {
+}, Z0 = {
   global_music_timer: "",
   global_music_alarm: ""
 }, xf = {
   remout: ui,
-  timer_alarm: Zx,
+  timer_alarm: Z0,
   theme: "dark",
   is_admin: !1,
   active_remout: !1,
@@ -12210,7 +12210,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
   }
   return i;
 }, rw = () => {
-  const r = Ze(), [a, i] = v.useState(xf), c = Wt(), [d, f] = v.useState(xf), { settings: p, musicOptions: h, saveSettings: g, settingsFeedback: w, musicFeedback: y } = Wx();
+  const r = Ze(), [a, i] = v.useState(xf), c = Wt(), [d, f] = v.useState(xf), { settings: p, musicOptions: h, saveSettings: g, settingsFeedback: w, musicFeedback: y } = W0();
   v.useEffect(() => {
     if (!p) return;
     const T = nw(p);
@@ -12240,7 +12240,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
         /* @__PURE__ */ o.jsxs("section", { className: J.settingsSection, "aria-label": x("Общие"), children: [
           /* @__PURE__ */ o.jsx("h2", { children: x("Общие") }),
           /* @__PURE__ */ o.jsx(
-            Jx,
+            J0,
             {
               data: {
                 is_admin: a.is_admin,
@@ -12254,9 +12254,9 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
         /* @__PURE__ */ o.jsxs("section", { className: J.settingsSection, "aria-label": x("Подключения"), children: [
           /* @__PURE__ */ o.jsx("h2", { children: x("Подключения") }),
           /* @__PURE__ */ o.jsxs("div", { className: J.connectionFields, children: [
-            /* @__PURE__ */ o.jsx(Xx, { data: a, onChange: _ }),
+            /* @__PURE__ */ o.jsx(X0, { data: a, onChange: _ }),
             a.active_remout && /* @__PURE__ */ o.jsx(
-              Yx,
+              Y0,
               {
                 data: a.remout ?? ui,
                 onChange: (T) => i((C) => ({ ...C, remout: T }))
@@ -12267,7 +12267,7 @@ const Bx = "_form_1ijxr_1", Ux = "_field_1ijxr_7", Vx = "_input_1ijxr_13", qx = 
         /* @__PURE__ */ o.jsxs("section", { className: J.settingsSection, "aria-label": x("Timer / Alarm"), children: [
           /* @__PURE__ */ o.jsx("h2", { children: x("Timer / Alarm") }),
           /* @__PURE__ */ o.jsx(
-            Gx,
+            G0,
             {
               data: a.timer_alarm,
               musicOptions: h,
@@ -12802,10 +12802,10 @@ function Gw() {
     ] }),
     !i && !d && /* @__PURE__ */ o.jsx("p", { role: "status", children: x("Загрузка…") }),
     i && !i.available && /* @__PURE__ */ o.jsx("div", { className: We.empty, children: x(
-      "Для радионяни нужна интеграция Voice PE Monitor 0.2 и совместимая прошивка колонок."
+      "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124."
     ) }),
     (i == null ? void 0 : i.available) && O.length === 0 && /* @__PURE__ */ o.jsx("div", { className: We.empty, children: x(
-      "Нет колонок с поддержкой радионяни. Добавьте источник в Voice PE Monitor и обновите его прошивку."
+      "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome."
     ) }),
     /* @__PURE__ */ o.jsx("div", { className: We.grid, children: O.map((b) => {
       const D = i == null ? void 0 : i.sessions.find(
@@ -13044,7 +13044,7 @@ const Jw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
   return (c === "/commands" || c.startsWith("/commands/")) && i !== !1 ? i === null ? /* @__PURE__ */ o.jsx(Dr, {}) : /* @__PURE__ */ o.jsx(Rn, { to: "/scripts", replace: !0 }) : /* @__PURE__ */ o.jsx(cp, { resetKey: c, children: /* @__PURE__ */ o.jsxs(Tv, { children: [
     /* @__PURE__ */ o.jsx(Ke, { path: "/commands/whisper", element: a ? /* @__PURE__ */ o.jsx(a1, {}) : /* @__PURE__ */ o.jsx(Rn, { to: d, replace: !0 }) }),
     /* @__PURE__ */ o.jsx(Ke, { path: "/logs", element: r && a ? /* @__PURE__ */ o.jsx(h1, {}) : /* @__PURE__ */ o.jsx(Rn, { to: d, replace: !0 }) }),
-    /* @__PURE__ */ o.jsx(Ke, { path: "/downloads", element: a ? /* @__PURE__ */ o.jsx(Hx, {}) : /* @__PURE__ */ o.jsx(Rn, { to: d, replace: !0 }) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/downloads", element: a ? /* @__PURE__ */ o.jsx(H0, {}) : /* @__PURE__ */ o.jsx(Rn, { to: d, replace: !0 }) }),
     /* @__PURE__ */ o.jsx(
       Ke,
       {
@@ -13062,7 +13062,7 @@ const Jw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       Ke,
       {
         path: "/scripts",
-        element: /* @__PURE__ */ o.jsx(H0, {})
+        element: /* @__PURE__ */ o.jsx(Hx, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
@@ -13082,14 +13082,14 @@ const Jw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       Ke,
       {
         path: "/commands/main",
-        element: /* @__PURE__ */ o.jsx(hx, {})
+        element: /* @__PURE__ */ o.jsx(h0, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
       Ke,
       {
         path: "/commands/sub",
-        element: /* @__PURE__ */ o.jsx(yx, {})
+        element: /* @__PURE__ */ o.jsx(y0, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
@@ -13109,21 +13109,21 @@ const Jw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       Ke,
       {
         path: "/commands/direct/main",
-        element: /* @__PURE__ */ o.jsx(xx, {})
+        element: /* @__PURE__ */ o.jsx(x0, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
       Ke,
       {
         path: "/commands/direct/template",
-        element: /* @__PURE__ */ o.jsx(Ex, {})
+        element: /* @__PURE__ */ o.jsx(E0, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
       Ke,
       {
         path: "/commands/settings",
-        element: /* @__PURE__ */ o.jsx(Px, {})
+        element: /* @__PURE__ */ o.jsx(P0, {})
       }
     ),
     /* @__PURE__ */ o.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ o.jsx(Gw, {}) }),
@@ -13198,7 +13198,7 @@ class oS {
     return this.monitorSubscribe(i, { type: "ha_dialog_ui/monitor/watch", view_id: a });
   }
   monitorAudio(a, i) {
-    return this.monitorSubscribe(i, { type: "voice_pe_monitor/listen", node_id: a });
+    return this.monitorSubscribe(i, { type: "ha_dialog_ui/monitor/listen", node_id: a });
   }
   monitorSubscribe(a, i) {
     const c = this.hass.connection;
