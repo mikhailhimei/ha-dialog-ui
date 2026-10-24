@@ -624,7 +624,7 @@ try {
   const destinations=[
     ['Основные команды','/commands/main'],['Второстепенные команды','/commands/sub'],
     ['Прямые команды','/commands/direct/main'],['Вложенные команды','/commands/direct/template'],
-    ['Ответы по умолчанию','/commands/settings'],['Таймеры','/timer'],['Будильники','/alarm'],['Радионяня','/monitor'],
+    ['Ответы по умолчанию','/commands/settings'],['Таймеры','/timer'],['Будильники','/alarm'],['Радионяня','/monitor'],['Звонки','/calls'],
     ['Импорт и экспорт','/downloads'],['Настройки','/settings'],
   ];
   const mobileSections=panel.getByRole('navigation',{name:'Навигация интеграции',exact:true});
@@ -638,7 +638,7 @@ try {
       await panel.getByRole('button',{name:'Открыть меню разделов',exact:true}).click();
       await mobileSections.waitFor();
       assert.equal(await page.evaluate(()=>location.hash),currentRoute,'Opening the section menu must not navigate');
-      assert.equal(await mobileSections.getByRole('link').count(),11);
+      assert.equal(await mobileSections.getByRole('link').count(),12);
       assert.equal(await mobileSections.getByRole('button').count(),0,'All destinations are flat links');
       for (const [name] of destinations) {
         const rect=await mobileSections.getByRole('link',{name,exact:true}).boundingBox();

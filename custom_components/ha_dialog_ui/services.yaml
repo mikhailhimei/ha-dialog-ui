@@ -261,3 +261,42 @@ monitor_stop:
       selector:
         device:
           integration: esphome
+
+call_start:
+  name: Позвонить на колонку
+  description: Начать вызов между двумя колонками. Разговор начинается после ответа.
+  fields:
+    source_device_id:
+      name: Колонка, с которой звонить
+      required: true
+      selector:
+        device:
+          integration: esphome
+    target_device_id:
+      name: Колонка, на которую звонить
+      required: true
+      selector:
+        device:
+          integration: esphome
+
+call_answer:
+  name: Ответить на звонок
+  description: Принять входящий вызов на выбранной колонке.
+  fields:
+    device_id:
+      name: Колонка
+      required: true
+      selector:
+        device:
+          integration: esphome
+
+call_end:
+  name: Положить трубку
+  description: Завершить вызов на обеих колонках по ID любой из них.
+  fields:
+    device_id:
+      name: Колонка
+      required: true
+      selector:
+        device:
+          integration: esphome
