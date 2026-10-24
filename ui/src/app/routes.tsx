@@ -22,6 +22,7 @@ import { CommandSettingsPage } from "../pages/CommandPage/CommandSettingsPage/Co
 import { DownloadsPage } from "../pages/DownloadsPage/DownloadsPage";
 import { SettingsPage } from "../pages/SettingsPage/SettingsPage"
 import { TimerPage } from "../pages/TimerAlarmPages/TimerPage";
+import { BabyMonitorPage } from "../pages/BabyMonitorPage/BabyMonitorPage";
 import { AlarmPage } from "../pages/TimerAlarmPages/AlarmPage";
 
 export const AppRoutes = () => {
@@ -98,6 +99,7 @@ export const AppRoutes = () => {
         element={<CommandSettingsPage />}
       />
 
+      <Route path="/monitor" element={<BabyMonitorPage />} />
       <Route
         path="/timer"
         element={<TimerPage />}

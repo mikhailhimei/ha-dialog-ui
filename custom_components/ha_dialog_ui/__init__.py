@@ -29,6 +29,7 @@ from .src.api.settings.settings_api import async_register_settings_websockets
 from .timer_alarm.websocket import async_register_timer_alarm_websockets
 from .storage.legacy_migration import async_migrate_legacy_storage
 from .whisper_prompt import async_register_whisper_prompt_websockets
+from .monitor import register_monitor
 from .panel import async_register_panel
 from .services import async_register_services, async_unregister_services
 from .src.service.dialog_state import (
@@ -51,6 +52,7 @@ def _initialize_domain_runtime(hass: HomeAssistant) -> None:
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the integration domain."""
     _initialize_domain_runtime(hass)
+    register_monitor(hass)
     async_register_command_transfer_websockets(hass)
     async_register_logs_websockets(hass)
     async_register_whisper_prompt_websockets(hass)
