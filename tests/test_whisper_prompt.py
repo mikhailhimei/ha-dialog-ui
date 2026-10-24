@@ -132,3 +132,22 @@ async def test_save_only_never_contacts_whisper(runtime, server):
     remote.assert_not_awaited()
     assert (await prompt._store(hass).async_load())['initial_prompt'] == ['a', 'b']
     conn.send_result.assert_called_once_with(1, {'initial_prompt': ['a', 'b'], 'saved': True, 'applied': False})
+
+
+async def test_save_prompt_without_address_does_not_contact_whisper(runtime):
+    hass, _ = runtime
+    conn = connection()
+    with patch.object(prompt, '_remote', AsyncMock()) as remote:
+        await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': {'url': '', 'initial_prompt': 'Коты; Пылесос', 'apply': False}})
+    remote.assert_not_awaited()
+    assert await prompt._store(hass).async_load() == {'url': '', 'token': '', 'initial_prompt': ['Коты', 'Пылесос']}
+    conn.send_error.assert_not_called()
+
+
+async def test_send_without_address_is_rejected(runtime):
+    hass, _ = runtime
+    conn = connection()
+    with patch.object(prompt, '_remote', AsyncMock()) as remote:
+        await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': {'url': '', 'initial_prompt': 'Коты', 'apply': True}})
+    remote.assert_not_awaited()
+    conn.send_error.assert_called_once()

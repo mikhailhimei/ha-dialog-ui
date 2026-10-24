@@ -31,8 +31,9 @@ def _endpoint(value):
     return value.strip().rstrip("/")
 
 
-def _credentials(current, data):
-    url = _endpoint(data.get("url", ""))
+def _credentials(current, data, *, allow_empty_url=False):
+    value = data.get("url", "").strip()
+    url = "" if allow_empty_url and not value else _endpoint(value)
     token = data.get("token", "").strip()
     if not token and url == current.get("url"):
         token = current.get("token", "")
@@ -97,7 +98,7 @@ async def _apply_request(hass, connection, msg, *, save):
     current = await _store(hass).async_load() or {}
     saved = False
     try:
-        url, token = _credentials(current, msg["data"])
+        url, token = _credentials(current, msg["data"], allow_empty_url=save and not msg["data"].get("apply", True))
         if save:
             prompt = _phrases(msg["data"]["initial_prompt"])
             await _store(hass).async_save({"url": url, "token": token, "initial_prompt": prompt})

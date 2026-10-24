@@ -24,10 +24,10 @@ try {
     window.hass = { user: {is_admin:true}, states: {'script.bound':{entity_id:'script.bound',state:'off',attributes:{friendly_name:'Управление светом'}}}, connection: { sendMessagePromise: async message => {
       window.apiRequests.push(message.type);
       const requestType = message.type.split('/').pop();
-      if (requestType==='get_whisper_prompt') return window.whisperSettings || {url:'',initial_prompt:'',has_token:false};
+      if (requestType==='get_whisper_prompt') return window.whisperSettings || JSON.parse(localStorage.getItem('test-whisper-settings') || 'null') || {url:'',initial_prompt:'',has_token:false};
       if (requestType==='read_whisper_prompt') return {initial_prompt:['Пылесос, коридор, коты.']};
       if (requestType==='save_whisper_prompt') {
-        if (message.data.apply===false) {window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt.split(';').map(s=>s.trim()).filter(Boolean),has_token:Boolean(message.data.token)}; return {...window.whisperSettings,saved:true,applied:false};}
+        if (message.data.apply===false) {window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt.split(';').map(s=>s.trim()).filter(Boolean),has_token:Boolean(message.data.token)}; localStorage.setItem('test-whisper-settings',JSON.stringify(window.whisperSettings)); return {...window.whisperSettings,saved:true,applied:false};}
         if (window.whisperSaveFailure) return {initial_prompt:message.data.initial_prompt,saved:true,applied:false};
         window.whisperSaveRequest=message.data;
         window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt,has_token:true};
@@ -1465,11 +1465,27 @@ try {
       if (width===390) await panel.getByRole('button',{name:'Закрыть подсказку',exact:true}).click();
       else { await panel.getByRole('tooltip').waitFor(); await page.keyboard.press('Escape'); }
     }
+    await whisperUrl.fill('');
+    assert.equal(await panel.getByRole('button',{name:'Отправить в Whisper',exact:true}).isEnabled(),false);
+    await whisperText.fill('Коты; Пылесос');
+    await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
+    await panel.getByRole('status').filter({hasText:'Сохранено в Home Assistant.'}).waitFor();
+    const toast=panel.getByRole('status').filter({hasText:'Сохранено в Home Assistant.'});
+    assert.equal(await toast.evaluate(el=>getComputedStyle(el).position),'fixed');
+    const toastBounds=await toast.boundingBox();
+    assert(toastBounds.x>=0 && toastBounds.x+toastBounds.width<=width,'Toast fits viewport');
+    await toast.getByRole('button',{name:'Закрыть уведомление',exact:true}).click();
+    await toast.waitFor({state:'hidden'});
     await whisperUrl.fill('http://whisper.local:10301');
     await whisperText.fill('Коты; Пылесос');
     await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
     await panel.getByText('Сохранено в Home Assistant.',{exact:true}).waitFor();
     assert.equal(await whisperText.inputValue(),'Коты; Пылесос');
+    await page.reload();
+    await page.evaluate(async()=>{await customElements.whenDefined('ha-dialog-ui-panel'); const element=document.createElement('ha-dialog-ui-panel'); element.hass=window.hass; document.body.appendChild(element);});
+    await whisperText.waitFor();
+    await page.waitForFunction(()=>document.querySelector('ha-dialog-ui-panel').shadowRoot.querySelector('textarea')?.value==='Коты; Пылесос');
+    assert.equal(await whisperText.inputValue(),'Коты; Пылесос','Reload preserves semicolon separators for a stored phrase array');
     await whisperToken.fill('test-token');
     await whisperText.fill('Включи свет. Насыпь еды.');
     await page.evaluate(()=>{window.whisperSaveFailure=true});
