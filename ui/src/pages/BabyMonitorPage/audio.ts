@@ -15,7 +15,13 @@ export class MonitorAudio {
     nodeId: string,
     connectionChanged: (connected: boolean) => void,
   ) {
-    const unsubscribe = await api.monitorAudio(nodeId, (event) => {
+    return this.listenWith((callback) => api.monitorAudio(nodeId, callback), connectionChanged);
+  }
+  async listenWith(
+    subscribe: (callback: (event: import("../../types/monitor").MonitorAudioEvent) => void) => Promise<() => void | Promise<void>>,
+    connectionChanged: (connected: boolean) => void,
+  ) {
+    const unsubscribe = await subscribe((event) => {
       const context = this.context;
       if (this.closed || !context) return;
       if (event.type === "status") {

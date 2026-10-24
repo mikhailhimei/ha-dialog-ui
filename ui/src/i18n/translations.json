@@ -1546,5 +1546,65 @@
   "Закрытие окна или вкладки не завершает звонок. Чтобы закончить разговор, нажмите «Положить трубку» или верхнюю кнопку любой колонки. Голосовой ассистент остаётся доступен.": {
     "ru": "Закрытие окна или вкладки не завершает звонок. Чтобы закончить разговор, нажмите «Положить трубку» или верхнюю кнопку любой колонки. Голосовой ассистент остаётся доступен.",
     "en": "Closing the window or tab does not end the call. Hang up with the button below or the top button on either speaker. The voice assistant remains available."
+  },
+  "Выберите колонку, на которую хотите позвонить с этого устройства.": {
+    "ru": "Выберите колонку, на которую хотите позвонить с этого устройства.",
+    "en": "Choose the speaker you want to call from this device."
+  },
+  "Этот телефон или компьютер": {
+    "ru": "Этот телефон или компьютер",
+    "en": "This phone or computer"
+  },
+  "Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.": {
+    "ru": "Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.",
+    "en": "To call, allow microphone access and open Home Assistant over HTTPS."
+  },
+  "Вы звоните с микрофона этого телефона или компьютера. Закрытие окна сохраняет звонок; выход из раздела или закрытие страницы завершает звонок с этого устройства. Звонки между колонками запускаются сценариями HA.": {
+    "ru": "Вы звоните с микрофона этого телефона или компьютера. Закрытие окна сохраняет звонок; выход из раздела или закрытие страницы завершает звонок с этого устройства. Звонки между колонками запускаются сценариями HA.",
+    "en": "You are calling with this phone or computer microphone. Closing the dialog keeps the call running; leaving this section or closing the page ends this device’s call. Speaker-to-speaker calls are started by HA scripts."
+  },
+  "Подключаем микрофон…": {
+    "ru": "Подключаем микрофон…",
+    "en": "Connecting microphone…"
+  },
+  "Соединяем…": {
+    "ru": "Соединяем…",
+    "en": "Connecting…"
+  },
+  "Колонка уже участвует в другом звонке.": {
+    "ru": "Колонка уже участвует в другом звонке.",
+    "en": "The speaker is already in another call."
+  },
+  "Сначала завершите текущий звонок.": {
+    "ru": "Сначала завершите текущий звонок.",
+    "en": "End the current call first."
+  },
+  "Разрешите доступ к микрофону в настройках браузера и откройте HA по HTTPS.": {
+    "ru": "Разрешите доступ к микрофону в настройках браузера и откройте HA по HTTPS.",
+    "en": "Allow microphone access in browser settings and open HA over HTTPS."
+  },
+  "Микрофон на этом устройстве не найден.": {
+    "ru": "Микрофон на этом устройстве не найден.",
+    "en": "No microphone was found on this device."
+  },
+  "Микрофон занят другим приложением или недоступен.": {
+    "ru": "Микрофон занят другим приложением или недоступен.",
+    "en": "The microphone is in use by another app or unavailable."
+  },
+  "Не удалось подключить микрофон или звук звонка. Проверьте разрешения и подключение.": {
+    "ru": "Не удалось подключить микрофон или звук звонка. Проверьте разрешения и подключение.",
+    "en": "Could not connect the microphone or call audio. Check permissions and connection."
+  },
+  "Микрофон отключён. Звонок завершён.": {
+    "ru": "Микрофон отключён. Звонок завершён.",
+    "en": "Microphone disconnected. The call has ended."
+  },
+  "Потеряно соединение звонка.": {
+    "ru": "Потеряно соединение звонка.",
+    "en": "Call connection lost."
+  },
+  "Этот браузер не поддерживает звонки. Откройте HA в актуальном Chrome или Safari.": {
+    "ru": "Этот браузер не поддерживает звонки. Откройте HA в актуальном Chrome или Safari.",
+    "en": "This browser does not support calls. Open HA in a current Chrome or Safari version."
   }
 }

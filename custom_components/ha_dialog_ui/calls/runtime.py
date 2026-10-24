@@ -1,8 +1,9 @@
-"""Explicit ring/answer/end state machine; no browser-owned call lifetime."""
+"""Speaker calls and connection-owned browser calls with shared audio transport."""
 
 import asyncio
 import logging
 import secrets
+from collections.abc import Callable
 from dataclasses import dataclass, field
 
 import voluptuous as vol
@@ -21,6 +22,11 @@ from homeassistant.util import slugify
 
 from ..baby_monitor.playback import MonitorStreamView, PlaybackSessions
 from ..baby_monitor.receiver import Receiver
+from .browser import BrowserPeer
+from .browser import audio as browser_audio
+from .browser import end as browser_end
+from .browser import receive as browser_receive
+from .browser import start as browser_start
 
 _LOGGER = logging.getLogger(__name__)
 PORT = 8125
@@ -42,6 +48,8 @@ class Call:
     tokens: list = field(default_factory=list)
     timeout: asyncio.Task | None = None
     starting: asyncio.Task | None = None
+    browser: BrowserPeer | None = None
+    source_stop: Callable[[], None] | None = None
 
 
 class CallRuntime:
@@ -51,6 +59,7 @@ class CallRuntime:
         self.keys = {}
         self.calls = {}
         self.retiring = set()
+        self.browser_views = {}
         self.server = None
         self.running = False
         self.clients = set()
@@ -97,14 +106,18 @@ class CallRuntime:
                 break
         return sorted(result, key=lambda d: d["name"])
 
-    def snapshot(self):
+    def snapshot(self, browser=None):
         return {
             "available": self.running,
+            "owned_call_id": browser.call_id
+            if browser and not browser.closed
+            else None,
             "devices": self.devices(),
             "calls": [
                 {
                     "id": c.id,
-                    "source_device_id": c.source,
+                    "source_device_id": None if c.browser else c.source,
+                    "source_type": "browser" if c.browser else "speaker",
                     "target_device_id": c.target,
                     "state": c.state,
                 }
@@ -151,20 +164,25 @@ class CallRuntime:
             for p in state["sessions"]
         )
 
-    async def dial(self, source, target):
+    async def dial(self, source, target, browser=None):
         async with self.lock:
             if not self.running or source == target:
                 raise HomeAssistantError(
                     "Выберите две разные колонки; сервер звонков должен быть запущен"
                 )
-            a, b = self.resolve(source), self.resolve(target)
+            if browser and (browser.closed or browser.call_id or source != browser.id):
+                raise HomeAssistantError("Вкладка закрыта или звонок уже идёт")
+            a, b = None if browser else self.resolve(source), self.resolve(target)
             if any(self.busy(d) or self.radio_busy(d) for d in (source, target)):
                 raise HomeAssistantError("Колонка уже занята звонком или радионяней")
-            call = Call(secrets.token_urlsafe(16), source, target)
+            call = Call(secrets.token_urlsafe(16), source, target, browser=browser)
+            if browser:
+                browser.call_id = call.id
             self.calls[call.id] = call
         call.starting = asyncio.current_task()
         try:
-            for device, incoming in ((a, False), (b, True)):
+            endpoints = ((b, True),) if browser else ((a, False), (b, True))
+            for device, incoming in endpoints:
                 if call.id not in self.calls:
                     raise HomeAssistantError("Звонок завершён")
                 await self.native(device["id"], "ring", {"incoming": incoming})
@@ -238,7 +256,24 @@ class CallRuntime:
             if call.timeout:
                 call.timeout.cancel()
         try:
-            for device_id in (call.source, call.target):
+            endpoints = (call.target,) if call.browser else (call.source, call.target)
+            if call.browser:
+                if call.browser.closed:
+                    raise HomeAssistantError("Вкладка закрыта")
+                call.browser.receiver._status(True)
+                source_receiver = self.receivers[self.resolve(call.target)["node_id"]]
+
+                def source_status(event):
+                    if (
+                        event["type"] == "status"
+                        and not event["connected"]
+                        and call.id in self.calls
+                    ):
+                        self.hass.async_create_task(self.end(call.id))
+
+                source_receiver.listeners.add(source_status)
+                call.source_stop = lambda: source_receiver.listeners.discard(source_status)
+            for device_id in endpoints:
                 if call.id not in self.calls:
                     raise HomeAssistantError("Звонок завершён")
                 item = self.resolve(device_id)
@@ -249,7 +284,7 @@ class CallRuntime:
                 asyncio.gather(
                     *(
                         self.receivers[self.resolve(d)["node_id"]].online.wait()
-                        for d in (call.source, call.target)
+                        for d in endpoints
                     )
                 ),
                 10,
@@ -258,11 +293,19 @@ class CallRuntime:
                 raise HomeAssistantError("Звонок завершён")
             base = get_url(self.hass, allow_external=False).rstrip("/")
             ready_futures = []
-            for source, target in (
-                (call.source, call.target),
-                (call.target, call.source),
-            ):
-                receiver = self.receivers[self.resolve(source)["node_id"]]
+            legs = (
+                ((call.source, call.target),)
+                if call.browser
+                else ((call.source, call.target), (call.target, call.source))
+            )
+            for source, target in legs:
+                if call.id not in self.calls:
+                    raise HomeAssistantError("Звонок завершён")
+                receiver = (
+                    call.browser.receiver
+                    if call.browser
+                    else self.receivers[self.resolve(source)["node_id"]]
+                )
                 token = self.streams.create(source, target, receiver)
                 call.tokens.append(token)
                 ready_futures.append(self.streams.sessions[token]["ready"])
@@ -288,8 +331,12 @@ class CallRuntime:
 
     async def stop_devices(self, call):
         await asyncio.gather(
-            self.native(call.source, "end"),
-            self.native(call.target, "end"),
+            *(
+                self.native(device, "end")
+                for device in (
+                    (call.target,) if call.browser else (call.source, call.target)
+                )
+            ),
             return_exceptions=True,
         )
 
@@ -304,6 +351,11 @@ class CallRuntime:
         call = self.calls.pop(call_id, None)
         if call is None:
             return
+        if call.source_stop:
+            call.source_stop()
+            call.source_stop = None
+        if call.browser:
+            call.browser.end()
         if call.starting:
             self.retiring.update((call.source, call.target))
         if call.timeout and call.timeout is not asyncio.current_task():
@@ -432,6 +484,8 @@ class CallRuntime:
         if self.tasks:
             await asyncio.gather(*tuple(self.tasks), return_exceptions=True)
         self.receivers.clear()
+        for peer in self.browser_views.values():
+            peer.end()
         if server:
             await server.wait_closed()
 
@@ -453,7 +507,16 @@ class CallRuntime:
             self.hass.services.async_register(
                 "ha_dialog_ui", action, handler, schema=vol.Schema(fields)
             )
-        for command in (watch, start_call, answer_call, end_call):
+        for command in (
+            watch,
+            start_call,
+            answer_call,
+            end_call,
+            browser_start,
+            browser_end,
+            browser_audio,
+            browser_receive,
+        ):
             websocket_api.async_register_command(self.hass, command)
 
     async def service_start(self, call):
@@ -466,23 +529,46 @@ class CallRuntime:
         await self.end_device(call.data["device_id"])
 
 
-@websocket_api.websocket_command({vol.Required("type"): "ha_dialog_ui/calls/watch"})
+@websocket_api.websocket_command(
+    {vol.Required("type"): "ha_dialog_ui/calls/watch", vol.Optional("view_id"): str}
+)
 @websocket_api.async_response
 async def watch(hass, connection, msg):
     runtime = hass.data["ha_dialog_ui_calls"]
+    peer = None
+    key = (connection, msg.get("view_id"))
+    if msg.get("view_id"):
+        if key in runtime.browser_views:
+            connection.send_error(msg["id"], "call_error", "Вкладка уже открыта")
+            return
+        peer = runtime.browser_views[key] = BrowserPeer()
+
+    task = None
+
+    def close():
+        if task:
+            task.cancel()
+        if peer:
+            peer.closed = True
+            runtime.browser_views.pop(key, None)
+            peer.detach_audio()
+            if peer.call_id:
+                hass.async_create_task(runtime.end(peer.call_id))
 
     async def updates():
         try:
             while True:
-                connection.send_event(msg["id"], runtime.snapshot())
+                connection.send_event(msg["id"], runtime.snapshot(peer))
                 await asyncio.sleep(1)
-        except (asyncio.CancelledError, ConnectionError, RuntimeError):
+        except asyncio.CancelledError:
             pass
+        except (ConnectionError, RuntimeError):
+            close()
 
+    connection.subscriptions[msg["id"]] = close
     # HA may eagerly run a newly created task. Acknowledge before the first event.
     connection.send_result(msg["id"])
     task = hass.async_create_task(updates())
-    connection.subscriptions[msg["id"]] = task.cancel
 
 
 async def command(hass, connection, msg, action, fields):
