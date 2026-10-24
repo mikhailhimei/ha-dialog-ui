@@ -162,10 +162,39 @@ try {
       await panel.getByRole("button", { name: /Спальня/ }).count(),
       0,
     ); // Listener-only device is not a source card.
+    if (width < 768) {
+      const header = panel.locator("header").filter({ has: page.getByRole("button", { name: "Открыть меню Home Assistant", exact: true }) });
+      const headerBox = await header.boundingBox();
+      assert.equal(Math.round(headerBox.x), 0);
+      assert.equal(Math.round(headerBox.width), width);
+    }
+    await page.evaluate(() => {
+      for (let i = 0; i < 50; i++) window.monitorState.devices.push({
+        id: `extra-${i}`, node_id: `extra-${i}`,
+        name: `Колонка с длинным названием в комнате номер ${i}`,
+        source: false, listener: true, online: i !== 49, transmitting: false,
+      });
+      window.publishMonitor();
+    });
     await source.click();
     const dialog = panel.getByRole("dialog", { name: "Детская" });
     await dialog.waitFor();
-    await dialog.getByRole("radio", { name: /Спальня/ }).check();
+    const playback = dialog.getByRole("combobox", { name: "Где воспроизводить звук?" });
+    assert.equal(await playback.locator("option").count(), 52);
+    assert.equal(await playback.locator('option[value="extra-49"]').isDisabled(), true);
+    const statusBox = await dialog.getByRole("status").boundingBox();
+    const selectBox = await playback.boundingBox();
+    assert.ok(statusBox.y < selectBox.y);
+    const helpText = "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».";
+    assert.equal(await panel.getByText(helpText, { exact: true }).count(), 0);
+    await dialog.getByRole("button", { name: "Подсказка: Готово к запуску", exact: true }).click();
+    await panel.getByText(helpText, { exact: true }).waitFor();
+    if (width < 768) await panel.getByRole("button", { name: "Закрыть подсказку", exact: true }).click();
+    else await page.keyboard.press("Escape");
+    await dialog.waitFor();
+    await playback.selectOption("extra-48");
+    assert.ok((await dialog.boundingBox()).width <= width);
+    await dialog.getByRole("combobox", { name: "Где воспроизводить звук?" }).selectOption("listener");
     await dialog.getByRole("button", { name: "Старт", exact: true }).click();
     await dialog.getByText("Прослушивание активно", { exact: true }).waitFor();
     const box = await dialog.boundingBox();
@@ -183,7 +212,8 @@ try {
     await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();
     await dialog.waitFor({ state: "hidden" });
     assert.deepEqual(await page.evaluate(() => window.monitorCalls), ["start"]);
-    await panel.getByText(/^Радионяня включена:/).waitFor();
+    assert.equal(await panel.getByText(/^Радионяня включена:/).count(), 0);
+    assert.ok((await source.getAttribute("class")).includes("deviceLive"));
     await source.click();
     await dialog.getByText("Прослушивание активно", { exact: true }).waitFor();
     await dialog
@@ -195,7 +225,7 @@ try {
     await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();
     await dialog.waitFor({ state: "hidden" });
     await source.click();
-    await dialog.getByRole("radio", { name: /На этом устройстве/ }).check();
+    await dialog.getByRole("combobox", { name: "Где воспроизводить звук?" }).selectOption("browser");
     await dialog.getByRole("button", { name: "Старт", exact: true }).click();
     await dialog.getByText("Прослушивание активно", { exact: true }).waitFor();
     await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();

@@ -5,6 +5,8 @@ import { NavigationTabs } from "../../components/NavigationTabs/NavigationTabs";
 import { MobileHeader } from "../../components/MobileHeader/MobileHeader";
 import { Modal } from "../../components/ui/Modal/Modal";
 import { Button } from "../../components/ui/Button/Button";
+import { SelectInput } from "../../components/ui/Select/SelectInput";
+import { FieldHelp } from "../../components/ui/FieldLabel/FieldLabel";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { formatApiError } from "../../utils/apiErrors";
 import { t } from "../../i18n";
@@ -201,73 +203,54 @@ export function BabyMonitorPage() {
     }
   };
 
+  const playbackDevices = state?.devices.filter(
+    (device) => device.listener && device.id !== sourceId,
+  ) ?? [];
+  const selectedPlayback = playbackDevices.find((device) => device.id === target);
+  const statusText = t(
+    busy ? "Подключаемся…" : active
+      ? ownConnected || pair ? "Прослушивание активно" : "Источник включён"
+      : "Готово к запуску",
+  );
   const controls = (
     <>
-      <p className={styles.hint}>{t("Где воспроизводить звук?")}</p>
-      <label className={styles.choice}>
-        <input
-          type="radio"
-          name="playback"
-          value="browser"
-          checked={target === "browser"}
-          onChange={() => setTarget("browser")}
-          disabled={busy || playing}
-        />
-        <Headphones size={22} />
-        <span>
-          {t("На этом устройстве")}
-          <small>{t("Телефон или компьютер")}</small>
-        </span>
-      </label>
-      {state?.devices
-        .filter((device) => device.listener && device.id !== sourceId)
-        .map((device) => (
-          <label key={device.id} className={styles.choice}>
-            <input
-              type="radio"
-              name="playback"
-              value={device.id}
-              checked={target === device.id}
-              onChange={() => setTarget(device.id)}
-              disabled={!device.online || busy || playing}
-            />
-            <Speaker size={22} />
-            <span>
-              {device.name}
-              <small>{t(device.online ? "Колонка" : "Нет подключения")}</small>
-            </span>
-          </label>
-        ))}
-      {playing && (
-        <p className={styles.hint}>
-          {t(
-            "Чтобы сменить устройство воспроизведения, сначала остановите сеанс.",
-          )}
-        </p>
-      )}
-      <div
-        role="status"
-        aria-live="polite"
-        className={`${styles.status} ${active ? styles.live : ""}`}
-      >
-        <Circle size={12} fill="currentColor" />
-        {t(
-          busy
-            ? "Подключаемся…"
-            : active
-              ? ownConnected || pair
-                ? "Прослушивание активно"
-                : "Источник включён"
-              : "Готово к запуску",
-        )}
-      </div>
-      <p className={styles.hint}>
-        {t(
+      <div className={styles.statusRow}>
+        <div role="status" aria-live="polite"
+          className={`${styles.status} ${active ? styles.live : ""}`}>
+          <Circle size={12} fill="currentColor" />
+          {statusText}
+        </div>
+        <FieldHelp label={statusText} description={t(
           active && state?.owned_source_id !== sourceId
             ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже."
             : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».",
-        )}
-      </p>
+        )} />
+      </div>
+      <p className={styles.hint}>{t("Где воспроизводить звук?")}</p>
+      <div className={styles.playback}>
+        {target === "browser" ? <Headphones size={22} /> : <Speaker size={22} />}
+        <SelectInput
+          aria-label={t("Где воспроизводить звук?")}
+          className={styles.playbackSelect}
+          value={target}
+          onChange={(event) => setTarget(event.target.value)}
+          disabled={busy || playing}
+          options={[
+            { value: "browser", label: t("На этом устройстве") },
+            ...playbackDevices.map((device) => ({
+              value: device.id,
+              label: device.online ? device.name : `${device.name} — ${t("Нет подключения")}`,
+              disabled: !device.online,
+            })),
+          ]}
+        />
+        <small>{t(target === "browser" ? "Телефон или компьютер" : selectedPlayback?.online ? "Колонка" : "Нет подключения")}</small>
+      </div>
+      {playing && (
+        <p className={styles.hint}>
+          {t("Чтобы сменить устройство воспроизведения, сначала остановите сеанс.")}
+        </p>
+      )}
     </>
   );
   const footer = (
@@ -316,9 +299,10 @@ export function BabyMonitorPage() {
     );
 
   return (
-    <section className={styles.page}>
-      <NavigationTabs />
+    <>
+      <div className={styles.navigation}><NavigationTabs /></div>
       {mobile && <MobileHeader title="Радионяня" />}
+      <section className={styles.page}>
       <header className={styles.heading}>
         <Baby size={30} />
         <div>
@@ -387,26 +371,6 @@ export function BabyMonitorPage() {
           );
         })}
       </div>
-      {state?.owned_source_id && (
-        <div className={styles.banner} role="status">
-          <Circle size={12} fill="currentColor" />
-          <span>
-            {t(busy ? "Подключение:" : "Радионяня включена:")}{" "}
-            {
-              state.devices.find(
-                (device) => device.id === state.owned_source_id,
-              )?.name
-            }
-          </span>
-          <Button
-            variant="ghost"
-            disabled={busy}
-            onClick={() => void stop(state.owned_source_id!)}
-          >
-            {t("Остановить")}
-          </Button>
-        </div>
-      )}
       <Modal
         open={sourceId !== null}
         onClose={close}
@@ -421,6 +385,7 @@ export function BabyMonitorPage() {
         )}
         {controls}
       </Modal>
-    </section>
+      </section>
+    </>
   );
 }
