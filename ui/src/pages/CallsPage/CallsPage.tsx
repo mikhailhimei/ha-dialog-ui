@@ -65,12 +65,13 @@ export function CallsPage() {
     return () => clearInterval(timer);
   }, [own?.id, own?.state]);
   const toggleMicrophone = () => {
+    if (!controlsEnabled) return;
     const next = !muted;
     audio.current?.setMicrophoneMuted(next); setMuted(next);
   };
   const applyOutput = async (deviceId: string) => {
     const player = audio.current;
-    if (!player || routing) return;
+    if (!player || routing || !controlsEnabled) return;
     setRouting(true); setError("");
     try {
       await player.selectOutput(deviceId);
@@ -81,7 +82,7 @@ export function CallsPage() {
   };
   const toggleSpeaker = async () => {
     const player = audio.current;
-    if (!player || routing) return;
+    if (!player || routing || !controlsEnabled) return;
     if (outputId !== "default") { await applyOutput("default"); return; }
     if (!player.canPromptOutput()) { setOutputPicker(value => !value); return; }
     setRouting(true); setError("");
@@ -96,6 +97,7 @@ export function CallsPage() {
   const occupied = (id: string) => state?.calls.some(call => call.source_device_id === id || call.target_device_id === id);
   const selectedCall = state?.calls.find(call => call.source_device_id === target || call.target_device_id === target);
   const selectedOwn = Boolean(own && own.target_device_id === target);
+  const controlsEnabled = selectedOwn && own?.state === "active" && !busy;
   const name = (id: string) => state?.devices.find(item => item.id === id)?.name ?? t("Колонка");
   const status = t(selectedCall?.state === "active" ? "Разговор" : selectedCall?.state === "connecting" ? "Соединяем…" : selectedCall ? "Ожидание ответа" : "Готово к звонку");
   const hangup = async () => {
@@ -148,36 +150,37 @@ export function CallsPage() {
         {occupied(item.id) ? <PhoneCall size={26} /> : <Phone size={26} />}
         <strong>{item.name}</strong><span>{t(!item.online ? "Нет подключения" : occupied(item.id) ? "Участвует в звонке" : "Готова к звонку")}</span>
       </button>)}</div>
-      <Modal open={Boolean(target)} onClose={() => setTarget("")} title={selectedOwn ? t("Звонки") : name(target)} dialogLabel={name(target)} footer={selectedOwn ? <div className={styles.phoneFooter}>
+      <Modal open={Boolean(target)} onClose={() => setTarget("")} title={t("Звонки")} dialogLabel={name(target)} footer={<div className={styles.phoneFooter}>
         <div className={styles.callControls}>
           <div className={styles.control}>
-            <Button variant="secondary" className={`${styles.roundControl} ${muted ? styles.controlSelected : ""}`} aria-label={t(muted ? "Включить микрофон" : "Выключить микрофон")} aria-pressed={muted} onClick={toggleMicrophone}>{muted ? <MicOff size={25} /> : <Mic size={25} />}</Button>
-            <span>{t(muted ? "Микрофон выкл." : "Микрофон")}</span>
+            <Button variant="secondary" className={`${styles.roundControl} ${selectedOwn && muted ? styles.controlSelected : ""}`} aria-label={t(selectedOwn && muted ? "Включить микрофон" : "Выключить микрофон")} aria-pressed={selectedOwn && muted} disabled={!controlsEnabled} onClick={toggleMicrophone}>{selectedOwn && muted ? <MicOff size={25} /> : <Mic size={25} />}</Button>
+            <span>{t(selectedOwn && muted ? "Микрофон выкл." : "Микрофон")}</span>
           </div>
           <div className={styles.control}>
-            <Button variant="secondary" className={`${styles.roundControl} ${outputId !== "default" ? styles.controlSelected : ""}`} aria-label={t("Динамик")} aria-pressed={outputId !== "default"} disabled={!outputSupported || routing} onClick={() => void toggleSpeaker()}><Volume2 size={25} /></Button>
+            <Button variant="secondary" className={`${styles.roundControl} ${selectedOwn && outputId !== "default" ? styles.controlSelected : ""}`} aria-label={t("Динамик")} aria-pressed={selectedOwn && outputId !== "default"} disabled={!controlsEnabled || !outputSupported || routing} onClick={() => void toggleSpeaker()}><Volume2 size={25} /></Button>
             <span>{t("Динамик")}</span>
           </div>
           <div className={styles.control}>
-            <Button variant="secondary" className={styles.roundControl} aria-label={t("Включить звук")} onClick={() => void audio.current?.resumePlayback().catch(() => setError(t("Браузер заблокировал звук. Проверьте разрешение воспроизведения и громкость телефона.")))}><AudioLines size={25} /></Button>
+            <Button variant="secondary" className={styles.roundControl} aria-label={t("Включить звук")} disabled={!controlsEnabled} onClick={() => void audio.current?.resumePlayback().catch(() => setError(t("Браузер заблокировал звук. Проверьте разрешение воспроизведения и громкость телефона.")))}><AudioLines size={25} /></Button>
             <span>{t("Звук")}</span>
           </div>
         </div>
-        {!outputSupported && <div className={styles.routeHint}><span>{t("Выход звука — через настройки телефона")}</span><FieldHelp label="Динамик" description="Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение." /></div>}
-        {outputPicker && <SelectInput label="Устройство вывода" value={outputId} disabled={routing} onChange={event => void applyOutput(event.target.value)} options={[{value:"default",label:t("По умолчанию")},...outputDevices.filter(item => item.id !== "default").map(item => ({value:item.id,label:item.label}))]} />}
-        {outputId !== "default" && <small className={styles.routeName}>{outputDevices.find(item => item.id === outputId)?.label}</small>}
-        <div className={styles.control}><Button className={styles.hangup} disabled={busy} aria-label={t("Положить трубку")} onClick={() => void hangup()}><PhoneOff size={30} /></Button><span>{t("Завершить")}</span></div>
-      </div> : <div className={styles.actions}><Button disabled={busy || !ready || !secure || !state?.available || !device?.online || Boolean(own) || Boolean(selectedCall)} onClick={() => void start()}>{t(selectedCall ? "Занято" : "Позвонить")}</Button></div>}>
-        {selectedOwn ? <div className={styles.phoneStage}>
+        {controlsEnabled && !outputSupported && <div className={styles.routeHint}><span>{t("Выход звука — через настройки телефона")}</span><FieldHelp label="Динамик" description="Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение." /></div>}
+        {controlsEnabled && outputPicker && <SelectInput label="Устройство вывода" value={outputId} disabled={routing} onChange={event => void applyOutput(event.target.value)} options={[{value:"default",label:t("По умолчанию")},...outputDevices.filter(item => item.id !== "default").map(item => ({value:item.id,label:item.label}))]} />}
+        {controlsEnabled && outputId !== "default" && <small className={styles.routeName}>{outputDevices.find(item => item.id === outputId)?.label}</small>}
+        <div className={styles.control}>
+          {selectedOwn ? <Button className={styles.hangup} disabled={busy} aria-label={t("Положить трубку")} onClick={() => void hangup()}><PhoneOff size={30} /></Button>
+            : <Button className={styles.dial} aria-label={t(selectedCall ? "Занято" : "Позвонить")} disabled={busy || !ready || !secure || !state?.available || !device?.online || Boolean(own) || Boolean(selectedCall)} onClick={() => void start()}><Phone size={30} /></Button>}
+          <span>{t(selectedOwn ? "Завершить" : selectedCall ? "Занято" : "Позвонить")}</span>
+        </div>
+      </div>}>
+        <div className={styles.phoneStage}>
           <div className={styles.avatar}><PhoneCall size={46} strokeWidth={1.4} /></div>
           <h2>{name(target)}</h2>
-          <div className={styles.phoneStatus}><span role="status" aria-live="polite">{status}</span><FieldHelp label="Звонки" description={help} /></div>
-          {own?.state === "active" && <time className={styles.duration} aria-label={t("Длительность звонка")}>{String(Math.floor(elapsed / 60)).padStart(2,"0")}:{String(elapsed % 60).padStart(2,"0")}</time>}
-          <p className={styles.hint}>{t(muted ? "Ваш микрофон выключен" : "Этот телефон или компьютер")}</p>
-        </div> : <>
-          <div className={styles.status}><span role="status" aria-live="polite">{busy ? t("Подключаем микрофон…") : status}</span><FieldHelp label="Звонки" description={help} /></div>
-          <p className={styles.origin}><Mic size={20} />{t("Этот телефон или компьютер")} → {name(target)}</p>
-        </>}
+          <div className={styles.phoneStatus}><span role="status" aria-live="polite">{busy && !selectedOwn ? t("Подключаем микрофон…") : status}</span><FieldHelp label="Звонки" description={help} /></div>
+          {selectedOwn && own?.state === "active" && <time className={styles.duration} aria-label={t("Длительность звонка")}>{String(Math.floor(elapsed / 60)).padStart(2,"0")}:{String(elapsed % 60).padStart(2,"0")}</time>}
+          <p className={styles.hint}>{t(selectedOwn && muted ? "Ваш микрофон выключен" : "Этот телефон или компьютер")}</p>
+        </div>
         {error && <p role="alert">{error}</p>}
         {!secure && <p role="alert">{t("Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.")}</p>}
         {selectedCall && !selectedOwn && <p className={styles.hint}>{t("Колонка уже участвует в другом звонке.")}</p>}
