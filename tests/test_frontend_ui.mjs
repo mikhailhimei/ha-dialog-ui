@@ -25,9 +25,10 @@ try {
       window.apiRequests.push(message.type);
       const requestType = message.type.split('/').pop();
       if (requestType==='get_whisper_prompt') return window.whisperSettings || {url:'',initial_prompt:'',has_token:false};
-      if (requestType==='read_whisper_prompt') return {initial_prompt:'Пылесос, коридор, коты.'};
+      if (requestType==='read_whisper_prompt') return {initial_prompt:['Пылесос, коридор, коты.']};
       if (requestType==='save_whisper_prompt') {
-        if (window.whisperSaveFailure) throw {code:'whisper_prompt_error',message:'Whisper отклонил токен доступа'};
+        if (message.data.apply===false) {window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt.split(';').map(s=>s.trim()).filter(Boolean),has_token:Boolean(message.data.token)}; return {...window.whisperSettings,saved:true,applied:false};}
+        if (window.whisperSaveFailure) return {initial_prompt:message.data.initial_prompt,saved:true,applied:false};
         window.whisperSaveRequest=message.data;
         window.whisperSettings={url:message.data.url,initial_prompt:message.data.initial_prompt,has_token:true};
         return {initial_prompt:message.data.initial_prompt,applied:true};
@@ -923,7 +924,8 @@ try {
       assert.equal(overflow, false, `${route}: section layout overflows at ${width}px`);
       if (route.startsWith('/commands/') && route!=='/commands/settings') {
         const search=panel.getByRole('searchbox',{name:'Поиск по названию',exact:true});
-        assert(await search.evaluate(input=>Boolean(input.closest('header')?.querySelector('h1')) || Boolean(input.parentElement.parentElement.querySelector('h1'))),'Search belongs to the section header');
+        await search.waitFor({state:'visible'});
+        assert(await search.evaluate(input=>Boolean(input.closest('header')?.querySelector('h1')) || Boolean(input.parentElement?.parentElement?.querySelector('h1'))),'Search belongs to the section header');
         const bounds=await search.boundingBox();
         assert(bounds.x>=0 && bounds.x+bounds.width<=width,'Header search must fit the viewport');
       }
@@ -1464,19 +1466,21 @@ try {
       else { await panel.getByRole('tooltip').waitFor(); await page.keyboard.press('Escape'); }
     }
     await whisperUrl.fill('http://whisper.local:10301');
+    await whisperText.fill('Коты; Пылесос');
+    await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
+    await panel.getByText('Сохранено в Home Assistant.',{exact:true}).waitFor();
+    assert.equal(await whisperText.inputValue(),'Коты; Пылесос');
     await whisperToken.fill('test-token');
-    await panel.getByRole('button',{name:'Прочитать из Whisper',exact:true}).click();
-    await page.waitForFunction(()=>document.querySelector('ha-dialog-ui-panel').shadowRoot.querySelector('textarea')?.value==='Пылесос, коридор, коты.');
     await whisperText.fill('Включи свет. Насыпь еды.');
     await page.evaluate(()=>{window.whisperSaveFailure=true});
-    await panel.getByRole('button',{name:'Сохранить и применить',exact:true}).click();
-    await panel.getByText('Whisper отклонил токен доступа',{exact:true}).waitFor();
+    await panel.getByRole('button',{name:'Отправить в Whisper',exact:true}).click();
+    await panel.getByText('Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Отправить в Whisper» повторно.',{exact:true}).waitFor();
     assert.equal(await whisperText.inputValue(),'Включи свет. Насыпь еды.','API failure preserves the prompt draft');
     await page.evaluate(()=>{window.whisperSaveFailure=false});
-    await panel.getByRole('button',{name:'Сохранить и применить',exact:true}).click();
+    await panel.getByRole('button',{name:'Отправить в Whisper',exact:true}).click();
     await panel.getByText('Сохранено и применено в Whisper. Перезапуск контейнера не нужен.',{exact:true}).waitFor();
     assert.equal(await whisperToken.inputValue(),'','Saved token is not redisplayed');
-    assert.deepEqual(await page.evaluate(()=>window.whisperSaveRequest),{url:'http://whisper.local:10301',token:'test-token',initial_prompt:'Включи свет. Насыпь еды.'});
+    assert.deepEqual(await page.evaluate(()=>window.whisperSaveRequest),{url:'http://whisper.local:10301',token:'',apply:true,initial_prompt:'Включи свет. Насыпь еды.'});
     assert.equal(await panel.locator('.appShell').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,'Prompt form fits the viewport');
     await page.evaluate(()=>{location.hash='/commands/settings'});
     await panel.getByRole('button',{name:width===390?'Открыть меню разделов':'Команды',exact:true}).click();

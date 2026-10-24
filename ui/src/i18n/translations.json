@@ -1303,10 +1303,6 @@
     "ru": "Необязательно. Если WHISPER_PROMPT_TOKEN в контейнере не задан, оставьте поле пустым. Иначе укажите его без префикса Bearer. Сохранённый токен не показывается и используется повторно для того же адреса.",
     "en": "Optional. Leave empty if WHISPER_PROMPT_TOKEN is not set in the container. Otherwise enter it without the Bearer prefix. The saved token is hidden and reused for the same address."
   },
-  "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.": {
-    "ru": "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.",
-    "en": "Whisper initial_prompt hint: vocabulary, names and example phrases, such as “Feed the cats. Start the vacuum. Turn on the hallway light.” It guides speech recognition, not the dialog. Empty text disables the hint. Saved changes apply to the next transcription without reloading the model."
-  },
   "Укажите адрес API Whisper, например http://192.168.1.10:10301": {
     "ru": "Укажите адрес API Whisper, например http://192.168.1.10:10301",
     "en": "Enter the Whisper API URL, for example http://192.168.1.10:10301"
@@ -1342,5 +1338,29 @@
   "Промпт применён в Whisper, но не удалось сохранить настройки Home Assistant. Повторите сохранение.": {
     "ru": "Промпт применён в Whisper, но не удалось сохранить настройки Home Assistant. Повторите сохранение.",
     "en": "The prompt was applied in Whisper, but Home Assistant could not save the settings. Save again."
+  },
+  "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Укажите фразы через ; — они сохраняются массивом. Например: «Насыпь еды; Запусти пылесос; Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.": {
+    "ru": "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Укажите фразы через ; — они сохраняются массивом. Например: «Насыпь еды; Запусти пылесос; Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.",
+    "en": "Whisper initial_prompt: familiar words, names and example phrases. Separate phrases with ; to save them as an array. For example: Feed the cats; Start the vacuum; Turn on the hallway light. This guides recognition, not dialogue. Empty text disables the hint. Applied from the next transcription without reloading the model."
+  },
+  "Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Сохранить и применить» повторно.": {
+    "ru": "Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Сохранить и применить» повторно.",
+    "en": "Saved in Home Assistant. Could not apply in Whisper. Once the connection is restored, click Save and apply again."
+  },
+  "Загрузить текущий промпт из Whisper": {
+    "ru": "Загрузить текущий промпт из Whisper",
+    "en": "Load current prompt from Whisper"
+  },
+  "Отправить в Whisper": {
+    "ru": "Отправить в Whisper",
+    "en": "Send to Whisper"
+  },
+  "Сохранено в Home Assistant.": {
+    "ru": "Сохранено в Home Assistant.",
+    "en": "Saved in Home Assistant."
+  },
+  "Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Отправить в Whisper» повторно.": {
+    "ru": "Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Отправить в Whisper» повторно.",
+    "en": "Saved in Home Assistant. Could not apply in Whisper. Once connected, click Send to Whisper again."
   }
 }

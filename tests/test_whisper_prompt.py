@@ -1,4 +1,4 @@
-"""Whisper prompt changes are confirmed by the live API before HA persists them."""
+"""Whisper prompt settings persist locally even when live synchronization fails."""
 from types import SimpleNamespace
 from unittest.mock import Mock, patch, AsyncMock
 
@@ -45,15 +45,15 @@ async def test_save_applies_remotely_persists_and_never_returns_token(runtime, s
     data = {'url': server['url'], 'token': 'test-token', 'initial_prompt': 'Включи свет.'}
     await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': data})
     conn.send_error.assert_not_called()
-    assert server['prompt'] == 'Включи свет.'
-    assert await prompt._store(hass).async_load() == data
+    assert server['prompt'] == ['Включи свет.']
+    assert await prompt._store(hass).async_load() == {**data, "initial_prompt": [data["initial_prompt"]]}
     conn.send_result.reset_mock()
     await async_handler(prompt._get_prompt)(hass, conn, {'id': 2})
-    conn.send_result.assert_called_once_with(2, {'url': server['url'], 'initial_prompt': 'Включи свет.', 'has_token': True})
+    conn.send_result.assert_called_once_with(2, {'url': server['url'], 'initial_prompt': ['Включи свет.'], 'has_token': True})
     conn.send_result.reset_mock()
     await async_handler(prompt._save_prompt)(hass, conn, {'id': 3, 'data': {'url': server['url'], 'token': '', 'initial_prompt': ''}})
     conn.send_error.assert_not_called()
-    assert server['prompt'] == ''
+    assert server['prompt'] == []
     assert (await prompt._store(hass).async_load())['token'] == 'test-token'
 
 
@@ -62,12 +62,12 @@ async def test_read_current_prompt_does_not_save_credentials(runtime, server):
     conn = connection()
     await async_handler(prompt._read_prompt)(hass, conn, {'id': 1, 'data': {'url': server['url'], 'token': 'test-token'}})
     conn.send_error.assert_not_called()
-    conn.send_result.assert_called_once_with(1, {'initial_prompt': server['prompt'], 'applied': False})
+    conn.send_result.assert_called_once_with(1, {'initial_prompt': [server['prompt']], 'saved': False, 'applied': False})
     assert await prompt._store(hass).async_load() is None
 
 
 @pytest.mark.parametrize('failure', ['token', 'server', 'unconfirmed', 'timeout'])
-async def test_failure_does_not_overwrite_saved_settings(runtime, server, failure):
+async def test_failure_still_saves_settings(runtime, server, failure):
     hass, _ = runtime
     original = {'url': server['url'], 'token': 'test-token', 'initial_prompt': 'original'}
     await prompt._store(hass).async_save(original)
@@ -77,10 +77,10 @@ async def test_failure_does_not_overwrite_saved_settings(runtime, server, failur
     server['confirmed'] = failure != 'unconfirmed'
     with patch.object(prompt, '_remote', AsyncMock(side_effect=TimeoutError())) if failure == 'timeout' else patch.object(prompt, '_credentials', wraps=prompt._credentials):
         await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': data})
-    conn.send_result.assert_not_called()
-    conn.send_error.assert_called_once()
-    assert 'test-token' not in conn.send_error.call_args.args[2]
-    assert await prompt._store(hass).async_load() == original
+    conn.send_error.assert_not_called()
+    conn.send_result.assert_called_once_with(1, {'initial_prompt': ['new'], 'saved': True, 'applied': False})
+    assert await prompt._store(hass).async_load() == {**data, 'initial_prompt': ['new']}
+
 
 
 @pytest.mark.parametrize('url', ['ftp://host', 'http://user:password@host', 'http://host?token=secret', 'http://host/path', ''])
@@ -106,8 +106,29 @@ async def test_read_and_save_without_token(runtime, server):
     await async_handler(prompt._read_prompt)(hass, conn, {'id': 1, 'data': {'url': server['url']}})
     conn.send_error.assert_not_called()
     assert server['authorization'] is None
-    await async_handler(prompt._save_prompt)(hass, conn, {'id': 2, 'data': {'url': server['url'], 'initial_prompt': 'local'}})
+    await async_handler(prompt._save_prompt)(hass, conn, {'id': 2, 'data': {'url': server['url'], 'initial_prompt': ' local ; ; kitchen '}})
     conn.send_error.assert_not_called()
     assert server['authorization'] is None
-    assert server['prompt'] == 'local'
+    assert server['prompt'] == ['local', 'kitchen']
     assert (await prompt._store(hass).async_load())['token'] == ''
+
+
+async def test_local_storage_failure_does_not_apply_remote_prompt(runtime, server):
+    hass, _ = runtime
+    conn = connection()
+    store = SimpleNamespace(async_load=AsyncMock(return_value={}), async_save=AsyncMock(side_effect=OSError('disk full')))
+    with patch.object(prompt, '_store', return_value=store), patch.object(prompt, '_remote', AsyncMock()) as remote:
+        await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': {'url': server['url'], 'initial_prompt': 'a;b'}})
+    remote.assert_not_awaited()
+    conn.send_result.assert_not_called()
+    conn.send_error.assert_called_once()
+
+
+async def test_save_only_never_contacts_whisper(runtime, server):
+    hass, _ = runtime
+    conn = connection()
+    with patch.object(prompt, '_remote', AsyncMock()) as remote:
+        await async_handler(prompt._save_prompt)(hass, conn, {'id': 1, 'data': {'url': server['url'], 'initial_prompt': ' a ; ; b ', 'apply': False}})
+    remote.assert_not_awaited()
+    assert (await prompt._store(hass).async_load())['initial_prompt'] == ['a', 'b']
+    conn.send_result.assert_called_once_with(1, {'initial_prompt': ['a', 'b'], 'saved': True, 'applied': False})

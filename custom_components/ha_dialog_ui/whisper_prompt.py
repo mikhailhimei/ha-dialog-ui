@@ -57,13 +57,14 @@ async def _remote(hass, url, token, *, prompt=None):
                 if len(raw) > 100000:
                     raise ValueError("Ответ API Whisper слишком большой")
             result = json.loads(raw)
-            if not isinstance(result, dict) or not isinstance(result.get("initial_prompt"), str):
+            if not isinstance(result, dict) or not isinstance(result.get("initial_prompt"), (str, list)):
                 raise ValueError("API Whisper вернул некорректный ответ")
-            if len(result["initial_prompt"]) > _MAX_PROMPT_LENGTH:
+            phrases = _phrases(result["initial_prompt"])
+            if len(";".join(phrases)) > _MAX_PROMPT_LENGTH:
                 raise ValueError("Промпт Whisper слишком длинный")
-            if prompt is not None and (result.get("applied") is not True or result["initial_prompt"] != prompt):
+            if prompt is not None and (result.get("applied") is not True or phrases != _phrases(prompt)):
                 raise ValueError("Whisper не подтвердил применение промпта")
-            return result["initial_prompt"]
+            return phrases
 
 
 def async_register_whisper_prompt_websockets(hass: HomeAssistant):
@@ -84,23 +85,35 @@ async def _get_prompt(hass, connection, msg):
 _REQUEST_SCHEMA = {vol.Required("url"): str, vol.Optional("token", default=""): str}
 
 
+def _phrases(value):
+    if isinstance(value, list):
+        if not all(isinstance(phrase, str) for phrase in value):
+            raise ValueError("API Whisper вернул некорректный список фраз")
+        value = ";".join(value)
+    return [phrase.strip() for phrase in value.split(";") if phrase.strip()]
+
+
 async def _apply_request(hass, connection, msg, *, save):
     current = await _store(hass).async_load() or {}
+    saved = False
     try:
         url, token = _credentials(current, msg["data"])
-        prompt = await _remote(hass, url, token, prompt=msg["data"]["initial_prompt"] if save else None)
         if save:
+            prompt = _phrases(msg["data"]["initial_prompt"])
             await _store(hass).async_save({"url": url, "token": token, "initial_prompt": prompt})
-    except (ValueError, UnicodeError) as error:
-        connection.send_error(msg["id"], "whisper_prompt_error", str(error))
+            saved = True
+            if not msg["data"].get("apply", True):
+                connection.send_result(msg["id"], {"initial_prompt": prompt, "saved": True, "applied": False})
+                return
+        prompt = await _remote(hass, url, token, prompt=prompt if save else None)
+    except (ValueError, UnicodeError, ClientError, TimeoutError, OSError) as error:
+        if saved:
+            connection.send_result(msg["id"], {"initial_prompt": prompt, "saved": True, "applied": False})
+        else:
+            message = str(error) if isinstance(error, (ValueError, UnicodeError)) else "Не удалось загрузить или сохранить настройки Whisper. Проверьте подключение и повторите попытку."
+            connection.send_error(msg["id"], "whisper_prompt_error", message)
         return
-    except (ClientError, TimeoutError):
-        connection.send_error(msg["id"], "whisper_prompt_error", "Не удалось подключиться к API Whisper. Проверьте адрес, порт и доступность контейнера.")
-        return
-    except OSError:
-        connection.send_error(msg["id"], "whisper_prompt_error", "Промпт применён в Whisper, но не удалось сохранить настройки Home Assistant. Повторите сохранение.")
-        return
-    connection.send_result(msg["id"], {"initial_prompt": prompt, "applied": save})
+    connection.send_result(msg["id"], {"initial_prompt": prompt, "saved": saved, "applied": save})
 
 
 @websocket_api.websocket_command({vol.Required("type"): f"{DOMAIN}/read_whisper_prompt",
@@ -113,6 +126,7 @@ async def _read_prompt(hass, connection, msg):
 
 @websocket_api.websocket_command({vol.Required("type"): f"{DOMAIN}/save_whisper_prompt",
                                 vol.Required("data"): {**_REQUEST_SCHEMA,
+                                    vol.Optional("apply", default=True): bool,
                                     vol.Required("initial_prompt"): vol.All(str, vol.Length(max=_MAX_PROMPT_LENGTH))}})
 @websocket_api.require_admin
 @websocket_api.async_response
