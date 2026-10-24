@@ -138,8 +138,6 @@ export function CallsPage() {
     {mobile && <MobileHeader title="Звонки" />}
     <section className={styles.page}>
       <h1 className={styles.title}>{t("Звонки")}</h1>
-      <p className={styles.hint}>{t("Выберите колонку, на которую хотите позвонить с этого устройства.")}</p>
-      {!secure && <p role="alert">{t("Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.")}</p>}
       {error && !target && <p role="alert">{error}</p>}
       {!state && !error && <p role="status">{t("Загрузка…")}</p>}
       {state && !state.available && <p role="alert">{t("Сервер звонков недоступен. Проверьте журнал HA и TCP-порт 8125.")}</p>}
@@ -179,10 +177,10 @@ export function CallsPage() {
           <h2>{name(target)}</h2>
           <div className={styles.phoneStatus}><span role="status" aria-live="polite">{busy && !selectedOwn ? t("Подключаем микрофон…") : status}</span><FieldHelp label="Звонки" description={help} /></div>
           {selectedOwn && own?.state === "active" && <time className={styles.duration} aria-label={t("Длительность звонка")}>{String(Math.floor(elapsed / 60)).padStart(2,"0")}:{String(elapsed % 60).padStart(2,"0")}</time>}
-          <p className={styles.hint}>{t(selectedOwn && muted ? "Ваш микрофон выключен" : "Этот телефон или компьютер")}</p>
+          {selectedOwn && muted && <p className={styles.hint}>{t("Ваш микрофон выключен")}</p>}
+          {!secure && <p role="alert">{t("Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.")}</p>}
         </div>
         {error && <p role="alert">{error}</p>}
-        {!secure && <p role="alert">{t("Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.")}</p>}
         {selectedCall && !selectedOwn && <p className={styles.hint}>{t("Колонка уже участвует в другом звонке.")}</p>}
         {own && !selectedOwn && <p className={styles.hint}>{t("Сначала завершите текущий звонок.")}</p>}
       </Modal>

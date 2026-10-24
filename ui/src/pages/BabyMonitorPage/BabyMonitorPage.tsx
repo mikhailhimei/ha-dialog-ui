@@ -206,7 +206,6 @@ export function BabyMonitorPage() {
   const playbackDevices = state?.devices.filter(
     (device) => device.listener && device.id !== sourceId,
   ) ?? [];
-  const selectedPlayback = playbackDevices.find((device) => device.id === target);
   const statusText = t(
     busy ? "Подключаемся…" : active
       ? ownConnected || pair ? "Прослушивание активно" : "Источник включён"
@@ -244,7 +243,6 @@ export function BabyMonitorPage() {
             })),
           ]}
         />
-        <small>{t(target === "browser" ? "Телефон или компьютер" : selectedPlayback?.online ? "Колонка" : "Нет подключения")}</small>
       </div>
       {playing && (
         <p className={styles.hint}>
@@ -307,9 +305,6 @@ export function BabyMonitorPage() {
         <Baby size={30} />
         <div>
           <h1>{t("Радионяня")}</h1>
-          <p>
-            {t("Выберите колонку, чтобы слышать, что происходит рядом с ней.")}
-          </p>
         </div>
       </header>
       {error && !sourceId && (
