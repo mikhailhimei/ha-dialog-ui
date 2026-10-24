@@ -29,6 +29,8 @@ from .src.api.settings.settings_api import async_register_settings_websockets
 from .timer_alarm.websocket import async_register_timer_alarm_websockets
 from .storage.legacy_migration import async_migrate_legacy_storage
 from .whisper_prompt import async_register_whisper_prompt_websockets
+from .baby_monitor import async_start as async_start_monitor, async_stop as async_stop_monitor
+from .monitor import register_monitor
 from .panel import async_register_panel
 from .services import async_register_services, async_unregister_services
 from .src.service.dialog_state import (
@@ -51,6 +53,7 @@ def _initialize_domain_runtime(hass: HomeAssistant) -> None:
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the integration domain."""
     _initialize_domain_runtime(hass)
+    register_monitor(hass)
     async_register_command_transfer_websockets(hass)
     async_register_logs_websockets(hass)
     async_register_whisper_prompt_websockets(hass)
@@ -97,6 +100,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         conversation.async_set_agent(
             hass, entry, DialogCustomUiVoiceAgent(hass, entry, entry.entry_id),
         )
+        await async_start_monitor(hass)
     except Exception:
         await _async_cleanup_failed_setup(
             hass, entry, coordinator, remove_agent=agent_registration_started,
@@ -114,6 +118,10 @@ async def _async_cleanup_failed_setup(
     remove_agent: bool,
 ) -> None:
     """Attempt every cleanup step without masking the setup failure."""
+    try:
+        await async_stop_monitor(hass)
+    except Exception:
+        _LOGGER.exception("Failed to stop monitor after setup failure")
     if remove_agent:
         try:
             conversation.async_unset_agent(hass, entry)
@@ -145,6 +153,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if not unload_ok:
         return False
 
+    await async_stop_monitor(hass)
     conversation.async_unset_agent(hass, entry)
     coordinator: DialogCommandCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
     if hass.data[DOMAIN].get("coordinator") is coordinator:

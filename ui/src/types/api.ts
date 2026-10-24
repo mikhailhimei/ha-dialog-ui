@@ -17,7 +17,7 @@ export interface HassEntity {
 export interface WebSocketMessage { type: string; [key: string]: unknown; }
 export interface HassLike {
   user?: HassUser;
-  connection: { sendMessagePromise<T = unknown>(message: WebSocketMessage): Promise<T>; };
+  connection: { sendMessagePromise<T = unknown>(message: WebSocketMessage): Promise<T>; subscribeMessage?<T>(callback: (event: T) => void, message: WebSocketMessage): Promise<() => void | Promise<void>>; };
   states: Record<string, HassEntity>;
 }
 export interface BrowseMediaItem {

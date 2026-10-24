@@ -4,6 +4,24 @@ import type { CommandDetails, CommandSummary } from "../types/commandTypes";
 export type { HassLike } from "../types/api";
 
 export class DialogApi {
+  monitorWatch(viewId: string, callback: (event: import("../types/monitor").MonitorState) => void) {
+    return this.monitorSubscribe(callback, { type: "ha_dialog_ui/monitor/watch", view_id: viewId });
+  }
+  monitorAudio(nodeId: string, callback: (event: import("../types/monitor").MonitorAudioEvent) => void) {
+    return this.monitorSubscribe(callback, { type: "ha_dialog_ui/monitor/listen", node_id: nodeId });
+  }
+  private monitorSubscribe<T>(callback: (event: T) => void, message: import("../types/api").WebSocketMessage) {
+    const connection = this.hass.connection;
+    if (!connection.subscribeMessage) return Promise.reject(new Error("Подписки Home Assistant недоступны"));
+    return connection.subscribeMessage(callback, message);
+  }
+  monitorStart(viewId: string, source: string, listener?: string) {
+    return this.hass.connection.sendMessagePromise<{started: boolean}>({ type: "ha_dialog_ui/monitor/start", view_id: viewId, source_device_id: source, ...(listener ? {listener_device_id: listener} : {}) });
+  }
+  monitorStop(viewId: string, device: string) {
+    return this.hass.connection.sendMessagePromise({type: "ha_dialog_ui/monitor/stop", view_id: viewId, device_id: device});
+  }
+
   private hass: HassLike;
 
   constructor(hass: HassLike) {

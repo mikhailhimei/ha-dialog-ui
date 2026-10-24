@@ -1,3 +1,4 @@
+import { PanelErrorBoundary } from "../components/PanelErrorBoundary";
 import { WhisperPromptPage } from "../pages/WhisperPromptPage/WhisperPromptPage";
 import { useApiEnabled } from "../context/ApiEnabledContext";
 import { ApiLogsPage } from "../pages/ApiLogsPage/ApiLogsPage";
@@ -22,6 +23,7 @@ import { CommandSettingsPage } from "../pages/CommandPage/CommandSettingsPage/Co
 import { DownloadsPage } from "../pages/DownloadsPage/DownloadsPage";
 import { SettingsPage } from "../pages/SettingsPage/SettingsPage"
 import { TimerPage } from "../pages/TimerAlarmPages/TimerPage";
+import { BabyMonitorPage } from "../pages/BabyMonitorPage/BabyMonitorPage";
 import { AlarmPage } from "../pages/TimerAlarmPages/AlarmPage";
 
 export const AppRoutes = () => {
@@ -34,7 +36,7 @@ export const AppRoutes = () => {
     return remoteEnabled === null ? <Loader /> : <Navigate to="/scripts" replace />;
   }
   return (
-    <Routes>
+    <PanelErrorBoundary resetKey={pathname}><Routes>
       <Route path="/commands/whisper" element={isAdmin ? <WhisperPromptPage /> : <Navigate to={homePath} replace />} />
       <Route path="/logs" element={apiEnabled && isAdmin ? <ApiLogsPage /> : <Navigate to={homePath} replace />} />
       <Route path="/downloads" element={isAdmin ? <DownloadsPage /> : <Navigate to={homePath} replace />} />
@@ -98,6 +100,7 @@ export const AppRoutes = () => {
         element={<CommandSettingsPage />}
       />
 
+      <Route path="/monitor" element={<BabyMonitorPage />} />
       <Route
         path="/timer"
         element={<TimerPage />}
@@ -122,6 +125,6 @@ export const AppRoutes = () => {
           />
         }
       />
-    </Routes>
+    </Routes></PanelErrorBoundary>
   );
 };

@@ -7,6 +7,7 @@ import styles from "./SelectInput.module.scss";
 type SelectOption = {
   label: string;
   value: string;
+  disabled?: boolean;
 };
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -41,7 +42,7 @@ export const SelectInput = ({
       >
         {!hasCurrentValue && <option value={normalizedValue}>{normalizedValue}</option>}
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} disabled={option.disabled}>
             {t(option.label)}
           </option>
         ))}

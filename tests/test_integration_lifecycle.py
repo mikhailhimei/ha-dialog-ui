@@ -29,6 +29,8 @@ def runtime():
         patch.object(integration, 'async_unregister_services') as unregister,
         patch.object(integration, 'async_load_dialog_cache', new_callable=AsyncMock),
         patch.object(integration, 'async_register_panel', new_callable=AsyncMock),
+        patch.object(integration, 'async_start_monitor', new_callable=AsyncMock) as monitor_start,
+        patch.object(integration, 'async_stop_monitor', new_callable=AsyncMock) as monitor_stop,
         patch.object(integration.er, 'async_get', return_value=object()),
         patch.object(integration.er, 'async_entries_for_config_entry', return_value=[]),
         patch.object(integration, 'DialogCommandCoordinator', Coordinator),
@@ -37,7 +39,8 @@ def runtime():
         patch.object(integration.conversation, 'async_unset_agent') as unset_agent,
     ):
         yield SimpleNamespace(hass=hass, entry=entry, start=start, stop=stop, coordinators=coordinators,
-                              set_agent=set_agent, unset_agent=unset_agent, unregister=unregister)
+                              set_agent=set_agent, unset_agent=unset_agent, unregister=unregister,
+                              monitor_start=monitor_start, monitor_stop=monitor_stop)
 
 
 async def test_success_and_refused_unload_keep_runtime_until_platforms_unload(runtime):
@@ -57,15 +60,15 @@ async def test_success_and_refused_unload_keep_runtime_until_platforms_unload(ru
     assert 'coordinator' not in runtime.hass.data[DOMAIN]
 
 
-@pytest.mark.parametrize('failure', ['start', 'platform', 'agent'])
+@pytest.mark.parametrize('failure', ['start', 'platform', 'agent', 'monitor'])
 async def test_setup_failure_cleans_coordinator_at_every_stage(runtime, failure):
     stage = {'start': runtime.start, 'platform': runtime.hass.config_entries.async_forward_entry_setups,
-             'agent': runtime.set_agent}[failure]
+             'agent': runtime.set_agent, 'monitor': runtime.monitor_start}[failure]
     stage.side_effect = RuntimeError('setup failed')
     with pytest.raises(RuntimeError, match='setup failed'):
         await integration.async_setup_entry(runtime.hass, runtime.entry)
     runtime.stop.assert_awaited_once()
-    if failure == 'agent':
+    if failure in ('agent', 'monitor'):
         runtime.unset_agent.assert_called_once_with(runtime.hass, runtime.entry)
     assert 'entry' not in runtime.hass.data[DOMAIN]
     assert 'coordinator' not in runtime.hass.data[DOMAIN]

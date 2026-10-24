@@ -1,6 +1,6 @@
 .toast {
   position: fixed;
-  z-index: 3000;
+  z-index: 10001;
   top: max(16px, env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);

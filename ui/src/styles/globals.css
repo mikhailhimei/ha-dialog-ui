@@ -129,4 +129,22 @@ a {
   --modal-backdrop: rgba(0, 0, 0, .72);
   --sheet-backdrop: rgba(0, 0, 0, .45);
 }
-.panelRecovery { padding: 28px; }
+/* Recovery keeps navigation outside the centered alert and fits HA's visible panel. */
+.panelRecovery { padding: 28px; min-height: var(--ha-dialog-ui-available-height, 100dvh); }
+.panelRenderRecovery {
+  display: flex; flex-direction: column;
+  height: var(--ha-dialog-ui-available-height, 100dvh); min-height: 0;
+  box-sizing: border-box;
+}
+.panelRecoveryNavigation { flex-shrink: 0; min-width: 0; }
+.panelRecoveryNavigation > nav { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+.panelRecoveryNavigation > nav a { padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; }
+.panelRecoveryNavigation > nav a:hover, .panelRecoveryNavigation > nav a:focus-visible { background: var(--surface-hover); }
+.panelRecoveryContent { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 24px 0; }
+.panelRecoveryMessage { width: 100%; max-width: 36rem; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+.panelRecoveryMessage p { margin: 0; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; overflow-wrap: anywhere; }
+.panelRecoveryMessage > button { align-self: center; max-width: 100%; min-height: 46px; }
+@media (max-width: 768px) {
+  .panelRenderRecovery { padding: 16px; }
+  .panelRecoveryContent { padding: 20px 8px; }
+}

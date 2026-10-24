@@ -18,6 +18,7 @@ interface Props {
   onBack?: () => void;
 
   title?: string;
+  dialogLabel?: string;
   subtitle?: ReactNode;
 
   footer?: ReactNode;
@@ -34,6 +35,7 @@ export const Modal = ({
   onClose,
   onBack,
   title,
+  dialogLabel,
   subtitle,
   footer,
   children,
@@ -78,6 +80,7 @@ export const Modal = ({
     >
       <div
         className={`${styles.modal} ${styles[size]}`}
+        role={dialogLabel ? "dialog" : undefined} aria-modal={dialogLabel ? true : undefined} aria-label={dialogLabel}
         onClick={(event) =>
           event.stopPropagation()
         }
@@ -97,6 +100,7 @@ export const Modal = ({
           <Button
             variant="ghost"
             className={styles.close}
+            aria-label={dialogLabel ? t("Закрыть") : undefined}
             onClick={onClose}
           >
             ✕

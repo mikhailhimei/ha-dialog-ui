@@ -10,6 +10,7 @@ import {
   FileCode2,
   Command,
   Timer,
+  Baby,
   AlarmClock,
   Settings,
   Download,
@@ -138,6 +139,8 @@ export const NavigationTabs = () => {
         <AlarmClock size={16} strokeWidth={2} />
         <span>{t("Будильники")}</span>
       </NavLink>
+
+      <NavLink to="/monitor" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}><Baby size={16} /><span>{t("Радионяня")}</span></NavLink>
 
       {isAdmin && <NavLink to="/downloads" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}>
         <Download size={16} /><span>{t("Импорт и экспорт")}</span>
