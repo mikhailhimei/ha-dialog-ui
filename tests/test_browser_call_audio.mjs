@@ -17,6 +17,9 @@ for(const rate of [16000,44100,48000,96000]) test(`worklet ${rate} Hz -> 16 kHz 
  node.process([[new Float32Array(Math.round(rate*0.04)).fill(-2)]],[[]]);
  assert.equal(packets.length,4);
  assert.equal(new DataView(packets[3]).getInt16(0,true),-32768);
+ node.port.onmessage({data:"ack"});
+ node.process([[]],[[new Float32Array(Math.round(rate*0.04)).fill(1)]]);
+ assert.equal(packets.length,5);assert.ok(new Uint8Array(packets[4]).every(byte=>byte===0));
 });
 
 function environment(getMedia){
@@ -58,4 +61,43 @@ test("permission denial, track end and insecure origins have explicit behavior",
  Object.defineProperty(globalThis,"isSecureContext",{value:false,configurable:true});assert.equal(microphoneAvailable(),false);
  assert.match(microphoneError(new DOMException("denied","NotAllowedError")),/Разрешите/);
  const insecure=new BrowserCallAudio({},"view",()=>{});await assert.rejects(insecure.prepare(),{name:"SecurityError"});insecure.close();
+});
+
+test("mute disables the microphone and sends silence, preserving the call stream",async()=>{
+ const env=environment();const sent=[];
+ const audio=new BrowserCallAudio({browserCallAudio:async(_id,pcm)=>sent.push(Buffer.from(pcm,"base64"))},"view",()=>{});
+ await audio.prepare();audio.setSending(true);
+ audio.setMicrophoneMuted(true);assert.equal(env.track.enabled,false);
+ env.node.port.onmessage({data:new Uint8Array(1280).fill(99).buffer});
+ await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(sent.length,1);assert.ok(sent[0].every(byte=>byte===0));assert.equal(env.stopped,0);
+ audio.setMicrophoneMuted(false);assert.equal(env.track.enabled,true);
+ env.node.port.onmessage({data:new Uint8Array(1280).fill(99).buffer});
+ await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(sent.length,2);assert.ok(sent[1].every(byte=>byte===99));audio.close();
+});
+
+test("supported output routing selects a real sink and returns to the system default",async()=>{
+ const env=environment();const sinks=[];
+ AudioContext.prototype.setSinkId=async id=>sinks.push(id);
+ navigator.mediaDevices.enumerateDevices=async()=>[{kind:"audiooutput",deviceId:"default",label:"System"},{kind:"audiooutput",deviceId:"speaker",label:"Speaker"}];
+ const audio=new BrowserCallAudio({},"view",()=>{});await audio.prepare();
+ assert.equal(audio.canSelectOutput(),true);assert.equal(audio.canPromptOutput(),false);
+ assert.deepEqual(audio.getOutputDevices(),[{id:"default",label:"System"},{id:"speaker",label:"Speaker"}]);
+ await audio.selectOutput("speaker");await audio.selectOutput("default");assert.deepEqual(sinks,["speaker","default"]);
+ audio.close();await assert.rejects(audio.selectOutput("speaker"),{name:"AbortError"});assert.equal(env.stopped,1);
+});
+
+test("an output picker result arriving after hangup cannot reopen or reroute audio",async()=>{
+ environment();const sinks=[];AudioContext.prototype.setSinkId=async id=>sinks.push(id);
+ let resolve;const choice=new Promise(done=>resolve=done);navigator.mediaDevices.selectAudioOutput=()=>choice;
+ const audio=new BrowserCallAudio({},"view",()=>{});await audio.prepare();assert.equal(audio.canPromptOutput(),true);
+ const pending=audio.promptOutput();audio.close();resolve({deviceId:"speaker",label:"Speaker"});
+ await assert.rejects(pending,{name:"AbortError"});assert.deepEqual(sinks,[]);
+});
+
+test("unsupported output routing is reported honestly without ending the call",async()=>{
+ const env=environment();const audio=new BrowserCallAudio({},"view",()=>{});await audio.prepare();
+ assert.equal(audio.canSelectOutput(),false);await assert.rejects(audio.selectOutput("speaker"),{name:"NotSupportedError"});
+ assert.equal(env.stopped,0);audio.close();
 });

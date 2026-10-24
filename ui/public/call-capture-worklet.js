@@ -14,7 +14,9 @@ class CallCapture extends AudioWorkletProcessor {
   }
   process(inputs, outputs) {
     for (const channel of outputs[0] || []) channel.fill(0);
-    const samples = inputs[0]?.[0];
+    // Some browsers remove the input channel when a mic track is disabled.
+    // Render-quantum silence keeps the call alive at the same bounded packet rate.
+    const samples = inputs[0]?.[0] ?? outputs[0]?.[0];
     if (!samples) return true;
     for (const sample of samples) {
       let remaining = 1;

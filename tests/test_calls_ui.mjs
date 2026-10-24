@@ -18,11 +18,13 @@ try {
   const errors=[]; page.on("pageerror", e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.callState={available:true,owned_call_id:null, devices:[{id:"a",node_id:"a",name:"Кухня",online:true},{id:"b",node_id:"b",name:"Спальня",online:true},{id:"offline",node_id:"offline",name:"Гостиная",online:false}],calls:[]};
-   window.actions=[];window.watchers=[];window.micFrames=0;window.prepares=0;window.playedPackets=0;window.audioContexts=[];
+   window.actions=[];window.watchers=[];window.micFrames=0;window.prepares=0;window.playedPackets=0;window.audioContexts=[];window.mockSinks=[];
    const OriginalContext=window.AudioContext;
-   window.AudioContext=new Proxy(OriginalContext,{construct(Target,args){const ctx=Reflect.construct(Target,args);window.audioContexts.push(ctx);const create=ctx.createBufferSource.bind(ctx);ctx.createBufferSource=()=>{const node=create();const start=node.start.bind(node);node.start=(...args)=>{window.playedPackets++;return start(...args);};return node;};return ctx;}});
+   window.AudioContext=new Proxy(OriginalContext,{construct(Target,args){const ctx=Reflect.construct(Target,args);window.audioContexts.push(ctx);if(window.noSink)ctx.setSinkId=undefined;else ctx.setSinkId=async id=>window.mockSinks.push(id);const create=ctx.createBufferSource.bind(ctx);ctx.createBufferSource=()=>{const node=create();const start=node.start.bind(node);node.start=(...args)=>{window.playedPackets++;return start(...args);};return node;};return ctx;}});
    const getMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
    navigator.mediaDevices.getUserMedia=async opts=>{window.prepares++;if(window.denyMicrophone)throw new DOMException("Denied","NotAllowedError");window.lastMic=await getMedia(opts);await window.audioContexts.at(-1).suspend();return window.lastMic;};
+   navigator.mediaDevices.selectAudioOutput=undefined;
+   navigator.mediaDevices.enumerateDevices=async()=>[{kind:"audiooutput",deviceId:"default",label:"По умолчанию"},{kind:"audiooutput",deviceId:"speaker",label:"Динамик телефона"}];
    window.publish=()=>window.watchers.forEach(cb=>cb(structuredClone(window.callState)));
    window.hass={user:{is_admin:true},states:{"media_player.tv":{state:"idle",attributes:{friendly_name:"Телевизор"}}},connection:{
     async subscribeMessage(cb,msg){
@@ -77,11 +79,26 @@ try {
   await page.evaluate(()=>window.audioContexts[0].suspend());
   await dialog.getByRole("button",{name:"Включить звук",exact:true}).click();
   await page.waitForFunction(()=>window.audioContexts[0].state==="running");
+  await dialog.getByRole("button",{name:"Выключить микрофон",exact:true}).click();
+  assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks()[0].enabled),false);
+  assert.equal(await dialog.getByRole("button",{name:"Включить микрофон",exact:true}).getAttribute("aria-pressed"),"true");
+  await dialog.getByRole("button",{name:"Включить микрофон",exact:true}).click();
+  assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks()[0].enabled),true);
+  await dialog.getByRole("button",{name:"Динамик",exact:true}).click();
+  await dialog.getByRole("combobox",{name:"Устройство вывода",exact:true}).selectOption("speaker");
+  await dialog.getByRole("button",{name:"Динамик",exact:true,pressed:true}).waitFor();
+  assert.deepEqual(await page.evaluate(()=>window.mockSinks),["speaker"]);
+  await dialog.getByRole("button",{name:"Динамик",exact:true}).click();
+  await dialog.getByRole("button",{name:"Динамик",exact:true,pressed:false}).waitFor();
+  assert.deepEqual(await page.evaluate(()=>window.mockSinks),["speaker","default"]);
+  await dialog.getByLabel("Длительность звонка",{exact:true}).waitFor();
   const box=await dialog.boundingBox();if(width<768){assert.equal(Math.round(box.width),width);assert.equal(Math.round(box.x),0);}
   await page.screenshot({path:`/tmp/ha-dialog-browser-calls-${width}.png`,fullPage:true});
   await dialog.getByRole("button",{name:"Положить трубку",exact:true}).click();await dialog.getByText("Готово к звонку",{exact:true}).waitFor();
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);
+  await page.evaluate(()=>{window.noSink=true;});
   await dialog.getByRole("button",{name:"Позвонить",exact:true}).click();await dialog.getByText("Ожидание ответа",{exact:true}).waitFor();
+  assert.equal(await dialog.getByRole("button",{name:"Динамик",exact:true}).isDisabled(),true);
   await dialog.getByRole("button",{name:"Закрыть",exact:true}).click();await dialog.waitFor({state:"hidden"});
   await page.waitForTimeout(80);await page.evaluate(()=>location.hash="/timer");await page.waitForFunction(()=>window.callState.calls.length===0);
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);
