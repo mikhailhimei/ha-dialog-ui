@@ -1,3 +1,4 @@
+import { ListSkeleton } from "@/components/ui/ListSkeleton/ListSkeleton";
 import { useEffect, useRef, useState } from "react";
 import { Phone, PhoneCall, PhoneOff, Mic, MicOff, Volume2, AudioLines } from "lucide-react";
 import { useDialogApi } from "../../context/DialogContext";
@@ -139,7 +140,7 @@ export function CallsPage() {
     <section className={styles.page}>
       <h1 className={styles.title}>{t("Звонки")}</h1>
       {error && !target && <p role="alert">{error}</p>}
-      {!state && !error && <p role="status">{t("Загрузка…")}</p>}
+      {!state && !error && <ListSkeleton loading itemCount={0} placeholderCount={3} grid />}
       {state && !state.available && <p role="alert">{t("Сервер звонков недоступен. Проверьте журнал HA и TCP-порт 8125.")}</p>}
       {state?.available && state.devices.length === 0 && <p>{t("Нет колонок с поддержкой звонков. Подключите модуль calls.yaml и обновите прошивку.")}</p>}
       <div className={styles.grid}>{state?.devices.map(item => <button key={item.id}

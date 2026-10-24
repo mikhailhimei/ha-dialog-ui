@@ -6,15 +6,18 @@ interface Props {
   loading: boolean;
   itemCount: number;
   append?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
+  placeholderCount?: number;
+  grid?: boolean;
+  label?: string;
 }
 
 /** Keep the current page's height while its replacement is loading. */
-export function ListSkeleton({ loading, itemCount, append = false, children }: Props) {
+export function ListSkeleton({ loading, itemCount, append = false, children, placeholderCount = 10, grid = false, label = "Загрузка..." }: Props) {
   const replacing = loading && itemCount > 0 && !append;
-  const placeholders = loading && <div className={replacing ? styles.overlay : styles.rows} role="status">
-    <span className={styles.srOnly}>{t("Загрузка...")}</span>
-    {Array.from({ length: replacing ? itemCount : append && itemCount > 0 ? 3 : 10 }, (_, index) => (
+  const placeholders = loading && <div className={`${replacing ? styles.overlay : styles.rows} ${grid ? styles.grid : ""}`} role="status" aria-live="polite">
+    <span className={styles.srOnly}>{t(label)}</span>
+    {Array.from({ length: replacing ? itemCount : append && itemCount > 0 ? 3 : placeholderCount }, (_, index) => (
       <div className={styles.card} key={index} aria-hidden="true">
         <span className={styles.title} /><span className={styles.subtitle} />
       </div>

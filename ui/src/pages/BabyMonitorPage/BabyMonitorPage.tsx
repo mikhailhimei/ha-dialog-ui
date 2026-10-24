@@ -1,3 +1,4 @@
+import { ListSkeleton } from "@/components/ui/ListSkeleton/ListSkeleton";
 import { useEffect, useRef, useState } from "react";
 import { Baby, Circle, Headphones, Radio, Speaker } from "lucide-react";
 import { useDialogApi } from "../../context/DialogContext";
@@ -315,7 +316,7 @@ export function BabyMonitorPage() {
           </Button>
         </div>
       )}
-      {!state && !error && <p role="status">{t("Загрузка…")}</p>}
+      {!state && !error && <ListSkeleton loading itemCount={0} placeholderCount={3} grid />}
       {state && !state.available && (
         <div className={styles.empty}>
           {t(

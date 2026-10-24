@@ -1,5 +1,4 @@
-import { t } from "../../../i18n";
-
+import { ListSkeleton } from "../ListSkeleton/ListSkeleton";
 import styles from "./Loader.module.scss";
 
 interface LoaderProps {
@@ -7,9 +6,9 @@ interface LoaderProps {
   fullscreen?: boolean;
 }
 
+/** Shared skeleton fallback for initial connection and route loading. */
 export const Loader = ({ label = "Загрузка...", fullscreen = false }: LoaderProps) => (
-  <div className={`${styles.loader} ${fullscreen ? styles.fullscreen : ""}`} role="status" aria-live="polite">
-    <span className={styles.spinner} aria-hidden="true" />
-    {label && <span className={styles.label}>{t(label)}</span>}
+  <div className={`${styles.loader} ${fullscreen ? styles.fullscreen : ""}`}>
+    <ListSkeleton loading itemCount={0} placeholderCount={4} label={label} />
   </div>
 );
