@@ -637,7 +637,7 @@ try {
       await panel.getByRole('button',{name:'Открыть меню разделов',exact:true}).click();
       await mobileSections.waitFor();
       assert.equal(await page.evaluate(()=>location.hash),currentRoute,'Opening the section menu must not navigate');
-      assert.equal(await mobileSections.getByRole('link').count(),9);
+      assert.equal(await mobileSections.getByRole('link').count(),10);
       assert.equal(await mobileSections.getByRole('button').count(),0,'All destinations are flat links');
       for (const [name] of destinations) {
         const rect=await mobileSections.getByRole('link',{name,exact:true}).boundingBox();
@@ -1448,15 +1448,21 @@ try {
     await themeSelect.waitFor();
   }
   await page.evaluate(()=>{window.namedCommandFixtures=false});
-  console.log('Checking Whisper prompt tabs, live save feedback, mobile layout and admin gating');
+  console.log('Checking Whisper prompt menu, field hints, live save feedback, mobile layout and admin gating');
   for (const width of [1100,390]) {
     await page.setViewportSize({width,height:900});
     await page.evaluate(()=>{location.hash='/commands/settings'});
-    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).click();
+    await panel.getByRole('button',{name:width===390?'Открыть меню разделов':'Команды',exact:true}).click();
+    await panel.getByRole('link',{name:'Промпт распознавания',exact:true}).click();
     const whisperUrl=panel.getByLabel('Адрес API Whisper',{exact:true});
     const whisperToken=panel.getByLabel('Токен API Whisper',{exact:true});
     const whisperText=panel.getByLabel('Промпт распознавания',{exact:true});
     await whisperUrl.waitFor();
+    for (const label of ['Адрес API Whisper','Токен API Whisper','Промпт распознавания']) {
+      await panel.getByRole('button',{name:`Подсказка: ${label}`,exact:true}).click();
+      if (width===390) await panel.getByRole('button',{name:'Закрыть подсказку',exact:true}).click();
+      else { await panel.getByRole('tooltip').waitFor(); await page.keyboard.press('Escape'); }
+    }
     await whisperUrl.fill('http://whisper.local:10301');
     await whisperToken.fill('test-token');
     await panel.getByRole('button',{name:'Прочитать из Whisper',exact:true}).click();
@@ -1472,12 +1478,15 @@ try {
     assert.equal(await whisperToken.inputValue(),'','Saved token is not redisplayed');
     assert.deepEqual(await page.evaluate(()=>window.whisperSaveRequest),{url:'http://whisper.local:10301',token:'test-token',initial_prompt:'Включи свет. Насыпь еды.'});
     assert.equal(await panel.locator('.appShell').evaluate(el=>el.scrollWidth>el.clientWidth+1),false,'Prompt form fits the viewport');
-    await panel.getByRole('button',{name:'Ответы по умолчанию',exact:true}).click();
-    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).click();
+    await page.evaluate(()=>{location.hash='/commands/settings'});
+    await panel.getByRole('button',{name:width===390?'Открыть меню разделов':'Команды',exact:true}).click();
+    await panel.getByRole('link',{name:'Промпт распознавания',exact:true}).click();
     await whisperToken.waitFor();
     assert.equal(await whisperToken.inputValue(),'');
     await panel.evaluate(element=>{element.hass={...window.hass,user:{is_admin:false}}});
-    await panel.getByRole('button',{name:'Промпт распознавания',exact:true}).waitFor({state:'hidden'});
+    await whisperUrl.waitFor({state:'hidden'});
+    await page.evaluate(()=>{location.hash='/commands/whisper'});
+    await page.waitForFunction(()=>location.hash!=='#/commands/whisper');
     assert.equal(await whisperUrl.count(),0,'Non-admin cannot access the prompt form');
     await panel.evaluate(element=>{element.hass=window.hass});
     await page.evaluate(()=>{location.hash='/settings'});

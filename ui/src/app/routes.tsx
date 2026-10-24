@@ -1,3 +1,4 @@
+import { WhisperPromptPage } from "../pages/WhisperPromptPage/WhisperPromptPage";
 import { useApiEnabled } from "../context/ApiEnabledContext";
 import { ApiLogsPage } from "../pages/ApiLogsPage/ApiLogsPage";
 import { useIsAdmin } from "../context/AdminContext";
@@ -34,6 +35,7 @@ export const AppRoutes = () => {
   }
   return (
     <Routes>
+      <Route path="/commands/whisper" element={isAdmin ? <WhisperPromptPage /> : <Navigate to={homePath} replace />} />
       <Route path="/logs" element={apiEnabled && isAdmin ? <ApiLogsPage /> : <Navigate to={homePath} replace />} />
       <Route path="/downloads" element={isAdmin ? <DownloadsPage /> : <Navigate to={homePath} replace />} />
       <Route

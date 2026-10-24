@@ -22,6 +22,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
       { to: "/commands/direct/main", label: "Прямые команды", icon: Workflow },
       { to: "/commands/direct/template", label: "Вложенные команды", icon: Layers },
       { to: "/commands/settings", label: "Ответы по умолчанию", icon: SlidersHorizontal },
+      ...(isAdmin ? [{ to: "/commands/whisper", label: "Промпт распознавания", icon: SlidersHorizontal }] : []),
     ] : remoteEnabled === true ? [{ to: "/scripts", label: "Действия удалённых команд", icon: Workflow }] : []),
     { to: "/timer", label: "Таймеры", icon: Clock3 },
     { to: "/alarm", label: "Будильники", icon: AlarmClock },

@@ -30,7 +30,7 @@ export function WhisperPromptForm() {
   const send = (save: boolean) => feedback.run(async () => {
     const result = await api.saveData({url: configuration.url, token,
       ...(save ? {initial_prompt: configuration.initial_prompt} : {})}, save ? "save_whisper_prompt" : "read_whisper_prompt") as {initial_prompt: string};
-    setConfiguration(current => ({...current, initial_prompt: result.initial_prompt, has_token: save ? true : current.has_token}));
+    setConfiguration(current => ({...current, initial_prompt: result.initial_prompt, has_token: save ? Boolean(token.trim() || (current.has_token && configuration.url === savedUrl)) : current.has_token}));
     setApplied(save);
     if (save) { setSavedUrl(configuration.url); setToken(""); }
   }, {exclusive: true});
@@ -40,7 +40,7 @@ export function WhisperPromptForm() {
     {loaded && <>
       <Input label={t("Адрес API Whisper")} hint={t("Адрес контейнера Whisper с API промпта, например http://192.168.1.10:10301. Это отдельный HTTP-порт, не Wyoming-порт 10300.")}
         placeholder="http://192.168.1.10:10301" value={configuration.url} disabled={feedback.busy} onChange={event=>update({url:event.target.value})} />
-      <Input label={t("Токен API Whisper")} hint={t("Значение WHISPER_PROMPT_TOKEN из .env контейнера, без префикса Bearer. Сохранённый токен не показывается. При смене адреса укажите токен заново.")}
+      <Input label={t("Токен API Whisper")} hint={t("Необязательно. Если WHISPER_PROMPT_TOKEN в контейнере не задан, оставьте поле пустым. Иначе укажите его без префикса Bearer. Сохранённый токен не показывается и используется повторно для того же адреса.")}
         type="password" value={token} disabled={feedback.busy} autoComplete="new-password"
         placeholder={configuration.has_token && configuration.url === savedUrl ? t("Токен сохранён; оставьте пустым, чтобы сохранить его") : ""}
         onChange={event=>{setToken(event.target.value);setApplied(false);}} />

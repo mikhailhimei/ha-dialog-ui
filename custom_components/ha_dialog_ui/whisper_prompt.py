@@ -36,8 +36,6 @@ def _credentials(current, data):
     token = data.get("token", "").strip()
     if not token and url == current.get("url"):
         token = current.get("token", "")
-    if not token:
-        raise ValueError("Укажите токен API Whisper")
     return url, token
 
 
@@ -45,7 +43,7 @@ async def _remote(hass, url, token, *, prompt=None):
     session = async_get_clientsession(hass)
     async with asyncio.timeout(10):
         async with session.request("GET" if prompt is None else "PUT", f"{url}/initial-prompt",
-                                   headers={"Authorization": f"Bearer {token}"},
+                                   headers={"Authorization": f"Bearer {token}"} if token else {},
                                    json=None if prompt is None else {"initial_prompt": prompt},
                                    allow_redirects=False) as response:
             if response.status == 401:

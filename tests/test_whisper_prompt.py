@@ -14,9 +14,10 @@ from test_request_mutations import async_handler
 
 @pytest_asyncio.fixture
 async def server():
-    state = {'prompt': 'Пылесос, коты.', 'status': 200, 'confirmed': True}
+    state = {'prompt': 'Пылесос, коты.', 'status': 200, 'confirmed': True, 'require_token': True, 'authorization': None}
     async def handle(request):
-        if request.headers.get('Authorization') != 'Bearer test-token':
+        state['authorization'] = request.headers.get('Authorization')
+        if state['require_token'] and state['authorization'] != 'Bearer test-token':
             return web.json_response({'error': 'unauthorized'}, status=401)
         if state['status'] != 200:
             return web.json_response({}, status=state['status'])
@@ -89,11 +90,24 @@ def test_invalid_endpoint_rejected(url):
 
 
 def test_saved_token_is_not_forwarded_to_changed_host():
-    with pytest.raises(ValueError):
-        prompt._credentials({'url': 'http://original:10301', 'token': 'secret'}, {'url': 'http://other:10301', 'token': ''})
+    assert prompt._credentials({'url': 'http://original:10301', 'token': 'secret'}, {'url': 'http://other:10301', 'token': ''}) == ('http://other:10301', '')
 
 
 @pytest.mark.parametrize('handler', [prompt._get_prompt, prompt._read_prompt, prompt._save_prompt])
 def test_only_admins_can_access_prompt_settings(handler):
     with pytest.raises(Unauthorized):
         handler(None, SimpleNamespace(user=SimpleNamespace(is_admin=False)), {'id': 1})
+
+
+async def test_read_and_save_without_token(runtime, server):
+    hass, _ = runtime
+    server['require_token'] = False
+    conn = connection()
+    await async_handler(prompt._read_prompt)(hass, conn, {'id': 1, 'data': {'url': server['url']}})
+    conn.send_error.assert_not_called()
+    assert server['authorization'] is None
+    await async_handler(prompt._save_prompt)(hass, conn, {'id': 2, 'data': {'url': server['url'], 'initial_prompt': 'local'}})
+    conn.send_error.assert_not_called()
+    assert server['authorization'] is None
+    assert server['prompt'] == 'local'
+    assert (await prompt._store(hass).async_load())['token'] == ''

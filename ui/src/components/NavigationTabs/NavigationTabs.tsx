@@ -113,6 +113,9 @@ export const NavigationTabs = () => {
               isActive ? `${styles.menuItem} ${styles.active}` : styles.menuItem
             }
           >{t("Ответы по умолчанию")}</NavLink>
+          {isAdmin && <NavLink to="/commands/whisper"
+            className={({ isActive }) => isActive ? `${styles.menuItem} ${styles.active}` : styles.menuItem}
+          >{t("Промпт распознавания")}</NavLink>}
         </nav>}
       </div>}
 

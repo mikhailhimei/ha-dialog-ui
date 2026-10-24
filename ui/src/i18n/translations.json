@@ -1299,9 +1299,9 @@
     "ru": "Адрес контейнера Whisper с API промпта, например http://192.168.1.10:10301. Это отдельный HTTP-порт, не Wyoming-порт 10300.",
     "en": "Address of the Whisper container prompt API, for example http://192.168.1.10:10301. This is a separate HTTP port, not the Wyoming port 10300."
   },
-  "Значение WHISPER_PROMPT_TOKEN из .env контейнера, без префикса Bearer. Сохранённый токен не показывается. При смене адреса укажите токен заново.": {
-    "ru": "Значение WHISPER_PROMPT_TOKEN из .env контейнера, без префикса Bearer. Сохранённый токен не показывается. При смене адреса укажите токен заново.",
-    "en": "WHISPER_PROMPT_TOKEN from the container .env file, without the Bearer prefix. The saved token is not displayed. Enter the token again when changing the server address."
+  "Необязательно. Если WHISPER_PROMPT_TOKEN в контейнере не задан, оставьте поле пустым. Иначе укажите его без префикса Bearer. Сохранённый токен не показывается и используется повторно для того же адреса.": {
+    "ru": "Необязательно. Если WHISPER_PROMPT_TOKEN в контейнере не задан, оставьте поле пустым. Иначе укажите его без префикса Bearer. Сохранённый токен не показывается и используется повторно для того же адреса.",
+    "en": "Optional. Leave empty if WHISPER_PROMPT_TOKEN is not set in the container. Otherwise enter it without the Bearer prefix. The saved token is hidden and reused for the same address."
   },
   "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.": {
     "ru": "Подсказка initial_prompt для Whisper: привычные слова, названия и примеры фраз. Например: «Насыпь еды. Запусти пылесос. Включи свет в коридоре». Это подсказка распознавания, а не инструкция для диалога. Пустой текст отключает подсказку. После сохранения применяется со следующего распознавания, без перезапуска модели.",
