@@ -222,15 +222,15 @@ export function BabyMonitorPage() {
         </div>
         <FieldHelp label={statusText} description={t(
           active && state?.owned_source_id !== sourceId
-            ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже."
-            : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».",
+            ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя."
+            : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя.",
         )} />
       </div>
-      <p className={styles.hint}>{t("Где воспроизводить звук?")}</p>
+      <p className={styles.hint}>{t("Выберите устройство")}</p>
       <div className={styles.playback}>
         {target === "browser" ? <Headphones size={22} /> : <Speaker size={22} />}
         <SelectInput
-          aria-label={t("Где воспроизводить звук?")}
+          aria-label={t("Выберите устройство")}
           className={styles.playbackSelect}
           value={target}
           onChange={(event) => setTarget(event.target.value)}
@@ -245,11 +245,6 @@ export function BabyMonitorPage() {
           ]}
         />
       </div>
-      {playing && (
-        <p className={styles.hint}>
-          {t("Чтобы сменить устройство воспроизведения, сначала остановите сеанс.")}
-        </p>
-      )}
     </>
   );
   const footer = (

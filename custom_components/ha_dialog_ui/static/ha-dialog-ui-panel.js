@@ -2563,21 +2563,21 @@ function Pm() {
       return null;
     }
     function re(M, A, L, Y) {
-      for (var ie = null, le = null, ue = A, pe = A = 0, et = null; ue !== null && pe < L.length; pe++) {
-        ue.index > pe ? (et = ue, ue = null) : et = ue.sibling;
+      for (var ie = null, le = null, ue = A, pe = A = 0, Ze = null; ue !== null && pe < L.length; pe++) {
+        ue.index > pe ? (Ze = ue, ue = null) : Ze = ue.sibling;
         var Te = V(M, ue, L[pe], Y);
         if (Te === null) {
-          ue === null && (ue = et);
+          ue === null && (ue = Ze);
           break;
         }
-        e && ue && Te.alternate === null && t(M, ue), A = u(Te, A, pe), le === null ? ie = Te : le.sibling = Te, le = Te, ue = et;
+        e && ue && Te.alternate === null && t(M, ue), A = u(Te, A, pe), le === null ? ie = Te : le.sibling = Te, le = Te, ue = Ze;
       }
       if (pe === L.length) return n(M, ue), Oe && Bn(M, pe), ie;
       if (ue === null) {
         for (; pe < L.length; pe++) ue = Q(M, L[pe], Y), ue !== null && (A = u(ue, A, pe), le === null ? ie = ue : le.sibling = ue, le = ue);
         return Oe && Bn(M, pe), ie;
       }
-      for (ue = s(M, ue); pe < L.length; pe++) et = ee(ue, M, pe, L[pe], Y), et !== null && (e && et.alternate !== null && ue.delete(et.key === null ? pe : et.key), A = u(et, A, pe), le === null ? ie = et : le.sibling = et, le = et);
+      for (ue = s(M, ue); pe < L.length; pe++) Ze = ee(ue, M, pe, L[pe], Y), Ze !== null && (e && Ze.alternate !== null && ue.delete(Ze.key === null ? pe : Ze.key), A = u(Ze, A, pe), le === null ? ie = Ze : le.sibling = Ze, le = Ze);
       return e && ue.forEach(function(In) {
         return t(M, In);
       }), Oe && Bn(M, pe), ie;
@@ -2586,14 +2586,14 @@ function Pm() {
       var ie = K(L);
       if (typeof ie != "function") throw Error(i(150));
       if (L = ie.call(L), L == null) throw Error(i(151));
-      for (var le = ie = null, ue = A, pe = A = 0, et = null, Te = L.next(); ue !== null && !Te.done; pe++, Te = L.next()) {
-        ue.index > pe ? (et = ue, ue = null) : et = ue.sibling;
+      for (var le = ie = null, ue = A, pe = A = 0, Ze = null, Te = L.next(); ue !== null && !Te.done; pe++, Te = L.next()) {
+        ue.index > pe ? (Ze = ue, ue = null) : Ze = ue.sibling;
         var In = V(M, ue, Te.value, Y);
         if (In === null) {
-          ue === null && (ue = et);
+          ue === null && (ue = Ze);
           break;
         }
-        e && ue && In.alternate === null && t(M, ue), A = u(In, A, pe), le === null ? ie = In : le.sibling = In, le = In, ue = et;
+        e && ue && In.alternate === null && t(M, ue), A = u(In, A, pe), le === null ? ie = In : le.sibling = In, le = In, ue = Ze;
       }
       if (Te.done) return n(
         M,
@@ -2863,7 +2863,7 @@ function Pm() {
     for (var e = 0; e < Sa.length; e++) Sa[e]._workInProgressVersionPrimary = null;
     Sa.length = 0;
   }
-  var jo = z.ReactCurrentDispatcher, ja = z.ReactCurrentBatchConfig, qn = 0, Fe = null, qe = null, Xe = null, Eo = !1, xs = !1, ws = 0, qh = 0;
+  var jo = z.ReactCurrentDispatcher, ja = z.ReactCurrentBatchConfig, qn = 0, Fe = null, qe = null, Je = null, Eo = !1, xs = !1, ws = 0, qh = 0;
   function it() {
     throw Error(i(321));
   }
@@ -2877,10 +2877,10 @@ function Pm() {
       u = 0;
       do {
         if (xs = !1, ws = 0, 25 <= u) throw Error(i(301));
-        u += 1, Xe = qe = null, t.updateQueue = null, jo.current = Xh, e = n(s, l);
+        u += 1, Je = qe = null, t.updateQueue = null, jo.current = Xh, e = n(s, l);
       } while (xs);
     }
-    if (jo.current = bo, t = qe !== null && qe.next !== null, qn = 0, Xe = qe = Fe = null, Eo = !1, t) throw Error(i(300));
+    if (jo.current = bo, t = qe !== null && qe.next !== null, qn = 0, Je = qe = Fe = null, Eo = !1, t) throw Error(i(300));
     return e;
   }
   function Ta() {
@@ -2889,20 +2889,20 @@ function Pm() {
   }
   function en() {
     var e = { memoizedState: null, baseState: null, baseQueue: null, queue: null, next: null };
-    return Xe === null ? Fe.memoizedState = Xe = e : Xe = Xe.next = e, Xe;
+    return Je === null ? Fe.memoizedState = Je = e : Je = Je.next = e, Je;
   }
   function $t() {
     if (qe === null) {
       var e = Fe.alternate;
       e = e !== null ? e.memoizedState : null;
     } else e = qe.next;
-    var t = Xe === null ? Fe.memoizedState : Xe.next;
-    if (t !== null) Xe = t, qe = e;
+    var t = Je === null ? Fe.memoizedState : Je.next;
+    if (t !== null) Je = t, qe = e;
     else {
       if (e === null) throw Error(i(310));
-      qe = e, e = { memoizedState: qe.memoizedState, baseState: qe.baseState, baseQueue: qe.baseQueue, queue: qe.queue, next: null }, Xe === null ? Fe.memoizedState = Xe = e : Xe = Xe.next = e;
+      qe = e, e = { memoizedState: qe.memoizedState, baseState: qe.baseState, baseQueue: qe.baseQueue, queue: qe.queue, next: null }, Je === null ? Fe.memoizedState = Je = e : Je = Je.next = e;
     }
-    return Xe;
+    return Je;
   }
   function ks(e, t) {
     return typeof t == "function" ? t(e) : t;
@@ -2966,8 +2966,8 @@ function Pm() {
   }
   function $c(e, t) {
     var n = Fe, s = $t(), l = t(), u = !zt(s.memoizedState, l);
-    if (u && (s.memoizedState = l, gt = !0), s = s.queue, Aa(Lc.bind(null, n, s, e), [e]), s.getSnapshot !== t || u || Xe !== null && Xe.memoizedState.tag & 1) {
-      if (n.flags |= 2048, Ss(9, Ic.bind(null, n, s, l, t), void 0, null), Ze === null) throw Error(i(349));
+    if (u && (s.memoizedState = l, gt = !0), s = s.queue, Aa(Lc.bind(null, n, s, e), [e]), s.getSnapshot !== t || u || Je !== null && Je.memoizedState.tag & 1) {
+      if (n.flags |= 2048, Ss(9, Ic.bind(null, n, s, l, t), void 0, null), Xe === null) throw Error(i(349));
       (qn & 30) !== 0 || Mc(n, t, l);
     }
     return l;
@@ -3153,7 +3153,7 @@ function Pm() {
       if (n === void 0) throw Error(i(407));
       n = n();
     } else {
-      if (n = t(), Ze === null) throw Error(i(349));
+      if (n = t(), Xe === null) throw Error(i(349));
       (qn & 30) !== 0 || Mc(s, t, n);
     }
     l.memoizedState = n;
@@ -3165,7 +3165,7 @@ function Pm() {
       e
     ), [e]), s.flags |= 2048, Ss(9, Ic.bind(null, s, u, n, t), void 0, null), n;
   }, useId: function() {
-    var e = en(), t = Ze.identifierPrefix;
+    var e = en(), t = Xe.identifierPrefix;
     if (Oe) {
       var n = un, s = ln;
       n = (s & ~(1 << 32 - Ot(s) - 1)).toString(32) + n, t = ":" + t + "R" + n, n = ws++, 0 < n && (t += "H" + n.toString(32)), t += ":";
@@ -3437,7 +3437,7 @@ Error generating stack: ` + u.message + `
       return s = S, u = Error(i(419)), s = Ia(u, s, void 0), Ao(e, t, h, s);
     }
     if (S = (h & e.childLanes) !== 0, gt || S) {
-      if (s = Ze, s !== null) {
+      if (s = Xe, s !== null) {
         switch (h & -h) {
           case 4:
             l = 2;
@@ -4574,7 +4574,7 @@ Error generating stack: ` + u.message + `
       ne = t.return;
     }
   }
-  var lm = Math.ceil, Io = z.ReactCurrentDispatcher, Ka = z.ReactCurrentOwner, Mt = z.ReactCurrentBatchConfig, je = 0, Ze = null, Ve = null, st = 0, Nt = 0, Pr = Cn(0), Qe = 0, Es = null, Qn = 0, Lo = 0, Ya = 0, Ns = null, _t = null, Ga = 0, $r = 1 / 0, pn = null, Do = !1, Ja = null, Rn = null, Oo = !1, An = null, zo = 0, Ts = 0, Xa = null, Ho = -1, Fo = 0;
+  var lm = Math.ceil, Io = z.ReactCurrentDispatcher, Ka = z.ReactCurrentOwner, Mt = z.ReactCurrentBatchConfig, je = 0, Xe = null, Ve = null, st = 0, Nt = 0, Pr = Cn(0), Qe = 0, Es = null, Qn = 0, Lo = 0, Ya = 0, Ns = null, _t = null, Ga = 0, $r = 1 / 0, pn = null, Do = !1, Ja = null, Rn = null, Oo = !1, An = null, zo = 0, Ts = 0, Xa = null, Ho = -1, Fo = 0;
   function ft() {
     return (je & 6) !== 0 ? Be() : Ho !== -1 ? Ho : Ho = Be();
   }
@@ -4583,12 +4583,12 @@ Error generating stack: ` + u.message + `
   }
   function Ut(e, t, n, s) {
     if (50 < Ts) throw Ts = 0, Xa = null, Error(i(185));
-    Xr(e, n, s), ((je & 2) === 0 || e !== Ze) && (e === Ze && ((je & 2) === 0 && (Lo |= n), Qe === 4 && $n(e, st)), xt(e, s), n === 1 && je === 0 && (t.mode & 1) === 0 && ($r = Be() + 500, mo && En()));
+    Xr(e, n, s), ((je & 2) === 0 || e !== Xe) && (e === Xe && ((je & 2) === 0 && (Lo |= n), Qe === 4 && $n(e, st)), xt(e, s), n === 1 && je === 0 && (t.mode & 1) === 0 && ($r = Be() + 500, mo && En()));
   }
   function xt(e, t) {
     var n = e.callbackNode;
     Vp(e, t);
-    var s = Ys(e, e === Ze ? st : 0);
+    var s = Ys(e, e === Xe ? st : 0);
     if (s === 0) n !== null && wu(n), e.callbackNode = null, e.callbackPriority = 0;
     else if (t = s & -s, e.callbackPriority !== t) {
       if (n != null && wu(n), t === 1) e.tag === 0 ? Uh($d.bind(null, e)) : gc($d.bind(null, e)), Hh(function() {
@@ -4620,7 +4620,7 @@ Error generating stack: ` + u.message + `
     if (Ho = -1, Fo = 0, (je & 6) !== 0) throw Error(i(327));
     var n = e.callbackNode;
     if (Mr() && e.callbackNode !== n) return null;
-    var s = Ys(e, e === Ze ? st : 0);
+    var s = Ys(e, e === Xe ? st : 0);
     if (s === 0) return null;
     if ((s & 30) !== 0 || (s & e.expiredLanes) !== 0 || t) t = Wo(e, s);
     else {
@@ -4628,7 +4628,7 @@ Error generating stack: ` + u.message + `
       var l = je;
       je |= 2;
       var u = Id();
-      (Ze !== e || st !== t) && (pn = null, $r = Be() + 500, Yn(e, t));
+      (Xe !== e || st !== t) && (pn = null, $r = Be() + 500, Yn(e, t));
       do
         try {
           dm();
@@ -4637,7 +4637,7 @@ Error generating stack: ` + u.message + `
           Md(e, S);
         }
       while (!0);
-      va(), Io.current = u, je = l, Ve !== null ? t = 0 : (Ze = null, st = 0, t = Qe);
+      va(), Io.current = u, je = l, Ve !== null ? t = 0 : (Xe = null, st = 0, t = Qe);
     }
     if (t !== 0) {
       if (t === 2 && (l = Pi(e), l !== 0 && (s = l, t = Za(e, l))), t === 1) throw n = Es, Yn(e, 0), $n(e, s), xt(e, Be()), n;
@@ -4794,7 +4794,7 @@ Error generating stack: ` + u.message + `
       }
       n = n.return;
     }
-    if (Ze = e, Ve = e = Mn(e.current, null), st = Nt = t, Qe = 0, Es = null, Ya = Lo = Qn = 0, _t = Ns = null, Un !== null) {
+    if (Xe = e, Ve = e = Mn(e.current, null), st = Nt = t, Qe = 0, Es = null, Ya = Lo = Qn = 0, _t = Ns = null, Un !== null) {
       for (t = 0; t < Un.length; t++) if (n = Un[t], s = n.interleaved, s !== null) {
         n.interleaved = null;
         var l = s.next, u = n.pending;
@@ -4819,7 +4819,7 @@ Error generating stack: ` + u.message + `
           }
           Eo = !1;
         }
-        if (qn = 0, Xe = qe = Fe = null, xs = !1, ws = 0, Ka.current = null, n === null || n.return === null) {
+        if (qn = 0, Je = qe = Fe = null, xs = !1, ws = 0, Ka.current = null, n === null || n.return === null) {
           Qe = 1, Es = t, Ve = null;
           break;
         }
@@ -4888,13 +4888,13 @@ Error generating stack: ` + u.message + `
     return Io.current = bo, e === null ? bo : e;
   }
   function rl() {
-    (Qe === 0 || Qe === 3 || Qe === 2) && (Qe = 4), Ze === null || (Qn & 268435455) === 0 && (Lo & 268435455) === 0 || $n(Ze, st);
+    (Qe === 0 || Qe === 3 || Qe === 2) && (Qe = 4), Xe === null || (Qn & 268435455) === 0 && (Lo & 268435455) === 0 || $n(Xe, st);
   }
   function Wo(e, t) {
     var n = je;
     je |= 2;
     var s = Id();
-    (Ze !== e || st !== t) && (pn = null, Yn(e, t));
+    (Xe !== e || st !== t) && (pn = null, Yn(e, t));
     do
       try {
         cm();
@@ -4904,7 +4904,7 @@ Error generating stack: ` + u.message + `
       }
     while (!0);
     if (va(), je = n, Io.current = s, Ve !== null) throw Error(i(261));
-    return Ze = null, st = 0, Qe;
+    return Xe = null, st = 0, Qe;
   }
   function cm() {
     for (; Ve !== null; ) Ld(Ve);
@@ -4964,7 +4964,7 @@ Error generating stack: ` + u.message + `
     if (e.finishedWork = null, e.finishedLanes = 0, n === e.current) throw Error(i(177));
     e.callbackNode = null, e.callbackPriority = 0;
     var u = n.lanes | n.childLanes;
-    if (qp(e, u), e === Ze && (Ve = Ze = null, st = 0), (n.subtreeFlags & 2064) === 0 && (n.flags & 2064) === 0 || Oo || (Oo = !0, Fd(Vs, function() {
+    if (qp(e, u), e === Xe && (Ve = Xe = null, st = 0), (n.subtreeFlags & 2064) === 0 && (n.flags & 2064) === 0 || Oo || (Oo = !0, Fd(Vs, function() {
       return Mr(), null;
     })), u = (n.flags & 15990) !== 0, (n.subtreeFlags & 15990) !== 0 || u) {
       u = Mt.transition, Mt.transition = null;
@@ -5109,7 +5109,7 @@ Error generating stack: ` + u.message + `
   }
   function pm(e, t, n) {
     var s = e.pingCache;
-    s !== null && s.delete(t), t = ft(), e.pingedLanes |= e.suspendedLanes & n, Ze === e && (st & n) === n && (Qe === 4 || Qe === 3 && (st & 130023424) === st && 500 > Be() - Ga ? Yn(e, 0) : Ya |= n), xt(e, t);
+    s !== null && s.delete(t), t = ft(), e.pingedLanes |= e.suspendedLanes & n, Xe === e && (st & n) === n && (Qe === 4 || Qe === 3 && (st & 130023424) === st && 500 > Be() - Ga ? Yn(e, 0) : Ya |= n), xt(e, t);
   }
   function zd(e, t) {
     t === 0 && ((e.mode & 1) === 0 ? t = 1 : (t = Ks, Ks <<= 1, (Ks & 130023424) === 0 && (Ks = 4194304)));
@@ -6669,7 +6669,7 @@ function Ln({
     m(JSON.parse(w), { replace: a, state: i, relative: c });
   }, [m, w, c, a, i]), null;
 }
-function Ye(r) {
+function Ke(r) {
   ze(
     !1,
     "A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Please wrap your <Route> in a <Routes>."
@@ -6745,7 +6745,7 @@ function Nl(r, a = []) {
       return;
     }
     ze(
-      c.type === Ye,
+      c.type === Ke,
       `[${typeof c.type == "string" ? c.type : c.type.name}] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`
     ), ze(
       !c.props.index || !c.props.children,
@@ -8483,7 +8483,9 @@ A ? after the parentheses makes the ending optional: зал(а|е)? matches «з
   "Длительность звонка": { ru: "Длительность звонка", en: "Call duration" },
   "Выход звука — через настройки телефона": { ru: "Выход звука — через настройки телефона", en: "Choose audio output in phone settings" },
   "Не удалось переключить звук. Используйте системный выбор аудиоустройства.": { ru: "Не удалось переключить звук. Используйте системный выбор аудиоустройства.", en: "Could not switch audio output. Use the system audio device selector." },
-  "Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение.": { ru: "Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение.", en: "This browser cannot switch between the earpiece and speakerphone from a website. Choose speakers or headphones in the phone system menu. The Audio button resumes playback." }
+  "Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение.": { ru: "Этот браузер не разрешает переключать разговорный динамик и громкую связь из сайта. Выберите динамик или наушники в системном меню телефона. Кнопка «Звук» повторно включает воспроизведение.", en: "This browser cannot switch between the earpiece and speakerphone from a website. Choose speakers or headphones in the phone system menu. The Audio button resumes playback." },
+  "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя.": { ru: "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя.", en: "This session was started outside this tab. Closing the window or tab will not stop it. Use Stop below. You cannot change the playback device while listening is active." },
+  "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя.": { ru: "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя.", en: "Closing this window keeps listening active. Stop below or leave the Baby monitor tab. You cannot change the playback device while listening is active." }
 }, ip = "ha-dialog-ui-language";
 let Kl = localStorage.getItem(ip) === "en" ? "en" : "ru";
 const Tl = /* @__PURE__ */ new Set();
@@ -9078,7 +9080,7 @@ const H_ = "_loader_1tvqb_1", F_ = "_fullscreen_1tvqb_7", pf = {
   fullscreen: F_
 }, mi = ({ label: r = "Загрузка...", fullscreen: a = !1 }) => /* @__PURE__ */ o.jsx("div", { className: `${pf.loader} ${a ? pf.fullscreen : ""}`, children: /* @__PURE__ */ o.jsx(Kt, { loading: !0, itemCount: 0, placeholderCount: 4, label: r }) }), W_ = "_error_fi1f1_1", B_ = {
   error: W_
-}, Ge = ({ error: r, retry: a, busy: i = !1 }) => r ? /* @__PURE__ */ o.jsxs("div", { role: "alert", className: B_.error, children: [
+}, Ye = ({ error: r, retry: a, busy: i = !1 }) => r ? /* @__PURE__ */ o.jsxs("div", { role: "alert", className: B_.error, children: [
   /* @__PURE__ */ o.jsx("p", { children: _(r) }),
   a && /* @__PURE__ */ o.jsx(oe, { variant: "secondary", disabled: i, onClick: a, children: _("Повторить загрузку") })
 ] }) : null, hf = {
@@ -9283,7 +9285,7 @@ const X_ = "_field_1vuim_1", Z_ = "_label_1vuim_10", e1 = "_inputWrapper_1vuim_1
   passwordToggle: r1,
   error: s1,
   errorText: o1
-}, Je = ({
+}, Ge = ({
   label: r,
   hint: a,
   error: i,
@@ -9386,11 +9388,11 @@ function p1() {
     c((N) => ({ ...N, initial_prompt: Array.isArray(E.initial_prompt) ? E.initial_prompt.join("; ") : E.initial_prompt, has_token: !!(d.trim() || N.has_token && i.url === p) })), x({ message: b ? E.applied ? "Сохранено и применено в Whisper. Перезапуск контейнера не нужен." : "Сохранено в Home Assistant. Не удалось применить в Whisper. После восстановления подключения нажмите «Отправить в Whisper» повторно." : "Сохранено в Home Assistant.", warning: b && !E.applied }), m(i.url), f("");
   }, { exclusive: !0 });
   return /* @__PURE__ */ o.jsxs("section", { className: vf.form, children: [
-    /* @__PURE__ */ o.jsx(Ge, { ...a }),
+    /* @__PURE__ */ o.jsx(Ye, { ...a }),
     !g && !a.error && /* @__PURE__ */ o.jsx(mi, {}),
     g && /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
       /* @__PURE__ */ o.jsx(
-        Je,
+        Ge,
         {
           label: _("Адрес API Whisper"),
           hint: _("Адрес контейнера Whisper с API промпта, например http://192.168.1.10:10301. Это отдельный HTTP-порт, не Wyoming-порт 10300. Для сохранения промпта в Home Assistant адрес не нужен."),
@@ -9401,7 +9403,7 @@ function p1() {
         }
       ),
       /* @__PURE__ */ o.jsx(
-        Je,
+        Ge,
         {
           label: _("Токен API Whisper"),
           hint: _("Необязательно. Если WHISPER_PROMPT_TOKEN в контейнере не задан, оставьте поле пустым. Иначе укажите его без префикса Bearer. Сохранённый токен не показывается и используется повторно для того же адреса."),
@@ -9496,7 +9498,7 @@ function H1() {
       /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsx("h1", { className: On.heading, children: _("Логи") }),
       /* @__PURE__ */ o.jsx("p", { className: On.note, children: _("Последние 200 записей API с телами запросов и ответов. Обновление каждые 3 секунды. После перезапуска журнал очищается. Секретные поля и настроенные токены скрыты.") }),
-      /* @__PURE__ */ o.jsx(Ge, { ...a }),
+      /* @__PURE__ */ o.jsx(Ye, { ...a }),
       !i.length && !a.busy && !a.error && /* @__PURE__ */ o.jsx("p", { children: _("Запросов к API пока нет.") }),
       /* @__PURE__ */ o.jsx("div", { className: On.entries, children: i.map((d) => /* @__PURE__ */ o.jsxs("article", { className: On.entry, children: [
         /* @__PURE__ */ o.jsxs("div", { className: On.line, children: [
@@ -9871,7 +9873,7 @@ const K1 = "_subtitle_c1esh_1", Y1 = "_card_c1esh_6", G1 = "_content_c1esh_32", 
             )
           ] }),
           /* @__PURE__ */ o.jsxs("div", { className: kt.body, children: [
-            /* @__PURE__ */ o.jsx(Ge, { ...i }),
+            /* @__PURE__ */ o.jsx(Ye, { ...i }),
             /* @__PURE__ */ o.jsx("fieldset", { className: kt.fields, disabled: i == null ? void 0 : i.busy, children: w })
           ] }),
           g && /* @__PURE__ */ o.jsx("div", { className: kt.footer, children: /* @__PURE__ */ o.jsx("fieldset", { className: kt.fields, disabled: i == null ? void 0 : i.busy, children: g }) })
@@ -10037,7 +10039,7 @@ const K1 = "_subtitle_c1esh_1", Y1 = "_card_c1esh_6", G1 = "_content_c1esh_32", 
   };
   return /* @__PURE__ */ o.jsxs("div", { ref: de, className: tr.wrapper, children: [
     /* @__PURE__ */ o.jsx(
-      Je,
+      Ge,
       {
         label: r,
         value: b || a,
@@ -10077,7 +10079,7 @@ const K1 = "_subtitle_c1esh_1", Y1 = "_card_c1esh_6", G1 = "_content_c1esh_32", 
       )) }),
       de.current.closest("[data-theme]") ?? de.current
     ),
-    /* @__PURE__ */ o.jsx(Ge, { error: E, busy: J, retry: () => {
+    /* @__PURE__ */ o.jsx(Ye, { error: E, busy: J, retry: () => {
       var R, K;
       te.current = "", (K = (R = de.current) == null ? void 0 : R.querySelector("input")) == null || K.focus(), H((U) => U + 1);
     } }),
@@ -10095,7 +10097,7 @@ const K1 = "_subtitle_c1esh_1", Y1 = "_card_c1esh_6", G1 = "_content_c1esh_32", 
   children_direct_type: "search_assistant_sub_direct_controls"
 };
 function Sl({ field: r, value: a, error: i, onChange: c }) {
-  return Hr() ? /* @__PURE__ */ o.jsx(Je, { label: _(r), value: a, error: i, onChange: (f) => c(f.target.value) }) : /* @__PURE__ */ o.jsx(
+  return Hr() ? /* @__PURE__ */ o.jsx(Ge, { label: _(r), value: a, error: i, onChange: (f) => c(f.target.value) }) : /* @__PURE__ */ o.jsx(
     I0,
     {
       label: _(r),
@@ -10400,7 +10402,7 @@ const G0 = "_form_1ogov_1", J0 = "_section_1ogov_7", X0 = "_sectionTitle_1ogov_1
       children: /* @__PURE__ */ o.jsxs("div", { className: Dr.form, children: [
         /* @__PURE__ */ o.jsxs("div", { className: Dr.section, children: [
           /* @__PURE__ */ o.jsx(
-            Je,
+            Ge,
             {
               label: _("Название"),
               value: g.name,
@@ -10541,7 +10543,7 @@ const G0 = "_form_1ogov_1", J0 = "_section_1ogov_7", X0 = "_sectionTitle_1ogov_1
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !p && /* @__PURE__ */ o.jsx(Ge, { ...de }),
+      !p && /* @__PURE__ */ o.jsx(Ye, { ...de }),
       /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${X.header} ${X.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsxs("div", { className: X.heading, children: [
@@ -10785,7 +10787,7 @@ function Pl({ kind: r, value: a, title: i, onSelect: c }) {
         }
       }
     ),
-    /* @__PURE__ */ o.jsx(Ge, { error: x, busy: m || w, retry: () => {
+    /* @__PURE__ */ o.jsx(Ye, { error: x, busy: m || w, retry: () => {
       var z;
       return (z = E.current) == null ? void 0 : z.call(E);
     } })
@@ -10861,7 +10863,7 @@ const ux = [
       footer: /* @__PURE__ */ o.jsx("div", { className: tt.form, children: /* @__PURE__ */ o.jsx(oe, { onClick: y, children: _("Сохранить") }) }),
       children: /* @__PURE__ */ o.jsxs("div", { className: tt.form, children: [
         /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("Название команды"),
             hint: vi(d.uuid),
@@ -10875,7 +10877,7 @@ const ux = [
           }
         ),
         /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("mappingType"),
             value: x.mappingType,
@@ -10999,7 +11001,7 @@ function Sx({ response: r, onChange: a }) {
       }
     ),
     c === "custom" ? /* @__PURE__ */ o.jsx(
-      Je,
+      Ge,
       {
         label: _("Тип результата скрипта"),
         placeholder: _("Например, room_required"),
@@ -11068,7 +11070,7 @@ function Rx({ component: r, onOpenCommand: a, updateComponentArray: i, addCompon
           }
         ),
         y.actionTypeComponent == "custom" ? /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("Тип результата скрипта"),
             placeholder: _("Например, room_required"),
@@ -11137,7 +11139,7 @@ function Rx({ component: r, onOpenCommand: a, updateComponentArray: i, addCompon
           }
         ),
         y.uuid && /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("mappingType"),
             hint: _("Переменная для фраз запуска. Например, используйте ${room} во фразе, если здесь указано room."),
@@ -11269,7 +11271,7 @@ const xf = () => ({
           }
         ) : /* @__PURE__ */ o.jsxs("div", { className: tt.form, children: [
           /* @__PURE__ */ o.jsx(
-            Je,
+            Ge,
             {
               label: _("Название команды"),
               hint: vi(c.uuid),
@@ -11415,7 +11417,7 @@ const xf = () => ({
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !g && /* @__PURE__ */ o.jsx(Ge, { ...c }),
+      !g && /* @__PURE__ */ o.jsx(Ye, { ...c }),
       /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${X.header} ${X.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsx("div", { className: X.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: X.title, children: _("Основные команды") }) }),
@@ -11502,7 +11504,7 @@ const xf = () => ({
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !g && /* @__PURE__ */ o.jsx(Ge, { ...c }),
+      !g && /* @__PURE__ */ o.jsx(Ye, { ...c }),
       r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${X.header} ${X.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsx("div", { className: X.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: X.title, children: _("Второстепенные команды") }) }),
@@ -11616,7 +11618,7 @@ const xf = () => ({
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !g && /* @__PURE__ */ o.jsx(Ge, { ...c }),
+      !g && /* @__PURE__ */ o.jsx(Ye, { ...c }),
       r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${X.header} ${X.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsxs("div", { className: X.heading, children: [
@@ -11732,7 +11734,7 @@ const xf = () => ({
       footer: /* @__PURE__ */ o.jsx(oe, { onClick: w, children: _("Сохранить") }),
       children: /* @__PURE__ */ o.jsxs("div", { className: ni.form, children: [
         /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("Название команды"),
             hint: vi(d.uuid),
@@ -11753,7 +11755,7 @@ const xf = () => ({
               className: ni.arrayItem,
               children: [
                 /* @__PURE__ */ o.jsx(
-                  Je,
+                  Ge,
                   {
                     label: _("Код значения"),
                     value: E.subMappingType ?? "",
@@ -11839,7 +11841,7 @@ const xf = () => ({
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !g && /* @__PURE__ */ o.jsx(Ge, { ...c }),
+      !g && /* @__PURE__ */ o.jsx(Ye, { ...c }),
       !r && /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${X.header} ${X.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsxs("div", { className: X.heading, children: [
@@ -11936,7 +11938,7 @@ const Ux = "_form_1i0x1_1", Vx = {
       footer: /* @__PURE__ */ o.jsx(oe, { onClick: p, children: _("Обновить") }),
       children: /* @__PURE__ */ o.jsxs("div", { className: Vx.form, children: [
         /* @__PURE__ */ o.jsx(
-          Je,
+          Ge,
           {
             label: _("Название команды"),
             hint: vi(c.uuid),
@@ -11979,7 +11981,7 @@ const Ux = "_form_1i0x1_1", Vx = {
         ),
         w ? /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
           /* @__PURE__ */ o.jsx(
-            Je,
+            Ge,
             {
               label: _("Тип результата скрипта"),
               value: "success",
@@ -12039,7 +12041,7 @@ const Ux = "_form_1i0x1_1", Vx = {
       }
     ),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !i && /* @__PURE__ */ o.jsx(Ge, { ...N }),
+      !i && /* @__PURE__ */ o.jsx(Ye, { ...N }),
       a ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsx("div", { className: `${X.header} ${X.collectionHeader}`, children: /* @__PURE__ */ o.jsx("div", { className: X.headerTop, children: /* @__PURE__ */ o.jsx("div", { className: X.heading, children: !a && /* @__PURE__ */ o.jsx("h1", { className: X.title, children: _("Ответы по умолчанию") }) }) }) }),
       /* @__PURE__ */ o.jsx("div", { className: X.list, children: /* @__PURE__ */ o.jsx(Kt, { loading: y, itemCount: (b == null ? void 0 : b.data.length) ?? 0, append: a, children: b == null ? void 0 : b.data.map(($) => /* @__PURE__ */ o.jsx(
@@ -12185,7 +12187,7 @@ const Xx = "_grid_fc8hl_1", Zx = "_card_fc8hl_8", ew = "_actions_fc8hl_23", tw =
         });
       } }),
       c && /* @__PURE__ */ o.jsx("p", { role: "status", children: _("Обработка файла...") }),
-      /* @__PURE__ */ o.jsx(Ge, { error: m ? f : null, busy: c, retry: w.current ? () => {
+      /* @__PURE__ */ o.jsx(Ye, { error: m ? f : null, busy: c, retry: w.current ? () => {
         w.current && k(w.current, !0);
       } : void 0 }),
       !m && f && /* @__PURE__ */ o.jsx("p", { role: "status", children: _(f) })
@@ -12223,8 +12225,8 @@ const iw = "_form_1ijxr_1", aw = "_field_1ijxr_7", lw = "_input_1ijxr_13", uw = 
     });
   };
   return /* @__PURE__ */ o.jsxs("div", { className: ut.form, children: [
-    /* @__PURE__ */ o.jsx(Je, { label: _("Base URL"), value: r.base_url ?? "", placeholder: _("http://192.168.31.83:9379"), onChange: (c) => i("base_url", c.target.value) }),
-    /* @__PURE__ */ o.jsx(Je, { label: _("Token"), value: r.token ?? "", placeholder: _("Bearer ..."), onChange: (c) => i("token", c.target.value) })
+    /* @__PURE__ */ o.jsx(Ge, { label: _("Base URL"), value: r.base_url ?? "", placeholder: _("http://192.168.31.83:9379"), onChange: (c) => i("base_url", c.target.value) }),
+    /* @__PURE__ */ o.jsx(Ge, { label: _("Token"), value: r.token ?? "", placeholder: _("Bearer ..."), onChange: (c) => i("token", c.target.value) })
   ] });
 }, pw = ({ data: r, musicOptions: a, musicUnavailable: i, onChange: c }) => {
   const d = (p, m) => {
@@ -12288,7 +12290,7 @@ const iw = "_form_1ijxr_1", aw = "_field_1ijxr_7", lw = "_input_1ijxr_13", uw = 
       )
     ] }),
     /* @__PURE__ */ o.jsx(
-      Je,
+      Ge,
       {
         label: _("Client ID"),
         value: r.client_id ?? "",
@@ -12317,7 +12319,7 @@ const iw = "_form_1ijxr_1", aw = "_field_1ijxr_7", lw = "_input_1ijxr_13", uw = 
       /* @__PURE__ */ o.jsx(sr, { label: "Включить API", description: "Позволяет внешним приложениям отправлять команды в интеграцию и обмениваться с ней событиями по HTTP API. Адреса: /api/dialog/commands, /api/dialog/events, /api/dialog/event. Для доступа нужен токен API команд из поля ниже." })
     ] }),
     r.api_commands_enabled && /* @__PURE__ */ o.jsx(
-      Je,
+      Ge,
       {
         label: _("API Commands Token"),
         value: r.api_commands_token ?? "",
@@ -12395,9 +12397,9 @@ const iw = "_form_1ijxr_1", aw = "_field_1ijxr_7", lw = "_input_1ijxr_13", uw = 
       /* @__PURE__ */ o.jsx(ht, {}),
       r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { children: _("Настройки") }),
       /* @__PURE__ */ o.jsxs("div", { className: X.settingsSections, children: [
-        /* @__PURE__ */ o.jsx(Ge, { ...w }),
-        /* @__PURE__ */ o.jsx(Ge, { ...y }),
-        /* @__PURE__ */ o.jsx(Ge, { ...c }),
+        /* @__PURE__ */ o.jsx(Ye, { ...w }),
+        /* @__PURE__ */ o.jsx(Ye, { ...y }),
+        /* @__PURE__ */ o.jsx(Ye, { ...c }),
         /* @__PURE__ */ o.jsxs("section", { className: X.settingsSection, "aria-label": _("Общие"), children: [
           /* @__PURE__ */ o.jsx("h2", { children: _("Общие") }),
           /* @__PURE__ */ o.jsx(
@@ -12597,7 +12599,7 @@ const Sw = "_grid_w5y3x_31", Cw = "_card_w5y3x_38", jw = "_empty_w5y3x_38", Ew =
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(mt, { title: _("Таймеры") }),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !g && /* @__PURE__ */ o.jsx(Ge, { ...a }),
+      !g && /* @__PURE__ */ o.jsx(Ye, { ...a }),
       /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: X.header, children: [
         /* @__PURE__ */ o.jsx("div", { className: X.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: X.title, children: _("Таймеры") }) }),
@@ -13069,7 +13071,7 @@ function xk() {
     ] })
   ] });
 }
-const wk = "_page_1k5zr_1", kk = "_heading_1k5zr_8", Sk = "_grid_1k5zr_26", Ck = "_device_1k5zr_33", jk = "_deviceLive_1k5zr_64", Ek = "_navigation_1k5zr_72", Nk = "_playback_1k5zr_76", Tk = "_playbackSelect_1k5zr_93", bk = "_statusRow_1k5zr_117", Rk = "_status_1k5zr_117", Ak = "_live_1k5zr_132", Pk = "_hint_1k5zr_136", $k = "_footer_1k5zr_142", Mk = "_empty_1k5zr_153", Ik = "_error_1k5zr_160", Ke = {
+const wk = "_page_1k5zr_1", kk = "_heading_1k5zr_8", Sk = "_grid_1k5zr_26", Ck = "_device_1k5zr_33", jk = "_deviceLive_1k5zr_64", Ek = "_navigation_1k5zr_72", Nk = "_playback_1k5zr_76", Tk = "_playbackSelect_1k5zr_93", bk = "_statusRow_1k5zr_117", Rk = "_status_1k5zr_117", Ak = "_live_1k5zr_132", Pk = "_hint_1k5zr_136", $k = "_footer_1k5zr_142", Mk = "_empty_1k5zr_153", Ik = "_error_1k5zr_160", et = {
   page: wk,
   heading: kk,
   grid: Sk,
@@ -13198,13 +13200,13 @@ function Lk() {
   )) ?? [], _e = _(
     y ? "Подключаемся…" : I ? J || W ? "Прослушивание активно" : "Источник включён" : "Готово к запуску"
   ), te = /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
-    /* @__PURE__ */ o.jsxs("div", { className: Ke.statusRow, children: [
+    /* @__PURE__ */ o.jsxs("div", { className: et.statusRow, children: [
       /* @__PURE__ */ o.jsxs(
         "div",
         {
           role: "status",
           "aria-live": "polite",
-          className: `${Ke.status} ${I ? Ke.live : ""}`,
+          className: `${et.status} ${I ? et.live : ""}`,
           children: [
             /* @__PURE__ */ o.jsx(My, { size: 12, fill: "currentColor" }),
             _e
@@ -13212,17 +13214,17 @@ function Lk() {
         }
       ),
       /* @__PURE__ */ o.jsx(sr, { label: _e, description: _(
-        I && (i == null ? void 0 : i.owned_source_id) !== p ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже." : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня»."
+        I && (i == null ? void 0 : i.owned_source_id) !== p ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя." : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя."
       ) })
     ] }),
-    /* @__PURE__ */ o.jsx("p", { className: Ke.hint, children: _("Где воспроизводить звук?") }),
-    /* @__PURE__ */ o.jsxs("div", { className: Ke.playback, children: [
+    /* @__PURE__ */ o.jsx("p", { className: et.hint, children: _("Выберите устройство") }),
+    /* @__PURE__ */ o.jsxs("div", { className: et.playback, children: [
       g === "browser" ? /* @__PURE__ */ o.jsx(Vy, { size: 22 }) : /* @__PURE__ */ o.jsx(Ql, { size: 22 }),
       /* @__PURE__ */ o.jsx(
         vn,
         {
-          "aria-label": _("Где воспроизводить звук?"),
-          className: Ke.playbackSelect,
+          "aria-label": _("Выберите устройство"),
+          className: et.playbackSelect,
           value: g,
           onChange: (R) => w(R.target.value),
           disabled: y || B,
@@ -13236,9 +13238,8 @@ function Lk() {
           ]
         }
       )
-    ] }),
-    B && /* @__PURE__ */ o.jsx("p", { className: Ke.hint, children: _("Чтобы сменить устройство воспроизведения, сначала остановите сеанс.") })
-  ] }), Ee = /* @__PURE__ */ o.jsx("div", { className: Ke.footer, children: /* @__PURE__ */ o.jsx(
+    ] })
+  ] }), Ee = /* @__PURE__ */ o.jsx("div", { className: et.footer, children: /* @__PURE__ */ o.jsx(
     oe,
     {
       onClick: I ? () => void ge(p) : () => void de(),
@@ -13249,7 +13250,7 @@ function Lk() {
         y ? "Подключаемся…" : I ? g === "browser" && !J && !W ? "Начать слушать" : "Остановить" : "Старт"
       )
     }
-  ) }), F = I && !B ? /* @__PURE__ */ o.jsxs("div", { className: Ke.footer, children: [
+  ) }), F = I && !B ? /* @__PURE__ */ o.jsxs("div", { className: et.footer, children: [
     /* @__PURE__ */ o.jsx(oe, { disabled: y || !($ != null && $.online), onClick: () => void de(), children: _(g === "browser" ? "Начать слушать" : "Старт") }),
     /* @__PURE__ */ o.jsx(
       oe,
@@ -13262,25 +13263,25 @@ function Lk() {
     )
   ] }) : Ee;
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
-    /* @__PURE__ */ o.jsx("div", { className: Ke.navigation, children: /* @__PURE__ */ o.jsx(ht, {}) }),
+    /* @__PURE__ */ o.jsx("div", { className: et.navigation, children: /* @__PURE__ */ o.jsx(ht, {}) }),
     a && /* @__PURE__ */ o.jsx(mt, { title: "Радионяня" }),
-    /* @__PURE__ */ o.jsxs("section", { className: Ke.page, children: [
-      /* @__PURE__ */ o.jsxs("header", { className: Ke.heading, children: [
+    /* @__PURE__ */ o.jsxs("section", { className: et.page, children: [
+      /* @__PURE__ */ o.jsxs("header", { className: et.heading, children: [
         /* @__PURE__ */ o.jsx(ql, { size: 30 }),
         /* @__PURE__ */ o.jsx("div", { children: /* @__PURE__ */ o.jsx("h1", { children: _("Радионяня") }) })
       ] }),
-      d && !p && /* @__PURE__ */ o.jsxs("div", { role: "alert", className: Ke.error, children: [
+      d && !p && /* @__PURE__ */ o.jsxs("div", { role: "alert", className: et.error, children: [
         d,
         /* @__PURE__ */ o.jsx(oe, { onClick: () => H((R) => R + 1), children: _("Повторить") })
       ] }),
       !i && !d && /* @__PURE__ */ o.jsx(Kt, { loading: !0, itemCount: 0, placeholderCount: 3, grid: !0 }),
-      i && !i.available && /* @__PURE__ */ o.jsx("div", { className: Ke.empty, children: _(
+      i && !i.available && /* @__PURE__ */ o.jsx("div", { className: et.empty, children: _(
         "Приёмник радионяни недоступен. Проверьте журнал HA и доступность TCP-порта 8124."
       ) }),
-      (i == null ? void 0 : i.available) && z.length === 0 && /* @__PURE__ */ o.jsx("div", { className: Ke.empty, children: _(
+      (i == null ? void 0 : i.available) && z.length === 0 && /* @__PURE__ */ o.jsx("div", { className: et.empty, children: _(
         "Нет колонок с поддержкой радионяни. Установите совместимую прошивку и подключите колонку к интеграции ESPHome."
       ) }),
-      /* @__PURE__ */ o.jsx("div", { className: Ke.grid, children: z.map((R) => {
+      /* @__PURE__ */ o.jsx("div", { className: et.grid, children: z.map((R) => {
         const K = i == null ? void 0 : i.sessions.find(
           (C) => C.source_device_id === R.id
         ), U = i == null ? void 0 : i.devices.find(
@@ -13289,7 +13290,7 @@ function Lk() {
         return /* @__PURE__ */ o.jsxs(
           "button",
           {
-            className: `${Ke.device} ${R.transmitting ? Ke.deviceLive : ""}`,
+            className: `${et.device} ${R.transmitting ? et.deviceLive : ""}`,
             onClick: () => G(R),
             children: [
               /* @__PURE__ */ o.jsx(lg, { size: 28 }),
@@ -13316,7 +13317,7 @@ function Lk() {
           dialogLabel: ($ == null ? void 0 : $.name) ?? _("Радионяня"),
           footer: F,
           children: [
-            d && /* @__PURE__ */ o.jsx("p", { role: "alert", className: Ke.error, children: d }),
+            d && /* @__PURE__ */ o.jsx("p", { role: "alert", className: et.error, children: d }),
             te
           ]
         }
@@ -13368,7 +13369,7 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
   return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(mt, { title: _("Будильники") }),
     /* @__PURE__ */ o.jsxs("div", { className: X.page, children: [
-      !y && /* @__PURE__ */ o.jsx(Ge, { ...a }),
+      !y && /* @__PURE__ */ o.jsx(Ye, { ...a }),
       /* @__PURE__ */ o.jsx(ht, {}),
       /* @__PURE__ */ o.jsxs("div", { className: X.header, children: [
         /* @__PURE__ */ o.jsx("div", { className: X.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: X.title, children: _("Будильники") }) }),
@@ -13496,11 +13497,11 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
 }, Wk = () => {
   const r = Yl(), a = Gl(), i = Hr(), { pathname: c } = St(), d = i ? "/scripts" : "/commands/main";
   return (c === "/commands" || c.startsWith("/commands/")) && i !== !1 ? i === null ? /* @__PURE__ */ o.jsx(mi, {}) : /* @__PURE__ */ o.jsx(Ln, { to: "/scripts", replace: !0 }) : /* @__PURE__ */ o.jsx(fp, { resetKey: c, children: /* @__PURE__ */ o.jsxs($v, { children: [
-    /* @__PURE__ */ o.jsx(Ye, { path: "/commands/whisper", element: a ? /* @__PURE__ */ o.jsx(P1, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
-    /* @__PURE__ */ o.jsx(Ye, { path: "/logs", element: r && a ? /* @__PURE__ */ o.jsx(H1, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
-    /* @__PURE__ */ o.jsx(Ye, { path: "/downloads", element: a ? /* @__PURE__ */ o.jsx(sw, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/commands/whisper", element: a ? /* @__PURE__ */ o.jsx(P1, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/logs", element: r && a ? /* @__PURE__ */ o.jsx(H1, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/downloads", element: a ? /* @__PURE__ */ o.jsx(sw, {}) : /* @__PURE__ */ o.jsx(Ln, { to: d, replace: !0 }) }),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/",
         element: /* @__PURE__ */ o.jsx(
@@ -13513,14 +13514,14 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/scripts",
         element: /* @__PURE__ */ o.jsx(sx, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands",
         element: /* @__PURE__ */ o.jsx(
@@ -13533,21 +13534,21 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/main",
         element: /* @__PURE__ */ o.jsx(Px, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/sub",
         element: /* @__PURE__ */ o.jsx(Mx, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/direct",
         element: /* @__PURE__ */ o.jsx(
@@ -13560,51 +13561,51 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/direct/main",
         element: /* @__PURE__ */ o.jsx(Dx, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/direct/template",
         element: /* @__PURE__ */ o.jsx(Bx, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/commands/settings",
         element: /* @__PURE__ */ o.jsx(Qx, {})
       }
     ),
-    /* @__PURE__ */ o.jsx(Ye, { path: "/monitor", element: /* @__PURE__ */ o.jsx(Lk, {}) }),
-    /* @__PURE__ */ o.jsx(Ye, { path: "/calls", element: /* @__PURE__ */ o.jsx(xk, {}) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ o.jsx(Lk, {}) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/calls", element: /* @__PURE__ */ o.jsx(xk, {}) }),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/timer",
         element: /* @__PURE__ */ o.jsx(Gw, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/alarm",
         element: /* @__PURE__ */ o.jsx(Fk, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "/settings",
         element: /* @__PURE__ */ o.jsx(xw, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
-      Ye,
+      Ke,
       {
         path: "*",
         element: /* @__PURE__ */ o.jsx(
@@ -13640,7 +13641,7 @@ const Dk = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       w = !1, window.removeEventListener(bl, E), window.removeEventListener(li, b), window.removeEventListener("ha-dialog-ui-theme-change", j);
     };
   }, [i, r.run]), /* @__PURE__ */ o.jsx(lp.Provider, { value: c, children: /* @__PURE__ */ o.jsx(cp.Provider, { value: f, children: /* @__PURE__ */ o.jsxs("div", { className: "appShell", "data-theme": m, lang: a, children: [
-    /* @__PURE__ */ o.jsx(Ge, { ...r }),
+    /* @__PURE__ */ o.jsx(Ye, { ...r }),
     f === null ? !r.error && /* @__PURE__ */ o.jsx(mi, {}) : /* @__PURE__ */ o.jsx(Wk, {})
   ] }) }) });
 };
@@ -13860,7 +13861,7 @@ function Qk({
     }), () => {
       x = !1;
     };
-  }, [a, d]), i ? /* @__PURE__ */ o.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ o.jsx(Ge, { error: i, retry: () => f((x) => x + 1) }) }) : !w || !p.current ? /* @__PURE__ */ o.jsx(mi, { label: _("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ o.jsx(pp.Provider, { value: p.current, children: /* @__PURE__ */ o.jsx(up.Provider, { value: m, children: r }) });
+  }, [a, d]), i ? /* @__PURE__ */ o.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ o.jsx(Ye, { error: i, retry: () => f((x) => x + 1) }) }) : !w || !p.current ? /* @__PURE__ */ o.jsx(mi, { label: _("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ o.jsx(pp.Provider, { value: p.current, children: /* @__PURE__ */ o.jsx(up.Provider, { value: m, children: r }) });
 }
 function Kk({ hass: r }) {
   return /* @__PURE__ */ o.jsx(ry, { children: /* @__PURE__ */ o.jsx(Qk, { hass: r, children: /* @__PURE__ */ o.jsx(Uk, {}) }) });

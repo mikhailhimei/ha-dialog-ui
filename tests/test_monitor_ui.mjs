@@ -179,13 +179,13 @@ try {
     await source.click();
     const dialog = panel.getByRole("dialog", { name: "Детская" });
     await dialog.waitFor();
-    const playback = dialog.getByRole("combobox", { name: "Где воспроизводить звук?" });
+    const playback = dialog.getByRole("combobox", { name: "Выберите устройство" });
     assert.equal(await playback.locator("option").count(), 52);
     assert.equal(await playback.locator('option[value="extra-49"]').isDisabled(), true);
     const statusBox = await dialog.getByRole("status").boundingBox();
     const selectBox = await playback.boundingBox();
     assert.ok(statusBox.y < selectBox.y);
-    const helpText = "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».";
+    const helpText = "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя.";
     assert.equal(await panel.getByText(helpText, { exact: true }).count(), 0);
     await dialog.getByRole("button", { name: "Подсказка: Готово к запуску", exact: true }).click();
     await panel.getByText(helpText, { exact: true }).waitFor();
@@ -194,7 +194,7 @@ try {
     await dialog.waitFor();
     await playback.selectOption("extra-48");
     assert.ok((await dialog.boundingBox()).width <= width);
-    await dialog.getByRole("combobox", { name: "Где воспроизводить звук?" }).selectOption("listener");
+    await dialog.getByRole("combobox", { name: "Выберите устройство" }).selectOption("listener");
     await dialog.getByRole("button", { name: "Старт", exact: true }).click();
     await dialog.getByText("Прослушивание активно", { exact: true }).waitFor();
     const box = await dialog.boundingBox();
@@ -225,7 +225,7 @@ try {
     await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();
     await dialog.waitFor({ state: "hidden" });
     await source.click();
-    await dialog.getByRole("combobox", { name: "Где воспроизводить звук?" }).selectOption("browser");
+    await dialog.getByRole("combobox", { name: "Выберите устройство" }).selectOption("browser");
     await dialog.getByRole("button", { name: "Старт", exact: true }).click();
     await dialog.getByText("Прослушивание активно", { exact: true }).waitFor();
     await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();
