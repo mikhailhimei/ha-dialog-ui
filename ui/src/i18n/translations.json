@@ -1606,5 +1606,13 @@
   "Этот браузер не поддерживает звонки. Откройте HA в актуальном Chrome или Safari.": {
     "ru": "Этот браузер не поддерживает звонки. Откройте HA в актуальном Chrome или Safari.",
     "en": "This browser does not support calls. Open HA in a current Chrome or Safari version."
+  },
+  "Включить звук": {
+    "ru": "Включить звук",
+    "en": "Enable audio"
+  },
+  "Браузер заблокировал звук. Проверьте разрешение воспроизведения и громкость телефона.": {
+    "ru": "Браузер заблокировал звук. Проверьте разрешение воспроизведения и громкость телефона.",
+    "en": "The browser blocked audio. Check playback permission and the phone volume."
   }
 }

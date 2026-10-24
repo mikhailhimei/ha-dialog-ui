@@ -33,11 +33,14 @@ export class BrowserCallAudio {
     // Resume the output synchronously in the user's click gesture before permission awaits.
     this.context = new AudioContext();
     if (!this.context.audioWorklet || !globalThis.AudioWorkletNode) throw new DOMException("AudioWorklet unavailable", "NotSupportedError");
-    await Promise.all([this.output.prepare(), this.context.resume()]);
+    await this.output.prepare(this.context);
     if (this.closed) throw new DOMException("Call closed", "AbortError");
     const stream = await navigator.mediaDevices.getUserMedia({audio: {channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true}, video: false});
     if (this.closed) { stream.getTracks().forEach(track => track.stop()); throw new DOMException("Call closed", "AbortError"); }
     this.stream = stream;
+    // Microphone permission can change the mobile audio route or suspend Web Audio.
+    await this.context!.resume();
+    if (this.closed) throw new DOMException("Call closed", "AbortError");
     for (const track of stream.getAudioTracks()) track.onended = () => this.fail("Микрофон отключён. Звонок завершён.");
     await this.context!.audioWorklet.addModule("/ha_dialog_ui_static/call-capture-worklet.js");
     if (this.closed) throw new DOMException("Call closed", "AbortError");
@@ -56,6 +59,10 @@ export class BrowserCallAudio {
     this.input.connect(this.worklet);
     // Worklet outputs silence; capture must never feed the microphone into local speakers.
     this.worklet.connect(this.context!.destination);
+  }
+  async resumePlayback() {
+    if (this.closed || !this.context) return;
+    await this.context.resume();
   }
   async listen() {
     await this.output.listenWith(callback => this.api.browserCallReceive(this.viewId, callback), () => {});

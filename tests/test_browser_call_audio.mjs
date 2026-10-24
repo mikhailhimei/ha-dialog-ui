@@ -41,7 +41,7 @@ test("capture starts only after answer, network backlog is bounded and closing r
  for(let i=0;i<10;i++)env.node.port.onmessage({data:new ArrayBuffer(1280)});
  assert.equal(sends.length,3);
  audio.close();release({});await Promise.resolve();
- assert.equal(env.stopped,1);assert.equal(env.closed,2);assert.deepEqual(failures,[]);
+ assert.equal(env.stopped,1);assert.equal(env.closed,1);assert.deepEqual(failures,[]);
 });
 
 test("permission grant arriving after page close immediately stops the microphone",async()=>{

@@ -18,9 +18,11 @@ try {
   const errors=[]; page.on("pageerror", e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.callState={available:true,owned_call_id:null, devices:[{id:"a",node_id:"a",name:"Кухня",online:true},{id:"b",node_id:"b",name:"Спальня",online:true},{id:"offline",node_id:"offline",name:"Гостиная",online:false}],calls:[]};
-   window.actions=[];window.watchers=[];window.micFrames=0;window.prepares=0;
+   window.actions=[];window.watchers=[];window.micFrames=0;window.prepares=0;window.playedPackets=0;window.audioContexts=[];
+   const OriginalContext=window.AudioContext;
+   window.AudioContext=new Proxy(OriginalContext,{construct(Target,args){const ctx=Reflect.construct(Target,args);window.audioContexts.push(ctx);const create=ctx.createBufferSource.bind(ctx);ctx.createBufferSource=()=>{const node=create();const start=node.start.bind(node);node.start=(...args)=>{window.playedPackets++;return start(...args);};return node;};return ctx;}});
    const getMedia=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-   navigator.mediaDevices.getUserMedia=async opts=>{window.prepares++;if(window.denyMicrophone)throw new DOMException("Denied","NotAllowedError");window.lastMic=await getMedia(opts);return window.lastMic;};
+   navigator.mediaDevices.getUserMedia=async opts=>{window.prepares++;if(window.denyMicrophone)throw new DOMException("Denied","NotAllowedError");window.lastMic=await getMedia(opts);await window.audioContexts.at(-1).suspend();return window.lastMic;};
    window.publish=()=>window.watchers.forEach(cb=>cb(structuredClone(window.callState)));
    window.hass={user:{is_admin:true},states:{"media_player.tv":{state:"idle",attributes:{friendly_name:"Телевизор"}}},connection:{
     async subscribeMessage(cb,msg){
@@ -30,7 +32,12 @@ try {
        if(window.callState.owned_call_id){window.actions.push({type:"view-disconnect"});window.callState.calls=window.callState.calls.filter(c=>c.id!==window.callState.owned_call_id);window.callState.owned_call_id=null;}
       };
      }
-     if(msg.type==="ha_dialog_ui/calls/browser_receive"){cb({type:"status",connected:false});return ()=>{};}
+     if(msg.type==="ha_dialog_ui/calls/browser_receive"){
+      cb({type:"status",connected:false});
+      const pcm=btoa(String.fromCharCode(...Array.from({length:1280},(_,i)=>i%2?16:0)));
+      const timer=setInterval(()=>{if(window.callState.calls.some(c=>c.id===window.callState.owned_call_id&&c.state==="active"))cb({type:"audio",rate:16000,pcm});},40);
+      return ()=>clearInterval(timer);
+     }
      return ()=>{};
     },
     async sendMessagePromise(msg){
@@ -64,7 +71,12 @@ try {
   await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>window.micFrames),0);
   await dialog.getByRole("button",{name:"Закрыть",exact:true}).click();await dialog.waitFor({state:"hidden"});assert.equal(await page.evaluate(()=>window.callState.calls.length),1);
   await kitchen.click();await page.evaluate(()=>{window.callState.calls[0].state="active";window.publish();});
-  await dialog.getByText("Разговор",{exact:true}).waitFor();await page.waitForFunction(()=>window.micFrames>0);
+  await dialog.getByText("Разговор",{exact:true}).waitFor();await page.waitForFunction(()=>window.micFrames>0&&window.playedPackets>0);
+  assert.equal(await page.evaluate(()=>window.audioContexts.length),1);
+  assert.equal(await page.evaluate(()=>window.audioContexts[0].state),"running");
+  await page.evaluate(()=>window.audioContexts[0].suspend());
+  await dialog.getByRole("button",{name:"Включить звук",exact:true}).click();
+  await page.waitForFunction(()=>window.audioContexts[0].state==="running");
   const box=await dialog.boundingBox();if(width<768){assert.equal(Math.round(box.width),width);assert.equal(Math.round(box.x),0);}
   await page.screenshot({path:`/tmp/ha-dialog-browser-calls-${width}.png`,fullPage:true});
   await dialog.getByRole("button",{name:"Положить трубку",exact:true}).click();await dialog.getByText("Готово к звонку",{exact:true}).waitFor();

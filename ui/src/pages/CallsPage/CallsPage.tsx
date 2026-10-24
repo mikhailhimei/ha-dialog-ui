@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Phone, PhoneCall, PhoneOff, Mic } from "lucide-react";
+import { Phone, PhoneCall, PhoneOff, Mic, Volume2 } from "lucide-react";
 import { useDialogApi } from "../../context/DialogContext";
 import { NavigationTabs } from "../../components/NavigationTabs/NavigationTabs";
 import { MobileHeader } from "../../components/MobileHeader/MobileHeader";
@@ -108,6 +108,7 @@ export function CallsPage() {
       </div>}>
         <div className={styles.status}><span role="status" aria-live="polite">{busy ? t("Подключаем микрофон…") : status}</span><FieldHelp label="Звонки" description={help} /></div>
         {error && <p role="alert">{error}</p>}
+        {selectedOwn && own?.state === "active" && <Button variant="secondary" onClick={() => void audio.current?.resumePlayback().catch(() => setError(t("Браузер заблокировал звук. Проверьте разрешение воспроизведения и громкость телефона.")))}><Volume2 size={18} />{t("Включить звук")}</Button>}
         <p className={styles.origin}><Mic size={20} />{t("Этот телефон или компьютер")} → {name(target)}</p>
         {!secure && <p role="alert">{t("Для звонка разрешите микрофон и откройте Home Assistant по HTTPS.")}</p>}
         {selectedCall && !selectedOwn && <p className={styles.hint}>{t("Колонка уже участвует в другом звонке.")}</p>}
