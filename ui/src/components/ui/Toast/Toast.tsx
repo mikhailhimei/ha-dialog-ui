@@ -5,7 +5,7 @@ import styles from "./Toast.module.scss";
 
 export function Toast({message, warning = false, onClose}: {message: string; warning?: boolean; onClose: () => void}) {
   useEffect(() => {
-    const timer = setTimeout(onClose, warning ? 12000 : 6000);
+    const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
   }, [message, warning, onClose]);
   const Icon = warning ? TriangleAlert : CheckCircle2;
