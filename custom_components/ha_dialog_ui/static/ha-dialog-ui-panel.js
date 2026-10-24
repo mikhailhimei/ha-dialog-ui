@@ -12573,28 +12573,37 @@ class Mw {
     }), this.context = void 0;
   }
 }
-const Iw = "_page_1nvb1_1", Lw = "_heading_1nvb1_8", Dw = "_grid_1nvb1_26", zw = "_device_1nvb1_33", Ow = "_deviceLive_1nvb1_64", Fw = "_choice_1nvb1_72", Hw = "_status_1nvb1_108", Ww = "_live_1nvb1_116", Bw = "_hint_1nvb1_120", Uw = "_footer_1nvb1_126", Vw = "_empty_1nvb1_137", qw = "_error_1nvb1_144", Qw = "_banner_1nvb1_149", We = {
-  page: Iw,
-  heading: Lw,
-  grid: Dw,
-  device: zw,
-  deviceLive: Ow,
-  choice: Fw,
-  status: Hw,
-  live: Ww,
-  hint: Bw,
-  footer: Uw,
-  empty: Vw,
-  error: qw,
-  banner: Qw
+let Iw = 0;
+function Lw() {
+  var r;
+  if ((r = globalThis.crypto) != null && r.getRandomValues) {
+    const a = new Uint8Array(16);
+    return globalThis.crypto.getRandomValues(a), `monitor-${Array.from(a, (i) => i.toString(16).padStart(2, "0")).join("")}`;
+  }
+  return `monitor-${Date.now().toString(36)}-${(++Iw).toString(36)}`;
+}
+const Dw = "_page_1nvb1_1", zw = "_heading_1nvb1_8", Ow = "_grid_1nvb1_26", Fw = "_device_1nvb1_33", Hw = "_deviceLive_1nvb1_64", Ww = "_choice_1nvb1_72", Bw = "_status_1nvb1_108", Uw = "_live_1nvb1_116", Vw = "_hint_1nvb1_120", qw = "_footer_1nvb1_126", Qw = "_empty_1nvb1_137", Kw = "_error_1nvb1_144", Yw = "_banner_1nvb1_149", We = {
+  page: Dw,
+  heading: zw,
+  grid: Ow,
+  device: Fw,
+  deviceLive: Hw,
+  choice: Ww,
+  status: Bw,
+  live: Uw,
+  hint: Vw,
+  footer: qw,
+  empty: Qw,
+  error: Kw,
+  banner: Yw
 };
-function Kw() {
+function Gw() {
   var Se;
-  const r = lt(), a = Ze(), [i, c] = v.useState(), [d, f] = v.useState(""), [p, h] = v.useState(null), [g, w] = v.useState("browser"), [y, _] = v.useState(!1), [S, j] = v.useState(!1), T = v.useRef(crypto.randomUUID()), C = v.useRef(!1), N = v.useRef(), [A, F] = v.useState(0);
+  const r = lt(), a = Ze(), [i, c] = v.useState(), [d, f] = v.useState(""), [p, h] = v.useState(null), [g, w] = v.useState("browser"), [y, _] = v.useState(!1), [S, j] = v.useState(!1), T = v.useRef(""), C = v.useRef(!1), N = v.useRef(), [A, F] = v.useState(0);
   v.useEffect(() => {
     C.current = !0;
     let b = !0, D;
-    const K = crypto.randomUUID();
+    const K = Lw();
     return T.current = K, c(void 0), f(""), r.monitorWatch(K, (W) => {
       b && c(W);
     }).then((W) => {
@@ -12860,7 +12869,7 @@ function Kw() {
     )
   ] });
 }
-const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onDelete: f }) => {
+const Jw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onDelete: f }) => {
   if (!r) return null;
   const p = r.status === "on";
   return /* @__PURE__ */ o.jsx(Jl, { open: a, title: r.title, uuid: r.uuid, onClose: i, actions: [
@@ -12868,7 +12877,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
     { label: "Изменить", variant: "secondary", onClick: () => d(r) },
     { label: "Удалить", variant: "remove", onClick: () => f(r) }
   ] });
-}, Gw = (r) => {
+}, Xw = (r) => {
   const a = /^(\d{1,2}):(\d{2})$/.exec(r.trim());
   return !a || Number(a[1]) > 23 || Number(a[2]) > 59 ? null : `${a[1].padStart(2, "0")}:${a[2]}`;
 }, $l = [
@@ -12879,17 +12888,17 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
   { key: "fri", label: "Пт" },
   { key: "sat", label: "Сб" },
   { key: "sun", label: "Вс" }
-], Jw = [
+], Zw = [
   { value: "once", label: "Однократно" },
   { value: "daily", label: "Ежедневно" },
   { value: "weekdays", label: "По будням" },
   { value: "weekends", label: "По выходным" },
   { value: "custom", label: "Выбранные дни" }
-], Xw = (r = "once", a = []) => r === "daily" ? x("ежедневно") : r === "weekdays" ? x("по будням") : r === "weekends" ? x("по выходным") : r === "custom" ? a.length ? a.map((i) => {
+], eS = (r = "once", a = []) => r === "daily" ? x("ежедневно") : r === "weekdays" ? x("по будням") : r === "weekends" ? x("по выходным") : r === "custom" ? a.length ? a.map((i) => {
   var c;
   return (c = $l.find((d) => d.key === i)) != null && c.label ? x($l.find((d) => d.key === i).label) : i;
-}).join(", ") : x("кастом") : x("однократно"), Zw = () => {
-  const r = Ze(), { feedback: a, alarmTimeWidgets: i, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: p, devices: h, loading: g, updateAlarm: w } = wp(), [y, _] = v.useState(!1), [S, j] = v.useState(null), [T, C] = v.useState(null), [N, A] = v.useState(""), [F, $] = v.useState("08:00"), [O, U] = v.useState(0.3), [I, X] = v.useState("once"), [B, G] = v.useState([]), pe = v.useMemo(() => Array.from(new Set([...i.flatMap((b) => b.time || []), ...d.map((b) => b.time)].map(Gw).filter((b) => b !== null))), [i, d]), ce = v.useMemo(() => new Map(h.map((b) => [b.id, b.name])), [h]), je = d.find((b) => b.uuid === S) || null, Ee = async () => {
+}).join(", ") : x("кастом") : x("однократно"), tS = () => {
+  const r = Ze(), { feedback: a, alarmTimeWidgets: i, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: p, devices: h, loading: g, updateAlarm: w } = wp(), [y, _] = v.useState(!1), [S, j] = v.useState(null), [T, C] = v.useState(null), [N, A] = v.useState(""), [F, $] = v.useState("08:00"), [O, U] = v.useState(0.3), [I, X] = v.useState("once"), [B, G] = v.useState([]), pe = v.useMemo(() => Array.from(new Set([...i.flatMap((b) => b.time || []), ...d.map((b) => b.time)].map(Xw).filter((b) => b !== null))), [i, d]), ce = v.useMemo(() => new Map(h.map((b) => [b.id, b.name])), [h]), je = d.find((b) => b.uuid === S) || null, Ee = async () => {
     if (!N || !F) return;
     const b = d.find((D) => D.uuid === T);
     if (b) {
@@ -12931,7 +12940,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
           /* @__PURE__ */ o.jsxs("div", { children: [
             /* @__PURE__ */ o.jsx("h2", { className: ae.cardTitle, children: b.time }),
             /* @__PURE__ */ o.jsxs("div", { className: ae.meta, children: [
-              Xw(b.repeat_type, b.repeat_days),
+              eS(b.repeat_type, b.repeat_days),
               " • ",
               ce.get(b.device_id) || b.device_id
             ] })
@@ -12978,7 +12987,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
           {
             label: x("Повторы"),
             value: I,
-            options: Jw.map((b) => ({ ...b, label: x(b.label) })),
+            options: Zw.map((b) => ({ ...b, label: x(b.label) })),
             onSelect: (b) => X(b)
           }
         ),
@@ -13016,7 +13025,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
         ] })
       ] }) }),
       /* @__PURE__ */ o.jsx(
-        Yw,
+        Jw,
         {
           open: !!je,
           onClose: () => j(null),
@@ -13030,7 +13039,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       )
     ] })
   ] });
-}, eS = () => {
+}, nS = () => {
   const r = Ql(), a = Kl(), i = Ir(), { pathname: c } = yt(), d = i ? "/scripts" : "/commands/main";
   return (c === "/commands" || c.startsWith("/commands/")) && i !== !1 ? i === null ? /* @__PURE__ */ o.jsx(Dr, {}) : /* @__PURE__ */ o.jsx(Rn, { to: "/scripts", replace: !0 }) : /* @__PURE__ */ o.jsx(cp, { resetKey: c, children: /* @__PURE__ */ o.jsxs(Tv, { children: [
     /* @__PURE__ */ o.jsx(Ke, { path: "/commands/whisper", element: a ? /* @__PURE__ */ o.jsx(a1, {}) : /* @__PURE__ */ o.jsx(Rn, { to: d, replace: !0 }) }),
@@ -13117,7 +13126,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
         element: /* @__PURE__ */ o.jsx(Px, {})
       }
     ),
-    /* @__PURE__ */ o.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ o.jsx(Kw, {}) }),
+    /* @__PURE__ */ o.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ o.jsx(Gw, {}) }),
     /* @__PURE__ */ o.jsx(
       Ke,
       {
@@ -13129,7 +13138,7 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       Ke,
       {
         path: "/alarm",
-        element: /* @__PURE__ */ o.jsx(Zw, {})
+        element: /* @__PURE__ */ o.jsx(tS, {})
       }
     ),
     /* @__PURE__ */ o.jsx(
@@ -13153,12 +13162,12 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
       }
     )
   ] }) });
-}, Sp = "ha-dialog-ui-theme", kl = (r) => r === "light" ? "light" : "dark", tS = (r) => {
+}, Sp = "ha-dialog-ui-theme", kl = (r) => r === "light" ? "light" : "dark", rS = (r) => {
   document.documentElement.dataset.theme = r, document.documentElement.style.colorScheme = r, localStorage.setItem(Sp, r);
-}, nS = () => {
+}, sS = () => {
   const r = Wt(), a = op(), i = lt(), [c, d] = v.useState(!1), [f, p] = v.useState(null), [h, g] = v.useState(() => kl(localStorage.getItem(Sp)));
   return v.useEffect(() => {
-    tS(h);
+    rS(h);
   }, [h]), v.useEffect(() => {
     let w = !0, y = !1, _ = !1, S = !1;
     r.run(async () => {
@@ -13177,10 +13186,10 @@ const Yw = ({ command: r, open: a, onClose: i, onToggleStatus: c, onEdit: d, onD
     };
   }, [i, r.run]), /* @__PURE__ */ o.jsx(ip.Provider, { value: c, children: /* @__PURE__ */ o.jsx(lp.Provider, { value: f, children: /* @__PURE__ */ o.jsxs("div", { className: "appShell", "data-theme": h, lang: a, children: [
     /* @__PURE__ */ o.jsx(Be, { ...r }),
-    f === null ? !r.error && /* @__PURE__ */ o.jsx(Dr, {}) : /* @__PURE__ */ o.jsx(eS, {})
+    f === null ? !r.error && /* @__PURE__ */ o.jsx(Dr, {}) : /* @__PURE__ */ o.jsx(nS, {})
   ] }) }) });
 };
-class rS {
+class oS {
   constructor(a) {
     Xe(this, "hass");
     this.hass = a;
@@ -13349,10 +13358,10 @@ function kp(r) {
     states: {}
   };
 }
-async function sS() {
+async function iS() {
   return kp(window.hass);
 }
-function oS({
+function aS({
   children: r,
   hass: a
 }) {
@@ -13361,9 +13370,9 @@ function oS({
     let _ = !0;
     c(null);
     async function S() {
-      const j = a ? kp(a) : await sS();
+      const j = a ? kp(a) : await iS();
       if (!_) return;
-      p.current ? p.current.setHass(j) : p.current = new rS(j);
+      p.current ? p.current.setHass(j) : p.current = new oS(j);
       const T = j.user ?? await j.connection.sendMessagePromise({ type: "auth/current_user" });
       _ && (g((T == null ? void 0 : T.is_admin) === !0), y(!0));
     }
@@ -13374,11 +13383,11 @@ function oS({
     };
   }, [a, d]), i ? /* @__PURE__ */ o.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ o.jsx(Be, { error: i, retry: () => f((_) => _ + 1) }) }) : !w || !p.current ? /* @__PURE__ */ o.jsx(Dr, { label: x("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ o.jsx(dp.Provider, { value: p.current, children: /* @__PURE__ */ o.jsx(ap.Provider, { value: h, children: r }) });
 }
-function iS({ hass: r }) {
-  return /* @__PURE__ */ o.jsx(Xv, { children: /* @__PURE__ */ o.jsx(oS, { hass: r, children: /* @__PURE__ */ o.jsx(nS, {}) }) });
+function lS({ hass: r }) {
+  return /* @__PURE__ */ o.jsx(Xv, { children: /* @__PURE__ */ o.jsx(aS, { hass: r, children: /* @__PURE__ */ o.jsx(sS, {}) }) });
 }
 const Ef = "ha-dialog-ui-panel", Nf = "ha-dialog-ui-style";
-class aS extends HTMLElement {
+class uS extends HTMLElement {
   constructor() {
     super(...arguments);
     Xe(this, "root");
@@ -13425,8 +13434,8 @@ class aS extends HTMLElement {
     if (!this.isConnected) return;
     const i = this.ensureShadowRoot();
     this.root || (this.container || (this.container = document.createElement("div"), i.appendChild(this.container)), this.root = Ph.createRoot(this.container)), this.root.render(
-      /* @__PURE__ */ o.jsx(Rf.StrictMode, { children: /* @__PURE__ */ o.jsx(cp, { children: /* @__PURE__ */ o.jsx(iS, { hass: this.hassValue }) }) })
+      /* @__PURE__ */ o.jsx(Rf.StrictMode, { children: /* @__PURE__ */ o.jsx(cp, { children: /* @__PURE__ */ o.jsx(lS, { hass: this.hassValue }) }) })
     );
   }
 }
-customElements.get(Ef) || customElements.define(Ef, aS);
+customElements.get(Ef) || customElements.define(Ef, uS);

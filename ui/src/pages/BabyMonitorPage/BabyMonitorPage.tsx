@@ -10,6 +10,7 @@ import { formatApiError } from "../../utils/apiErrors";
 import { t } from "../../i18n";
 import type { MonitorDevice, MonitorState } from "../../types/monitor";
 import { MonitorAudio } from "./audio";
+import { createMonitorViewId } from "../../utils/monitorViewId";
 import styles from "./BabyMonitorPage.module.scss";
 
 export function BabyMonitorPage() {
@@ -21,7 +22,7 @@ export function BabyMonitorPage() {
   const [target, setTarget] = useState("browser");
   const [busy, setBusy] = useState(false);
   const [connected, setConnected] = useState(false);
-  const viewId = useRef(crypto.randomUUID());
+  const viewId = useRef("");
   const alive = useRef(false);
   const audio = useRef<MonitorAudio>();
   const [attempt, setAttempt] = useState(0);
@@ -30,7 +31,7 @@ export function BabyMonitorPage() {
     alive.current = true;
     let active = true;
     let unsubscribe: (() => void | Promise<void>) | undefined;
-    const id = crypto.randomUUID();
+    const id = createMonitorViewId();
     viewId.current = id;
     setState(undefined);
     setError("");

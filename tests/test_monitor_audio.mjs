@@ -91,3 +91,35 @@ test("closing while the audio subscription is pending unsubscribes when it arriv
   await pending;
   assert.equal(unsubscribed, 1);
 });
+
+test("view IDs work on HTTP without randomUUID and in older WebViews", async () => {
+  const { createMonitorViewId } = await import(
+    "../ui/src/utils/monitorViewId.ts"
+  );
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "crypto");
+  try {
+    Object.defineProperty(globalThis, "crypto", {
+      configurable: true,
+      value: {
+        getRandomValues: globalThis.crypto.getRandomValues.bind(
+          globalThis.crypto,
+        ),
+      },
+    });
+    assert.equal(globalThis.crypto.randomUUID, undefined);
+    assert.equal(
+      new Set(Array.from({ length: 100 }, createMonitorViewId)).size,
+      100,
+    );
+    Object.defineProperty(globalThis, "crypto", {
+      configurable: true,
+      value: undefined,
+    });
+    assert.equal(
+      new Set(Array.from({ length: 100 }, createMonitorViewId)).size,
+      100,
+    );
+  } finally {
+    Object.defineProperty(globalThis, "crypto", descriptor);
+  }
+});

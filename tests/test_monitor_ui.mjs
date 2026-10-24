@@ -35,6 +35,10 @@ try {
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.addInitScript(() => {
+      Object.defineProperty(window.crypto, "randomUUID", {
+        value: undefined,
+        configurable: true,
+      });
       window.monitorCalls = [];
       window.monitorWatchers = {};
       window.owned = {};
