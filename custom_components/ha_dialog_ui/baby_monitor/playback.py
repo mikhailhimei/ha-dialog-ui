@@ -94,12 +94,13 @@ class PlaybackSessions:
 class MonitorStreamView(HomeAssistantView):
     url = "/api/ha_dialog_ui/monitor/stream/{token}.wav"
     name = "api:ha_dialog_ui:monitor:stream"
+    sessions_key = "ha_dialog_ui_monitor_sessions"
     # ESPHome cannot send a HA user token. This URL is a single-use capability,
     # generated only by an authenticated HA service call, valid 15 s before claim.
     requires_auth = False
 
     async def get(self, request, token):
-        sessions = request.app["hass"].data["ha_dialog_ui_monitor_sessions"]
+        sessions = request.app["hass"].data[self.sessions_key]
         item = sessions.sessions.get(token)
         if item is None or item["claimed"] or monotonic() > item["expires"]:
             raise web.HTTPNotFound()

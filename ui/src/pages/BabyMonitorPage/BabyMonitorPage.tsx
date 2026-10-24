@@ -1,3 +1,4 @@
+import { ListSkeleton } from "@/components/ui/ListSkeleton/ListSkeleton";
 import { useEffect, useRef, useState } from "react";
 import { Baby, Circle, Headphones, Radio, Speaker } from "lucide-react";
 import { useDialogApi } from "../../context/DialogContext";
@@ -206,7 +207,6 @@ export function BabyMonitorPage() {
   const playbackDevices = state?.devices.filter(
     (device) => device.listener && device.id !== sourceId,
   ) ?? [];
-  const selectedPlayback = playbackDevices.find((device) => device.id === target);
   const statusText = t(
     busy ? "Подключаемся…" : active
       ? ownConnected || pair ? "Прослушивание активно" : "Источник включён"
@@ -222,15 +222,15 @@ export function BabyMonitorPage() {
         </div>
         <FieldHelp label={statusText} description={t(
           active && state?.owned_source_id !== sourceId
-            ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже."
-            : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня».",
+            ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя."
+            : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя.",
         )} />
       </div>
-      <p className={styles.hint}>{t("Где воспроизводить звук?")}</p>
+      <p className={styles.hint}>{t("Выберите устройство")}</p>
       <div className={styles.playback}>
         {target === "browser" ? <Headphones size={22} /> : <Speaker size={22} />}
         <SelectInput
-          aria-label={t("Где воспроизводить звук?")}
+          aria-label={t("Выберите устройство")}
           className={styles.playbackSelect}
           value={target}
           onChange={(event) => setTarget(event.target.value)}
@@ -244,13 +244,7 @@ export function BabyMonitorPage() {
             })),
           ]}
         />
-        <small>{t(target === "browser" ? "Телефон или компьютер" : selectedPlayback?.online ? "Колонка" : "Нет подключения")}</small>
       </div>
-      {playing && (
-        <p className={styles.hint}>
-          {t("Чтобы сменить устройство воспроизведения, сначала остановите сеанс.")}
-        </p>
-      )}
     </>
   );
   const footer = (
@@ -307,9 +301,6 @@ export function BabyMonitorPage() {
         <Baby size={30} />
         <div>
           <h1>{t("Радионяня")}</h1>
-          <p>
-            {t("Выберите колонку, чтобы слышать, что происходит рядом с ней.")}
-          </p>
         </div>
       </header>
       {error && !sourceId && (
@@ -320,7 +311,7 @@ export function BabyMonitorPage() {
           </Button>
         </div>
       )}
-      {!state && !error && <p role="status">{t("Загрузка…")}</p>}
+      {!state && !error && <ListSkeleton loading itemCount={0} placeholderCount={3} grid />}
       {state && !state.available && (
         <div className={styles.empty}>
           {t(

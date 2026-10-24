@@ -11,6 +11,7 @@ import {
   Command,
   Timer,
   Baby,
+  Phone,
   AlarmClock,
   Settings,
   Download,
@@ -141,6 +142,8 @@ export const NavigationTabs = () => {
       </NavLink>
 
       <NavLink to="/monitor" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}><Baby size={16} /><span>{t("Радионяня")}</span></NavLink>
+
+      <NavLink to="/calls" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}><Phone size={16} /><span>{t("Звонки")}</span></NavLink>
 
       {isAdmin && <NavLink to="/downloads" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}>
         <Download size={16} /><span>{t("Импорт и экспорт")}</span>

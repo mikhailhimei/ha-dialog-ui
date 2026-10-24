@@ -47,6 +47,7 @@ function RecoveryPanel({ retry }: { retry: () => void }) {
                 ["/timer", "Таймеры"],
                 ["/alarm", "Будильники"],
                 ["/monitor", "Радионяня"],
+                ["/calls", "Звонки"],
                 ["/settings", "Настройки"],
               ].map(([path, label]) => (
                 <a

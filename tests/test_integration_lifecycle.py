@@ -31,6 +31,8 @@ def runtime():
         patch.object(integration, 'async_register_panel', new_callable=AsyncMock),
         patch.object(integration, 'async_start_monitor', new_callable=AsyncMock) as monitor_start,
         patch.object(integration, 'async_stop_monitor', new_callable=AsyncMock) as monitor_stop,
+        patch.object(integration, 'async_start_calls', new_callable=AsyncMock),
+        patch.object(integration, 'async_stop_calls', new_callable=AsyncMock),
         patch.object(integration.er, 'async_get', return_value=object()),
         patch.object(integration.er, 'async_entries_for_config_entry', return_value=[]),
         patch.object(integration, 'DialogCommandCoordinator', Coordinator),

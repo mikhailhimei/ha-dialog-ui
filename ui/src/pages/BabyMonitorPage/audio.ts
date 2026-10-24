@@ -2,12 +2,14 @@ import type { DialogApi } from "../../api/dialog-api";
 
 export class MonitorAudio {
   private context?: AudioContext;
+  private ownsContext = true;
   private unsubscribe?: () => void | Promise<void>;
   private closed = false;
   private nextTime = 0;
   private sources = new Set<AudioBufferSourceNode>();
-  async prepare() {
-    this.context = new AudioContext();
+  async prepare(context?: AudioContext) {
+    this.ownsContext = !context;
+    this.context = context ?? new AudioContext();
     await this.context.resume();
   }
   async listen(
@@ -15,7 +17,13 @@ export class MonitorAudio {
     nodeId: string,
     connectionChanged: (connected: boolean) => void,
   ) {
-    const unsubscribe = await api.monitorAudio(nodeId, (event) => {
+    return this.listenWith((callback) => api.monitorAudio(nodeId, callback), connectionChanged);
+  }
+  async listenWith(
+    subscribe: (callback: (event: import("../../types/monitor").MonitorAudioEvent) => void) => Promise<() => void | Promise<void>>,
+    connectionChanged: (connected: boolean) => void,
+  ) {
+    const unsubscribe = await subscribe((event) => {
       const context = this.context;
       if (this.closed || !context) return;
       if (event.type === "status") {
@@ -60,7 +68,7 @@ export class MonitorAudio {
     if (this.unsubscribe)
       void Promise.resolve(this.unsubscribe()).catch(() => {});
     this.unsubscribe = undefined;
-    void this.context?.close().catch(() => {});
+    if (this.ownsContext) void this.context?.close().catch(() => {});
     this.context = undefined;
   }
 }

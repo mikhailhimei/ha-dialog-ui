@@ -4,6 +4,31 @@ import type { CommandDetails, CommandSummary } from "../types/commandTypes";
 export type { HassLike } from "../types/api";
 
 export class DialogApi {
+  callsWatch(viewId: string, callback: (event: import("../types/calls").CallsState) => void) {
+    return this.monitorSubscribe(callback, { type: "ha_dialog_ui/calls/watch", view_id: viewId });
+  }
+  browserCallStart(viewId: string, target: string) {
+    return this.hass.connection.sendMessagePromise<{call_id: string}>({ type: "ha_dialog_ui/calls/browser_start", view_id: viewId, target_device_id: target });
+  }
+  browserCallEnd(viewId: string) {
+    return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/browser_end", view_id: viewId });
+  }
+  browserCallAudio(viewId: string, pcm: string) {
+    return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/browser_audio", view_id: viewId, pcm });
+  }
+  browserCallReceive(viewId: string, callback: (event: import("../types/monitor").MonitorAudioEvent) => void) {
+    return this.monitorSubscribe(callback, {type: "ha_dialog_ui/calls/browser_receive", view_id: viewId});
+  }
+  callStart(source: string, target: string) {
+    return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/start", source_device_id: source, target_device_id: target });
+  }
+  callAnswer(device: string) {
+    return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/answer", device_id: device });
+  }
+  callEnd(device: string) {
+    return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/end", device_id: device });
+  }
+
   monitorWatch(viewId: string, callback: (event: import("../types/monitor").MonitorState) => void) {
     return this.monitorSubscribe(callback, { type: "ha_dialog_ui/monitor/watch", view_id: viewId });
   }

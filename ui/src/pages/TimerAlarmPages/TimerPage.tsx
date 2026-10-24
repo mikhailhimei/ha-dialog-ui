@@ -10,7 +10,7 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Button } from "@/components/ui/Button/Button";
 import { NavigationTabs } from "@/components/NavigationTabs/NavigationTabs";
 import { MobileHeader } from "@/components/MobileHeader/MobileHeader";
-import { Loader } from "@/components/ui/Loader";
+import { ListSkeleton } from "@/components/ui/ListSkeleton/ListSkeleton";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { BottomSlideButton } from "@/components/ui/BottomSlideButton/BottomSlideButton";
 
@@ -102,7 +102,7 @@ export const TimerPage = () => {
           </div>
         </div>
 
-        {loading && <Loader />}
+        <ListSkeleton loading={loading} itemCount={timers.length} placeholderCount={4}>
 
         <div className={pageStyles.grid}>
           {timers.length ? timers.map((timer) => {
@@ -124,6 +124,8 @@ export const TimerPage = () => {
             );
           }) : !loading && !feedback.error && <div className={pageStyles.empty}>{t("Нет запущенных таймеров.")}</div>}
         </div>
+
+        </ListSkeleton>
 
         <Modal feedback={feedback} open={modalOpen} onClose={() => setModalOpen(false)} title={t("Создать таймер")} footer={<div className={pageStyles.footerActions}><Button className={pageStyles.saveButton} onClick={submit} disabled={!deviceId}>{t("Создать")}</Button></div>}>
           <div className={pageStyles.form}>

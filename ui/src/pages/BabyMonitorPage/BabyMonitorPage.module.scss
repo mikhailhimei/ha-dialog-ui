@@ -71,26 +71,30 @@
 .playback > svg {
   position: absolute;
   left: 18px;
-  top: 23px;
+  top: 50%;
+  transform: translateY(-50%);
   pointer-events: none;
   color: var(--primary);
 }
-.playbackSelect {
-  padding: 18px 40px 6px 54px;
+.playback .playbackSelect {
+  padding: 20px 54px;
+  text-align: center;
+  text-align-last: center;
   border: 0;
   background: transparent;
-  border-radius: 14px 14px 0 0;
+  border-radius: 14px;
   min-height: 48px;
   text-overflow: ellipsis;
 }
 .playback:has(select:disabled) {
   opacity: 0.65;
 }
-.playback small {
-  display: block;
-  padding: 0 18px 18px 54px;
-  color: var(--text-secondary);
-  pointer-events: none;
+.playback .playbackSelect:focus {
+  box-shadow: none;
+}
+.playback:focus-within {
+  outline: 2px solid var(--primary, #03a9f4);
+  outline-offset: 3px;
 }
 .statusRow {
   display: flex;

@@ -81,6 +81,9 @@ def register_services(hass):
 
     async def start_source(call):
         device = call.data["device_id"]
+        calls = hass.data.get("ha_dialog_ui_calls")
+        if calls and calls.busy(device):
+            raise HomeAssistantError("Stop the speaker call first")
         if sessions.busy(device):
             raise HomeAssistantError("Stop the current monitor pair first")
         name, _ = resolve(device, "source")
@@ -99,6 +102,9 @@ def register_services(hass):
 
     async def start_listener(call):
         source, listener = call.data["source_device_id"], call.data["device_id"]
+        calls = hass.data.get("ha_dialog_ui_calls")
+        if calls and any(calls.busy(d) for d in (source, listener)):
+            raise HomeAssistantError("Stop the speaker call first")
         if source == listener:
             raise HomeAssistantError("Source and listener must be different devices")
         if sessions.busy(source) or sessions.busy(listener):
@@ -136,6 +142,23 @@ def register_services(hass):
             await sessions.close_device(device)
         else:
             await stop_native(device)
+
+    def reserve(handler, fields):
+        async def run(call):
+            devices = {call.data[field] for field in fields}
+            starting = hass.data.setdefault("ha_dialog_ui_monitor_starting", set())
+            calls = hass.data.get("ha_dialog_ui_calls")
+            if devices.intersection(starting) or (calls and any(calls.busy(d) for d in devices)):
+                raise HomeAssistantError("Device is already starting audio or in a call")
+            starting.update(devices)
+            try:
+                await handler(call)
+            finally:
+                starting.difference_update(devices)
+        return run
+
+    start_source = reserve(start_source, ("device_id",))
+    start_listener = reserve(start_listener, ("device_id", "source_device_id"))
 
     device_schema = {vol.Required("device_id"): str}
     hass.services.async_register(

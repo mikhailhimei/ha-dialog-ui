@@ -23,6 +23,7 @@ import { CommandSettingsPage } from "../pages/CommandPage/CommandSettingsPage/Co
 import { DownloadsPage } from "../pages/DownloadsPage/DownloadsPage";
 import { SettingsPage } from "../pages/SettingsPage/SettingsPage"
 import { TimerPage } from "../pages/TimerAlarmPages/TimerPage";
+import { CallsPage } from "../pages/CallsPage/CallsPage";
 import { BabyMonitorPage } from "../pages/BabyMonitorPage/BabyMonitorPage";
 import { AlarmPage } from "../pages/TimerAlarmPages/AlarmPage";
 
@@ -101,6 +102,7 @@ export const AppRoutes = () => {
       />
 
       <Route path="/monitor" element={<BabyMonitorPage />} />
+      <Route path="/calls" element={<CallsPage />} />
       <Route
         path="/timer"
         element={<TimerPage />}

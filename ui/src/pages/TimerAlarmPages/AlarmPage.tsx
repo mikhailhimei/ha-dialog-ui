@@ -11,7 +11,7 @@ import { Button } from "../../components/ui/Button/Button";
 import { NavigationTabs } from "../../components/NavigationTabs/NavigationTabs";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { MobileHeader } from "@/components/MobileHeader/MobileHeader";
-import { Loader } from "@/components/ui/Loader";
+import { ListSkeleton } from "@/components/ui/ListSkeleton/ListSkeleton";
 import { BottomSlideButton } from "@/components/ui/BottomSlideButton/BottomSlideButton";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { AlarmActionsSheet } from "@/components/ModalEditAlarm/AlarmActionsSheet"
@@ -122,7 +122,7 @@ export const AlarmPage = () => {
           </div>
         </div>
 
-        {loading && <Loader />}
+        <ListSkeleton loading={loading} itemCount={alarms.length} placeholderCount={4}>
 
         <div className={pageStyles.grid}>
           {alarms.length ? alarms.map((alarm) => (
@@ -138,6 +138,8 @@ export const AlarmPage = () => {
             </button>
           )) : !loading && !feedback.error && <div className={pageStyles.empty}>{t("Нет будильников.")}</div>}
         </div>
+
+        </ListSkeleton>
 
         <Modal feedback={feedback} open={modalOpen} onClose={() => { setModalOpen(false); setEditingAlarmId(null); }} title={editingAlarmId ? "Редактировать будильник" : "Создать будильник"} footer={<div className={pageStyles.footerActions}><Button className={pageStyles.saveButton} onClick={submit} disabled={!deviceId || !time}>{t("Сохранить")}</Button></div>}>
           <div className={pageStyles.form}>

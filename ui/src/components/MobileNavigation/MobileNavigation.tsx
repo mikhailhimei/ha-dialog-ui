@@ -1,7 +1,7 @@
 import { useApiEnabled } from "../../context/ApiEnabledContext";
 import { useEffect, useId, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Baby, AlarmClock, ArrowRight, Check, Clock3, Download, GitBranch, Layers, MessageCircle, Settings, SlidersHorizontal, Workflow, X } from "lucide-react";
+import { Phone, Baby, AlarmClock, ArrowRight, Check, Clock3, Download, GitBranch, Layers, MessageCircle, Settings, SlidersHorizontal, Workflow, X } from "lucide-react";
 import { useIsAdmin } from "../../context/AdminContext";
 import { useRemoteServerEnabled } from "../../context/RemoteServerContext";
 import { t } from "../../i18n";
@@ -27,6 +27,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
     { to: "/timer", label: "Таймеры", icon: Clock3 },
     { to: "/alarm", label: "Будильники", icon: AlarmClock },
     { to: "/monitor", label: "Радионяня", icon: Baby },
+    { to: "/calls", label: "Звонки", icon: Phone },
     ...(isAdmin ? [{ to: "/downloads", label: "Импорт и экспорт", icon: Download }] : []),
     ...(apiEnabled && isAdmin ? [{ to: "/logs", label: "Логи", icon: SlidersHorizontal }] : []),
     { to: "/settings", label: "Настройки", icon: Settings },
