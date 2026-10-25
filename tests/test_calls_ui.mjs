@@ -112,6 +112,18 @@ try {
   await page.evaluate(()=>{window.callState.incoming=[{id:"invitation",source_device_id:"a"}];window.publish();});
   await dialog.getByText("Входящий звонок",{exact:true}).waitFor();
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);
+  assert.equal(await dialog.getByRole("button",{name:"Выключить микрофон",exact:true}).count(),0);
+  assert.equal(await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).count(),0);
+  assert.equal(await panel.getByRole("button",{name:/^Входящий звонок —/}).count(),0);
+  const answerBox=await dialog.getByRole("button",{name:"Ответить",exact:true}).boundingBox();
+  const declineBox=await dialog.getByRole("button",{name:"Отклонить",exact:true}).boundingBox();
+  assert(Math.abs(answerBox.y-declineBox.y)<2,"Answer and decline must be side by side");
+  assert.equal(Math.round(declineBox.width),Math.round(declineBox.height));
+  await page.waitForTimeout(250); // Let the shared button color transition finish.
+  const answerColor=await dialog.getByRole("button",{name:"Ответить",exact:true}).evaluate(node=>getComputedStyle(node).backgroundColor);
+  const [answerRed,answerGreen]=answerColor.match(/\d+/g).map(Number);
+  assert(answerGreen>answerRed*2,"Answer must be green");
+  await page.screenshot({path:`/tmp/ha-dialog-incoming-controls-${width}.png`,fullPage:true});
   await dialog.getByRole("button",{name:"Ответить",exact:true}).click();
   await dialog.getByText("Разговор",{exact:true}).waitFor();
   assert.equal(await page.evaluate(()=>window.actions.at(-1).type),"ha_dialog_ui/calls/browser_accept");

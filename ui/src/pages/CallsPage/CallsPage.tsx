@@ -155,7 +155,6 @@ export function CallsPage() {
       {!state && !error && <ListSkeleton loading itemCount={0} placeholderCount={3} grid />}
       {state && !state.available && <p role="alert">{t("Сервер звонков недоступен. Проверьте журнал HA и TCP-порт 8125.")}</p>}
       {state?.available && state.devices.length === 0 && <p>{t("Нет колонок с поддержкой звонков. Подключите модуль calls.yaml и обновите прошивку.")}</p>}
-      {state?.incoming?.map(item => <Button key={item.id} onClick={() => { setTarget(item.source_device_id); setError(""); }}><PhoneCall size={22} />{t("Входящий звонок")} — {name(item.source_device_id)}</Button>)}
       <div className={styles.grid}>{state?.devices.map(item => <button key={item.id}
         className={`${styles.device} ${occupied(item.id) ? styles.active : ""}`}
         onClick={() => { setTarget(item.id); setError(""); }}>
@@ -163,7 +162,7 @@ export function CallsPage() {
         <strong>{item.name}</strong><span>{t(!item.online ? "Нет подключения" : state?.incoming?.some(invite => invite.source_device_id === item.id) ? "Входящий звонок" : occupied(item.id) ? "Участвует в звонке" : "Готова к звонку")}</span>
       </button>)}</div>
       <Modal open={Boolean(target)} onClose={() => setTarget("")} title={t("Звонки")} dialogLabel={name(target)} footer={<div className={styles.phoneFooter}>
-        <div className={styles.callControls}>
+        {(!invitation || selectedOwn) && <div className={styles.callControls}>
           <div className={styles.control}>
             <Button variant="secondary" className={`${styles.roundControl} ${selectedOwn && muted ? styles.controlSelected : ""}`} aria-label={t(selectedOwn && muted ? "Включить микрофон" : "Выключить микрофон")} aria-pressed={selectedOwn && muted} disabled={!controlsEnabled} onClick={toggleMicrophone}>{selectedOwn && muted ? <MicOff size={25} /> : <Mic size={25} />}</Button>
             <span>{t(selectedOwn && muted ? "Микрофон выкл." : "Микрофон")}</span>
@@ -172,17 +171,22 @@ export function CallsPage() {
             <Button variant="secondary" className={`${styles.roundControl} ${selectedOwn && outputId !== "default" ? styles.controlSelected : ""}`} aria-label={t("Аудиовыход")} aria-pressed={selectedOwn && outputId !== "default"} disabled={!controlsEnabled || routing} onClick={() => void toggleSpeaker()}><Volume2 size={25} /></Button>
             <span>{t("Аудиовыход")}</span>
           </div>
-        </div>
+        </div>}
         {controlsEnabled && outputPicker && <>
           <SelectInput label="Устройство вывода" value={outputId} disabled={routing || !outputSupported} onChange={event => void chooseOutput(event.target.value)} options={[{value:"default",label:t("По умолчанию (системный выход)")},...outputDevices.filter(item => item.id !== "default").map(item => ({value:item.id,label:item.label})), ...(audio.current?.canPromptOutput() ? [{value:"choose",label:t("Выбрать другое устройство…")}] : [])]} />
           {!outputSupported && <p className={styles.routeHint}>{t("Этот браузер не позволяет выбирать аудиовыход. Переключите динамик или наушники в системном меню телефона.")}</p>}
         </>}
+        <div className={styles.callControls}>
+        {invitation && !selectedOwn && <div className={styles.control}>
+          <Button className={styles.hangup} aria-label={t("Отклонить")} disabled={busy} onClick={() => void api.browserCallDecline(view.current, invitation.id).catch(reason => setError(formatApiError(reason)))}><PhoneOff size={30} /></Button>
+          <span>{t("Отклонить")}</span>
+        </div>}
         <div className={styles.control}>
           {selectedOwn ? <Button className={styles.hangup} disabled={busy} aria-label={t("Положить трубку")} onClick={() => void hangup()}><PhoneOff size={30} /></Button>
             : <Button className={styles.dial} aria-label={t(selectedCall ? "Занято" : invitation ? "Ответить" : "Позвонить")} disabled={busy || !ready || !secure || !state?.available || !device?.online || Boolean(own) || Boolean(selectedCall)} onClick={() => void start()}><Phone size={30} /></Button>}
           <span>{t(selectedOwn ? "Завершить" : selectedCall ? "Занято" : invitation ? "Ответить" : "Позвонить")}</span>
         </div>
-        {invitation && !selectedOwn && <Button variant="secondary" disabled={busy} onClick={() => void api.browserCallDecline(view.current, invitation.id).catch(reason => setError(formatApiError(reason)))}>{t("Отклонить")}</Button>}
+        </div>
       </div>}>
         <div className={styles.phoneStage}>
           <div className={styles.avatar}><PhoneCall size={46} strokeWidth={1.4} /></div>

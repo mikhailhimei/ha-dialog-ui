@@ -395,3 +395,25 @@ async def test_only_one_phone_can_claim_same_invitation(calls):
         assert sorted(result["success"] for result in results) == [False, True]
         assert len(calls.manager.calls) == 1
         assert next(iter(calls.manager.calls.values())).state == "active"
+
+
+async def test_phone_service_user_dropdown_tracks_active_users(calls):
+    from homeassistant.helpers.service import SERVICE_DESCRIPTION_CACHE
+
+    await calls.hass.auth.async_create_user("owner")
+    user = await calls.hass.auth.async_create_user("Misha")
+
+    def options():
+        return calls.hass.data[SERVICE_DESCRIPTION_CACHE][
+            ("ha_dialog_ui", "call_phone")
+        ]["fields"]["user_id"]["selector"]["select"]
+
+    async with asyncio.timeout(2):
+        while not any(item["value"] == user.id for item in options()["options"]):
+            await asyncio.sleep(0)
+    assert {"value": user.id, "label": "Misha"} in options()["options"]
+    assert options()["custom_value"] is False
+    await calls.hass.auth.async_update_user(user, is_active=False)
+    async with asyncio.timeout(2):
+        while any(item["value"] == user.id for item in options()["options"]):
+            await asyncio.sleep(0)

@@ -315,7 +315,10 @@ call_phone:
       name: Пользователь Home Assistant
       required: true
       selector:
-        text:
+        select:
+          options: []
+          mode: dropdown
+          custom_value: false
     timeout:
       name: Время ожидания ответа
       default: 120

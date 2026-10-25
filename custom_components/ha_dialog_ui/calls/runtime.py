@@ -7,6 +7,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 
 import voluptuous as vol
+from homeassistant.auth import EVENT_USER_ADDED, EVENT_USER_REMOVED, EVENT_USER_UPDATED
 from homeassistant.components import websocket_api
 from homeassistant.const import (
     EVENT_HOMEASSISTANT_STOP,
@@ -421,6 +422,13 @@ class CallRuntime:
                     )
 
     async def event(self, event):
+        if event.event_type in (
+            EVENT_USER_ADDED,
+            EVENT_USER_REMOVED,
+            EVENT_USER_UPDATED,
+        ):
+            await self.update_user_selector()
+            return
         if event.event_type == EVENT_SERVICE_REGISTERED:
             if event.data.get("domain") == "esphome":
                 await self.discover()
@@ -459,10 +467,15 @@ class CallRuntime:
             return
         self.running = True
         self.listeners = [
+            *(
+                self.hass.bus.async_listen(event, self.event)
+                for event in (EVENT_USER_ADDED, EVENT_USER_REMOVED, EVENT_USER_UPDATED)
+            ),
             self.hass.bus.async_listen(EVENT_SERVICE_REGISTERED, self.event),
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self.event),
             self.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, self.on_stop),
         ]
+        await self.update_user_selector()
         await self.discover()
 
     async def handle(self, reader, writer):
@@ -584,6 +597,71 @@ class CallRuntime:
             decline,
         ):
             websocket_api.async_register_command(self.hass, command)
+
+    async def update_user_selector(self):
+        from homeassistant.helpers.service import async_set_service_schema
+
+        users = [
+            user
+            for user in await self.hass.auth.async_get_users()
+            if user.is_active and not user.system_generated
+        ]
+        users.sort(key=lambda user: ((user.name or "").casefold(), user.id))
+        options = [
+            {
+                "value": user.id,
+                "label": (user.name or user.id)
+                + (
+                    f" ({user.id[:6]})"
+                    if user.name and sum(other.name == user.name for other in users) > 1
+                    else ""
+                ),
+            }
+            for user in users
+        ]
+        async_set_service_schema(
+            self.hass,
+            "ha_dialog_ui",
+            "call_phone",
+            {
+                "name": "Позвонить пользователю на телефон",
+                "description": "Вызов появится у выбранного пользователя в разделе «Звонки».",
+                "fields": {
+                    "source_device_id": {
+                        "name": "Колонка",
+                        "required": True,
+                        "selector": {"device": {"integration": "esphome"}},
+                    },
+                    "user_id": {
+                        "name": "Пользователь Home Assistant",
+                        "required": True,
+                        "selector": {
+                            "select": {
+                                "options": options,
+                                "mode": "dropdown",
+                                "custom_value": False,
+                            }
+                        },
+                    },
+                    "timeout": {
+                        "name": "Время ожидания ответа",
+                        "default": 120,
+                        "selector": {
+                            "number": {
+                                "min": 10,
+                                "max": 300,
+                                "unit_of_measurement": "s",
+                            }
+                        },
+                    },
+                },
+            },
+        )
+
+        self.hass.bus.async_fire(
+            EVENT_SERVICE_REGISTERED,
+            {"domain": "ha_dialog_ui", "service": "call_phone"},
+        )
 
     async def service_phone(self, call):
         from .incoming import create
