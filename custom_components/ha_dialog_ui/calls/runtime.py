@@ -7,6 +7,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 
 import voluptuous as vol
+from homeassistant.auth import EVENT_USER_ADDED, EVENT_USER_REMOVED, EVENT_USER_UPDATED
 from homeassistant.components import websocket_api
 from homeassistant.const import (
     EVENT_HOMEASSISTANT_STOP,
@@ -58,6 +59,7 @@ class CallRuntime:
         self.receivers = {}
         self.keys = {}
         self.calls = {}
+        self.invitations = {}
         self.retiring = set()
         self.browser_views = {}
         self.server = None
@@ -112,6 +114,11 @@ class CallRuntime:
             "owned_call_id": browser.call_id
             if browser and not browser.closed
             else None,
+            "incoming": [
+                {"id": i.id, "source_device_id": i.source}
+                for i in self.invitations.values()
+                if browser and i.user_id == browser.user_id
+            ],
             "devices": self.devices(),
             "calls": [
                 {
@@ -125,9 +132,14 @@ class CallRuntime:
             ],
         }
 
-    def busy(self, device):
-        return device in self.retiring or any(
-            device in (c.source, c.target) for c in self.calls.values()
+    def busy(self, device, invitation_id=None):
+        return (
+            any(
+                i.source == device and i.id != invitation_id
+                for i in self.invitations.values()
+            )
+            or device in self.retiring
+            or any(device in (c.source, c.target) for c in self.calls.values())
         )
 
     def resolve(self, device):
@@ -164,7 +176,9 @@ class CallRuntime:
             for p in state["sessions"]
         )
 
-    async def dial(self, source, target, browser=None):
+    async def dial(
+        self, source, target, browser=None, phone_incoming=False, invitation_id=None
+    ):
         async with self.lock:
             if not self.running or source == target:
                 raise HomeAssistantError(
@@ -172,19 +186,37 @@ class CallRuntime:
                 )
             if browser and (browser.closed or browser.call_id or source != browser.id):
                 raise HomeAssistantError("Вкладка закрыта или звонок уже идёт")
+            invitation = self.invitations.get(invitation_id) if invitation_id else None
+            if invitation_id and (
+                not invitation
+                or not browser
+                or invitation.user_id != browser.user_id
+                or invitation.source != target
+            ):
+                raise HomeAssistantError("Входящий вызов уже принят или завершён")
             a, b = None if browser else self.resolve(source), self.resolve(target)
-            if any(self.busy(d) or self.radio_busy(d) for d in (source, target)):
+            if any(
+                self.busy(d, invitation_id) or self.radio_busy(d)
+                for d in (source, target)
+            ):
                 raise HomeAssistantError("Колонка уже занята звонком или радионяней")
             call = Call(secrets.token_urlsafe(16), source, target, browser=browser)
             if browser:
                 browser.call_id = call.id
             self.calls[call.id] = call
+            if invitation:
+                self.invitations.pop(invitation.id)
+                if invitation.timeout:
+                    invitation.timeout.cancel()
         call.starting = asyncio.current_task()
         try:
-            endpoints = ((b, True),) if browser else ((a, False), (b, True))
+            endpoints = (
+                ((b, not phone_incoming),) if browser else ((a, False), (b, True))
+            )
             for device, incoming in endpoints:
                 if call.id not in self.calls:
                     raise HomeAssistantError("Звонок завершён")
+                await self.configure_ringtone(device["id"])
                 await self.native(device["id"], "ring", {"incoming": incoming})
                 await self.wait_ring(device["id"], incoming)
             if call.id in self.calls:
@@ -272,7 +304,9 @@ class CallRuntime:
                         self.hass.async_create_task(self.end(call.id))
 
                 source_receiver.listeners.add(source_status)
-                call.source_stop = lambda: source_receiver.listeners.discard(source_status)
+                call.source_stop = lambda: source_receiver.listeners.discard(
+                    source_status
+                )
             for device_id in endpoints:
                 if call.id not in self.calls:
                     raise HomeAssistantError("Звонок завершён")
@@ -341,6 +375,11 @@ class CallRuntime:
         )
 
     async def end_device(self, device):
+        from .incoming import cancel
+
+        for invitation in tuple(self.invitations.values()):
+            if invitation.source == device:
+                await cancel(self, invitation.id)
         call = next(
             (c for c in self.calls.values() if device in (c.source, c.target)), None
         )
@@ -383,6 +422,13 @@ class CallRuntime:
                     )
 
     async def event(self, event):
+        if event.event_type in (
+            EVENT_USER_ADDED,
+            EVENT_USER_REMOVED,
+            EVENT_USER_UPDATED,
+        ):
+            await self.update_user_selector()
+            return
         if event.event_type == EVENT_SERVICE_REGISTERED:
             if event.data.get("domain") == "esphome":
                 await self.discover()
@@ -421,10 +467,15 @@ class CallRuntime:
             return
         self.running = True
         self.listeners = [
+            *(
+                self.hass.bus.async_listen(event, self.event)
+                for event in (EVENT_USER_ADDED, EVENT_USER_REMOVED, EVENT_USER_UPDATED)
+            ),
             self.hass.bus.async_listen(EVENT_SERVICE_REGISTERED, self.event),
             self.hass.bus.async_listen(EVENT_STATE_CHANGED, self.event),
             self.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, self.on_stop),
         ]
+        await self.update_user_selector()
         await self.discover()
 
     async def handle(self, reader, writer):
@@ -466,11 +517,21 @@ class CallRuntime:
         server, self.server = self.server, None
         if server:
             server.close()
+        from .incoming import cancel
+
+        invitation_tasks = [
+            i.starting
+            for i in self.invitations.values()
+            if i.starting and i.starting is not asyncio.current_task()
+        ]
+        for invitation_id in tuple(self.invitations):
+            await cancel(self, invitation_id)
         pending = [
             c.starting
             for c in self.calls.values()
             if c.starting and c.starting is not asyncio.current_task()
         ]
+        pending.extend(invitation_tasks)
         for call_id in tuple(self.calls):
             await self.end(call_id)
         for task in pending:
@@ -492,6 +553,22 @@ class CallRuntime:
     def register(self):
         self.hass.data["ha_dialog_ui_call_streams"] = self.streams
         self.hass.http.register_view(CallStreamView())
+        from .incoming import accept, decline
+
+        self.hass.services.async_register(
+            "ha_dialog_ui",
+            "call_phone",
+            self.service_phone,
+            schema=vol.Schema(
+                {
+                    vol.Required("source_device_id"): str,
+                    vol.Required("user_id"): str,
+                    vol.Optional("timeout", default=120): vol.All(
+                        vol.Coerce(int), vol.Range(min=10, max=300)
+                    ),
+                }
+            ),
+        )
         for action, handler, fields in (
             (
                 "call_start",
@@ -516,8 +593,119 @@ class CallRuntime:
             browser_end,
             browser_audio,
             browser_receive,
+            accept,
+            decline,
         ):
             websocket_api.async_register_command(self.hass, command)
+
+    async def update_user_selector(self):
+        from homeassistant.helpers.service import async_set_service_schema
+
+        users = [
+            user
+            for user in await self.hass.auth.async_get_users()
+            if user.is_active and not user.system_generated
+        ]
+        users.sort(key=lambda user: ((user.name or "").casefold(), user.id))
+        options = [
+            {
+                "value": user.id,
+                "label": (user.name or user.id)
+                + (
+                    f" ({user.id[:6]})"
+                    if user.name and sum(other.name == user.name for other in users) > 1
+                    else ""
+                ),
+            }
+            for user in users
+        ]
+        async_set_service_schema(
+            self.hass,
+            "ha_dialog_ui",
+            "call_phone",
+            {
+                "name": "Позвонить пользователю на телефон",
+                "description": "Вызов появится у выбранного пользователя в разделе «Звонки».",
+                "fields": {
+                    "source_device_id": {
+                        "name": "Колонка",
+                        "required": True,
+                        "selector": {"device": {"integration": "esphome"}},
+                    },
+                    "user_id": {
+                        "name": "Пользователь Home Assistant",
+                        "required": True,
+                        "selector": {
+                            "select": {
+                                "options": options,
+                                "mode": "dropdown",
+                                "custom_value": False,
+                            }
+                        },
+                    },
+                    "timeout": {
+                        "name": "Время ожидания ответа",
+                        "default": 120,
+                        "selector": {
+                            "number": {
+                                "min": 10,
+                                "max": 300,
+                                "unit_of_measurement": "s",
+                            }
+                        },
+                    },
+                },
+            },
+        )
+
+        self.hass.bus.async_fire(
+            EVENT_SERVICE_REGISTERED,
+            {"domain": "ha_dialog_ui", "service": "call_phone"},
+        )
+
+    async def service_phone(self, call):
+        from .incoming import create
+
+        await create(
+            self,
+            call.data["source_device_id"],
+            call.data["user_id"],
+            call.data["timeout"],
+        )
+
+    async def configure_ringtone(self, device):
+        from homeassistant.components import media_source
+        from homeassistant.components.media_player import async_process_play_media_url
+
+        from ..storage.settings_storage import async_get_cached_settings
+
+        item = self.resolve(device)
+        service = slugify(f"{item['node_id']}_call_ringtone_configure")
+        music = (
+            (await async_get_cached_settings(self.hass)).get("call_music", "").strip()
+        )
+        if not self.hass.services.has_service("esphome", service):
+            if music:
+                raise HomeAssistantError(
+                    "Обновите прошивку колонки для выбора музыки звонка"
+                )
+            return
+        url = ""
+        if music:
+            media_id = (
+                music
+                if music.startswith("media-source://")
+                else "media-source://media_source/local/" + music
+            )
+            resolved = await media_source.async_resolve_media(self.hass, media_id, None)
+            url = async_process_play_media_url(
+                self.hass, resolved.url, allow_relative_url=True
+            )
+            if url.startswith("/"):
+                url = get_url(self.hass, allow_external=False).rstrip("/") + url
+        await self.hass.services.async_call(
+            "esphome", service, {"url": url}, blocking=True
+        )
 
     async def service_start(self, call):
         await self.dial(call.data["source_device_id"], call.data["target_device_id"])
@@ -541,7 +729,7 @@ async def watch(hass, connection, msg):
         if key in runtime.browser_views:
             connection.send_error(msg["id"], "call_error", "Вкладка уже открыта")
             return
-        peer = runtime.browser_views[key] = BrowserPeer()
+        peer = runtime.browser_views[key] = BrowserPeer(connection.user.id)
 
     task = None
 

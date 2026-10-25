@@ -13,7 +13,8 @@ from ..baby_monitor.receiver import CHUNK, RATE, Receiver
 
 
 class BrowserPeer:
-    def __init__(self):
+    def __init__(self, user_id=None):
+        self.user_id = user_id
         self.id = "browser:" + secrets.token_urlsafe(16)
         self.receiver = Receiver(self.id, secrets.token_urlsafe(32))
         self.call_id = None

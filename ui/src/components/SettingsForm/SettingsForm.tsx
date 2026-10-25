@@ -16,6 +16,8 @@ interface TimerAlarmProps {
   data: TimerAlarmSettings;
   musicOptions: MusicOption[];
   musicUnavailable: boolean;
+  callMusic?: string;
+  onCallMusicChange?: (value: string) => void;
   onChange: (data: TimerAlarmSettings) => void;
 }
 
@@ -45,7 +47,7 @@ export const RemoteSettingsForm = ({ data, onChange }: RemoteProps) => {
   );
 };
 
-export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, onChange }: TimerAlarmProps) => {
+export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, onChange, callMusic, onCallMusicChange }: TimerAlarmProps) => {
   const updateField = (key: keyof TimerAlarmSettings, value: string) => {
     onChange({
       ...data,
@@ -55,8 +57,9 @@ export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, o
 
   const renderMusicSelect = (
     label: string,
-    key: keyof TimerAlarmSettings,
+    change: (value: string) => void,
     value = "",
+    emptyLabel = "Не выбрано",
   ) => {
     const hasCurrentOption = musicOptions.some((option) => option.value === value);
 
@@ -66,9 +69,9 @@ export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, o
         <select
           className={styles.input}
           value={value}
-          onChange={(event) => updateField(key, event.target.value)}
+          onChange={(event) => change(event.target.value)}
         >
-          <option value="">{t("Не выбрано")}</option>
+          <option value="">{t(emptyLabel)}</option>
           {value && !hasCurrentOption && (
             <option value={value}>{value}</option>
           )}
@@ -86,14 +89,15 @@ export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, o
     <div className={styles.form}>
       {renderMusicSelect(
         "Global music timer",
-        "global_music_timer",
+        value => updateField("global_music_timer", value),
         data.global_music_timer,
       )}
       {renderMusicSelect(
         "Global music alarm",
-        "global_music_alarm",
+        value => updateField("global_music_alarm", value),
         data.global_music_alarm,
       )}
+      {onCallMusicChange && renderMusicSelect("Мелодия звонка", onCallMusicChange, callMusic, "Стандартная")}
       {musicOptions.length === 0 && !musicUnavailable && (
         <span className={styles.help}>{t("Музыка на сервере не найдена.")}</span>
       )}

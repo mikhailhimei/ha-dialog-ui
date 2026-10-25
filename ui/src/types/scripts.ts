@@ -19,6 +19,7 @@ export interface ScriptActionDetails {
 export interface Settings {
   remout?: RemoteSettings;
   timer_alarm: TimerAlarmSettings;
+  call_music?: string;
   theme: string;
   is_admin: boolean;
   active_remout: boolean;

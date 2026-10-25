@@ -52,6 +52,7 @@ const normalizeTimerAlarm = (timerAlarm?: Partial<TimerAlarmSettings>): TimerAla
 });
 
 const normalizeSettings = (settings?: Partial<Settings> | null): Settings => ({
+  call_music: settings?.call_music ?? "",
   remout: normalizeRemout(settings?.remout),
   timer_alarm: normalizeTimerAlarm(settings?.timer_alarm),
   theme: settings?.theme ?? "dark",
@@ -87,6 +88,7 @@ const getDiff = (current: Settings, initial: Settings): SettingsSavePayload => {
 
   if (Object.keys(timerAlarmDiff).length > 0) result.timer_alarm = timerAlarmDiff;
 
+  if (current.call_music !== initial.call_music) result.call_music = current.call_music;
   if (current.theme !== initial.theme) result.theme = current.theme;
   if (current.is_admin !== initial.is_admin) result.is_admin = current.is_admin;
   if (current.active_remout !== initial.active_remout) result.active_remout = current.active_remout;
@@ -177,6 +179,8 @@ export const SettingsPage = () => {
           <section className={styles.settingsSection} aria-label={t("Timer / Alarm")}><h2>{t("Timer / Alarm")}</h2>
             <TimerAlarmSettingsForm
               data={settingsData.timer_alarm}
+              callMusic={settingsData.call_music}
+              onCallMusicChange={call_music => setSettingsData(current => ({ ...current, call_music }))}
               musicOptions={musicOptions}
               musicUnavailable={musicFeedback.busy || Boolean(musicFeedback.error)}
               onChange={(timer_alarm) => setSettingsData({ ...settingsData, timer_alarm })}
