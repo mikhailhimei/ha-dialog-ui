@@ -12422,10 +12422,6 @@ const sw = "_form_1ijxr_1", ow = "_field_1ijxr_7", iw = "_input_1ijxr_13", aw = 
             )
           ] })
         ] }),
-        /* @__PURE__ */ i.jsxs("section", { className: Z.settingsSection, "aria-label": _("Звонки"), children: [
-          /* @__PURE__ */ i.jsx("h2", { children: _("Звонки") }),
-          /* @__PURE__ */ i.jsx(ln, { label: "Мелодия звонка", value: a.call_music ?? "", disabled: y.busy || !!y.error, onChange: (b) => o((C) => ({ ...C, call_music: b.target.value })), options: [{ value: "", label: _("Стандартная") }, ...m] })
-        ] }),
         /* @__PURE__ */ i.jsxs("section", { className: Z.settingsSection, "aria-label": _("Timer / Alarm"), children: [
           /* @__PURE__ */ i.jsx("h2", { children: _("Timer / Alarm") }),
           /* @__PURE__ */ i.jsx(
@@ -12436,7 +12432,8 @@ const sw = "_form_1ijxr_1", ow = "_field_1ijxr_7", iw = "_input_1ijxr_13", aw = 
               musicUnavailable: y.busy || !!y.error,
               onChange: (b) => o({ ...a, timer_alarm: b })
             }
-          )
+          ),
+          /* @__PURE__ */ i.jsx(ln, { label: "Мелодия звонка", value: a.call_music ?? "", disabled: y.busy, onChange: (b) => o((C) => ({ ...C, call_music: b.target.value })), options: [{ value: "", label: _("Стандартная") }, ...m] })
         ] })
       ] }),
       j && (r ? /* @__PURE__ */ i.jsx("div", { className: Z.settingsMobileActions, children: /* @__PURE__ */ i.jsx(

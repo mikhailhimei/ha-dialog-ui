@@ -177,10 +177,6 @@ export const SettingsPage = () => {
             />}</div>
           </section>
 
-          <section className={styles.settingsSection} aria-label={t("Звонки")}><h2>{t("Звонки")}</h2>
-            <SelectInput label="Мелодия звонка" value={settingsData.call_music ?? ""} disabled={musicFeedback.busy || Boolean(musicFeedback.error)} onChange={event => setSettingsData(current => ({...current, call_music: event.target.value}))} options={[{value:"",label:t("Стандартная")},...musicOptions]} />
-          </section>
-
           <section className={styles.settingsSection} aria-label={t("Timer / Alarm")}><h2>{t("Timer / Alarm")}</h2>
             <TimerAlarmSettingsForm
               data={settingsData.timer_alarm}
@@ -188,6 +184,7 @@ export const SettingsPage = () => {
               musicUnavailable={musicFeedback.busy || Boolean(musicFeedback.error)}
               onChange={(timer_alarm) => setSettingsData({ ...settingsData, timer_alarm })}
             />
+            <SelectInput label="Мелодия звонка" value={settingsData.call_music ?? ""} disabled={musicFeedback.busy} onChange={event => setSettingsData(current => ({...current, call_music: event.target.value}))} options={[{value:"",label:t("Стандартная")},...musicOptions]} />
           </section>
 
         </div>
