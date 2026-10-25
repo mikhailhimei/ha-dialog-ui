@@ -23,6 +23,7 @@ SETTINGS_FALLBACKS: dict[str, Any] = {
         "global_music_timer": "timer-alarm.mp3",
         "global_music_alarm": "timer-alarm.mp3",
     },
+    "call_music": "",
     "client_id": "",
     "theme": "light",
     "is_admin": False,

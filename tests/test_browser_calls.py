@@ -8,8 +8,8 @@ from test_calls import calls as calls  # noqa: PLC0414 - pytest fixture re-expor
 from custom_components.ha_dialog_ui.baby_monitor.playback import WAV_HEADER
 
 
-async def connect(data):
-    user = await data.hass.auth.async_create_user("phone")
+async def connect(data, user=None):
+    user = user or await data.hass.auth.async_create_user("phone")
     refresh = await data.hass.auth.async_create_refresh_token(
         user, client_id="http://localhost/"
     )
@@ -215,3 +215,183 @@ async def test_speaker_uplink_loss_ends_phone_call_without_browser_audio_subscri
         assert not calls.manager.calls
         assert not calls.manager.streams.sessions
         assert not calls.manager.receivers["bedroom"].listeners
+
+
+async def test_incoming_phone_waits_for_user_and_explicit_answer(calls):
+    user = await calls.hass.auth.async_create_user("recipient")
+    other = await calls.hass.auth.async_create_user("other")
+    await calls.hass.services.async_call(
+        "ha_dialog_ui",
+        "call_phone",
+        {
+            "source_device_id": calls.devices["kitchen"],
+            "user_id": user.id,
+        },
+        blocking=True,
+    )
+    invitation = next(iter(calls.manager.invitations.values()))
+    assert calls.manager.busy(calls.devices["kitchen"])
+    assert not calls.manager.calls
+    assert not any(event[1] == "source" for event in calls.events)
+    async with await connect(calls, other) as wrong:
+        await open_view(calls, wrong)
+        peer = next(
+            p for p in calls.manager.browser_views.values() if p.user_id == other.id
+        )
+        assert calls.manager.snapshot(peer)["incoming"] == []
+        await wrong.send_json(
+            {
+                "id": 2,
+                "type": "ha_dialog_ui/calls/browser_accept",
+                "view_id": "phone-view",
+                "invitation_id": invitation.id,
+            }
+        )
+        assert not (await reply(wrong, 2))["success"]
+        assert invitation.id in calls.manager.invitations
+    async with await connect(calls, user) as phone:
+        await open_view(calls, phone)
+        peer = next(
+            p for p in calls.manager.browser_views.values() if p.user_id == user.id
+        )
+        assert calls.manager.snapshot(peer)["incoming"][0]["id"] == invitation.id
+        await phone.send_json(
+            {
+                "id": 2,
+                "type": "ha_dialog_ui/calls/browser_accept",
+                "view_id": "phone-view",
+                "invitation_id": invitation.id,
+            }
+        )
+        result = await reply(phone, 2)
+        assert result["success"], result
+        assert calls.manager.calls[result["result"]["call_id"]].state == "active"
+        assert not calls.manager.invitations
+        await phone.send_json(
+            {"id": 3, "type": "ha_dialog_ui/calls/browser_end", "view_id": "phone-view"}
+        )
+        assert (await reply(phone, 3))["success"]
+        assert not calls.manager.calls
+
+
+async def test_incoming_phone_decline_does_not_open_microphones(calls):
+    user = await calls.hass.auth.async_create_user("recipient")
+    await calls.hass.services.async_call(
+        "ha_dialog_ui",
+        "call_phone",
+        {"source_device_id": calls.devices["bedroom"], "user_id": user.id},
+        blocking=True,
+    )
+    invitation = next(iter(calls.manager.invitations))
+    async with await connect(calls, user) as phone:
+        await open_view(calls, phone)
+        await phone.send_json(
+            {
+                "id": 2,
+                "type": "ha_dialog_ui/calls/browser_decline",
+                "view_id": "phone-view",
+                "invitation_id": invitation,
+            }
+        )
+        assert (await reply(phone, 2))["success"]
+        assert not calls.manager.invitations
+        assert not any(event[1] == "source" for event in calls.events)
+
+
+async def test_music_ringtone_resolved_per_call_without_changing_default(calls):
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    from custom_components.ha_dialog_ui.storage.settings_storage import (
+        async_save_settings,
+    )
+
+    configured = []
+
+    async def configure(call):
+        configured.append(call.data["url"])
+
+    calls.hass.services.async_register(
+        "esphome", "bedroom_call_ringtone_configure", configure
+    )
+    await async_save_settings(
+        calls.hass, {"call_music": "media-source://media_source/local/ring.mp3"}
+    )
+    with (
+        patch(
+            "homeassistant.components.media_source.async_resolve_media",
+            return_value=SimpleNamespace(url="/media/ring.mp3"),
+        ) as resolve,
+        patch(
+            "homeassistant.components.media_player.async_process_play_media_url",
+            return_value="/media/ring.mp3?authSig=temporary",
+        ),
+    ):
+        await calls.manager.configure_ringtone(calls.devices["bedroom"])
+        assert resolve.call_args.args[1] == "media-source://media_source/local/ring.mp3"
+    assert configured[-1] == calls.base + "/media/ring.mp3?authSig=temporary"
+    assert "authSig" not in str(calls.manager.snapshot())
+    await async_save_settings(calls.hass, {"call_music": ""})
+    await calls.manager.configure_ringtone(calls.devices["bedroom"])
+    assert configured[-1] == ""
+
+
+async def test_pending_phone_survives_view_close_and_script_can_cancel(calls):
+    user = await calls.hass.auth.async_create_user("recipient")
+    await calls.hass.services.async_call(
+        "ha_dialog_ui",
+        "call_phone",
+        {"source_device_id": calls.devices["kitchen"], "user_id": user.id},
+        blocking=True,
+    )
+    async with await connect(calls, user) as phone:
+        await open_view(calls, phone)
+    await asyncio.sleep(0.05)
+    assert calls.manager.invitations
+    await calls.hass.services.async_call(
+        "ha_dialog_ui",
+        "call_end",
+        {"device_id": calls.devices["kitchen"]},
+        blocking=True,
+    )
+    assert not calls.manager.invitations
+    assert not calls.manager.busy(calls.devices["kitchen"])
+    assert not any(event[1] == "source" for event in calls.events)
+
+
+async def test_pending_phone_expires_without_microphone(calls):
+    from custom_components.ha_dialog_ui.calls.incoming import create
+
+    user = await calls.hass.auth.async_create_user("recipient")
+    await create(calls.manager, calls.devices["bedroom"], user.id, timeout=0.01)
+    await asyncio.sleep(0.05)
+    assert not calls.manager.invitations
+    assert not any(event[1] == "source" for event in calls.events)
+
+
+async def test_only_one_phone_can_claim_same_invitation(calls):
+    user = await calls.hass.auth.async_create_user("recipient")
+    await calls.hass.services.async_call(
+        "ha_dialog_ui",
+        "call_phone",
+        {"source_device_id": calls.devices["kitchen"], "user_id": user.id},
+        blocking=True,
+    )
+    invitation = next(iter(calls.manager.invitations))
+    async with (
+        await connect(calls, user) as first,
+        await connect(calls, user) as second,
+    ):
+        await open_view(calls, first)
+        await open_view(calls, second)
+        message = {
+            "id": 2,
+            "type": "ha_dialog_ui/calls/browser_accept",
+            "view_id": "phone-view",
+            "invitation_id": invitation,
+        }
+        await asyncio.gather(first.send_json(message), second.send_json(message))
+        results = await asyncio.gather(reply(first, 2), reply(second, 2))
+        assert sorted(result["success"] for result in results) == [False, True]
+        assert len(calls.manager.calls) == 1
+        assert next(iter(calls.manager.calls.values())).state == "active"

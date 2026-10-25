@@ -98,6 +98,7 @@ async def _async_save_settings(hass, connection, msg):
 @websocket_api.websocket_command({
     vol.Required("type"): "ha_dialog_ui/import_settings",
     vol.Required("data"): {
+        vol.Optional("call_music"): str,
         vol.Optional("theme"): vol.In(["dark", "light"]),
         vol.Optional("client_id"): str,
         vol.Optional("is_admin"): bool,

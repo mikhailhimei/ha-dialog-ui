@@ -10,6 +10,12 @@ export class DialogApi {
   browserCallStart(viewId: string, target: string) {
     return this.hass.connection.sendMessagePromise<{call_id: string}>({ type: "ha_dialog_ui/calls/browser_start", view_id: viewId, target_device_id: target });
   }
+  browserCallAccept(viewId: string, invitationId: string) {
+    return this.hass.connection.sendMessagePromise<{call_id: string}>({type: "ha_dialog_ui/calls/browser_accept", view_id: viewId, invitation_id: invitationId});
+  }
+  browserCallDecline(viewId: string, invitationId: string) {
+    return this.hass.connection.sendMessagePromise({type: "ha_dialog_ui/calls/browser_decline", view_id: viewId, invitation_id: invitationId});
+  }
   browserCallEnd(viewId: string) {
     return this.hass.connection.sendMessagePromise({ type: "ha_dialog_ui/calls/browser_end", view_id: viewId });
   }

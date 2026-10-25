@@ -47,6 +47,10 @@ try {
       if(!window.callState.calls.some(c=>c.id===window.callState.owned_call_id&&["connecting","active"].includes(c.state)))throw Error("Audio before answer");
       if(atob(msg.pcm).length!==1280)throw Error("Invalid PCM");window.micFrames++;return {accepted:true};
      }
+     if(msg.type==="ha_dialog_ui/calls/browser_accept"){
+      window.actions.push(msg);window.callState.incoming=[];window.callState.owned_call_id="accepted-phone";
+      window.callState.calls=[{id:"accepted-phone",source_device_id:null,source_type:"browser",target_device_id:"a",state:"active"}];window.publish();return {call_id:"accepted-phone"};
+     }
      if(msg.type==="ha_dialog_ui/calls/browser_start"){
       window.actions.push(msg);window.callState.owned_call_id="phone-call";
       window.callState.calls=[{id:"phone-call",source_device_id:null,source_type:"browser",target_device_id:msg.target_device_id,state:"ringing"}];window.publish();return {call_id:"phone-call"};
@@ -67,12 +71,12 @@ try {
   await kitchen.click();const dialog=panel.getByRole("dialog",{name:"Кухня"});await dialog.waitFor();
   assert.equal(await dialog.getByRole("combobox").count(),0);
   await dialog.getByRole("heading",{name:"Кухня",exact:true}).waitFor();
-  for(const label of ["Выключить микрофон","Динамик","Включить звук"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),true);
+  for(const label of ["Выключить микрофон","Аудиовыход"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),true);
   assert.equal(await dialog.getByRole("button",{name:"Позвонить",exact:true}).isDisabled(),false);
   await page.screenshot({path:`/tmp/ha-dialog-call-ready-${width}.png`,fullPage:true});
   assert.equal(await dialog.getByRole("button",{name:"Ответить",exact:true}).count(),0);
   await dialog.getByRole("button",{name:"Позвонить",exact:true}).click();await dialog.getByText("Ожидание ответа",{exact:true}).waitFor();
-  for(const label of ["Выключить микрофон","Динамик","Включить звук"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),true);
+  for(const label of ["Выключить микрофон","Аудиовыход"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),true);
   assert.equal(await dialog.getByRole("button",{name:"Положить трубку",exact:true}).isDisabled(),false);
   assert.equal(await page.evaluate(()=>window.actions[0].target_device_id),"a");
   assert.equal(await page.evaluate(()=>"source_device_id" in window.actions[0]),false);
@@ -80,32 +84,42 @@ try {
   await dialog.getByRole("button",{name:"Закрыть",exact:true}).click();await dialog.waitFor({state:"hidden"});assert.equal(await page.evaluate(()=>window.callState.calls.length),1);
   await kitchen.click();await page.evaluate(()=>{window.callState.calls[0].state="active";window.publish();});
   await dialog.getByText("Разговор",{exact:true}).waitFor();
-  for(const label of ["Выключить микрофон","Динамик","Включить звук"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),false);await page.waitForFunction(()=>window.micFrames>0&&window.playedPackets>0);
+  for(const label of ["Выключить микрофон","Аудиовыход"]) assert.equal(await dialog.getByRole("button",{name:label,exact:true}).isDisabled(),false);await page.waitForFunction(()=>window.micFrames>0&&window.playedPackets>0);
   assert.equal(await page.evaluate(()=>window.audioContexts.length),1);
   assert.equal(await page.evaluate(()=>window.audioContexts[0].state),"running");
   await page.evaluate(()=>window.audioContexts[0].suspend());
-  await dialog.getByRole("button",{name:"Включить звук",exact:true}).click();
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).click();
   await page.waitForFunction(()=>window.audioContexts[0].state==="running");
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).click();
   await dialog.getByRole("button",{name:"Выключить микрофон",exact:true}).click();
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks()[0].enabled),false);
   assert.equal(await dialog.getByRole("button",{name:"Включить микрофон",exact:true}).getAttribute("aria-pressed"),"true");
   await dialog.getByRole("button",{name:"Включить микрофон",exact:true}).click();
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks()[0].enabled),true);
-  await dialog.getByRole("button",{name:"Динамик",exact:true}).click();
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).click();
   await dialog.getByRole("combobox",{name:"Устройство вывода",exact:true}).selectOption("speaker");
-  await dialog.getByRole("button",{name:"Динамик",exact:true,pressed:true}).waitFor();
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true,pressed:true}).waitFor();
   assert.deepEqual(await page.evaluate(()=>window.mockSinks),["speaker"]);
-  await dialog.getByRole("button",{name:"Динамик",exact:true}).click();
-  await dialog.getByRole("button",{name:"Динамик",exact:true,pressed:false}).waitFor();
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).click();
+  await dialog.getByRole("combobox",{name:"Устройство вывода",exact:true}).selectOption("default");
+  await dialog.getByRole("button",{name:"Аудиовыход",exact:true,pressed:false}).waitFor();
   assert.deepEqual(await page.evaluate(()=>window.mockSinks),["speaker","default"]);
   await dialog.getByLabel("Длительность звонка",{exact:true}).waitFor();
   const box=await dialog.boundingBox();if(width<768){assert.equal(Math.round(box.width),width);assert.equal(Math.round(box.x),0);}
   await page.screenshot({path:`/tmp/ha-dialog-browser-calls-${width}.png`,fullPage:true});
   await dialog.getByRole("button",{name:"Положить трубку",exact:true}).click();await dialog.getByText("Готово к звонку",{exact:true}).waitFor();
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);
+  await page.evaluate(()=>{window.callState.incoming=[{id:"invitation",source_device_id:"a"}];window.publish();});
+  await dialog.getByText("Входящий звонок",{exact:true}).waitFor();
+  assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);
+  await dialog.getByRole("button",{name:"Ответить",exact:true}).click();
+  await dialog.getByText("Разговор",{exact:true}).waitFor();
+  assert.equal(await page.evaluate(()=>window.actions.at(-1).type),"ha_dialog_ui/calls/browser_accept");
+  await dialog.getByRole("button",{name:"Положить трубку",exact:true}).click();
+  await dialog.getByText("Готово к звонку",{exact:true}).waitFor();
   await page.evaluate(()=>{window.noSink=true;});
   await dialog.getByRole("button",{name:"Позвонить",exact:true}).click();await dialog.getByText("Ожидание ответа",{exact:true}).waitFor();
-  assert.equal(await dialog.getByRole("button",{name:"Динамик",exact:true}).isDisabled(),true);
+  assert.equal(await dialog.getByRole("button",{name:"Аудиовыход",exact:true}).isDisabled(),true);
   await dialog.getByRole("button",{name:"Закрыть",exact:true}).click();await dialog.waitFor({state:"hidden"});
   await page.waitForTimeout(80);await page.evaluate(()=>location.hash="/timer");await page.waitForFunction(()=>window.callState.calls.length===0);
   assert.equal(await page.evaluate(()=>window.lastMic.getAudioTracks().every(t=>t.readyState==="ended")),true);

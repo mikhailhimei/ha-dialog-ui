@@ -18,7 +18,7 @@ export async function exportData(api: TransferApi, kind: TransferKind) {
     const response = await api.getData("get_settings");
     const settings = object(response) && object(response.result) ? response.result : response;
     if (!object(settings)) throw new DataImportError("Файл не содержит корректные настройки.");
-    const keys = ["theme", "client_id", "is_admin", "active_remout", "api_commands_enabled", "api_commands_token", "remout", "timer_alarm"];
+    const keys = ["theme", "client_id", "is_admin", "active_remout", "api_commands_enabled", "api_commands_token", "call_music", "remout", "timer_alarm"];
     return Object.fromEntries(keys.filter(key => key in settings).map(key => [key, settings[key]]));
   }
   if (kind === "scenarios") return api.getData("export_command_bundle");
@@ -34,7 +34,7 @@ export function parseImport(text: string, kind: TransferKind) {
   let data: unknown;
   try { data = JSON.parse(text); } catch { throw new DataImportError("Некорректный JSON-файл."); }
   if (kind === "settings") {
-    const fields: Record<string, string> = { theme: "string", client_id: "string", is_admin: "boolean", active_remout: "boolean", api_commands_enabled: "boolean", api_commands_token: "string", remout: "object", timer_alarm: "object" };
+    const fields: Record<string, string> = { theme: "string", client_id: "string", is_admin: "boolean", active_remout: "boolean", api_commands_enabled: "boolean", api_commands_token: "string", call_music: "string", remout: "object", timer_alarm: "object" };
     if (!object(data) || !Object.keys(data).length || Object.keys(data).some(key => !fields[key] || typeof data[key] !== fields[key])) throw new DataImportError("Файл не содержит корректные настройки.");
     if (data.theme !== undefined && (typeof data.theme !== "string" || !["dark", "light"].includes(data.theme))) throw new DataImportError("Файл не содержит корректные настройки.");
     for (const [key, allowed] of [["remout", ["base_url", "token", "client_id"]], ["timer_alarm", ["global_music_timer", "global_music_alarm"]]] as const) {

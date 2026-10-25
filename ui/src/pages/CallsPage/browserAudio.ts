@@ -39,6 +39,11 @@ export class BrowserCallAudio {
     for (const track of this.stream?.getAudioTracks() ?? []) track.enabled = !muted;
   }
   getOutputDevices(): CallOutputDevice[] { return [...this.outputs]; }
+  async refreshOutputDevices() {
+    if (this.closed || !navigator.mediaDevices.enumerateDevices) return;
+    const devices = await navigator.mediaDevices.enumerateDevices().catch(() => []);
+    if (!this.closed) this.outputs = devices.filter(device => device.kind === "audiooutput" && device.deviceId).map(device => ({id: device.deviceId, label: device.label || device.deviceId}));
+  }
   canSelectOutput(): boolean {
     return typeof (this.context as OutputContext | undefined)?.setSinkId === "function" &&
       (typeof (navigator.mediaDevices as OutputDevices)?.selectAudioOutput === "function" || this.outputs.some(device => device.id !== "default"));
