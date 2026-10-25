@@ -1,4 +1,3 @@
-import { SelectInput } from "../../components/ui/Select/SelectInput";
 import { ApiError } from "../../components/ui/ApiError/ApiError";
 import { useApiFeedback } from "../../hooks/useApiFeedback";
 import { t } from "../../i18n";
@@ -180,11 +179,12 @@ export const SettingsPage = () => {
           <section className={styles.settingsSection} aria-label={t("Timer / Alarm")}><h2>{t("Timer / Alarm")}</h2>
             <TimerAlarmSettingsForm
               data={settingsData.timer_alarm}
+              callMusic={settingsData.call_music}
+              onCallMusicChange={call_music => setSettingsData(current => ({ ...current, call_music }))}
               musicOptions={musicOptions}
               musicUnavailable={musicFeedback.busy || Boolean(musicFeedback.error)}
               onChange={(timer_alarm) => setSettingsData({ ...settingsData, timer_alarm })}
             />
-            <SelectInput label="Мелодия звонка" value={settingsData.call_music ?? ""} disabled={musicFeedback.busy} onChange={event => setSettingsData(current => ({...current, call_music: event.target.value}))} options={[{value:"",label:t("Стандартная")},...musicOptions]} />
           </section>
 
         </div>
