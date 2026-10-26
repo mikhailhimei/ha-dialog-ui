@@ -88,3 +88,23 @@ async def test_stop_script_calls_only_target_speaker_native_action(speaker):
         "ha_dialog_ui", "activity_stop", {"device_id": device.id}, blocking=True
     )
     assert stopped == [{}]
+
+
+async def test_v2_alert_receives_alarm_type_and_is_preferred_over_v1(speaker):
+    hass, device, _, _, _ = speaker
+    old_commands, _ = await prepare(speaker)
+    typed_commands = []
+
+    async def start(call):
+        typed_commands.append(dict(call.data))
+
+    hass.services.async_register("esphome", "voice_alert_start_v2", start)
+    await audio_notification(
+        hass, device.id, DEFAULT_ALERT_MEDIA_ID, "0.3-0.7", alert_kind="alarm"
+    )
+    await audio_notification(hass, device.id, DEFAULT_ALERT_MEDIA_ID, "0.3-0.7")
+    assert typed_commands == [
+        {"url": "", "kind": "alarm"},
+        {"url": "", "kind": "timer"},
+    ]
+    assert old_commands == []

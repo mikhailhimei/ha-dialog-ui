@@ -175,7 +175,7 @@ async def _async_restore_volume_after_playback(
 
 
 async def audio_notification(
-    hass, device_id, audio_file, volume_level=None, wait_until_finished=False
+    hass, device_id, audio_file, volume_level=None, wait_until_finished=False, *, alert_kind="timer"
 ):
     audio_file = str(audio_file or "").strip()
     if not audio_file:
@@ -197,7 +197,7 @@ async def audio_notification(
             await media_source.async_resolve_media(hass, "media-source://media_source/local/timer-alarm.mp3", None)
         except media_source.Unresolvable:
             audio_file = DEFAULT_ALERT_MEDIA_ID
-    if await async_start_firmware_alert(hass, target, audio_file):
+    if await async_start_firmware_alert(hass, target, audio_file, kind=alert_kind):
         return
     if audio_file == DEFAULT_ALERT_MEDIA_ID:
         audio_url = get_url(hass, allow_external=False).rstrip("/") + DEFAULT_ALERT_PATH

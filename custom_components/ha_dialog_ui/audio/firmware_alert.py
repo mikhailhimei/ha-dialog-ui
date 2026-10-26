@@ -34,8 +34,9 @@ def native_service(hass, player, action):
     return None
 
 
-async def async_start(hass, player, audio_file):
-    service = native_service(hass, player, "alert_start")
+async def async_start(hass, player, audio_file, *, kind="timer"):
+    service_v2 = native_service(hass, player, "alert_start_v2")
+    service = service_v2 or native_service(hass, player, "alert_start")
     if not service:
         return False
     url = ""
@@ -60,5 +61,13 @@ async def async_start(hass, player, audio_file):
             _LOGGER.warning(
                 "Selected alert music is unavailable; using the speaker's embedded sound"
             )
-    await hass.services.async_call("esphome", service, {"url": url}, blocking=True)
+    await hass.services.async_call(
+        "esphome",
+        service,
+        {
+            "url": url,
+            **({"kind": "alarm" if kind == "alarm" else "timer"} if service_v2 else {}),
+        },
+        blocking=True,
+    )
     return True

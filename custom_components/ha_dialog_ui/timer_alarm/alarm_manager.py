@@ -384,7 +384,7 @@ class DialogAlarmManager:
 
     async def _run_alarm_action(self, alarm: dict[str, Any]) -> None:
         device_ref = _normalize_value(alarm.get("device_id"))
-        await audio_notification(self.hass, device_ref, self._default_media_content_id(), "0.3-0.7")
+        await audio_notification(self.hass, device_ref, self._default_media_content_id(), "0.3-0.7", alert_kind="alarm")
         await self._async_dispatch_alarm_worked(alarm)
         if _normalize_repeat_type(alarm.get("repeat_type")) == "once":
             alarm["status"] = "off"
