@@ -22,7 +22,7 @@ async def runtime():
 
     hass = SimpleNamespace(states=SimpleNamespace(get=lambda _: SimpleNamespace(state='playing', attributes={'volume_level': 0.5})),
                            services=SimpleNamespace(async_call=AsyncMock()), async_create_task=create_task)
-    with patch.object(module, '_resolve_media_player_entity_id', return_value=TARGET):
+    with patch.object(module, '_resolve_media_player_entity_id', return_value=TARGET), patch.object(module, 'async_start_firmware_alert', new_callable=AsyncMock, return_value=False):
         yield SimpleNamespace(hass=hass, tasks=tasks)
         for task in tasks:
             task.cancel()

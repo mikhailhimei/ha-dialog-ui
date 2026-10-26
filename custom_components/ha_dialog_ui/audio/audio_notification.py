@@ -10,6 +10,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.network import get_url
 
 from ..const import DEFAULT_ALERT_MEDIA_ID, DEFAULT_ALERT_PATH
+from .firmware_alert import async_start as async_start_firmware_alert
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -196,6 +197,8 @@ async def audio_notification(
             await media_source.async_resolve_media(hass, "media-source://media_source/local/timer-alarm.mp3", None)
         except media_source.Unresolvable:
             audio_file = DEFAULT_ALERT_MEDIA_ID
+    if await async_start_firmware_alert(hass, target, audio_file):
+        return
     if audio_file == DEFAULT_ALERT_MEDIA_ID:
         audio_url = get_url(hass, allow_external=False).rstrip("/") + DEFAULT_ALERT_PATH
     else:

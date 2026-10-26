@@ -81,6 +81,17 @@ def async_register_services(hass: HomeAssistant) -> None:
     async def async_handle_timer_delete(call: ServiceCall) -> dict[str, Any]:
         return await _async_handle_timer_alarm_action(hass, "timer", "delete", call)
 
+    async def stop_activity(call: ServiceCall) -> None:
+        from .audio.audio_notification import _resolve_media_player_entity_id
+        from .audio.firmware_alert import native_service
+
+        target = _resolve_media_player_entity_id(hass, call.data["device_id"])
+        service = native_service(hass, target, "activity_stop") if target else None
+        if not service:
+            raise HomeAssistantError("Для остановки сигнала и звонка обновите прошивку колонки")
+        await hass.services.async_call("esphome", service, {}, blocking=True)
+
+    hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
     if not hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_register(
             DOMAIN,
@@ -101,6 +112,7 @@ def async_unregister_services(hass: HomeAssistant) -> None:
     if hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_remove(DOMAIN, SERVICE_SEND_COMMAND)
     for service_name in (
+        "activity_stop",
         SERVICE_ALARM_CREATE,
         SERVICE_ALARM_INFO,
         SERVICE_ALARM_DELETE,

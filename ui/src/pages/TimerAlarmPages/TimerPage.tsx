@@ -41,7 +41,6 @@ export const TimerPage = () => {
   const { feedback, createTimer, devices, loading, stopTimer, timers, toTimerSeconds } = useTimerAlarmRequests();
   const [modalOpen, setModalOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
-  const [volumeStart, setVolumeStart] = useState(0.3);
   const [duration, setDuration] = useState({ hours: 0, minutes: 5, seconds: 0 });
   const [remainingById, setRemainingById] = useState<Record<string, number>>({});
 
@@ -63,7 +62,7 @@ export const TimerPage = () => {
   const submit = async () => {
     if (!deviceId) return;
 
-    if (!await createTimer(deviceId, totalSeconds, volumeStart)) return;
+    if (!await createTimer(deviceId, totalSeconds, 0.3)) return;
     setModalOpen(false);
   };
 
@@ -156,7 +155,6 @@ export const TimerPage = () => {
               options={devices.map(device => ({value: device.id, label: device.name}))}
               onSelect={setDeviceId}
             />
-            <label className={pageStyles.field}><span className={`${pageStyles.label} ${pageStyles.volumeLabel}`}>{t("Стартовая громкость")} <span className={pageStyles.volumeValue}>{Math.round(volumeStart * 100)}%</span></span><input className={pageStyles.input} type="range" min="0" max="1" step="0.05" value={volumeStart} onChange={(event) => setVolumeStart(Number(event.target.value))} /></label>
           </div>
         </Modal>
 
