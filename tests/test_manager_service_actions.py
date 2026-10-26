@@ -5,10 +5,10 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 import pytest
-
-from custom_components.ha_dialog_ui.timer_alarm import manager as module
 from test_manager_restore import restoration
 from test_timer_runtime import runtime
+
+from custom_components.ha_dialog_ui.timer_alarm import manager as module
 
 
 @pytest.mark.parametrize(('now', 'config', 'expected'), [
@@ -74,4 +74,4 @@ def test_media_selection_uses_each_kinds_sound(restoration, kind, expected):
 
 def test_missing_entry_uses_default_sound(restoration):
     with patch.object(module, 'get_integration_entry', return_value=None):
-        assert restoration.manager._media_content_id_for('timer') == 'timer-alarm.mp3'
+        assert restoration.manager._media_content_id_for('timer') == module._FALLBACK_TIMER_MEDIA_CONTENT_ID

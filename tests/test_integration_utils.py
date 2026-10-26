@@ -5,9 +5,12 @@ from unittest.mock import Mock
 
 import pytest
 
-from custom_components.ha_dialog_ui.integration_helpers import get_integration_entry, get_timer_alarm_manager
+from custom_components.ha_dialog_ui.const import DEFAULT_ALERT_MEDIA_ID, DOMAIN
+from custom_components.ha_dialog_ui.integration_helpers import (
+    get_integration_entry,
+    get_timer_alarm_manager,
+)
 from custom_components.ha_dialog_ui.runtime_options import build_runtime_options
-from custom_components.ha_dialog_ui.const import DOMAIN
 
 
 def test_entry_lookup_keeps_first_entry_convention():
@@ -40,8 +43,8 @@ def test_default_options_preserve_stored_timer_data():
     result = build_runtime_options(SimpleNamespace(options=options))
     assert result['base_url'] == ''
     assert result['external_event_bridge_enabled'] is False
-    assert result['timer_alarm_media_content_id'] == 'timer-alarm.mp3'
-    assert result['timer_music'] == result['alarm_music'] == 'timer-alarm.mp3'
+    assert result['timer_alarm_media_content_id'] == DEFAULT_ALERT_MEDIA_ID
+    assert result['timer_music'] == result['alarm_music'] == DEFAULT_ALERT_MEDIA_ID
     assert result['timer_alarm_device_ids'] == ['device', 'device']
     assert result['timer_alarm_items'] == [{'id': 'timer'}]
     result['timer_alarm_items'].append({'id': 'new'})
@@ -69,7 +72,8 @@ def test_options_use_settings_without_mutating_them(remote_enabled):
     assert settings == before
 
 
-def test_alarm_music_is_the_fallback_for_timer_music():
+def test_alarm_music_does_not_replace_default_timer_sound():
     result = build_runtime_options(SimpleNamespace(options={}), {
         'timer_alarm': {'global_music_alarm': 'alarm.mp3'}})
-    assert result['timer_music'] == result['alarm_music'] == 'alarm.mp3'
+    assert result['timer_music'] == DEFAULT_ALERT_MEDIA_ID
+    assert result['alarm_music'] == 'alarm.mp3'

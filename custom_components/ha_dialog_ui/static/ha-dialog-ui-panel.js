@@ -12228,7 +12228,7 @@ const sw = "_form_1ijxr_1", ow = "_field_1ijxr_7", iw = "_input_1ijxr_13", aw = 
       ...r,
       [g]: w
     });
-  }, m = (g, w, y = "", x = "Не выбрано") => {
+  }, m = (g, w, y = "", x = "Стандартная") => {
     const k = a.some((C) => C.value === y);
     return /* @__PURE__ */ i.jsxs("label", { className: ct.field, children: [
       /* @__PURE__ */ i.jsx("span", { className: ct.label, children: _(g) }),

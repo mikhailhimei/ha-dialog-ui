@@ -20,8 +20,8 @@ SETTINGS_FALLBACKS: dict[str, Any] = {
         "token": "",
     },
     "timer_alarm": {
-        "global_music_timer": "timer-alarm.mp3",
-        "global_music_alarm": "timer-alarm.mp3",
+        "global_music_timer": "",
+        "global_music_alarm": "",
     },
     "call_music": "",
     "client_id": "",

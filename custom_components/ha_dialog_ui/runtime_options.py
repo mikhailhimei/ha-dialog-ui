@@ -4,9 +4,10 @@ from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 
+from .const import DEFAULT_ALERT_MEDIA_ID
 from .dialog.normalize import _normalize_device_ids, _normalize_value
 
-_FALLBACK_TIMER_MEDIA_CONTENT_ID = "timer-alarm.mp3"
+_FALLBACK_TIMER_MEDIA_CONTENT_ID = DEFAULT_ALERT_MEDIA_ID
 
 
 def build_runtime_options(entry: ConfigEntry, settings: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -32,7 +33,7 @@ def build_runtime_options(entry: ConfigEntry, settings: dict[str, Any] | None = 
         "timer_alarm_presets": list(stored_options.get("timer_alarm_presets", [])),
         "timer_alarm_device_ids": _normalize_device_ids(stored_options.get("timer_alarm_device_ids", [])),
         "timer_alarm_media_content_id": default_music,
-        "timer_music": timer_music or default_music,
-        "alarm_music": alarm_music or default_music,
+        "timer_music": timer_music or _FALLBACK_TIMER_MEDIA_CONTENT_ID,
+        "alarm_music": alarm_music or _FALLBACK_TIMER_MEDIA_CONTENT_ID,
     }
 
