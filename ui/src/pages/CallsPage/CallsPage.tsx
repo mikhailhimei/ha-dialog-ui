@@ -14,6 +14,7 @@ import { formatApiError } from "../../utils/apiErrors";
 import { createMonitorViewId } from "../../utils/monitorViewId";
 import type { CallsState } from "../../types/calls";
 import { BrowserCallAudio, microphoneAvailable, microphoneError, type CallOutputDevice } from "./browserAudio";
+import layout from "../GlobalsPage.module.scss";
 import styles from "./CallsPage.module.scss";
 
 export function CallsPage() {
@@ -147,8 +148,9 @@ export function CallsPage() {
   };
   const help = "Вы звоните с микрофона этого телефона или компьютера. Закрытие окна сохраняет звонок; выход из раздела или закрытие страницы завершает звонок с этого устройства. Звонки между колонками запускаются сценариями HA.";
   return <>
-    <div className={styles.navigation}><NavigationTabs /></div>
     {mobile && <MobileHeader title="Звонки" />}
+    <div className={layout.page}>
+    <NavigationTabs />
     <section className={styles.page}>
       <h1 className={styles.title}>{t("Звонки")}</h1>
       {error && !target && <p role="alert">{error}</p>}
@@ -201,5 +203,6 @@ export function CallsPage() {
         {own && !selectedOwn && <p className={styles.hint}>{t("Сначала завершите текущий звонок.")}</p>}
       </Modal>
     </section>
+    </div>
   </>;
 }

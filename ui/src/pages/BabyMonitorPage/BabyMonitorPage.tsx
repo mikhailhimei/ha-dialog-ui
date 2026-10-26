@@ -14,6 +14,7 @@ import { t } from "../../i18n";
 import type { MonitorDevice, MonitorState } from "../../types/monitor";
 import { MonitorAudio } from "./audio";
 import { createMonitorViewId } from "../../utils/monitorViewId";
+import layout from "../GlobalsPage.module.scss";
 import styles from "./BabyMonitorPage.module.scss";
 
 export function BabyMonitorPage() {
@@ -294,8 +295,9 @@ export function BabyMonitorPage() {
 
   return (
     <>
-      <div className={styles.navigation}><NavigationTabs /></div>
       {mobile && <MobileHeader title="Радионяня" />}
+      <div className={layout.page}>
+      <NavigationTabs />
       <section className={styles.page}>
       <header className={styles.heading}>
         <Baby size={30} />
@@ -377,6 +379,7 @@ export function BabyMonitorPage() {
         {controls}
       </Modal>
       </section>
+      </div>
     </>
   );
 }
