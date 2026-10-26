@@ -88,7 +88,7 @@ def async_register_services(hass: HomeAssistant) -> None:
         target = _resolve_media_player_entity_id(hass, call.data["device_id"])
         service = native_service(hass, target, "activity_stop") if target else None
         if not service:
-            raise HomeAssistantError("Для остановки сигнала и звонка обновите прошивку колонки")
+            raise HomeAssistantError("Для остановки сигнала обновите прошивку колонки")
         await hass.services.async_call("esphome", service, {}, blocking=True)
 
     hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
