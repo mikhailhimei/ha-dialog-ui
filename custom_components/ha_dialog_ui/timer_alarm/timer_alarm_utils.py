@@ -10,10 +10,11 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.util import dt as dt_util
 
+from ..const import DEFAULT_ALERT_MEDIA_ID
 from ..dialog.normalize import _normalize_device_ids, _normalize_value
 
 _LOGGER = logging.getLogger(__name__)
-_FALLBACK_TIMER_MEDIA_CONTENT_ID = "timer-alarm.mp3"
+_FALLBACK_TIMER_MEDIA_CONTENT_ID = DEFAULT_ALERT_MEDIA_ID
 _TIMER_PREFIX = "ha_timer:"
 _ALARM_PREFIX = "ha_alarm:"
 

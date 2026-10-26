@@ -537,7 +537,7 @@ try {
   await panel.getByRole('button',{name:'✕',exact:true}).click();
   await page.waitForFunction(()=>!history.state?.dialogCustomUiOverlay);
   assert.equal(await page.evaluate(()=>location.hash),'#/timer');
-  console.log('Checking alarm time fields, repeat dropdown, history and inline volume');
+  console.log('Checking alarm time fields, repeat dropdown, history and fixed alert volume');
   await page.evaluate(()=>{
     window.hass.states['media_player.test']={entity_id:'media_player.test',state:'idle',attributes:{friendly_name:'Тестовая колонка'}};
     location.hash='/timer';
@@ -571,14 +571,13 @@ try {
     const bounds=await fields.boundingBox();
     assert(bounds.x>=0 && bounds.x+bounds.width<=width, 'Alarm time fields fit viewport');
     await panel.getByLabel('Устройство воспроизведения',{exact:true}).selectOption('media_player.test');
-    await panel.getByRole('slider').press('End');
-    await panel.getByText('Стартовая громкость 100%',{exact:true}).waitFor();
+    assert.equal(await panel.getByRole('slider').count(),0);
     if(width===390) await page.screenshot({path:'/tmp/alarm-new-form.png'});
     await panel.getByRole('button',{name:'Сохранить',exact:true}).click();
     await panel.getByRole('heading',{name:'Создать будильник',exact:true}).waitFor({state:'hidden'});
     const saved=await page.evaluate(()=>window.createdAlarm);
     assert.equal(saved.time,'08:15');
-    assert.equal(saved.volume_start,1);
+    assert.equal(saved.volume_start,0.3);
     assert.equal(saved.repeat_type,'custom');
     assert.deepEqual(saved.repeat_days,['mon','fri']);
     await createButton.click();
@@ -831,6 +830,8 @@ try {
     assert.deepEqual(createdTemplate.subDirectControl,[]);
     assert.equal(createdTemplate.status,true);
     assert.equal('directTemplate' in createdTemplate,false);
+    await panel.getByRole('dialog').waitFor({state:'hidden'});
+    await page.waitForFunction(()=>!history.state?.dialogCustomUiOverlay);
     await page.evaluate(()=>{window.createdTemplate=null});
 
     assert.equal(await page.evaluate(() => window.apiRequests.includes('ha_dialog_ui/update_assistant_sub_direct_control')), false);

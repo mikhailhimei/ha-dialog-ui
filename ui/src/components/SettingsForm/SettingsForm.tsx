@@ -59,7 +59,7 @@ export const TimerAlarmSettingsForm = ({ data, musicOptions, musicUnavailable, o
     label: string,
     change: (value: string) => void,
     value = "",
-    emptyLabel = "Не выбрано",
+    emptyLabel = "Стандартная",
   ) => {
     const hasCurrentOption = musicOptions.some((option) => option.value === value);
 

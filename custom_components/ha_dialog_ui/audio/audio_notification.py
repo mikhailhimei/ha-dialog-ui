@@ -3,7 +3,14 @@
 import asyncio
 import logging
 from typing import Any
-from homeassistant.helpers import device_registry as dr, entity_registry as er
+
+from homeassistant.components import media_source
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.network import get_url
+
+from ..const import DEFAULT_ALERT_MEDIA_ID, DEFAULT_ALERT_PATH
+from .firmware_alert import async_start as async_start_firmware_alert
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -168,17 +175,12 @@ async def _async_restore_volume_after_playback(
 
 
 async def audio_notification(
-    hass, device_id, audio_file, volume_level=None, wait_until_finished=False
+    hass, device_id, audio_file, volume_level=None, wait_until_finished=False, *, alert_kind="timer"
 ):
     audio_file = str(audio_file or "").strip()
     if not audio_file:
         _LOGGER.error("No audio file provided for notification playback")
         return
-    audio_url = (
-        audio_file
-        if audio_file.startswith(("media-source://", "https://", "http://"))
-        else f"media-source://media_source/local/{audio_file}"
-    )
     if not device_id:
         _LOGGER.error("No device_id/entity_id provided for notification playback")
         return
@@ -187,6 +189,24 @@ async def audio_notification(
     if not target:
         _LOGGER.error("Cannot play notification for device_id/entity_id: %s (see resolution warning)", device_id)
         return
+
+    if audio_file in ("timer-alarm.mp3", "media-source://media_source/local/timer-alarm.mp3"):
+        # Old installations used this filename as a placeholder. Keep real custom
+        # files intact, but supply the bundled sound when the placeholder is absent.
+        try:
+            await media_source.async_resolve_media(hass, "media-source://media_source/local/timer-alarm.mp3", None)
+        except media_source.Unresolvable:
+            audio_file = DEFAULT_ALERT_MEDIA_ID
+    if await async_start_firmware_alert(hass, target, audio_file, kind=alert_kind):
+        return
+    if audio_file == DEFAULT_ALERT_MEDIA_ID:
+        audio_url = get_url(hass, allow_external=False).rstrip("/") + DEFAULT_ALERT_PATH
+    else:
+        audio_url = (
+            audio_file
+            if audio_file.startswith(("media-source://", "https://", "http://"))
+            else f"media-source://media_source/local/{audio_file}"
+        )
 
     is_volume_range = isinstance(volume_level, str) and "-" in volume_level
     range_start = None

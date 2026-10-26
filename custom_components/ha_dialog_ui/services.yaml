@@ -327,3 +327,14 @@ call_phone:
           min: 10
           max: 300
           unit_of_measurement: s
+
+activity_stop:
+  name: Остановить сигнал таймера или будильника
+  description: Остановить звучащий будильник или таймер на совместимой колонке. Звонки и сохранённое расписание не затрагиваются.
+  fields:
+    device_id:
+      name: Колонка
+      required: true
+      selector:
+        device:
+          integration: esphome

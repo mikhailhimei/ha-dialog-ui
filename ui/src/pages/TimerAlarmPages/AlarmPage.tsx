@@ -49,7 +49,6 @@ export const AlarmPage = () => {
   const [editingAlarmId, setEditingAlarmId] = useState<string | null>(null);
   const [deviceId, setDeviceId] = useState("");
   const [time, setTime] = useState("08:00");
-  const [volumeStart, setVolumeStart] = useState(0.3);
   const [repeat, setRepeat] = useState<AlarmRepeat>("once");
   const [repeatDays, setRepeatDays] = useState<string[]>([]);
 
@@ -62,9 +61,9 @@ export const AlarmPage = () => {
 
     const editingAlarm = alarms.find((alarm) => alarm.uuid === editingAlarmId);
     if (editingAlarm) {
-      if (!await updateAlarm(editingAlarm, { device_id: deviceId, time, volume_start: volumeStart, repeat_type: repeat, repeat_days: repeatDays })) return;
+      if (!await updateAlarm(editingAlarm, { device_id: deviceId, time, volume_start: 0.3, repeat_type: repeat, repeat_days: repeatDays })) return;
     } else {
-      if (!await createAlarm(deviceId, time, volumeStart, repeat, repeatDays)) return;
+      if (!await createAlarm(deviceId, time, 0.3, repeat, repeatDays)) return;
     }
     setEditingAlarmId(null);
     setModalOpen(false);
@@ -79,7 +78,6 @@ export const AlarmPage = () => {
   const handleOpenEditModal = (command: AlarmRequest) => {
     setTime(command.time);
     setDeviceId(command.device_id);
-    setVolumeStart(command.volume_start ?? 0.3);
     setRepeat(command.repeat_type ?? "once");
     setRepeatDays(command.repeat_days ?? []);
     void refreshAlarmTimes();
@@ -166,7 +164,6 @@ export const AlarmPage = () => {
               options={devices.map(device => ({value: device.id, label: device.name}))}
               onSelect={setDeviceId}
             />
-            <label className={pageStyles.field}><span className={`${pageStyles.label} ${pageStyles.volumeLabel}`}>{t("Стартовая громкость")} <span className={pageStyles.volumeValue}>{Math.round(volumeStart * 100)}%</span></span><input className={pageStyles.input} type="range" min="0" max="1" step="0.05" value={volumeStart} onChange={(event) => setVolumeStart(Number(event.target.value))} /></label>
           </div>
         </Modal>
 

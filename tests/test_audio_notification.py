@@ -3,12 +3,16 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.exceptions import HomeAssistantError
-
-from custom_components.ha_dialog_ui.audio.audio_notification import _resolve_media_player_entity_id, audio_notification
-from custom_components.ha_dialog_ui import services
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
 from test_timer_runtime import config_entry, runtime
+
+from custom_components.ha_dialog_ui import services
+from custom_components.ha_dialog_ui.audio.audio_notification import (
+    _resolve_media_player_entity_id,
+    audio_notification,
+)
 
 
 @pytest.fixture
@@ -81,11 +85,11 @@ async def test_notification_calls_real_service_for_resolved_player(speaker):
     async def play(call):
         calls.append(call.data)
     hass.services.async_register("media_player", "play_media", play)
-    await audio_notification(hass, device.id, "timer-alarm.mp3")
+    await audio_notification(hass, device.id, "custom-timer.mp3")
     await hass.async_block_till_done()
     assert len(calls) == 1
     assert calls[0]["entity_id"] == player.entity_id
-    assert calls[0]["media_content_id"] == "media-source://media_source/local/timer-alarm.mp3"
+    assert calls[0]["media_content_id"] == "media-source://media_source/local/custom-timer.mp3"
 
 
 @pytest.mark.asyncio
@@ -163,8 +167,11 @@ async def test_playback_error_is_reported_with_target_and_file(speaker, caplog):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("use_entity", [False, True])
 async def test_sensors_publish_object_records_with_media_client_and_device(speaker, runtime, use_entity, caplog):
-    from custom_components.ha_dialog_ui.sensor import DialogTimersSensor, DialogAlarmSensor
     from custom_components.ha_dialog_ui.const import DOMAIN
+    from custom_components.ha_dialog_ui.sensor import (
+        DialogAlarmSensor,
+        DialogTimersSensor,
+    )
     hass, device, player, _, _ = speaker
     _, timers = runtime
     entry = config_entry()
@@ -187,3 +194,31 @@ async def test_sensors_publish_object_records_with_media_client_and_device(speak
     assert alarm_sensor.native_value == "on"
     assert alarm_sensor.extra_state_attributes["active_count"] == 1
     assert "does not resolve" not in caplog.text
+
+
+@pytest.mark.asyncio
+async def test_bundled_default_sound_uses_internal_ha_url(speaker):
+    from custom_components.ha_dialog_ui.audio import audio_notification as module
+    from custom_components.ha_dialog_ui.const import (
+        DEFAULT_ALERT_MEDIA_ID,
+        DEFAULT_ALERT_PATH,
+    )
+    hass, device, player, _, _ = speaker
+    with patch.object(module, "get_url", return_value="http://ha.local:8123") as url, patch.object(type(hass.services), "async_call", new_callable=AsyncMock) as service:
+        await module.audio_notification(hass, device.id, DEFAULT_ALERT_MEDIA_ID)
+        assert service.call_args.args[2]["media_content_id"] == "http://ha.local:8123" + DEFAULT_ALERT_PATH
+        url.assert_called_once_with(hass, allow_external=False)
+
+
+@pytest.mark.asyncio
+async def test_missing_legacy_default_falls_back_but_existing_file_is_preserved(speaker):
+    from homeassistant.components.media_source import Unresolvable
+
+    from custom_components.ha_dialog_ui.audio import audio_notification as module
+    from custom_components.ha_dialog_ui.const import DEFAULT_ALERT_PATH
+    hass, device, _, _, _ = speaker
+    for exists in (False, True):
+        with patch.object(module.media_source, "async_resolve_media", new_callable=AsyncMock, side_effect=None if exists else Unresolvable("missing")), patch.object(module, "get_url", return_value="http://ha.local:8123"), patch.object(type(hass.services), "async_call", new_callable=AsyncMock) as service:
+            await module.audio_notification(hass, device.id, "timer-alarm.mp3")
+            expected = "media-source://media_source/local/timer-alarm.mp3" if exists else "http://ha.local:8123" + DEFAULT_ALERT_PATH
+            assert service.call_args.args[2]["media_content_id"] == expected

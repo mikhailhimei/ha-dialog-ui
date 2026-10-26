@@ -1,6 +1,8 @@
 """Constants for Dialog Custom UI."""
 
 DOMAIN = "ha_dialog_ui"
+DEFAULT_ALERT_MEDIA_ID = "ha-dialog-ui://default-alert"
+DEFAULT_ALERT_PATH = "/ha_dialog_ui_static/sounds/default-alert.wav"
 SIGNAL_TIMER_ALARM_UPDATED = f"{DOMAIN}_timer_alarm_updated"
 PANEL_URL_PATH = "ha-dialog-ui"
 PANEL_TITLE = "Диалог"
