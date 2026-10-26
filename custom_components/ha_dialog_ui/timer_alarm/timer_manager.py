@@ -4,6 +4,7 @@ import asyncio
 import math
 import uuid
 from datetime import datetime
+from time import monotonic
 from typing import Any, Callable
 
 from homeassistant.core import HomeAssistant
@@ -203,11 +204,11 @@ class DialogTimerManager:
         items: list[dict[str, Any]] = []
         for timer_id, entry in self._timers.items():
             total_seconds = _safe_int(entry.get("total_seconds"))
-            remaining_seconds = _safe_int(entry.get("remaining_seconds"))
+            remaining = self._remaining(entry)
+            remaining_seconds = math.ceil(remaining)
             paused = bool(entry.get("paused"))
-            ends_at = float(entry.get("ends_at") or (now_ts + remaining_seconds))
-            if not paused:
-                remaining_seconds = max(0, math.ceil(ends_at - now_ts))
+            # Persist a wall-clock projection, never use it for a live countdown.
+            ends_at = now_ts + remaining
             items.append(
                 {
                     "id": timer_id,
@@ -312,7 +313,7 @@ class DialogTimerManager:
                 client_id=client_id,
                 device_id=device_id,
                 total_seconds=total,
-                remaining_seconds=remaining,
+                remaining_seconds=min(total, remaining),
                 paused=paused,
                 created_at=time_data.get("created_at"),
             )
@@ -331,7 +332,7 @@ class DialogTimerManager:
         created_at: float | None = None,
         remaining_seconds: int | None = None,
     ) -> None:
-        remaining = total_seconds if remaining_seconds is None else remaining_seconds
+        remaining = min(total_seconds, total_seconds if remaining_seconds is None else remaining_seconds)
         entry: dict[str, Any] = {
             "id": timer_id,
             "client_id": client_id,
@@ -348,10 +349,22 @@ class DialogTimerManager:
             self._schedule_timer(entry)
         self._mark_updated()
 
+    def _remaining(self, entry: dict[str, Any]) -> float:
+        """One countdown source for display, pause and the firing task."""
+        total = max(1, _safe_int(entry.get("total_seconds")))
+        if entry.get("paused"):
+            value = float(entry.get("remaining_seconds") or 0)
+        elif "deadline_monotonic" in entry:
+            value = float(entry["deadline_monotonic"]) - monotonic()
+        else:
+            value = float(entry.get("ends_at") or 0) - datetime.now().timestamp()
+        return max(0.0, min(float(total), value))
+
     def _schedule_timer(self, entry: dict[str, Any]) -> None:
         self._cancel_timer_task(entry)
-        remaining = max(1, _safe_int(entry.get("remaining_seconds")))
+        remaining = max(0.0, min(float(entry["total_seconds"]), float(entry.get("remaining_seconds") or 0)))
         entry["remaining_seconds"] = remaining
+        entry["deadline_monotonic"] = monotonic() + remaining
         entry["ends_at"] = datetime.now().timestamp() + remaining
         entry["paused"] = False
         timer_id = _normalize_value(entry.get("id"))
@@ -364,8 +377,7 @@ class DialogTimerManager:
         entry = self._timers.get(_normalize_value(timer_id))
         if entry is None or bool(entry.get("paused")):
             return
-        ends_at = float(entry.get("ends_at") or datetime.now().timestamp())
-        entry["remaining_seconds"] = max(0, math.ceil(ends_at - datetime.now().timestamp()))
+        entry["remaining_seconds"] = self._remaining(entry)
         entry["paused"] = True
         self._cancel_timer_task(entry)
         self._mark_updated()
@@ -389,8 +401,8 @@ class DialogTimerManager:
             return
         current_task = asyncio.current_task()
         try:
-            await asyncio.sleep(max(1, _safe_int(timer_entry.get("remaining_seconds"))))
-            if self._timers.get(timer_id) is not timer_entry:
+            await asyncio.sleep(self._remaining(timer_entry))
+            if self._timers.get(timer_id) is not timer_entry or timer_entry.get("task") is not current_task:
                 return
             if current_task is not None:
                 self._notification_tasks.add(current_task)
@@ -443,14 +455,10 @@ class DialogTimerManager:
         if not timers:
             return False, "Активных таймеров нет."
         lines: list[str] = []
-        now_ts = datetime.now().timestamp()
         count = len(timers) != 1
         for index, item in enumerate(timers, start=1):
             total_seconds = max(1, _safe_int(item.get("total_seconds")))
-            remaining = max(0, _safe_int(item.get("remaining_seconds")))
-            if not bool(item.get("paused")):
-                ends_at = float(item.get("ends_at") or now_ts)
-                remaining = max(0, math.ceil(ends_at - now_ts))
+            remaining = math.ceil(self._remaining(item))
             number = f"{index}. на {_seconds_to_minute_phrase(total_seconds)} осталось"
             lines.append(f"{number if count else ''} {_seconds_to_minute_phrase(max(1, remaining))}")
         return count, "\n".join(lines)

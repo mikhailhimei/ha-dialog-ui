@@ -45,7 +45,7 @@ function Tm() {
   }
   var P = F.prototype = new A();
   P.constructor = F, b(P, N.prototype), P.isPureReactComponent = !0;
-  var M = Array.isArray, W = Object.prototype.hasOwnProperty, z = { current: null }, X = { key: !0, ref: !0, __self: !0, __source: !0 };
+  var M = Array.isArray, W = Object.prototype.hasOwnProperty, H = { current: null }, X = { key: !0, ref: !0, __self: !0, __source: !0 };
   function V(E, O, ie) {
     var oe, ge = {}, ke = null, Ne = null;
     if (O != null) for (oe in O.ref !== void 0 && (Ne = O.ref), O.key !== void 0 && (ke = "" + O.key), O) W.call(O, oe) && !X.hasOwnProperty(oe) && (ge[oe] = O[oe]);
@@ -56,7 +56,7 @@ function Tm() {
       ge.children = Ae;
     }
     if (E && E.defaultProps) for (oe in Ce = E.defaultProps, Ce) ge[oe] === void 0 && (ge[oe] = Ce[oe]);
-    return { $$typeof: r, type: E, key: ke, ref: Ne, props: ge, _owner: z.current };
+    return { $$typeof: r, type: E, key: ke, ref: Ne, props: ge, _owner: H.current };
   }
   function G(E, O) {
     return { $$typeof: r, type: E.type, key: O, ref: E.ref, props: E.props, _owner: E._owner };
@@ -103,7 +103,7 @@ function Tm() {
     else if (ke === "object") throw O = String(E), Error("Objects are not valid as a React child (found: " + (O === "[object Object]" ? "object with keys {" + Object.keys(E).join(", ") + "}" : O) + "). If you meant to render a collection of children, use an array instead.");
     return Ne;
   }
-  function H(E, O, ie) {
+  function z(E, O, ie) {
     if (E == null) return E;
     var oe = [], ge = 0;
     return we(E, oe, "", "", function(ke) {
@@ -122,21 +122,21 @@ function Tm() {
     if (E._status === 1) return E._result.default;
     throw E._result;
   }
-  var de = { current: null }, $ = { transition: null }, K = { ReactCurrentDispatcher: de, ReactCurrentBatchConfig: $, ReactCurrentOwner: z };
+  var de = { current: null }, $ = { transition: null }, K = { ReactCurrentDispatcher: de, ReactCurrentBatchConfig: $, ReactCurrentOwner: H };
   function B() {
     throw Error("act(...) is not supported in production builds of React.");
   }
-  return Se.Children = { map: H, forEach: function(E, O, ie) {
-    H(E, function() {
+  return Se.Children = { map: z, forEach: function(E, O, ie) {
+    z(E, function() {
       O.apply(this, arguments);
     }, ie);
   }, count: function(E) {
     var O = 0;
-    return H(E, function() {
+    return z(E, function() {
       O++;
     }), O;
   }, toArray: function(E) {
-    return H(E, function(O) {
+    return z(E, function(O) {
       return O;
     }) || [];
   }, only: function(E) {
@@ -146,7 +146,7 @@ function Tm() {
     if (E == null) throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + E + ".");
     var oe = b({}, E.props), ge = E.key, ke = E.ref, Ne = E._owner;
     if (O != null) {
-      if (O.ref !== void 0 && (ke = O.ref, Ne = z.current), O.key !== void 0 && (ge = "" + O.key), E.type && E.type.defaultProps) var Ce = E.type.defaultProps;
+      if (O.ref !== void 0 && (ke = O.ref, Ne = H.current), O.key !== void 0 && (ge = "" + O.key), E.type && E.type.defaultProps) var Ce = E.type.defaultProps;
       for (Ae in O) W.call(O, Ae) && !X.hasOwnProperty(Ae) && (oe[Ae] = O[Ae] === void 0 && Ce !== void 0 ? Ce[Ae] : O[Ae]);
     }
     var Ae = arguments.length - 2;
@@ -336,7 +336,7 @@ function Am() {
         x = null, k = B, C = !1;
       }
     }
-    var z = !1, X = null, V = -1, G = 5, xe = -1;
+    var H = !1, X = null, V = -1, G = 5, xe = -1;
     function fe() {
       return !(r.unstable_now() - xe < G);
     }
@@ -348,24 +348,24 @@ function Am() {
         try {
           K = X(!0, $);
         } finally {
-          K ? me() : (z = !1, X = null);
+          K ? me() : (H = !1, X = null);
         }
-      } else z = !1;
+      } else H = !1;
     }
     var me;
     if (typeof F == "function") me = function() {
       F(he);
     };
     else if (typeof MessageChannel < "u") {
-      var we = new MessageChannel(), H = we.port2;
+      var we = new MessageChannel(), z = we.port2;
       we.port1.onmessage = he, me = function() {
-        H.postMessage(null);
+        z.postMessage(null);
       };
     } else me = function() {
       N(he, 0);
     };
     function le($) {
-      X = $, z || (z = !0, me());
+      X = $, H || (H = !0, me());
     }
     function de($, K) {
       V = N(function() {
@@ -561,7 +561,7 @@ function $m() {
     var l = N.hasOwnProperty(t) ? N[t] : null;
     (l !== null ? l.type !== 0 : s || !(2 < t.length) || t[0] !== "o" && t[0] !== "O" || t[1] !== "n" && t[1] !== "N") && (b(t, n, l, s) && (n = null), s || l === null ? k(t) && (n === null ? e.removeAttribute(t) : e.setAttribute(t, "" + n)) : l.mustUseProperty ? e[l.propertyName] = n === null ? l.type === 3 ? !1 : "" : n : (t = l.attributeName, s = l.attributeNamespace, n === null ? e.removeAttribute(t) : (l = l.type, n = l === 3 || l === 4 && n === !0 ? "" : "" + n, s ? e.setAttributeNS(s, t, n) : e.setAttribute(t, n))));
   }
-  var M = r.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, W = Symbol.for("react.element"), z = Symbol.for("react.portal"), X = Symbol.for("react.fragment"), V = Symbol.for("react.strict_mode"), G = Symbol.for("react.profiler"), xe = Symbol.for("react.provider"), fe = Symbol.for("react.context"), he = Symbol.for("react.forward_ref"), me = Symbol.for("react.suspense"), we = Symbol.for("react.suspense_list"), H = Symbol.for("react.memo"), le = Symbol.for("react.lazy"), de = Symbol.for("react.offscreen"), $ = Symbol.iterator;
+  var M = r.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, W = Symbol.for("react.element"), H = Symbol.for("react.portal"), X = Symbol.for("react.fragment"), V = Symbol.for("react.strict_mode"), G = Symbol.for("react.profiler"), xe = Symbol.for("react.provider"), fe = Symbol.for("react.context"), he = Symbol.for("react.forward_ref"), me = Symbol.for("react.suspense"), we = Symbol.for("react.suspense_list"), z = Symbol.for("react.memo"), le = Symbol.for("react.lazy"), de = Symbol.for("react.offscreen"), $ = Symbol.iterator;
   function K(e) {
     return e === null || typeof e != "object" ? null : (e = $ && e[$] || e["@@iterator"], typeof e == "function" ? e : null);
   }
@@ -661,7 +661,7 @@ function $m() {
     switch (e) {
       case X:
         return "Fragment";
-      case z:
+      case H:
         return "Portal";
       case G:
         return "Profiler";
@@ -680,7 +680,7 @@ function $m() {
       case he:
         var t = e.render;
         return e = e.displayName, e || (e = t.displayName || t.name || "", e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef"), e;
-      case H:
+      case z:
         return t = e.displayName || null, t !== null ? t : ke(e.type) || "Memo";
       case le:
         t = e._payload, e = e._init;
@@ -2512,7 +2512,7 @@ function $m() {
         switch (R.$$typeof) {
           case W:
             return L = Qo(R.type, R.key, R.props, null, I.mode, L), L.ref = ws(I, null, R), L.return = I, L;
-          case z:
+          case H:
             return R = ll(R, I.mode, L), R.return = I, R;
           case le:
             var Y = R._init;
@@ -2530,7 +2530,7 @@ function $m() {
         switch (L.$$typeof) {
           case W:
             return L.key === ae ? T(I, R, L, Y) : null;
-          case z:
+          case H:
             return L.key === ae ? D(I, R, L, Y) : null;
           case le:
             return ae = L._init, U(
@@ -2551,7 +2551,7 @@ function $m() {
         switch (Y.$$typeof) {
           case W:
             return I = I.get(Y.key === null ? L : Y.key) || null, T(R, I, Y, ae);
-          case z:
+          case H:
             return I = I.get(Y.key === null ? L : Y.key) || null, D(R, I, Y, ae);
           case le:
             var ue = Y._init;
@@ -2632,7 +2632,7 @@ function $m() {
               L.type === X ? (R = tr(L.props.children, I.mode, Y, L.key), R.return = I, I = R) : (Y = Qo(L.type, L.key, L.props, null, I.mode, Y), Y.ref = ws(I, R, L), Y.return = I, I = Y);
             }
             return h(I);
-          case z:
+          case H:
             e: {
               for (ue = L.key; R !== null; ) {
                 if (R.key === ue) if (R.tag === 4 && R.stateNode.containerInfo === L.containerInfo && R.stateNode.implementation === L.implementation) {
@@ -5301,7 +5301,7 @@ Error generating stack: ` + u.message + `
     if (typeof e == "function") return il(e) ? 1 : 0;
     if (e != null) {
       if (e = e.$$typeof, e === he) return 11;
-      if (e === H) return 14;
+      if (e === z) return 14;
     }
     return 2;
   }
@@ -5338,7 +5338,7 @@ Error generating stack: ` + u.message + `
           case he:
             h = 11;
             break e;
-          case H:
+          case z:
             h = 14;
             break e;
           case le:
@@ -5369,7 +5369,7 @@ Error generating stack: ` + u.message + `
   }
   function xm(e, t, n) {
     var s = 3 < arguments.length && arguments[3] !== void 0 ? arguments[3] : null;
-    return { $$typeof: z, key: s == null ? null : "" + s, children: e, containerInfo: t, implementation: n };
+    return { $$typeof: H, key: s == null ? null : "" + s, children: e, containerInfo: t, implementation: n };
   }
   function Wd(e) {
     if (!e) return Tn;
@@ -7211,15 +7211,15 @@ var Gf = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, Jf = v.forwardRef(
   }, j) {
     let { basename: N, navigator: A, useTransitions: F } = v.useContext(At), P = typeof y == "string" && Gf.test(y), M = zf(y, N);
     y = M.to;
-    let W = gv(y, { relative: d }), z = jt(), X = null;
+    let W = gv(y, { relative: d }), H = jt(), X = null;
     if (m) {
-      let H = vi(
+      let z = vi(
         m,
         [],
-        z.mask ? z.mask.pathname : "/",
+        H.mask ? H.mask.pathname : "/",
         !0
       );
-      N !== "/" && (H.pathname = H.pathname === "/" ? N : Kt([N, H.pathname])), X = A.createHref(H);
+      N !== "/" && (z.pathname = z.pathname === "/" ? N : Kt([N, z.pathname])), X = A.createHref(z);
     }
     let [V, G, xe] = Jv(
       c,
@@ -7235,8 +7235,8 @@ var Gf = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, Jf = v.forwardRef(
       defaultShouldRevalidate: C,
       useTransitions: F
     });
-    function he(H) {
-      a && a(H), H.defaultPrevented || fe(H);
+    function he(z) {
+      a && a(z), z.defaultPrevented || fe(z);
     }
     let me = !(M.isExternal || f), we = (
       // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -7274,15 +7274,15 @@ var ht = v.forwardRef(
     fy(x) && m === !0, A = b.encodeLocation ? b.encodeLocation(x).pathname : x.pathname, F = k.pathname, P = C && C.navigation && C.navigation.location ? C.navigation.location.pathname : null;
     o || (F = F.toLowerCase(), P = P ? P.toLowerCase() : null, A = A.toLowerCase()), P && j && (P = yn(P, j) || P);
     const M = A !== "/" && A.endsWith("/") ? A.length - 1 : A.length;
-    let W = F === A || !d && F.startsWith(A) && F.charAt(M) === "/", z = P != null && (P === A || !d && P.startsWith(A) && P.charAt(A.length) === "/"), X = {
+    let W = F === A || !d && F.startsWith(A) && F.charAt(M) === "/", H = P != null && (P === A || !d && P.startsWith(A) && P.charAt(A.length) === "/"), X = {
       isActive: W,
-      isPending: z,
+      isPending: H,
       isTransitioning: N
     }, V = W ? a : void 0, G;
     typeof c == "function" ? G = c(X) : G = [
       c,
       W ? "active" : null,
-      z ? "pending" : null,
+      H ? "pending" : null,
       N ? "transitioning" : null
     ].filter(Boolean).join(" ");
     let xe = typeof f == "function" ? f(X) : f;
@@ -7322,7 +7322,7 @@ var oy = v.forwardRef(
     let { useTransitions: j } = v.useContext(At), N = cy(), A = dy(m, { relative: w }), F = p.toLowerCase() === "get" ? "get" : "post", P = typeof m == "string" && Gf.test(m), M = (W) => {
       if (g && g(W), W.defaultPrevented) return;
       W.preventDefault();
-      let z = W.nativeEvent.submitter, X = (z == null ? void 0 : z.getAttribute("formmethod")) || p, V = () => N(z || W.currentTarget, {
+      let H = W.nativeEvent.submitter, X = (H == null ? void 0 : H.getAttribute("formmethod")) || p, V = () => N(H || W.currentTarget, {
         fetcherKey: a,
         method: X,
         navigate: o,
@@ -9600,12 +9600,12 @@ function U1({
       let M;
       return M = B1(
         x,
-        (W, z) => {
+        (W, H) => {
           const X = b.current;
           b.current = W, !(X === void 0 && !W) && (N({
             inView: W,
-            entry: z
-          }), C.current && C.current(W, z), z.isIntersecting && f && M && (M(), M = void 0));
+            entry: H
+          }), C.current && C.current(W, H), H.isIntersecting && f && M && (M(), M = void 0));
         },
         {
           root: d,
@@ -9660,13 +9660,13 @@ const Cl = (r) => ({
 });
 function yp(r) {
   const a = dt(), [o, c] = v.useState(null), [d, f] = v.useState(""), p = v.useRef(""), m = v.useRef(0), [g, w] = v.useState(!0), [y, x] = v.useState(null), k = v.useRef(), C = v.useRef(1), b = v.useRef(!1), j = v.useRef(), N = v.useCallback(async (P, M = !1) => {
-    const W = ++m.current, z = p.current.trim(), X = P === void 0 && b.current, V = P ?? C.current;
+    const W = ++m.current, H = p.current.trim(), X = P === void 0 && b.current, V = P ?? C.current;
     x(null), w(!0);
     try {
-      let G = Cl(await a.getPage(r, V, void 0, z));
+      let G = Cl(await a.getPage(r, V, void 0, H));
       const xe = Math.max(1, G.total_pages);
-      if (V > xe && (G = Cl(await a.getPage(r, xe, void 0, z))), X && G.page > 1) {
-        const fe = await Promise.all(Array.from({ length: G.page - 1 }, (he, me) => a.getPage(r, me + 1, void 0, z).then(Cl)));
+      if (V > xe && (G = Cl(await a.getPage(r, xe, void 0, H))), X && G.page > 1) {
+        const fe = await Promise.all(Array.from({ length: G.page - 1 }, (he, me) => a.getPage(r, me + 1, void 0, H).then(Cl)));
         G = { ...G, data: [...fe.flatMap((he) => he.data), ...G.data] };
       }
       if (W !== m.current) return;
@@ -9967,7 +9967,7 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
       $ = !0;
     };
   }, [w, a, o, m, x]);
-  const [j, N] = v.useState(null), [A, F] = v.useState(0), [P, M] = v.useState([]), [W, z] = v.useState(!1), [X, V] = v.useState(!1), [G, xe] = v.useState(!1), fe = v.useRef(null), [he, me] = v.useState({});
+  const [j, N] = v.useState(null), [A, F] = v.useState(0), [P, M] = v.useState([]), [W, H] = v.useState(!1), [X, V] = v.useState(!1), [G, xe] = v.useState(!1), fe = v.useRef(null), [he, me] = v.useState({});
   v.useEffect(() => {
     var K, B;
     if (!W) return;
@@ -9989,23 +9989,23 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
       window.removeEventListener("scroll", $, !0), window.removeEventListener("resize", $), (E = window.visualViewport) == null || E.removeEventListener("resize", $), (O = window.visualViewport) == null || O.removeEventListener("scroll", $);
     };
   }, [W]);
-  const we = v.useRef(0), H = v.useRef(""), le = v.useMemo(() => a.trim(), [a]);
+  const we = v.useRef(0), z = v.useRef(""), le = v.useMemo(() => a.trim(), [a]);
   v.useEffect(() => {
     if (!le) {
-      we.current += 1, N(null), H.current = "", M([]), z(!1);
+      we.current += 1, N(null), z.current = "", M([]), H(!1);
       return;
     }
     if (le.length < d) {
-      we.current += 1, N(null), M([]), z(!1);
+      we.current += 1, N(null), M([]), H(!1);
       return;
     }
     if (!G || b) {
-      we.current += 1, z(!1), V(!1);
+      we.current += 1, H(!1), V(!1);
       return;
     }
-    if (H.current === le)
+    if (z.current === le)
       return;
-    H.current = le;
+    z.current = le;
     const $ = we.current + 1;
     we.current = $;
     const K = window.setTimeout(async () => {
@@ -10018,9 +10018,9 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
         }
         if (we.current !== $)
           return;
-        M(B), z(B.length > 0);
+        M(B), H(B.length > 0);
       } catch (B) {
-        we.current === $ && (N(Ct(B)), M([]), z(!1));
+        we.current === $ && (N(Ct(B)), M([]), H(!1));
       } finally {
         we.current === $ && V(!1);
       }
@@ -10029,7 +10029,7 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
   }, [w, le, x, d, G, A, b]);
   const de = ($) => {
     const K = m ? m($) : $.uuid;
-    we.current += 1, C($), H.current = "", V(!1), M([]), f(K), p == null || p($), z(!1);
+    we.current += 1, C($), z.current = "", V(!1), M([]), f(K), p == null || p($), H(!1);
   };
   return /* @__PURE__ */ i.jsxs("div", { ref: fe, className: or.wrapper, children: [
     /* @__PURE__ */ i.jsx(
@@ -10041,10 +10041,10 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
         placeholder: _("Начните вводить title или uuid"),
         error: g,
         onBlur: () => {
-          xe(!1), window.setTimeout(() => z(!1), 150);
+          xe(!1), window.setTimeout(() => H(!1), 150);
         },
         onFocus: () => {
-          xe(!0), z(!b && P.length > 0);
+          xe(!0), H(!b && P.length > 0);
         },
         onChange: ($) => {
           C(null), f($.target.value);
@@ -10075,7 +10075,7 @@ const q1 = "_subtitle_c1esh_1", Q1 = "_card_c1esh_6", K1 = "_content_c1esh_32", 
     ),
     /* @__PURE__ */ i.jsx(Ye, { error: j, busy: X, retry: () => {
       var $, K;
-      H.current = "", (K = ($ = fe.current) == null ? void 0 : $.querySelector("input")) == null || K.focus(), F((B) => B + 1);
+      z.current = "", (K = ($ = fe.current) == null ? void 0 : $.querySelector("input")) == null || K.focus(), F((B) => B + 1);
     } }),
     X && /* @__PURE__ */ i.jsx("span", { className: or.hint, children: _("Поиск...") })
   ] });
@@ -10499,7 +10499,7 @@ const K0 = "_form_1ogov_1", Y0 = "_section_1ogov_7", G0 = "_sectionTitle_1ogov_1
     scripts: P,
     getAvailableScripts: M,
     loadScripts: W,
-    saveScript: z,
+    saveScript: H,
     updateScript: X,
     getScriptAction: V,
     deleteScriptAction: G
@@ -10515,14 +10515,14 @@ const K0 = "_form_1ogov_1", Y0 = "_section_1ogov_7", G0 = "_sectionTitle_1ogov_1
       de
     );
     f($), m(!0);
-  }, { retryable: !0 }), H = async (de) => {
+  }, { retryable: !0 }), z = async (de) => {
     await r.run(async () => {
       if (k) {
         if (!de.uuid) return;
         const { uuid: $, ...K } = de;
         await X(de.uuid, K);
       } else
-        await z(de);
+        await H(de);
       m(!1);
     }, { exclusive: !0 });
   }, le = (de) => r.run(async () => {
@@ -10604,7 +10604,7 @@ const K0 = "_form_1ogov_1", Y0 = "_section_1ogov_7", G0 = "_sectionTitle_1ogov_1
           loading: F,
           onCancel: () => m(!1),
           onSave: async (de) => {
-            await H(de);
+            await z(de);
           }
         }
       )
@@ -10642,12 +10642,12 @@ const rx = {
   template: { list: "get_assistant_sub_direct_control_samples_short", detail: "get_assistant_sub_direct_control_sample", create: "save_assistant_sub_direct_control_sample", update: "update_assistant_sub_direct_control_sample", remove: "delete_assistant_sub_direct_control_sample" }
 };
 function wi(r, a) {
-  const o = rx[r], { query: c, setQuery: d, commands: f, loading: p, loadCommands: m, getCommandDetails: g, saveCommand: w, updateCommand: y, deleteCommand: x, setCommandStatus: k, error: C, retry: b } = _p(o.list), j = Yt(), [N, A] = v.useState(!1), [F, P] = v.useState(!1), [M, W] = v.useState(a), [z, X] = v.useState(null), V = () => {
+  const o = rx[r], { query: c, setQuery: d, commands: f, loading: p, loadCommands: m, getCommandDetails: g, saveCommand: w, updateCommand: y, deleteCommand: x, setCommandStatus: k, error: C, retry: b } = _p(o.list), j = Yt(), [N, A] = v.useState(!1), [F, P] = v.useState(!1), [M, W] = v.useState(a), [H, X] = v.useState(null), V = () => {
     j.clearError(), P(!1), W(a()), A(!0);
   }, G = (we) => j.run(async () => {
-    const H = await g(o.detail, we);
+    const z = await g(o.detail, we);
     P(!0);
-    const le = { ...H.data, status: H.data.status ?? !1 };
+    const le = { ...z.data, status: z.data.status ?? !1 };
     for (const de of ["componentDialog", "subComponentDialog"]) {
       const $ = le[de];
       $ && ($.nextAction = ($.nextAction ?? []).filter(
@@ -10655,8 +10655,8 @@ function wi(r, a) {
       ));
     }
     W(le), A(!0);
-  }, { retryable: !0 }), xe = (we, H) => j.run(async () => {
-    o.status && await k(o.status, we, H);
+  }, { retryable: !0 }), xe = (we, z) => j.run(async () => {
+    o.status && await k(o.status, we, z);
   }, { exclusive: !0 }), fe = (we) => j.run(async () => {
     await x(o.remove, we), await m();
   }, { exclusive: !0 }), he = () => j.run(async () => {
@@ -10679,7 +10679,7 @@ function wi(r, a) {
     isEdit: F,
     formData: M,
     setFormData: W,
-    actionsCommand: z,
+    actionsCommand: H,
     setActionsCommand: X,
     openCreateModal: V,
     openEditModal: G,
@@ -10728,10 +10728,10 @@ function Ml({ kind: r, value: a, title: o, onSelect: c }) {
     let M = !1;
     g(!0), k(null);
     const W = r === "nested" ? ["get_assistant_sub_direct_control_samples_short"] : r === "direct" ? ["get_assistant_sub_direct_controls_short"] : ["get_assistant_commands_short", "get_assistant_sub_commands_short"];
-    return Promise.all(W.map((z) => d.getAllRecords(z))).then((z) => {
-      M || p([...new Map(z.flat().map((X) => [X.uuid, X])).values()]);
-    }).catch((z) => {
-      M || (k(Ct(z)), j.current = () => b((X) => X + 1));
+    return Promise.all(W.map((H) => d.getAllRecords(H))).then((H) => {
+      M || p([...new Map(H.flat().map((X) => [X.uuid, X])).values()]);
+    }).catch((H) => {
+      M || (k(Ct(H)), j.current = () => b((X) => X + 1));
     }).finally(() => {
       M || g(!1);
     }), () => {
@@ -10748,7 +10748,7 @@ function Ml({ kind: r, value: a, title: o, onSelect: c }) {
     }
     const W = f.find((V) => V.uuid === M);
     if (!W) return;
-    const z = ++N.current;
+    const H = ++N.current;
     if (k(null), r !== "direct") {
       c(W);
       return;
@@ -10756,13 +10756,13 @@ function Ml({ kind: r, value: a, title: o, onSelect: c }) {
     y(!0);
     try {
       const V = await d.getRecord(M, "get_assistant_sub_direct_control");
-      z === N.current && c({ ...W, mappingType: ((X = V.data.directControl) == null ? void 0 : X.mappingType) ?? "" });
+      H === N.current && c({ ...W, mappingType: ((X = V.data.directControl) == null ? void 0 : X.mappingType) ?? "" });
     } catch (V) {
-      z === N.current && (k(Ct(V)), j.current = () => {
+      H === N.current && (k(Ct(V)), j.current = () => {
         A(M);
       });
     } finally {
-      z === N.current && y(!1);
+      H === N.current && y(!1);
     }
   }, F = f.map((M) => ({ value: M.uuid, label: M.title || _("Без названия") }));
   a && !f.some((M) => M.uuid === a) && F.unshift({ value: a, label: o || _("Выбранная команда недоступна") });
@@ -11228,7 +11228,7 @@ const wf = () => ({
     P({
       [V]: [...k[V] ?? [], G]
     });
-  }, z = (V, G) => {
+  }, H = (V, G) => {
     P({
       [V]: (k[V] ?? []).filter(
         (xe, fe) => fe !== G
@@ -11261,7 +11261,7 @@ const wf = () => ({
             component: k,
             updateComponentArray: M,
             addComponentArrayItem: W,
-            removeComponentArrayItem: z
+            removeComponentArrayItem: H
           }
         ) : /* @__PURE__ */ i.jsxs("div", { className: tt.form, children: [
           /* @__PURE__ */ i.jsx(
@@ -11339,7 +11339,7 @@ const wf = () => ({
                 {
                   type: "button",
                   variant: "remove",
-                  onClick: () => z("voiceResponseArray", G),
+                  onClick: () => H("voiceResponseArray", G),
                   children: _("Удалить")
                 }
               )
@@ -11419,14 +11419,14 @@ const wf = () => ({
         !r && /* @__PURE__ */ i.jsx(Vr, { value: a, onChange: o })
       ] }),
       /* @__PURE__ */ i.jsxs("div", { className: Z.list, children: [
-        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((z) => /* @__PURE__ */ i.jsx(
+        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((H) => /* @__PURE__ */ i.jsx(
           Qr,
           {
-            title: z.title,
-            subTitle: z.status === !1 ? "Выключена" : "Включена",
-            onClick: () => b(z)
+            title: H.title,
+            subTitle: H.status === !1 ? "Выключена" : "Включена",
+            onClick: () => b(H)
           },
-          z.uuid
+          H.uuid
         )) }),
         !p && !d && a.trim() && !(f != null && f.data.length) && /* @__PURE__ */ i.jsx("p", { role: "status", children: _("Ничего не найдено") }),
         r ? /* @__PURE__ */ i.jsx("div", { ref: W, className: Z.listSentinel }) : /* @__PURE__ */ i.jsx(i.Fragment, {})
@@ -11436,7 +11436,7 @@ const wf = () => ({
         {
           page: (f == null ? void 0 : f.page) || 1,
           totalPages: (f == null ? void 0 : f.total_pages) || 1,
-          onChange: (z) => m(z)
+          onChange: (H) => m(H)
         }
       ),
       /* @__PURE__ */ i.jsx(
@@ -11461,7 +11461,7 @@ const wf = () => ({
           onClose: () => b(null),
           onToggleStatus: A,
           onDelete: F,
-          onEdit: (z) => N(z)
+          onEdit: (H) => N(H)
         }
       )
     ] })
@@ -11506,14 +11506,14 @@ const wf = () => ({
         !r && /* @__PURE__ */ i.jsx(Vr, { value: a, onChange: o })
       ] }),
       /* @__PURE__ */ i.jsxs("div", { className: Z.list, children: [
-        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((z) => /* @__PURE__ */ i.jsx(
+        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((H) => /* @__PURE__ */ i.jsx(
           Qr,
           {
-            title: z.title,
-            subTitle: z.status === !1 ? "Выключена" : "Включена",
-            onClick: () => b(z)
+            title: H.title,
+            subTitle: H.status === !1 ? "Выключена" : "Включена",
+            onClick: () => b(H)
           },
-          z.uuid
+          H.uuid
         )) }),
         !p && !d && a.trim() && !(f != null && f.data.length) && /* @__PURE__ */ i.jsx("p", { role: "status", children: _("Ничего не найдено") })
       ] }),
@@ -11522,7 +11522,7 @@ const wf = () => ({
         {
           page: (f == null ? void 0 : f.page) || 1,
           totalPages: (f == null ? void 0 : f.total_pages) || 1,
-          onChange: (z) => m(z)
+          onChange: (H) => m(H)
         }
       ),
       /* @__PURE__ */ i.jsx(
@@ -11547,7 +11547,7 @@ const wf = () => ({
           onClose: () => b(null),
           onToggleStatus: A,
           onDelete: F,
-          onEdit: (z) => N(z)
+          onEdit: (H) => N(H)
         }
       )
     ] })
@@ -11623,14 +11623,14 @@ const wf = () => ({
         !r && /* @__PURE__ */ i.jsx(Vr, { value: a, onChange: o })
       ] }),
       /* @__PURE__ */ i.jsxs("div", { className: Z.list, children: [
-        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((z) => /* @__PURE__ */ i.jsx(
+        /* @__PURE__ */ i.jsx(Gt, { loading: p, itemCount: (f == null ? void 0 : f.data.length) ?? 0, append: r, children: f == null ? void 0 : f.data.map((H) => /* @__PURE__ */ i.jsx(
           Qr,
           {
-            title: z.title,
-            subTitle: z.status === !1 ? "Выключена" : "Включена",
-            onClick: () => b(z)
+            title: H.title,
+            subTitle: H.status === !1 ? "Выключена" : "Включена",
+            onClick: () => b(H)
           },
-          z.uuid
+          H.uuid
         )) }),
         !p && !d && a.trim() && !(f != null && f.data.length) && /* @__PURE__ */ i.jsx("p", { role: "status", children: _("Ничего не найдено") })
       ] }),
@@ -11639,7 +11639,7 @@ const wf = () => ({
         {
           page: (f == null ? void 0 : f.page) || 1,
           totalPages: (f == null ? void 0 : f.total_pages) || 1,
-          onChange: (z) => m(z)
+          onChange: (H) => m(H)
         }
       ),
       /* @__PURE__ */ i.jsx(
@@ -11662,7 +11662,7 @@ const wf = () => ({
           onClose: () => b(null),
           onToggleStatus: A,
           onDelete: F,
-          onEdit: (z) => N(z)
+          onEdit: (H) => N(H)
         }
       )
     ] })
@@ -12464,9 +12464,6 @@ const sw = "_form_1ijxr_1", ow = "_field_1ijxr_7", iw = "_input_1ijxr_13", aw = 
 }, Ll = (r) => r !== null && typeof r == "object", ar = (r) => {
   const a = Ll(r) && "result" in r ? r.result : r;
   return Ll(a) && "data" in a ? a.data : a;
-}, xw = (r) => {
-  const a = Math.max(1, Number(r) || 1);
-  return new Date(Date.now() + a * 1e3).toISOString();
 }, Ef = (r) => {
   const a = Math.max(1, Number(r) || 1), o = Math.floor(a / 3600), c = Math.floor(a % 3600 / 60), d = a % 60;
   return `${String(o).padStart(2, "0")}:${String(c).padStart(2, "0")}:${String(d).padStart(2, "0")}`;
@@ -12476,32 +12473,32 @@ const sw = "_form_1ijxr_1", ow = "_field_1ijxr_7", iw = "_input_1ijxr_13", aw = 
 };
 function Cp() {
   const r = dt(), a = Yt(), [o, c] = v.useState([]), [d, f] = v.useState([]), [p, m] = v.useState([]), [g, w] = v.useState(!0), y = v.useMemo(() => r.getDevices(), [r]), x = v.useCallback(async () => {
-    const W = await r.getPage("get_timer_requests_short", 1, 100), z = await Promise.all(
+    const W = await r.getPage("get_timer_requests_short", 1, 100), H = await Promise.all(
       Nf(W).map(async (X) => {
         var G;
         const V = await r.getRecord(X.uuid, "get_timer_request");
         return ((G = ar(V)) == null ? void 0 : G.data) ?? ar(V);
       })
     );
-    c(z.filter((X) => !!X && X.action_type === "create_timer"));
+    c(H.filter((X) => !!X && X.action_type === "create_timer"));
   }, [r]), k = v.useCallback(async () => {
-    const W = await r.getPage("get_alarm_requests_short", 1, 100), z = await Promise.all(
+    const W = await r.getPage("get_alarm_requests_short", 1, 100), H = await Promise.all(
       Nf(W).map(async (X) => {
         var G;
         const V = await r.getRecord(X.uuid, "get_alarm_request");
         return ((G = ar(V)) == null ? void 0 : G.data) ?? ar(V);
       })
     );
-    f(z.filter((X) => !!X && X.action_type !== "delete_alarm"));
+    f(H.filter((X) => !!X && X.action_type !== "delete_alarm"));
   }, [r]), C = v.useCallback(async () => {
-    const W = await r.getAllRecords("get_alarm_time_widgets_short"), z = await Promise.all(
+    const W = await r.getAllRecords("get_alarm_time_widgets_short"), H = await Promise.all(
       W.map(async (X) => {
         var G;
         const V = await r.getRecord(X.uuid, "get_alarm_time_widget");
         return ((G = ar(V)) == null ? void 0 : G.data) ?? ar(V);
       })
     );
-    m(z.filter(Boolean));
+    m(H.filter(Boolean));
   }, [r]), b = v.useCallback(async () => {
     w(!0);
     try {
@@ -12515,17 +12512,16 @@ function Cp() {
   v.useEffect(() => {
     b();
   }, []);
-  const j = async (W, z) => await a.run(async () => {
+  const j = async (W, H) => await a.run(async () => {
     await W();
-  }, { exclusive: !0 }) ? (await a.run(z, { retryable: !0 }), !0) : !1, N = async (W, z, X = 0.3) => {
+  }, { exclusive: !0 }) ? (await a.run(H, { retryable: !0 }), !0) : !1, N = async (W, H, X = 0.3) => {
     const V = {
-      count_timer: Ef(z),
-      date_end: xw(z)
+      count_timer: Ef(H)
     };
-    return j(() => r.saveData({ name: `Таймер ${Ef(z)}`, action_type: "create_timer", device_id: W, timer_time: V, volume_start: X }, "save_timer_request"), x);
-  }, A = async (W) => j(() => r.deleteRecord(W.uuid, "delete_timer_request"), x), F = async (W, z, X = 0.3, V = "once", G = []) => j(() => r.saveData({ name: `Будильник ${z}`, action_type: "create_alarm", device_id: W, status: "on", time: z, volume_start: X, repeat_type: V, repeat_days: G }, "save_alarm_request"), async () => {
+    return j(() => r.saveData({ name: `Таймер ${Ef(H)}`, action_type: "create_timer", device_id: W, timer_time: V, volume_start: X }, "save_timer_request"), x);
+  }, A = async (W) => j(() => r.deleteRecord(W.uuid, "delete_timer_request"), x), F = async (W, H, X = 0.3, V = "once", G = []) => j(() => r.saveData({ name: `Будильник ${H}`, action_type: "create_alarm", device_id: W, status: "on", time: H, volume_start: X, repeat_type: V, repeat_days: G }, "save_alarm_request"), async () => {
     await Promise.all([k(), C()]);
-  }), P = async (W, z) => j(() => r.updateRecord(W.uuid, "update_alarm_request", { ...W, action_type: "edit_alarm", ...z }), async () => {
+  }), P = async (W, H) => j(() => r.updateRecord(W.uuid, "update_alarm_request", { ...W, action_type: "edit_alarm", ...H }), async () => {
     await Promise.all([k(), C()]);
   }), M = async (W) => j(() => r.deleteRecord(W.uuid, "delete_alarm_request"), k);
   return {
@@ -12546,51 +12542,51 @@ function Cp() {
     updateAlarm: P
   };
 }
-const ww = "_grid_w5y3x_31", kw = "_card_w5y3x_38", Sw = "_empty_w5y3x_38", Cw = "_cardHeader_w5y3x_47", jw = "_cardTitle_w5y3x_54", Ew = "_meta_w5y3x_59", Nw = "_form_w5y3x_73", Tw = "_field_w5y3x_79", bw = "_label_w5y3x_85", Rw = "_quickTabs_w5y3x_101", Aw = "_quickTab_w5y3x_101", Pw = "_activeQuickTab_w5y3x_117", $w = "_cardLead_w5y3x_135", Mw = "_cardIcon_w5y3x_143", Iw = "_cardButton_w5y3x_148", Lw = "_wheelPicker_w5y3x_160", Dw = "_wheelColumn_w5y3x_173", Ow = "_wheelSelect_w5y3x_180", zw = "_footerActions_w5y3x_202", Hw = "_saveButton_w5y3x_208", Fw = "_alarmTimeFields_w5y3x_237", _e = {
-  grid: ww,
-  card: kw,
-  empty: Sw,
-  cardHeader: Cw,
-  cardTitle: jw,
-  meta: Ew,
-  form: Nw,
-  field: Tw,
-  label: bw,
-  quickTabs: Rw,
-  quickTab: Aw,
-  activeQuickTab: Pw,
-  cardLead: $w,
-  cardIcon: Mw,
-  cardButton: Iw,
-  wheelPicker: Lw,
-  wheelColumn: Dw,
-  wheelSelect: Ow,
-  footerActions: zw,
-  saveButton: Hw,
-  alarmTimeFields: Fw
-}, Ww = [5, 10, 15, 30, 45, 60], Tf = (r) => {
+const xw = "_grid_w5y3x_31", ww = "_card_w5y3x_38", kw = "_empty_w5y3x_38", Sw = "_cardHeader_w5y3x_47", Cw = "_cardTitle_w5y3x_54", jw = "_meta_w5y3x_59", Ew = "_form_w5y3x_73", Nw = "_field_w5y3x_79", Tw = "_label_w5y3x_85", bw = "_quickTabs_w5y3x_101", Rw = "_quickTab_w5y3x_101", Aw = "_activeQuickTab_w5y3x_117", Pw = "_cardLead_w5y3x_135", $w = "_cardIcon_w5y3x_143", Mw = "_cardButton_w5y3x_148", Iw = "_wheelPicker_w5y3x_160", Lw = "_wheelColumn_w5y3x_173", Dw = "_wheelSelect_w5y3x_180", Ow = "_footerActions_w5y3x_202", zw = "_saveButton_w5y3x_208", Hw = "_alarmTimeFields_w5y3x_237", _e = {
+  grid: xw,
+  card: ww,
+  empty: kw,
+  cardHeader: Sw,
+  cardTitle: Cw,
+  meta: jw,
+  form: Ew,
+  field: Nw,
+  label: Tw,
+  quickTabs: bw,
+  quickTab: Rw,
+  activeQuickTab: Aw,
+  cardLead: Pw,
+  cardIcon: $w,
+  cardButton: Mw,
+  wheelPicker: Iw,
+  wheelColumn: Lw,
+  wheelSelect: Dw,
+  footerActions: Ow,
+  saveButton: zw,
+  alarmTimeFields: Hw
+}, Fw = [5, 10, 15, 30, 45, 60], Tf = (r) => {
   const a = Math.max(0, r), o = Math.floor(a / 3600), c = Math.floor(a % 3600 / 60), d = a % 60;
   return [o, c, d].map((f) => String(f).padStart(2, "0")).join(":");
-}, Bw = (r, a, o) => Math.max(1, r * 3600 + a * 60 + o), Uw = (r) => ({
+}, Ww = (r, a, o) => Math.max(1, r * 3600 + a * 60 + o), Bw = (r) => ({
   hours: Math.floor(r / 3600),
   minutes: Math.floor(r % 3600 / 60),
   seconds: r % 60
-}), Vw = () => {
+}), Uw = () => {
   const r = nt(), { feedback: a, createTimer: o, devices: c, loading: d, stopTimer: f, timers: p, toTimerSeconds: m } = Cp(), [g, w] = v.useState(!1), [y, x] = v.useState(""), [k, C] = v.useState({ hours: 0, minutes: 5, seconds: 0 }), [b, j] = v.useState({});
   v.useEffect(() => {
     j(Object.fromEntries(p.map((M) => [M.uuid, m(M.timer_time, M.status)])));
   }, [p, m]), v.useEffect(() => {
     const M = window.setInterval(() => {
-      j((W) => Object.fromEntries(Object.entries(W).map(([z, X]) => {
+      j((W) => Object.fromEntries(Object.entries(W).map(([H, X]) => {
         var V;
-        return [z, ((V = p.find((G) => G.uuid === z)) == null ? void 0 : V.status) === "paused" ? X : Math.max(0, X - 1)];
+        return [H, ((V = p.find((G) => G.uuid === H)) == null ? void 0 : V.status) === "paused" ? X : Math.max(0, X - 1)];
       })));
     }, 1e3);
     return () => window.clearInterval(M);
   }, [p]);
-  const N = v.useMemo(() => new Map(c.map((M) => [M.id, M.name])), [c]), A = Bw(k.hours, k.minutes, k.seconds), F = async () => {
+  const N = v.useMemo(() => new Map(c.map((M) => [M.id, M.name])), [c]), A = Ww(k.hours, k.minutes, k.seconds), F = async () => {
     y && await o(y, A, 0.3) && w(!1);
-  }, P = (M) => C(Uw(M * 60));
+  }, P = (M) => C(Bw(M * 60));
   return /* @__PURE__ */ i.jsxs(i.Fragment, { children: [
     /* @__PURE__ */ i.jsx(vt, { title: _("Таймеры") }),
     /* @__PURE__ */ i.jsxs("div", { className: Z.page, children: [
@@ -12615,7 +12611,7 @@ const ww = "_grid_w5y3x_31", kw = "_card_w5y3x_38", Sw = "_empty_w5y3x_38", Cw =
         ) })
       ] }),
       /* @__PURE__ */ i.jsx(Gt, { loading: d, itemCount: p.length, placeholderCount: 4, children: /* @__PURE__ */ i.jsx("div", { className: _e.grid, children: p.length ? p.map((M) => {
-        const W = m(M.timer_time, M.status), z = Sp(M.timer_time);
+        const W = m(M.timer_time, M.status), H = Sp(M.timer_time);
         return /* @__PURE__ */ i.jsx("div", { className: _e.card, children: /* @__PURE__ */ i.jsxs("div", { className: _e.cardHeader, children: [
           /* @__PURE__ */ i.jsxs("div", { className: _e.cardLead, children: [
             /* @__PURE__ */ i.jsx(Yl, { className: _e.cardIcon, size: 26 }),
@@ -12624,7 +12620,7 @@ const ww = "_grid_w5y3x_31", kw = "_card_w5y3x_38", Sw = "_empty_w5y3x_38", Cw =
               /* @__PURE__ */ i.jsxs("div", { className: _e.meta, children: [
                 _("Заведен на"),
                 " ",
-                Tf(z),
+                Tf(H),
                 " • ",
                 N.get(M.device_id) || M.device_id
               ] })
@@ -12646,15 +12642,15 @@ const ww = "_grid_w5y3x_31", kw = "_card_w5y3x_38", Sw = "_empty_w5y3x_38", Cw =
               inputMode: "numeric",
               value: k[M],
               onChange: (W) => {
-                const z = Math.max(0, Math.min(M === "hours" ? 23 : 59, Math.trunc(Number(W.target.value) || 0)));
-                C((X) => ({ ...X, [M]: z }));
+                const H = Math.max(0, Math.min(M === "hours" ? 23 : 59, Math.trunc(Number(W.target.value) || 0)));
+                C((X) => ({ ...X, [M]: H }));
               }
             }
           )
         ] }, M)) }),
         /* @__PURE__ */ i.jsxs("div", { className: _e.field, children: [
           /* @__PURE__ */ i.jsx("span", { className: _e.label, children: _("Быстрое создание") }),
-          /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, children: Ww.map((M) => /* @__PURE__ */ i.jsxs("button", { type: "button", className: `${_e.quickTab} ${A === M * 60 ? _e.activeQuickTab : ""}`, onClick: () => P(M), children: [
+          /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, children: Fw.map((M) => /* @__PURE__ */ i.jsxs("button", { type: "button", className: `${_e.quickTab} ${A === M * 60 ? _e.activeQuickTab : ""}`, onClick: () => P(M), children: [
             M,
             " ",
             _("мин")
@@ -12674,14 +12670,14 @@ const ww = "_grid_w5y3x_31", kw = "_card_w5y3x_38", Sw = "_empty_w5y3x_38", Cw =
     ] })
   ] });
 };
-let qw = 0;
+let Vw = 0;
 function jp() {
   var r;
   if ((r = globalThis.crypto) != null && r.getRandomValues) {
     const a = new Uint8Array(16);
     return globalThis.crypto.getRandomValues(a), `monitor-${Array.from(a, (o) => o.toString(16).padStart(2, "0")).join("")}`;
   }
-  return `monitor-${Date.now().toString(36)}-${(++qw).toString(36)}`;
+  return `monitor-${Date.now().toString(36)}-${(++Vw).toString(36)}`;
 }
 class Ep {
   constructor() {
@@ -12736,11 +12732,11 @@ function Np() {
   var r;
   return !!(globalThis.isSecureContext && ((r = navigator.mediaDevices) != null && r.getUserMedia));
 }
-function Qw(r) {
+function qw(r) {
   const a = r && typeof r == "object" && "name" in r ? String(r.name) : "";
   return a === "NotAllowedError" || a === "SecurityError" ? "Разрешите доступ к микрофону в настройках браузера и откройте HA по HTTPS." : a === "NotSupportedError" ? "Этот браузер не поддерживает звонки. Откройте HA в актуальном Chrome или Safari." : a === "NotFoundError" ? "Микрофон на этом устройстве не найден." : a === "NotReadableError" ? "Микрофон занят другим приложением или недоступен." : "Не удалось подключить микрофон или звук звонка. Проверьте разрешения и подключение.";
 }
-class Kw {
+class Qw {
   constructor(a, o, c) {
     be(this, "output", new Ep());
     be(this, "context");
@@ -12841,30 +12837,30 @@ class Kw {
     }), this.context = void 0;
   }
 }
-const Yw = "_navigation_mjbb7_1", Gw = "_page_mjbb7_5", Jw = "_title_mjbb7_11", Xw = "_hint_mjbb7_15", Zw = "_grid_mjbb7_20", ek = "_device_mjbb7_27", tk = "_active_mjbb7_56", nk = "_phoneStage_mjbb7_113", rk = "_avatar_mjbb7_124", sk = "_phoneStatus_mjbb7_141", ok = "_duration_mjbb7_148", ik = "_phoneFooter_mjbb7_159", ak = "_callControls_mjbb7_167", lk = "_control_mjbb7_173", uk = "_roundControl_mjbb7_186", ck = "_hangup_mjbb7_186", dk = "_controlSelected_mjbb7_196", fk = "_routeHint_mjbb7_214", pk = "_dial_mjbb7_237", $e = {
-  navigation: Yw,
-  page: Gw,
-  title: Jw,
-  hint: Xw,
-  grid: Zw,
-  device: ek,
-  active: tk,
-  phoneStage: nk,
-  avatar: rk,
-  phoneStatus: sk,
-  duration: ok,
-  phoneFooter: ik,
-  callControls: ak,
-  control: lk,
-  roundControl: uk,
-  hangup: ck,
-  controlSelected: dk,
-  routeHint: fk,
-  dial: pk
+const Kw = "_navigation_mjbb7_1", Yw = "_page_mjbb7_5", Gw = "_title_mjbb7_11", Jw = "_hint_mjbb7_15", Xw = "_grid_mjbb7_20", Zw = "_device_mjbb7_27", ek = "_active_mjbb7_56", tk = "_phoneStage_mjbb7_113", nk = "_avatar_mjbb7_124", rk = "_phoneStatus_mjbb7_141", sk = "_duration_mjbb7_148", ok = "_phoneFooter_mjbb7_159", ik = "_callControls_mjbb7_167", ak = "_control_mjbb7_173", lk = "_roundControl_mjbb7_186", uk = "_hangup_mjbb7_186", ck = "_controlSelected_mjbb7_196", dk = "_routeHint_mjbb7_214", fk = "_dial_mjbb7_237", $e = {
+  navigation: Kw,
+  page: Yw,
+  title: Gw,
+  hint: Jw,
+  grid: Xw,
+  device: Zw,
+  active: ek,
+  phoneStage: tk,
+  avatar: nk,
+  phoneStatus: rk,
+  duration: sk,
+  phoneFooter: ok,
+  callControls: ik,
+  control: ak,
+  roundControl: lk,
+  hangup: uk,
+  controlSelected: ck,
+  routeHint: dk,
+  dial: fk
 };
-function hk() {
+function pk() {
   var Xt, _n;
-  const r = dt(), a = nt(), [o, c] = v.useState(), [d, f] = v.useState(""), [p, m] = v.useState(""), [g, w] = v.useState(!1), [y, x] = v.useState(!1), [k, C] = v.useState(!1), [b, j] = v.useState([]), [N, A] = v.useState(!1), [F, P] = v.useState("default"), [M, W] = v.useState(!1), [z, X] = v.useState(!1), [V, G] = v.useState(0), xe = v.useRef(), fe = v.useRef(""), he = v.useRef(), me = v.useRef(!1), we = Np();
+  const r = dt(), a = nt(), [o, c] = v.useState(), [d, f] = v.useState(""), [p, m] = v.useState(""), [g, w] = v.useState(!1), [y, x] = v.useState(!1), [k, C] = v.useState(!1), [b, j] = v.useState([]), [N, A] = v.useState(!1), [F, P] = v.useState("default"), [M, W] = v.useState(!1), [H, X] = v.useState(!1), [V, G] = v.useState(0), xe = v.useRef(), fe = v.useRef(""), he = v.useRef(), me = v.useRef(!1), we = Np();
   v.useEffect(() => {
     let J = !0;
     me.current = !0, x(!1);
@@ -12884,22 +12880,22 @@ function hk() {
       });
     };
   }, [r]);
-  const H = o == null ? void 0 : o.calls.find((J) => J.id === o.owned_call_id);
+  const z = o == null ? void 0 : o.calls.find((J) => J.id === o.owned_call_id);
   v.useEffect(() => {
     var J, ve;
-    (J = he.current) == null || J.setSending((H == null ? void 0 : H.state) === "connecting" || (H == null ? void 0 : H.state) === "active"), o && !o.owned_call_id && !g && ((ve = he.current) == null || ve.close(), he.current = void 0);
-  }, [o, H == null ? void 0 : H.state, g]), v.useEffect(() => {
+    (J = he.current) == null || J.setSending((z == null ? void 0 : z.state) === "connecting" || (z == null ? void 0 : z.state) === "active"), o && !o.owned_call_id && !g && ((ve = he.current) == null || ve.close(), he.current = void 0);
+  }, [o, z == null ? void 0 : z.state, g]), v.useEffect(() => {
     var Re;
-    if ((H == null ? void 0 : H.state) !== "active") {
+    if ((z == null ? void 0 : z.state) !== "active") {
       xe.current = void 0, G(0);
       return;
     }
-    ((Re = xe.current) == null ? void 0 : Re.id) !== H.id && (xe.current = { id: H.id, time: Date.now() });
+    ((Re = xe.current) == null ? void 0 : Re.id) !== z.id && (xe.current = { id: z.id, time: Date.now() });
     const J = () => G(Math.max(0, Math.floor((Date.now() - xe.current.time) / 1e3)));
     J();
     const ve = setInterval(J, 1e3);
     return () => clearInterval(ve);
-  }, [H == null ? void 0 : H.id, H == null ? void 0 : H.state]);
+  }, [z == null ? void 0 : z.id, z == null ? void 0 : z.state]);
   const le = () => {
     var ve;
     if (!ge) return;
@@ -12907,7 +12903,7 @@ function hk() {
     (ve = he.current) == null || ve.setMicrophoneMuted(J), C(J);
   }, de = async (J) => {
     const ve = he.current;
-    if (!(!ve || z || !ge)) {
+    if (!(!ve || H || !ge)) {
       X(!0), m("");
       try {
         await ve.selectOutput(J), me.current && he.current === ve && (P(J), W(!1));
@@ -12927,7 +12923,7 @@ function hk() {
       await de(J);
       return;
     }
-    if (!(!ve || z)) {
+    if (!(!ve || H)) {
       X(!0);
       try {
         const Re = await ve.promptOutput();
@@ -12941,7 +12937,7 @@ function hk() {
   }, B = o == null ? void 0 : o.devices.find((J) => J.id === d), E = (J) => {
     var ve;
     return ((ve = o == null ? void 0 : o.incoming) == null ? void 0 : ve.some((Re) => Re.source_device_id === J)) || (o == null ? void 0 : o.calls.some((Re) => Re.source_device_id === J || Re.target_device_id === J));
-  }, O = (Xt = o == null ? void 0 : o.incoming) == null ? void 0 : Xt.find((J) => J.source_device_id === d), ie = o == null ? void 0 : o.calls.find((J) => J.source_device_id === d || J.target_device_id === d), oe = !!(H && H.target_device_id === d), ge = oe && (H == null ? void 0 : H.state) === "active" && !g, ke = (J) => {
+  }, O = (Xt = o == null ? void 0 : o.incoming) == null ? void 0 : Xt.find((J) => J.source_device_id === d), ie = o == null ? void 0 : o.calls.find((J) => J.source_device_id === d || J.target_device_id === d), oe = !!(z && z.target_device_id === d), ge = oe && (z == null ? void 0 : z.state) === "active" && !g, ke = (J) => {
     var ve;
     return ((ve = o == null ? void 0 : o.devices.find((Re) => Re.id === J)) == null ? void 0 : ve.name) ?? _("Колонка");
   }, Ne = _((ie == null ? void 0 : ie.state) === "active" ? "Разговор" : (ie == null ? void 0 : ie.state) === "connecting" ? "Соединяем…" : ie ? "Ожидание ответа" : O ? "Входящий звонок" : "Готово к звонку"), Ce = async () => {
@@ -12960,7 +12956,7 @@ function hk() {
     var Re;
     if (g || !d) return;
     w(!0), m(""), C(!1), P("default"), W(!1), j([]), A(!1);
-    const J = fe.current, ve = new Kw(r, J, (De) => {
+    const J = fe.current, ve = new Qw(r, J, (De) => {
       me.current && m(_(De)), r.browserCallEnd(J).catch(() => {
       });
     });
@@ -12984,7 +12980,7 @@ function hk() {
         return Et && { ...Et, owned_call_id: De.call_id, calls: Et.calls.some((Wn) => Wn.id === De.call_id) ? Et.calls : [...Et.calls, { id: De.call_id, source_device_id: null, source_type: "browser", target_device_id: d, state: O ? "active" : "ringing" }], incoming: (Yr = Et.incoming) == null ? void 0 : Yr.filter((Wn) => Wn.id !== (O == null ? void 0 : O.id)) };
       });
     } catch (De) {
-      ve.close(), me.current && m(De instanceof DOMException ? _(Qw(De)) : Ct(De)), await r.browserCallEnd(J).catch(() => {
+      ve.close(), me.current && m(De instanceof DOMException ? _(qw(De)) : Ct(De)), await r.browserCallEnd(J).catch(() => {
       });
     } finally {
       me.current && w(!1);
@@ -13024,12 +13020,12 @@ function hk() {
             /* @__PURE__ */ i.jsx("span", { children: _(oe && k ? "Микрофон выкл." : "Микрофон") })
           ] }),
           /* @__PURE__ */ i.jsxs("div", { className: $e.control, children: [
-            /* @__PURE__ */ i.jsx(se, { variant: "secondary", className: `${$e.roundControl} ${oe && F !== "default" ? $e.controlSelected : ""}`, "aria-label": _("Аудиовыход"), "aria-pressed": oe && F !== "default", disabled: !ge || z, onClick: () => void $(), children: /* @__PURE__ */ i.jsx(yg, { size: 25 }) }),
+            /* @__PURE__ */ i.jsx(se, { variant: "secondary", className: `${$e.roundControl} ${oe && F !== "default" ? $e.controlSelected : ""}`, "aria-label": _("Аудиовыход"), "aria-pressed": oe && F !== "default", disabled: !ge || H, onClick: () => void $(), children: /* @__PURE__ */ i.jsx(yg, { size: 25 }) }),
             /* @__PURE__ */ i.jsx("span", { children: _("Аудиовыход") })
           ] })
         ] }),
         ge && M && /* @__PURE__ */ i.jsxs(i.Fragment, { children: [
-          /* @__PURE__ */ i.jsx(gn, { label: "Устройство вывода", value: F, disabled: z || !N, onChange: (J) => void K(J.target.value), options: [{ value: "default", label: _("По умолчанию (системный выход)") }, ...b.filter((J) => J.id !== "default").map((J) => ({ value: J.id, label: J.label })), ...(_n = he.current) != null && _n.canPromptOutput() ? [{ value: "choose", label: _("Выбрать другое устройство…") }] : []] }),
+          /* @__PURE__ */ i.jsx(gn, { label: "Устройство вывода", value: F, disabled: H || !N, onChange: (J) => void K(J.target.value), options: [{ value: "default", label: _("По умолчанию (системный выход)") }, ...b.filter((J) => J.id !== "default").map((J) => ({ value: J.id, label: J.label })), ...(_n = he.current) != null && _n.canPromptOutput() ? [{ value: "choose", label: _("Выбрать другое устройство…") }] : []] }),
           !N && /* @__PURE__ */ i.jsx("p", { className: $e.routeHint, children: _("Этот браузер не позволяет выбирать аудиовыход. Переключите динамик или наушники в системном меню телефона.") })
         ] }),
         /* @__PURE__ */ i.jsxs("div", { className: $e.callControls, children: [
@@ -13038,7 +13034,7 @@ function hk() {
             /* @__PURE__ */ i.jsx("span", { children: _("Отклонить") })
           ] }),
           /* @__PURE__ */ i.jsxs("div", { className: $e.control, children: [
-            oe ? /* @__PURE__ */ i.jsx(se, { className: $e.hangup, disabled: g, "aria-label": _("Положить трубку"), onClick: () => void Ce(), children: /* @__PURE__ */ i.jsx(ff, { size: 30 }) }) : /* @__PURE__ */ i.jsx(se, { className: $e.dial, "aria-label": _(ie ? "Занято" : O ? "Ответить" : "Позвонить"), disabled: g || !y || !we || !(o != null && o.available) || !(B != null && B.online) || !!H || !!ie, onClick: () => void Ae(), children: /* @__PURE__ */ i.jsx(di, { size: 30 }) }),
+            oe ? /* @__PURE__ */ i.jsx(se, { className: $e.hangup, disabled: g, "aria-label": _("Положить трубку"), onClick: () => void Ce(), children: /* @__PURE__ */ i.jsx(ff, { size: 30 }) }) : /* @__PURE__ */ i.jsx(se, { className: $e.dial, "aria-label": _(ie ? "Занято" : O ? "Ответить" : "Позвонить"), disabled: g || !y || !we || !(o != null && o.available) || !(B != null && B.online) || !!z || !!ie, onClick: () => void Ae(), children: /* @__PURE__ */ i.jsx(di, { size: 30 }) }),
             /* @__PURE__ */ i.jsx("span", { children: _(oe ? "Завершить" : ie ? "Занято" : O ? "Ответить" : "Позвонить") })
           ] })
         ] })
@@ -13050,7 +13046,7 @@ function hk() {
             /* @__PURE__ */ i.jsx("span", { role: "status", "aria-live": "polite", children: g && !oe ? _("Подключаем микрофон…") : Ne }),
             /* @__PURE__ */ i.jsx(Wr, { label: "Звонки", description: "Вы звоните с микрофона этого телефона или компьютера. Закрытие окна сохраняет звонок; выход из раздела или закрытие страницы завершает звонок с этого устройства. Звонки между колонками запускаются сценариями HA." })
           ] }),
-          oe && (H == null ? void 0 : H.state) === "active" && /* @__PURE__ */ i.jsxs("time", { className: $e.duration, "aria-label": _("Длительность звонка"), children: [
+          oe && (z == null ? void 0 : z.state) === "active" && /* @__PURE__ */ i.jsxs("time", { className: $e.duration, "aria-label": _("Длительность звонка"), children: [
             String(Math.floor(V / 60)).padStart(2, "0"),
             ":",
             String(V % 60).padStart(2, "0")
@@ -13060,29 +13056,29 @@ function hk() {
         ] }),
         p && /* @__PURE__ */ i.jsx("p", { role: "alert", children: p }),
         ie && !oe && /* @__PURE__ */ i.jsx("p", { className: $e.hint, children: _("Колонка уже участвует в другом звонке.") }),
-        H && !oe && /* @__PURE__ */ i.jsx("p", { className: $e.hint, children: _("Сначала завершите текущий звонок.") })
+        z && !oe && /* @__PURE__ */ i.jsx("p", { className: $e.hint, children: _("Сначала завершите текущий звонок.") })
       ] })
     ] })
   ] });
 }
-const mk = "_page_1k5zr_1", vk = "_heading_1k5zr_8", yk = "_grid_1k5zr_26", gk = "_device_1k5zr_33", _k = "_deviceLive_1k5zr_64", xk = "_navigation_1k5zr_72", wk = "_playback_1k5zr_76", kk = "_playbackSelect_1k5zr_93", Sk = "_statusRow_1k5zr_117", Ck = "_status_1k5zr_117", jk = "_live_1k5zr_132", Ek = "_hint_1k5zr_136", Nk = "_footer_1k5zr_142", Tk = "_empty_1k5zr_153", bk = "_error_1k5zr_160", et = {
-  page: mk,
-  heading: vk,
-  grid: yk,
-  device: gk,
-  deviceLive: _k,
-  navigation: xk,
-  playback: wk,
-  playbackSelect: kk,
-  statusRow: Sk,
-  status: Ck,
-  live: jk,
-  hint: Ek,
-  footer: Nk,
-  empty: Tk,
-  error: bk
+const hk = "_page_1k5zr_1", mk = "_heading_1k5zr_8", vk = "_grid_1k5zr_26", yk = "_device_1k5zr_33", gk = "_deviceLive_1k5zr_64", _k = "_navigation_1k5zr_72", xk = "_playback_1k5zr_76", wk = "_playbackSelect_1k5zr_93", kk = "_statusRow_1k5zr_117", Sk = "_status_1k5zr_117", Ck = "_live_1k5zr_132", jk = "_hint_1k5zr_136", Ek = "_footer_1k5zr_142", Nk = "_empty_1k5zr_153", Tk = "_error_1k5zr_160", et = {
+  page: hk,
+  heading: mk,
+  grid: vk,
+  device: yk,
+  deviceLive: gk,
+  navigation: _k,
+  playback: xk,
+  playbackSelect: wk,
+  statusRow: kk,
+  status: Sk,
+  live: Ck,
+  hint: jk,
+  footer: Ek,
+  empty: Nk,
+  error: Tk
 };
-function Rk() {
+function bk() {
   const r = dt(), a = nt(), [o, c] = v.useState(), [d, f] = v.useState(""), [p, m] = v.useState(null), [g, w] = v.useState("browser"), [y, x] = v.useState(!1), [k, C] = v.useState(!1), b = v.useRef(""), j = v.useRef(!1), N = v.useRef(), [A, F] = v.useState(0);
   v.useEffect(() => {
     j.current = !0;
@@ -13111,7 +13107,7 @@ function Rk() {
   }, [o, y]);
   const P = o == null ? void 0 : o.devices.find(($) => $.id === p), M = (o == null ? void 0 : o.devices.filter(($) => $.source)) ?? [], W = o == null ? void 0 : o.sessions.find(
     ($) => $.source_device_id === p
-  ), z = !!(P != null && P.transmitting || (P == null ? void 0 : P.source_state) === "on" || W), X = k && (P == null ? void 0 : P.transmitting) && (o == null ? void 0 : o.owned_source_id) === p, V = !!W || X, G = ($) => {
+  ), H = !!(P != null && P.transmitting || (P == null ? void 0 : P.source_state) === "on" || W), X = k && (P == null ? void 0 : P.transmitting) && (o == null ? void 0 : o.owned_source_id) === p, V = !!W || X, G = ($) => {
     const K = o == null ? void 0 : o.sessions.find(
       (B) => B.source_device_id === $.id
     );
@@ -13192,15 +13188,15 @@ function Rk() {
   }, me = (o == null ? void 0 : o.devices.filter(
     ($) => $.listener && $.id !== p
   )) ?? [], we = _(
-    y ? "Подключаемся…" : z ? X || W ? "Прослушивание активно" : "Источник включён" : "Готово к запуску"
-  ), H = /* @__PURE__ */ i.jsxs(i.Fragment, { children: [
+    y ? "Подключаемся…" : H ? X || W ? "Прослушивание активно" : "Источник включён" : "Готово к запуску"
+  ), z = /* @__PURE__ */ i.jsxs(i.Fragment, { children: [
     /* @__PURE__ */ i.jsxs("div", { className: et.statusRow, children: [
       /* @__PURE__ */ i.jsxs(
         "div",
         {
           role: "status",
           "aria-live": "polite",
-          className: `${et.status} ${z ? et.live : ""}`,
+          className: `${et.status} ${H ? et.live : ""}`,
           children: [
             /* @__PURE__ */ i.jsx($y, { size: 12, fill: "currentColor" }),
             we
@@ -13208,7 +13204,7 @@ function Rk() {
         }
       ),
       /* @__PURE__ */ i.jsx(Wr, { label: we, description: _(
-        z && (o == null ? void 0 : o.owned_source_id) !== p ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя." : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя."
+        H && (o == null ? void 0 : o.owned_source_id) !== p ? "Сеанс запущен вне этой вкладки. Закрытие окна или вкладки его не остановит. Для остановки нажмите кнопку ниже. Пока прослушивание активно, сменить устройство воспроизведения нельзя." : "Закрытие этого окна не останавливает прослушивание. Для остановки нажмите кнопку ниже или выйдите из вкладки «Радионяня». Пока прослушивание активно, сменить устройство воспроизведения нельзя."
       ) })
     ] }),
     /* @__PURE__ */ i.jsx("p", { className: et.hint, children: _("Выберите устройство") }),
@@ -13236,15 +13232,15 @@ function Rk() {
   ] }), le = /* @__PURE__ */ i.jsx("div", { className: et.footer, children: /* @__PURE__ */ i.jsx(
     se,
     {
-      onClick: z ? () => void he(p) : () => void fe(),
-      disabled: y || !z && !(P != null && P.online) || !z && g !== "browser" && !(o != null && o.devices.some(
+      onClick: H ? () => void he(p) : () => void fe(),
+      disabled: y || !H && !(P != null && P.online) || !H && g !== "browser" && !(o != null && o.devices.some(
         ($) => $.id === g && $.online
       )),
       children: _(
-        y ? "Подключаемся…" : z ? g === "browser" && !X && !W ? "Начать слушать" : "Остановить" : "Старт"
+        y ? "Подключаемся…" : H ? g === "browser" && !X && !W ? "Начать слушать" : "Остановить" : "Старт"
       )
     }
-  ) }), de = z && !V ? /* @__PURE__ */ i.jsxs("div", { className: et.footer, children: [
+  ) }), de = H && !V ? /* @__PURE__ */ i.jsxs("div", { className: et.footer, children: [
     /* @__PURE__ */ i.jsx(se, { disabled: y || !(P != null && P.online), onClick: () => void fe(), children: _(g === "browser" ? "Начать слушать" : "Старт") }),
     /* @__PURE__ */ i.jsx(
       se,
@@ -13312,14 +13308,14 @@ function Rk() {
           footer: de,
           children: [
             d && /* @__PURE__ */ i.jsx("p", { role: "alert", className: et.error, children: d }),
-            H
+            z
           ]
         }
       )
     ] })
   ] });
 }
-const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onDelete: f }) => {
+const Rk = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onDelete: f }) => {
   if (!r) return null;
   const p = r.status === "on";
   return /* @__PURE__ */ i.jsx(tu, { open: a, title: r.title, uuid: r.uuid, onClose: o, actions: [
@@ -13327,7 +13323,7 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
     { label: "Изменить", variant: "secondary", onClick: () => d(r) },
     { label: "Удалить", variant: "remove", onClick: () => f(r) }
   ] });
-}, Pk = (r) => {
+}, Ak = (r) => {
   const a = /^(\d{1,2}):(\d{2})$/.exec(r.trim());
   return !a || Number(a[1]) > 23 || Number(a[2]) > 59 ? null : `${a[1].padStart(2, "0")}:${a[2]}`;
 }, Dl = [
@@ -13338,28 +13334,28 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
   { key: "fri", label: "Пт" },
   { key: "sat", label: "Сб" },
   { key: "sun", label: "Вс" }
-], $k = [
+], Pk = [
   { value: "once", label: "Однократно" },
   { value: "daily", label: "Ежедневно" },
   { value: "weekdays", label: "По будням" },
   { value: "weekends", label: "По выходным" },
   { value: "custom", label: "Выбранные дни" }
-], Mk = (r = "once", a = []) => r === "daily" ? _("ежедневно") : r === "weekdays" ? _("по будням") : r === "weekends" ? _("по выходным") : r === "custom" ? a.length ? a.map((o) => {
+], $k = (r = "once", a = []) => r === "daily" ? _("ежедневно") : r === "weekdays" ? _("по будням") : r === "weekends" ? _("по выходным") : r === "custom" ? a.length ? a.map((o) => {
   var c;
   return (c = Dl.find((d) => d.key === o)) != null && c.label ? _(Dl.find((d) => d.key === o).label) : o;
-}).join(", ") : _("кастом") : _("однократно"), Ik = () => {
-  const r = nt(), { feedback: a, alarmTimeWidgets: o, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: p, devices: m, loading: g, updateAlarm: w } = Cp(), [y, x] = v.useState(!1), [k, C] = v.useState(null), [b, j] = v.useState(null), [N, A] = v.useState(""), [F, P] = v.useState("08:00"), [M, W] = v.useState("once"), [z, X] = v.useState([]), V = v.useMemo(() => Array.from(new Set([...o.flatMap((H) => H.time || []), ...d.map((H) => H.time)].map(Pk).filter((H) => H !== null))), [o, d]), G = v.useMemo(() => new Map(m.map((H) => [H.id, H.name])), [m]), xe = d.find((H) => H.uuid === k) || null, fe = async () => {
+}).join(", ") : _("кастом") : _("однократно"), Mk = () => {
+  const r = nt(), { feedback: a, alarmTimeWidgets: o, refreshAlarmTimes: c, alarms: d, createAlarm: f, deleteAlarm: p, devices: m, loading: g, updateAlarm: w } = Cp(), [y, x] = v.useState(!1), [k, C] = v.useState(null), [b, j] = v.useState(null), [N, A] = v.useState(""), [F, P] = v.useState("08:00"), [M, W] = v.useState("once"), [H, X] = v.useState([]), V = v.useMemo(() => Array.from(new Set([...o.flatMap((z) => z.time || []), ...d.map((z) => z.time)].map(Ak).filter((z) => z !== null))), [o, d]), G = v.useMemo(() => new Map(m.map((z) => [z.id, z.name])), [m]), xe = d.find((z) => z.uuid === k) || null, fe = async () => {
     if (!N || !F) return;
-    const H = d.find((le) => le.uuid === b);
-    if (H) {
-      if (!await w(H, { device_id: N, time: F, volume_start: 0.3, repeat_type: M, repeat_days: z })) return;
-    } else if (!await f(N, F, 0.3, M, z)) return;
+    const z = d.find((le) => le.uuid === b);
+    if (z) {
+      if (!await w(z, { device_id: N, time: F, volume_start: 0.3, repeat_type: M, repeat_days: H })) return;
+    } else if (!await f(N, F, 0.3, M, H)) return;
     j(null), x(!1);
   }, he = () => {
     j(null), x(!0), c();
-  }, me = (H) => {
-    P(H.time), A(H.device_id), W(H.repeat_type ?? "once"), X(H.repeat_days ?? []), c(), j(H.uuid), C(null), x(!0);
-  }, we = (H) => X((le) => le.includes(H) ? le.filter((de) => de !== H) : [...le, H]);
+  }, me = (z) => {
+    P(z.time), A(z.device_id), W(z.repeat_type ?? "once"), X(z.repeat_days ?? []), c(), j(z.uuid), C(null), x(!0);
+  }, we = (z) => X((le) => le.includes(z) ? le.filter((de) => de !== z) : [...le, z]);
   return /* @__PURE__ */ i.jsxs(i.Fragment, { children: [
     /* @__PURE__ */ i.jsx(vt, { title: _("Будильники") }),
     /* @__PURE__ */ i.jsxs("div", { className: Z.page, children: [
@@ -13383,15 +13379,15 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
           }
         ) })
       ] }),
-      /* @__PURE__ */ i.jsx(Gt, { loading: g, itemCount: d.length, placeholderCount: 4, children: /* @__PURE__ */ i.jsx("div", { className: _e.grid, children: d.length ? d.map((H) => /* @__PURE__ */ i.jsx("button", { className: `${_e.card} ${_e.cardButton}`, type: "button", onClick: () => C(H.uuid), children: /* @__PURE__ */ i.jsxs("div", { className: _e.cardHeader, children: [
+      /* @__PURE__ */ i.jsx(Gt, { loading: g, itemCount: d.length, placeholderCount: 4, children: /* @__PURE__ */ i.jsx("div", { className: _e.grid, children: d.length ? d.map((z) => /* @__PURE__ */ i.jsx("button", { className: `${_e.card} ${_e.cardButton}`, type: "button", onClick: () => C(z.uuid), children: /* @__PURE__ */ i.jsxs("div", { className: _e.cardHeader, children: [
         /* @__PURE__ */ i.jsxs("div", { className: _e.cardLead, children: [
           /* @__PURE__ */ i.jsx(Yl, { className: _e.cardIcon, size: 26 }),
           /* @__PURE__ */ i.jsxs("div", { children: [
-            /* @__PURE__ */ i.jsx("h2", { className: _e.cardTitle, children: H.time }),
+            /* @__PURE__ */ i.jsx("h2", { className: _e.cardTitle, children: z.time }),
             /* @__PURE__ */ i.jsxs("div", { className: _e.meta, children: [
-              Mk(H.repeat_type, H.repeat_days),
+              $k(z.repeat_type, z.repeat_days),
               " • ",
-              G.get(H.device_id) || H.device_id
+              G.get(z.device_id) || z.device_id
             ] })
           ] })
         ] }),
@@ -13400,10 +13396,10 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
           {
             onClick: (le) => le.stopPropagation(),
             onMouseDown: (le) => le.stopPropagation(),
-            children: /* @__PURE__ */ i.jsx(ur, { label: _(""), checked: H.status !== "off", onClick: (le) => le.stopPropagation(), onChange: (le) => w(H, { status: le.currentTarget.checked ? "on" : "off" }) })
+            children: /* @__PURE__ */ i.jsx(ur, { label: _(""), checked: z.status !== "off", onClick: (le) => le.stopPropagation(), onChange: (le) => w(z, { status: le.currentTarget.checked ? "on" : "off" }) })
           }
         )
-      ] }) }, H.uuid)) : !g && !a.error && /* @__PURE__ */ i.jsx("div", { className: _e.empty, children: _("Нет будильников.") }) }) }),
+      ] }) }, z.uuid)) : !g && !a.error && /* @__PURE__ */ i.jsx("div", { className: _e.empty, children: _("Нет будильников.") }) }) }),
       /* @__PURE__ */ i.jsx(Jt, { feedback: a, open: y, onClose: () => {
         x(!1), j(null);
       }, title: b ? "Редактировать будильник" : "Создать будильник", footer: /* @__PURE__ */ i.jsx("div", { className: _e.footerActions, children: /* @__PURE__ */ i.jsx(se, { className: _e.saveButton, onClick: fe, disabled: !N || !F, children: _("Сохранить") }) }), children: /* @__PURE__ */ i.jsxs("div", { className: _e.form, children: [
@@ -13413,8 +13409,8 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
             {
               label: _("Часы"),
               value: F.split(":")[0],
-              options: Array.from({ length: 24 }, (H, le) => ({ value: String(le).padStart(2, "0"), label: String(le).padStart(2, "0") })),
-              onSelect: (H) => P(`${H}:${F.split(":")[1]}`)
+              options: Array.from({ length: 24 }, (z, le) => ({ value: String(le).padStart(2, "0"), label: String(le).padStart(2, "0") })),
+              onSelect: (z) => P(`${z}:${F.split(":")[1]}`)
             }
           ),
           /* @__PURE__ */ i.jsx(
@@ -13422,34 +13418,34 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
             {
               label: _("Минуты"),
               value: F.split(":")[1],
-              options: Array.from({ length: 60 }, (H, le) => ({ value: String(le).padStart(2, "0"), label: String(le).padStart(2, "0") })),
-              onSelect: (H) => P(`${F.split(":")[0]}:${H}`)
+              options: Array.from({ length: 60 }, (z, le) => ({ value: String(le).padStart(2, "0"), label: String(le).padStart(2, "0") })),
+              onSelect: (z) => P(`${F.split(":")[0]}:${z}`)
             }
           )
         ] }),
         /* @__PURE__ */ i.jsxs("div", { className: _e.field, children: [
           /* @__PURE__ */ i.jsx("span", { className: _e.label, children: _("Ранее заданное время") }),
-          /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, children: V.length ? V.map((H) => /* @__PURE__ */ i.jsx("button", { type: "button", className: `${_e.quickTab} ${F === H ? _e.activeQuickTab : ""}`, onClick: () => P(H), children: H }, H)) : /* @__PURE__ */ i.jsx("span", { className: _e.meta, children: _("Нет быстрых значений.") }) })
+          /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, children: V.length ? V.map((z) => /* @__PURE__ */ i.jsx("button", { type: "button", className: `${_e.quickTab} ${F === z ? _e.activeQuickTab : ""}`, onClick: () => P(z), children: z }, z)) : /* @__PURE__ */ i.jsx("span", { className: _e.meta, children: _("Нет быстрых значений.") }) })
         ] }),
         /* @__PURE__ */ i.jsx(
           Fr,
           {
             label: _("Повторы"),
             value: M,
-            options: $k.map((H) => ({ ...H, label: _(H.label) })),
-            onSelect: (H) => W(H)
+            options: Pk.map((z) => ({ ...z, label: _(z.label) })),
+            onSelect: (z) => W(z)
           }
         ),
-        M === "custom" && /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, role: "group", "aria-label": _("Дни повтора"), children: Dl.map((H) => /* @__PURE__ */ i.jsx(
+        M === "custom" && /* @__PURE__ */ i.jsx("div", { className: _e.quickTabs, role: "group", "aria-label": _("Дни повтора"), children: Dl.map((z) => /* @__PURE__ */ i.jsx(
           "button",
           {
             type: "button",
-            "aria-pressed": z.includes(H.key),
-            className: `${_e.quickTab} ${z.includes(H.key) ? _e.activeQuickTab : ""}`,
-            onClick: () => we(H.key),
-            children: _(H.label)
+            "aria-pressed": H.includes(z.key),
+            className: `${_e.quickTab} ${H.includes(z.key) ? _e.activeQuickTab : ""}`,
+            onClick: () => we(z.key),
+            children: _(z.label)
           },
-          H.key
+          z.key
         )) }),
         /* @__PURE__ */ i.jsx(
           Fr,
@@ -13457,27 +13453,27 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
             label: _("Устройство воспроизведения"),
             placeholder: _("Выберите устройство"),
             value: N,
-            options: m.map((H) => ({ value: H.id, label: H.name })),
+            options: m.map((z) => ({ value: z.id, label: z.name })),
             onSelect: A
           }
         )
       ] }) }),
       /* @__PURE__ */ i.jsx(
-        Ak,
+        Rk,
         {
           open: !!xe,
           onClose: () => C(null),
           command: xe,
-          onEdit: (H) => me(H),
-          onToggleStatus: (H, le) => w(H, { status: le }),
-          onDelete: (H) => {
-            p(H), C(null);
+          onEdit: (z) => me(z),
+          onToggleStatus: (z, le) => w(z, { status: le }),
+          onDelete: (z) => {
+            p(z), C(null);
           }
         }
       )
     ] })
   ] });
-}, Lk = () => {
+}, Ik = () => {
   const r = Jl(), a = Xl(), o = Ur(), { pathname: c } = jt(), d = o ? "/scripts" : "/commands/main";
   return (c === "/commands" || c.startsWith("/commands/")) && o !== !1 ? o === null ? /* @__PURE__ */ i.jsx(_i, {}) : /* @__PURE__ */ i.jsx(zn, { to: "/scripts", replace: !0 }) : /* @__PURE__ */ i.jsx(pp, { resetKey: c, children: /* @__PURE__ */ i.jsxs(Mv, { children: [
     /* @__PURE__ */ i.jsx(Ke, { path: "/commands/whisper", element: a ? /* @__PURE__ */ i.jsx(R1, {}) : /* @__PURE__ */ i.jsx(zn, { to: d, replace: !0 }) }),
@@ -13564,20 +13560,20 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
         element: /* @__PURE__ */ i.jsx(Vx, {})
       }
     ),
-    /* @__PURE__ */ i.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ i.jsx(Rk, {}) }),
-    /* @__PURE__ */ i.jsx(Ke, { path: "/calls", element: /* @__PURE__ */ i.jsx(hk, {}) }),
+    /* @__PURE__ */ i.jsx(Ke, { path: "/monitor", element: /* @__PURE__ */ i.jsx(bk, {}) }),
+    /* @__PURE__ */ i.jsx(Ke, { path: "/calls", element: /* @__PURE__ */ i.jsx(pk, {}) }),
     /* @__PURE__ */ i.jsx(
       Ke,
       {
         path: "/timer",
-        element: /* @__PURE__ */ i.jsx(Vw, {})
+        element: /* @__PURE__ */ i.jsx(Uw, {})
       }
     ),
     /* @__PURE__ */ i.jsx(
       Ke,
       {
         path: "/alarm",
-        element: /* @__PURE__ */ i.jsx(Ik, {})
+        element: /* @__PURE__ */ i.jsx(Mk, {})
       }
     ),
     /* @__PURE__ */ i.jsx(
@@ -13601,12 +13597,12 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
       }
     )
   ] }) });
-}, Tp = "ha-dialog-ui-theme", Nl = (r) => r === "light" ? "light" : "dark", Dk = (r) => {
+}, Tp = "ha-dialog-ui-theme", Nl = (r) => r === "light" ? "light" : "dark", Lk = (r) => {
   document.documentElement.dataset.theme = r, document.documentElement.style.colorScheme = r, localStorage.setItem(Tp, r);
-}, Ok = () => {
+}, Dk = () => {
   const r = Yt(), a = lp(), o = dt(), [c, d] = v.useState(!1), [f, p] = v.useState(null), [m, g] = v.useState(() => Nl(localStorage.getItem(Tp)));
   return v.useEffect(() => {
-    Dk(m);
+    Lk(m);
   }, [m]), v.useEffect(() => {
     let w = !0, y = !1, x = !1, k = !1;
     r.run(async () => {
@@ -13625,10 +13621,10 @@ const Ak = ({ command: r, open: a, onClose: o, onToggleStatus: c, onEdit: d, onD
     };
   }, [o, r.run]), /* @__PURE__ */ i.jsx(up.Provider, { value: c, children: /* @__PURE__ */ i.jsx(dp.Provider, { value: f, children: /* @__PURE__ */ i.jsxs("div", { className: "appShell", "data-theme": m, lang: a, children: [
     /* @__PURE__ */ i.jsx(Ye, { ...r }),
-    f === null ? !r.error && /* @__PURE__ */ i.jsx(_i, {}) : /* @__PURE__ */ i.jsx(Lk, {})
+    f === null ? !r.error && /* @__PURE__ */ i.jsx(_i, {}) : /* @__PURE__ */ i.jsx(Ik, {})
   ] }) }) });
 };
-class zk {
+class Ok {
   constructor(a) {
     be(this, "hass");
     this.hass = a;
@@ -13827,10 +13823,10 @@ function bp(r) {
     states: {}
   };
 }
-async function Hk() {
+async function zk() {
   return bp(window.hass);
 }
-function Fk({
+function Hk({
   children: r,
   hass: a
 }) {
@@ -13839,9 +13835,9 @@ function Fk({
     let x = !0;
     c(null);
     async function k() {
-      const C = a ? bp(a) : await Hk();
+      const C = a ? bp(a) : await zk();
       if (!x) return;
-      p.current ? p.current.setHass(C) : p.current = new zk(C);
+      p.current ? p.current.setHass(C) : p.current = new Ok(C);
       const b = C.user ?? await C.connection.sendMessagePromise({ type: "auth/current_user" });
       x && (g((b == null ? void 0 : b.is_admin) === !0), y(!0));
     }
@@ -13852,11 +13848,11 @@ function Fk({
     };
   }, [a, d]), o ? /* @__PURE__ */ i.jsx("div", { className: "appShell panelRecovery", "data-theme": localStorage.getItem("ha-dialog-ui-theme") || "dark", children: /* @__PURE__ */ i.jsx(Ye, { error: o, retry: () => f((x) => x + 1) }) }) : !w || !p.current ? /* @__PURE__ */ i.jsx(_i, { label: _("Подключение к Home Assistant..."), fullscreen: !0 }) : /* @__PURE__ */ i.jsx(hp.Provider, { value: p.current, children: /* @__PURE__ */ i.jsx(cp.Provider, { value: m, children: r }) });
 }
-function Wk({ hass: r }) {
-  return /* @__PURE__ */ i.jsx(sy, { children: /* @__PURE__ */ i.jsx(Fk, { hass: r, children: /* @__PURE__ */ i.jsx(Ok, {}) }) });
+function Fk({ hass: r }) {
+  return /* @__PURE__ */ i.jsx(sy, { children: /* @__PURE__ */ i.jsx(Hk, { hass: r, children: /* @__PURE__ */ i.jsx(Dk, {}) }) });
 }
 const bf = "ha-dialog-ui-panel", Rf = "ha-dialog-ui-style";
-class Bk extends HTMLElement {
+class Wk extends HTMLElement {
   constructor() {
     super(...arguments);
     be(this, "root");
@@ -13903,8 +13899,8 @@ class Bk extends HTMLElement {
     if (!this.isConnected) return;
     const o = this.ensureShadowRoot();
     this.root || (this.container || (this.container = document.createElement("div"), o.appendChild(this.container)), this.root = Lm.createRoot(this.container)), this.root.render(
-      /* @__PURE__ */ i.jsx(Pf.StrictMode, { children: /* @__PURE__ */ i.jsx(pp, { children: /* @__PURE__ */ i.jsx(Wk, { hass: this.hassValue }) }) })
+      /* @__PURE__ */ i.jsx(Pf.StrictMode, { children: /* @__PURE__ */ i.jsx(pp, { children: /* @__PURE__ */ i.jsx(Fk, { hass: this.hassValue }) }) })
     );
   }
 }
-customElements.get(bf) || customElements.define(bf, Bk);
+customElements.get(bf) || customElements.define(bf, Wk);

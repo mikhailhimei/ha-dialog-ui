@@ -12,12 +12,6 @@ const unwrapData = <T,>(response: unknown): T => {
   return (isObject(result) && "data" in result ? result.data : result) as T;
 };
 
-const getUtcFinishDate = (seconds: number) => {
-  const safeSeconds = Math.max(1, Number(seconds) || 1);
-
-  return new Date(Date.now() + safeSeconds * 1000).toISOString();
-};
-
 const formatTimerTime = (seconds: number) => {
   const safeSeconds = Math.max(1, Number(seconds) || 1);
   const hours = Math.floor(safeSeconds / 3600);
@@ -106,7 +100,6 @@ export function useTimerAlarmRequests() {
   const createTimer = async (deviceId: string, seconds: number, volumeStart = 0.3) => {
     const timerTime = {
       count_timer: formatTimerTime(seconds),
-      date_end: getUtcFinishDate(seconds),
     };
 
     return mutate(() => api.saveData({ name: `Таймер ${formatTimerTime(seconds)}`, action_type: "create_timer", device_id: deviceId, timer_time: timerTime, volume_start: volumeStart }, "save_timer_request"), loadTimers);

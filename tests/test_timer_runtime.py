@@ -46,13 +46,13 @@ async def test_countdown_pause_resume_and_reads_do_not_restart(runtime):
     create(manager, "old", 10)
     create(manager, "new", 20)
     entry = manager._timers["new"]
-    task, deadline = entry["task"], entry["ends_at"]
-    with patch("custom_components.ha_dialog_ui.timer_alarm.timer_manager.datetime") as clock:
-        clock.now.return_value = datetime.fromtimestamp(deadline - 60)
+    task = entry["task"]
+    with patch("custom_components.ha_dialog_ui.timer_alarm.timer_manager.monotonic") as clock:
+        clock.return_value = entry["deadline_monotonic"] - 60
         assert latest_device_timers(manager.get_timer_items())["voice"]["remaining_seconds"] == 60
         assert entry["task"] is task
         await manager._pause_timer("new")
-        clock.now.return_value = datetime.fromtimestamp(deadline + 100)
+        clock.return_value += 160
         assert latest_device_timers(manager.get_timer_items())["voice"]["remaining_seconds"] == 60
         await manager._resume_timer("new")
     assert entry["created_at"] == 20
