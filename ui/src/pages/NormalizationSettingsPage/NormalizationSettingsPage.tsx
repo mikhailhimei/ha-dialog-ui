@@ -22,10 +22,10 @@ const names: Record<string, string> = {
   units: "Числа от 0 до 9", teens: "Числа от 10 до 19", tens: "Десятки", hundreds: "Сотни",
   thousands: "Тысяча: варианты произношения", location_stop_words: "Служебные слова в названиях мест",
   months: "Месяцы", time_markers: "Время суток", time_prefixes: "Предлоги перед временем", time_units: "Единицы времени",
-  date_keywords: "Относительные даты", genitive_day: "Произношение дат", special_characters: "Замена символов",
+  date_keywords: "Относительные даты", date_pronunciation: "Произношение дат", character_replacements: "Замена символов",
   morning: "Утро", evening: "Вечер", day: "День", night: "Ночь", genitive: "Родительный падеж", dative: "Дательный падеж", plain: "Без склонения",
-  minutes: "Минуты", seconds: "Секунды", hours: "Часы", today: "Сегодня", tomorrow: "Завтра", day_after: "Послезавтра",
-  units2: "Порядковые числа от 1 до 9", months_map: "Номера месяцев", month_markers: "Формы названий месяцев",
+  minutes: "Минуты", seconds: "Секунды", hours: "Часы", today: "Сегодня", tomorrow: "Завтра", day_after_tomorrow: "Послезавтра",
+  ordinal_units: "Порядковые числа от 1 до 9", month_numbers_by_name: "Номера месяцев", month_name_forms: "Формы названий месяцев",
 };
 const isGroup = (value: DictionaryValue): value is Record<string, DictionaryValue> => typeof value === "object" && !Array.isArray(value);
 const at = (words: Record<string, DictionaryValue>, path: string[]): DictionaryValue => path.reduce<DictionaryValue>((node, key) => (node as Record<string, DictionaryValue>)[key], words);

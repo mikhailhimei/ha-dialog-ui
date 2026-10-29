@@ -15,14 +15,14 @@ def _number_word_values(section):
 
 
 def refresh_normalization_dictionary():
-    global _UNITS, _TEENS, _TENS, _HUNDREDS, _THOUSANDS, _LOCATION_STOP_WORDS, _SPECIAL_CHARACTERS, _NUMBER_WORDS
+    global _UNITS, _TEENS, _TENS, _HUNDREDS, _THOUSANDS, _LOCATION_STOP_WORDS, _CHARACTER_REPLACEMENTS, _NUMBER_WORDS
     _UNITS = _number_word_values("units")
     _TEENS = _number_word_values("teens")
     _TENS = _number_word_values("tens")
     _HUNDREDS = _number_word_values("hundreds")
     _THOUSANDS = get_section("thousands")
     _LOCATION_STOP_WORDS = get_section("location_stop_words")
-    _SPECIAL_CHARACTERS = get_section("special_characters")
+    _CHARACTER_REPLACEMENTS = get_section("character_replacements")
 
     _NUMBER_WORDS = (
         set(_UNITS)
@@ -77,7 +77,7 @@ def normalize_numbers(text: str) -> str:
 
     text = re.sub(r"(?<!\d)\.|\.(?!\d)", "", text)
 
-    for char, replacement in _SPECIAL_CHARACTERS.items():
+    for char, replacement in _CHARACTER_REPLACEMENTS.items():
         text = text.replace(char, f" {replacement}")
 
     tokens = text.split()

@@ -16,7 +16,7 @@ try {
    window.hass={user:{is_admin:true},states:{},connection:{sendMessagePromise:async message=>{
     const key=message.type.split('/').pop();
     if(key==='get_settings')return {active_remout:false,theme:'dark'};
-    if(key==='get_normalization_words')return JSON.parse(localStorage.getItem('words')||'{"words":{"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"genitive_day":{"months_map":{"января":1},"month_markers":{"январь":"января"}}},"labels":{}}');
+    if(key==='get_normalization_words')return JSON.parse(localStorage.getItem('words')||'{"words":{"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"date_pronunciation":{"month_numbers_by_name":{"января":1},"month_name_forms":{"январь":"января"}}},"labels":{}}');
     if(key==='save_normalization_words'){
      if(window.failSave)throw {code:'storage_error',message:'failure'};
      window.lastSave=message.data;

@@ -44,6 +44,51 @@ def _validate(value, template):
         raise ValueError("Expected text")
 
 
+_RENAMED_KEYS = {
+    ("genitive_day",): "date_pronunciation",
+    ("genitive_day", "units2"): "ordinal_units",
+    ("genitive_day", "months_map"): "month_numbers_by_name",
+    ("genitive_day", "month_markers"): "month_name_forms",
+    ("date_pronunciation", "units2"): "ordinal_units",
+    ("date_pronunciation", "months_map"): "month_numbers_by_name",
+    ("date_pronunciation", "month_markers"): "month_name_forms",
+    ("date_keywords", "day_after"): "day_after_tomorrow",
+    ("special_characters",): "character_replacements",
+}
+
+
+def _renamed_path(path):
+    return [_RENAMED_KEYS.get(tuple(path[:index + 1]), key) for index, key in enumerate(path)]
+
+
+def _renamed_value(value, path):
+    if not isinstance(value, dict):
+        return deepcopy(value)
+    return {_renamed_path([*path, key])[-1]: _renamed_value(child, [*path, key]) for key, child in value.items()}
+
+
+def _migrate_settings(settings):
+    result = deepcopy(settings)
+    for collection in ("overrides", "labels"):
+        migrated = {}
+        entries = []
+        for encoded, value in settings.get(collection, {}).items():
+            try:
+                path = json.loads(encoded)
+                if not isinstance(path, list) or not path or not all(isinstance(key, str) for key in path):
+                    continue
+                renamed = _renamed_path(path)
+                entries.append((path == renamed, path, renamed, value))
+            except (ValueError, TypeError):
+                continue
+        # Explicit current keys win when both old and new names exist.
+        for _, path, renamed, value in sorted(entries, key=lambda entry: entry[0]):
+            key = json.dumps(renamed, ensure_ascii=False, separators=(",", ":"))
+            migrated[key] = _renamed_value(value, path) if collection == "overrides" else value
+        result[collection] = migrated
+    return result
+
+
 def _effective(defaults, settings):
     result = deepcopy(defaults)
     for encoded_path, value in settings.get("overrides", {}).items():
@@ -60,7 +105,7 @@ def _effective(defaults, settings):
 
 async def async_setup_normalization_settings(hass):
     defaults = await hass.async_add_executor_job(_defaults)
-    settings = await _store(hass).async_load() or {}
+    settings = _migrate_settings(await _store(hass).async_load() or {})
     apply_normalization_dictionary(_effective(defaults, settings))
     for handler in (_get_dictionary, _save_dictionary):
         websocket_api.async_register_command(hass, handler)
@@ -71,7 +116,7 @@ async def async_setup_normalization_settings(hass):
 @websocket_api.async_response
 async def _get_dictionary(hass, connection, msg):
     defaults = await hass.async_add_executor_job(_defaults)
-    settings = await _store(hass).async_load() or {}
+    settings = _migrate_settings(await _store(hass).async_load() or {})
     connection.send_result(msg["id"], {"words": _effective(defaults, settings), "labels": settings.get("labels", {})})
 
 
@@ -88,7 +133,7 @@ async def _save_dictionary(hass, connection, msg):
     path = data["path"]
     try:
         _validate(data["value"], _node(defaults, path))
-        settings = deepcopy(await _store(hass).async_load() or {})
+        settings = _migrate_settings(await _store(hass).async_load() or {})
         key = json.dumps(path, ensure_ascii=False, separators=(",", ":"))
         # Replace nested overrides when their enclosing group is saved.
         overrides = settings.setdefault("overrides", {})

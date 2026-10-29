@@ -54,13 +54,13 @@ async def test_refresh_keeps_exported_month_marker_identity(runtime):
     hass, _ = runtime
     markers = dates.MONTH_MARKERS
     conn = connection()
-    await async_handler(editor._save_dictionary)(hass, conn, {'id': 1, 'data': {'path': ['genitive_day', 'month_markers', 'январь'], 'value': 'новыйянварь', 'title': 'Январь'}})
+    await async_handler(editor._save_dictionary)(hass, conn, {'id': 1, 'data': {'path': ['date_pronunciation', 'month_name_forms', 'январь'], 'value': 'новыйянварь', 'title': 'Январь'}})
     conn.send_error.assert_not_called()
     assert markers is dates.MONTH_MARKERS
     assert markers['январь'] == 'новыйянварь'
 
 
-@pytest.mark.parametrize('path,value', [(['units'], {}), (['unknown'], []), (['months', '1'], 'bad'), (['thousands'], [1]), (['genitive_day', 'months_map', 'января'], 13)])
+@pytest.mark.parametrize('path,value', [(['units'], {}), (['unknown'], []), (['months', '1'], 'bad'), (['thousands'], [1]), (['date_pronunciation', 'month_numbers_by_name', 'января'], 13)])
 async def test_bad_schema_does_not_modify_saved_or_active_data(runtime, path, value):
     hass, _ = runtime
     original = deepcopy(load_normalization_dictionary())
@@ -108,3 +108,41 @@ async def test_saving_one_section_preserves_other_sections(runtime):
     conn.send_result.reset_mock()
     await async_handler(editor._get_dictionary)(hass, conn, {'id': 3})
     assert conn.send_result.call_args.args[1]['labels']['["units","2"]'] == 'Название'
+
+
+async def test_legacy_keys_and_titles_survive_dictionary_rename(runtime):
+    import json
+    hass, _ = runtime
+    await editor._store(hass).async_save({
+        'overrides': {
+            json.dumps(['genitive_day', 'month_markers', 'январь']): 'января',
+            json.dumps(['date_keywords']): {'today': ['сегодня'], 'tomorrow': ['завтра'], 'day_after': ['черездвадня']},
+            json.dumps(['special_characters']): {'%': 'процентов', ',': 'запятая'},
+        },
+        'labels': {json.dumps(['genitive_day', 'month_markers']): 'Мои месяцы'},
+    })
+    conn = connection()
+    await async_handler(editor._get_dictionary)(hass, conn, {'id': 1})
+    result = conn.send_result.call_args.args[1]
+    assert result['words']['date_keywords']['day_after_tomorrow'] == ['черездвадня']
+    assert result['words']['character_replacements'][','] == 'запятая'
+    assert result['labels']['["date_pronunciation","month_name_forms"]'] == 'Мои месяцы'
+    await editor.async_setup_normalization_settings(hass)
+    assert numbers.normalize_numbers('тест,') == 'тест запятая'
+
+
+def test_migrate_whole_legacy_section_preserves_nested_values():
+    import json
+    section = deepcopy(editor._defaults()['date_pronunciation'])
+    section['units2'] = section.pop('ordinal_units')
+    section['months_map'] = section.pop('month_numbers_by_name')
+    section['month_markers'] = section.pop('month_name_forms')
+    section['units2']['1'] = 'первоеизменено'
+    migrated = editor._migrate_settings({'overrides': {json.dumps(['genitive_day']): section}})
+    assert editor._effective(editor._defaults(), migrated)['date_pronunciation']['ordinal_units']['1'] == 'первоеизменено'
+    assert editor._migrate_settings(migrated) == migrated
+
+
+def test_current_override_wins_over_legacy_name():
+    migrated = editor._migrate_settings({'overrides': {'["genitive_day","units2","1"]': 'старое', '["date_pronunciation","ordinal_units","1"]': 'новое'}})
+    assert migrated['overrides'] == {'["date_pronunciation","ordinal_units","1"]': 'новое'}

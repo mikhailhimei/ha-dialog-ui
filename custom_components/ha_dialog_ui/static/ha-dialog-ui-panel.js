@@ -9538,8 +9538,8 @@ const R1 = "_page_z6937_7", P1 = "_header_z6937_19", $1 = "_headerTop_z6937_24",
   time_prefixes: "Предлоги перед временем",
   time_units: "Единицы времени",
   date_keywords: "Относительные даты",
-  genitive_day: "Произношение дат",
-  special_characters: "Замена символов",
+  date_pronunciation: "Произношение дат",
+  character_replacements: "Замена символов",
   morning: "Утро",
   evening: "Вечер",
   day: "День",
@@ -9552,10 +9552,10 @@ const R1 = "_page_z6937_7", P1 = "_header_z6937_19", $1 = "_headerTop_z6937_24",
   hours: "Часы",
   today: "Сегодня",
   tomorrow: "Завтра",
-  day_after: "Послезавтра",
-  units2: "Порядковые числа от 1 до 9",
-  months_map: "Номера месяцев",
-  month_markers: "Формы названий месяцев"
+  day_after_tomorrow: "Послезавтра",
+  ordinal_units: "Порядковые числа от 1 до 9",
+  month_numbers_by_name: "Номера месяцев",
+  month_name_forms: "Формы названий месяцев"
 }, gf = (r) => typeof r == "object" && !Array.isArray(r), Cl = (r, a) => a.reduce((i, c) => i[c], r);
 function X1() {
   const r = ot(), a = Ht(), i = Ge(), [c, d] = v.useState(null), [f, p] = v.useState(null), [h, g] = v.useState([]), [w, y] = v.useState({}), [x, k] = v.useState(!1);

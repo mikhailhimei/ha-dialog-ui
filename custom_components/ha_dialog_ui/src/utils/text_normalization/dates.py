@@ -11,8 +11,8 @@ MONTH_MARKERS = {}
 
 def refresh_normalization_dictionary():
     global _MONTH_NUMBERS_BY_NAME, _MONTH_NAME_ALIASES, MONTH_NAMES_BY_NUMBER, MONTH_MARKERS, _TIME_PREFIXES, GENITIVE_TIME_PREFIXES, DATIVE_TIME_PREFIXES, PLAIN_TIME_PREFIXES, TIME_PREFIXES
-    _MONTH_NUMBERS_BY_NAME = get_subsection("genitive_day", "months_map")
-    _MONTH_NAME_ALIASES = get_subsection("genitive_day", "month_markers")
+    _MONTH_NUMBERS_BY_NAME = get_subsection("date_pronunciation", "month_numbers_by_name")
+    _MONTH_NAME_ALIASES = get_subsection("date_pronunciation", "month_name_forms")
     MONTH_NAMES_BY_NUMBER.clear()
     MONTH_NAMES_BY_NUMBER.update({month_number: month_name for month_name, month_number in _MONTH_NUMBERS_BY_NAME.items()})
     MONTH_MARKERS.clear()
