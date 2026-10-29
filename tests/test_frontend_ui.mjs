@@ -637,7 +637,7 @@ try {
       await panel.getByRole('button',{name:'Открыть меню разделов',exact:true}).click();
       await mobileSections.waitFor();
       assert.equal(await page.evaluate(()=>location.hash),currentRoute,'Opening the section menu must not navigate');
-      assert.equal(await mobileSections.getByRole('link').count(),12);
+      assert.equal(await mobileSections.getByRole('link').count(),13);
       assert.equal(await mobileSections.getByRole('button').count(),0,'All destinations are flat links');
       for (const [name] of destinations) {
         const rect=await mobileSections.getByRole('link',{name,exact:true}).boundingBox();

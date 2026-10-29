@@ -6,15 +6,25 @@ from num2words import num2words
 from ..normalization_dictionary import get_section, get_subsection
 from .inflections import inflect_number_text, inflect_word, number_with_noun
 
-_MONTH_NUMBERS_BY_NAME = get_subsection("genitive_day", "months_map")
-_MONTH_NAME_ALIASES = get_subsection("genitive_day", "month_markers")
-MONTH_NAMES_BY_NUMBER = {month_number: month_name for month_name, month_number in _MONTH_NUMBERS_BY_NAME.items()}
-MONTH_MARKERS = {**_MONTH_NAME_ALIASES, **_MONTH_NUMBERS_BY_NAME}
-_TIME_PREFIXES = get_section("time_prefixes")
-GENITIVE_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("genitive", ()))
-DATIVE_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("dative", ()))
-PLAIN_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("plain", ()))
-TIME_PREFIXES = tuple(dict.fromkeys((*GENITIVE_TIME_PREFIXES, *DATIVE_TIME_PREFIXES, *PLAIN_TIME_PREFIXES)))
+MONTH_NAMES_BY_NUMBER = {}
+MONTH_MARKERS = {}
+
+def refresh_normalization_dictionary():
+    global _MONTH_NUMBERS_BY_NAME, _MONTH_NAME_ALIASES, MONTH_NAMES_BY_NUMBER, MONTH_MARKERS, _TIME_PREFIXES, GENITIVE_TIME_PREFIXES, DATIVE_TIME_PREFIXES, PLAIN_TIME_PREFIXES, TIME_PREFIXES
+    _MONTH_NUMBERS_BY_NAME = get_subsection("genitive_day", "months_map")
+    _MONTH_NAME_ALIASES = get_subsection("genitive_day", "month_markers")
+    MONTH_NAMES_BY_NUMBER.clear()
+    MONTH_NAMES_BY_NUMBER.update({month_number: month_name for month_name, month_number in _MONTH_NUMBERS_BY_NAME.items()})
+    MONTH_MARKERS.clear()
+    MONTH_MARKERS.update({**_MONTH_NAME_ALIASES, **_MONTH_NUMBERS_BY_NAME})
+    _TIME_PREFIXES = get_section("time_prefixes")
+    GENITIVE_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("genitive", ()))
+    DATIVE_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("dative", ()))
+    PLAIN_TIME_PREFIXES = tuple(_TIME_PREFIXES.get("plain", ()))
+    TIME_PREFIXES = tuple(dict.fromkeys((*GENITIVE_TIME_PREFIXES, *DATIVE_TIME_PREFIXES, *PLAIN_TIME_PREFIXES)))
+
+
+refresh_normalization_dictionary()
 
 
 def build_time_prefix_pattern() -> str:

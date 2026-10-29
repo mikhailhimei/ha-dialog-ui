@@ -10,21 +10,30 @@ from .inflections import inflect_number_text, inflect_word, number_with_noun, nu
 
 _NUMBER_EXTRACTOR = NumberExtractor()
 
-_UNITS = get_section("units")
-_TEENS = get_section("teens")
-_TENS = get_section("tens")
-_HUNDREDS = get_section("hundreds")
-_THOUSANDS = get_section("thousands")
-_LOCATION_STOP_WORDS = get_section("location_stop_words")
-_SPECIAL_CHARACTERS = get_section("special_characters")
+def _number_word_values(section):
+    return {word: int(number) for number, words in get_section(section).items() for word in words}
 
-_NUMBER_WORDS = (
-    set(_UNITS)
-    | set(_TEENS)
-    | set(_TENS)
-    | set(_HUNDREDS)
-    | set(_THOUSANDS)
-)
+
+def refresh_normalization_dictionary():
+    global _UNITS, _TEENS, _TENS, _HUNDREDS, _THOUSANDS, _LOCATION_STOP_WORDS, _SPECIAL_CHARACTERS, _NUMBER_WORDS
+    _UNITS = _number_word_values("units")
+    _TEENS = _number_word_values("teens")
+    _TENS = _number_word_values("tens")
+    _HUNDREDS = _number_word_values("hundreds")
+    _THOUSANDS = get_section("thousands")
+    _LOCATION_STOP_WORDS = get_section("location_stop_words")
+    _SPECIAL_CHARACTERS = get_section("special_characters")
+
+    _NUMBER_WORDS = (
+        set(_UNITS)
+        | set(_TEENS)
+        | set(_TENS)
+        | set(_HUNDREDS)
+        | set(_THOUSANDS)
+    )
+
+
+refresh_normalization_dictionary()
 
 
 def parse_number_words(tokens: list[str], start_index: int) -> tuple[int, int] | None:

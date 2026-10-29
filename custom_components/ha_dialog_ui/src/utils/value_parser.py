@@ -5,30 +5,36 @@ from .normalization_dictionary import get_section, get_subsection
 from .text_normalization import sanitize_location_text
 
 
-_MONTH_DATA = get_section("months")
-_MONTH_NAME_TO_NUMBER = {
-    name: int(month_number)
-    for month_number, names in _MONTH_DATA.items()
-    for name in names
-}
-_MORNING_MARKERS = set(get_subsection("time_markers", "morning"))
-_EVENING_MARKERS = set(get_subsection("time_markers", "evening"))
-_DAY_MARKERS = set(get_subsection("time_markers", "day"))
-_NIGHT_MARKERS = set(get_subsection("time_markers", "night"))
-_TIME_MINUTES = get_subsection("time_units", "minutes")
-_TIME_HOURS = get_subsection("time_units", "hours")
-_TIME_SECONDS = get_subsection("time_units", "seconds")
+def refresh_normalization_dictionary():
+    global _MONTH_PATTERN, _MONTH_DATA, _MONTH_NAME_TO_NUMBER, _MORNING_MARKERS, _EVENING_MARKERS, _DAY_MARKERS, _NIGHT_MARKERS, _TIME_MINUTES, _TIME_HOURS, _TIME_SECONDS, _NON_CLOCK_DURATION_MARKERS
+    _MONTH_DATA = get_section("months")
+    _MONTH_NAME_TO_NUMBER = {
+        name: int(month_number)
+        for month_number, names in _MONTH_DATA.items()
+        for name in names
+    }
+    _MORNING_MARKERS = set(get_subsection("time_markers", "morning"))
+    _EVENING_MARKERS = set(get_subsection("time_markers", "evening"))
+    _DAY_MARKERS = set(get_subsection("time_markers", "day"))
+    _NIGHT_MARKERS = set(get_subsection("time_markers", "night"))
+    _TIME_MINUTES = get_subsection("time_units", "minutes")
+    _TIME_HOURS = get_subsection("time_units", "hours")
+    _TIME_SECONDS = get_subsection("time_units", "seconds")
 
-_NON_CLOCK_DURATION_MARKERS = (
-    set(_TIME_MINUTES)
-    | set(_TIME_HOURS)
-    | set(_TIME_SECONDS)
-)
+    _NON_CLOCK_DURATION_MARKERS = (
+        set(_TIME_MINUTES)
+        | set(_TIME_HOURS)
+        | set(_TIME_SECONDS)
+    )
+
+    _MONTH_PATTERN = "|".join(sorted((re.escape(name) for name in _MONTH_NAME_TO_NUMBER), key=len, reverse=True))
+
+
+refresh_normalization_dictionary()
 
 _NUMERIC_DATE_PATTERN = re.compile(
     r"\b(?P<day>\d{1,2})[.\-/ ]+(?P<month>\d{1,2})(?:[.\-/ ]+(?P<year>\d{2,4}))?\b"
 )
-_MONTH_PATTERN = "|".join(sorted((re.escape(name) for name in _MONTH_NAME_TO_NUMBER), key=len, reverse=True))
 _CLOCK_TIME_PATTERN = re.compile(
     r"\b(?P<hour>[01]?\d|2[0-3])[:\.](?P<minut>[0-5]\d)(?::(?P<second>[0-5]\d))?\b"
 )
