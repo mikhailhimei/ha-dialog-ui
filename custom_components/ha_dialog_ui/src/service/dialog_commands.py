@@ -141,7 +141,7 @@ def get_commands():
         return {"source": "error", "body": {"componentDialog": [], "subComponentDialog": [], "subDirectControl": []}, "detail": str(error)}
 
 def get_dialog_settings():
-    allowed_keys = {"actionType", "title", "message", "voiceResponse", "endStatus", "forwardCommandToServer", "script_entity_id", "voiceResponseArray"}
+    allowed_keys = {"uuid", "status", "voiceCommands", "actionType", "title", "message", "voiceResponse", "endStatus", "forwardCommandToServer", "script_entity_id", "voiceResponseArray"}
 
     def normalize_dialog_setting(item):
         normalized = {}
