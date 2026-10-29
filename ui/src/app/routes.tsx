@@ -1,3 +1,4 @@
+import { NormalizationSettingsPage } from "../pages/NormalizationSettingsPage/NormalizationSettingsPage";
 import { PanelErrorBoundary } from "../components/PanelErrorBoundary";
 import { WhisperPromptPage } from "../pages/WhisperPromptPage/WhisperPromptPage";
 import { useApiEnabled } from "../context/ApiEnabledContext";
@@ -38,6 +39,7 @@ export const AppRoutes = () => {
   }
   return (
     <PanelErrorBoundary resetKey={pathname}><Routes>
+      <Route path="/commands/normalization" element={isAdmin ? <NormalizationSettingsPage /> : <Navigate to={homePath} replace />} />
       <Route path="/commands/whisper" element={isAdmin ? <WhisperPromptPage /> : <Navigate to={homePath} replace />} />
       <Route path="/logs" element={apiEnabled && isAdmin ? <ApiLogsPage /> : <Navigate to={homePath} replace />} />
       <Route path="/downloads" element={isAdmin ? <DownloadsPage /> : <Navigate to={homePath} replace />} />

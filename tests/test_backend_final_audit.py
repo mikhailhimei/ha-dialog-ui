@@ -36,11 +36,17 @@ async def test_collection_store_round_trip_and_empty_list(runtime, collection, c
     save, load = getattr(module, 'async_save_' + collection), getattr(module, 'async_load_' + collection)
     records = [{'uuid': 'one', 'nested': {'values': ['original']}}, {'uuid': 'two'}]
     await save(hass, records)
-    assert await load(hass) == records
+    loaded = await load(hass)
+    if collection == 'assistant_settings':
+        assert [item for item in loaded if item.get('actionType') != 'stop'] == records
+        assert sum(item.get('actionType') == 'stop' for item in loaded) == 1
+    else:
+        assert loaded == records
     await save(hass, [])
-    assert await load(hass) == []
+    loaded = await load(hass)
+    assert all(item.get('actionType') == 'stop' for item in loaded) if collection == 'assistant_settings' else loaded == []
     if cache_key:
-        assert dialog_cache.read_dialog_cache_collection(hass, cache_key) == []
+        assert dialog_cache.read_dialog_cache_collection(hass, cache_key) == loaded
 
 
 @pytest.mark.parametrize('collection,cache_key', [entry for entry in COLLECTIONS if entry[1]])
@@ -52,7 +58,8 @@ async def test_saved_collection_cache_is_independent_of_input(runtime, collectio
     await getattr(module, 'async_save_' + collection)(hass, records)
     records[0]['nested']['values'].append('changed')
     assert dialog_cache.read_dialog_cache_collection(hass, cache_key) == expected
-    assert await getattr(module, 'async_load_' + collection)(hass) == expected
+    loaded = await getattr(module, 'async_load_' + collection)(hass)
+    assert ([item for item in loaded if item.get('actionType') != 'stop'] if collection == 'assistant_settings' else loaded) == expected
 
 
 @pytest.mark.parametrize('type_value', [None, 42, [], 'unknown'])

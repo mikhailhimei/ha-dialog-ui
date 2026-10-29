@@ -37,3 +37,18 @@ def get_subsection(section_name: str, subsection_name: str):
         raise KeyError(f"Unknown key '{subsection_name}' in section '{section_name}'")
 
     return subsection[subsection_name]
+
+
+def apply_normalization_dictionary(dictionary):
+    """Apply an already validated dictionary and rebuild derived lookup tables."""
+    active = load_normalization_dictionary()
+    active.clear()
+    active.update(dictionary)
+    from .text_normalization import dates, numbers
+    from . import value_parser
+    from ..service.matching import text
+    dates.refresh_normalization_dictionary()
+    numbers.refresh_normalization_dictionary()
+    value_parser.refresh_normalization_dictionary()
+    text.STOP_TOKENS.clear()
+    text.STOP_TOKENS.update(get_section("location_stop_words"))

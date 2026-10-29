@@ -28,6 +28,7 @@ from .src.api.assistant_commands.assistant_settings import async_register_assist
 from .src.api.settings.settings_api import async_register_settings_websockets
 from .timer_alarm.websocket import async_register_timer_alarm_websockets
 from .storage.legacy_migration import async_migrate_legacy_storage
+from .normalization_settings import async_setup_normalization_settings
 from .whisper_prompt import async_register_whisper_prompt_websockets
 from .baby_monitor import async_start as async_start_monitor, async_stop as async_stop_monitor
 from .calls import async_start as async_start_calls, async_stop as async_stop_calls
@@ -54,6 +55,7 @@ def _initialize_domain_runtime(hass: HomeAssistant) -> None:
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the integration domain."""
     _initialize_domain_runtime(hass)
+    await async_setup_normalization_settings(hass)
     register_monitor(hass)
     async_register_command_transfer_websockets(hass)
     async_register_logs_websockets(hass)

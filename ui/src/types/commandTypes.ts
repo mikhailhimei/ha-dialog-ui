@@ -33,6 +33,7 @@ export interface DirectControl {
   subDirectControlTitle?: string;
 }
 export interface CommandDetails {
+  voiceCommands?: string[] | string;
   voiceResponseArray?: VoiceResponse[];
   script_entity_id?: string;
   status?: boolean;

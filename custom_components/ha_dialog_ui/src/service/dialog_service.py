@@ -188,6 +188,20 @@ async def process_dialog_request(client_command):
 
     dialog_settings = get_dialog_settings_list()
 
+    # The configurable stop command is global: check it before active continuations.
+    stop_setting = next((setting for setting in dialog_settings if setting.get("actionType") == "stop"), None)
+    if stop_setting is not None:
+        top_level_nodes = [node for node in top_level_nodes if node.get("actionType") != "stop"]
+        if stop_setting.get("status", True):
+            phrases = stop_setting.get("voiceCommands") or []
+            if isinstance(phrases, str):
+                phrases = phrases.split(";")
+            phrases = [phrase.strip() for entry in phrases for phrase in entry.split(";") if phrase.strip()]
+            stop_node = {**_setting_to_service_node(stop_setting), **stop_setting,
+                         "actionType": "stop", "answerType": "default", "endStatus": True,
+                         "nextAction": [], "voiceCommands": phrases}
+            top_level_nodes.insert(0, stop_node)
+
     # Explicit bindings also apply to the built-in stop and initial-session commands.
     bound_special_node = next((
         node for node in top_level_nodes

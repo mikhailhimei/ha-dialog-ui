@@ -67,7 +67,16 @@ export const CommandSettingEditorModal: React.FC<CommandEditorModalProps> = ({
           readOnly
         />
 
-        <ToggleSwitch
+        {component.actionType === "stop" && <>
+          <ToggleSwitch label={t("Включить команду «Стоп»")} checked={component.status !== false}
+            onChange={event=>updateComponent({status:event.target.checked})} />
+          <Textarea label={t("Фразы для запуска")} rows={4}
+            hint={t("Фразы завершения диалога через ;. Работают для основных команд и продолжений. Проверяется совпадение всей фразы.")}
+            value={Array.isArray(component.voiceCommands) ? component.voiceCommands.join("\n") : component.voiceCommands ?? ""}
+            onChange={event=>updateComponent({voiceCommands:event.target.value.split("\n")})} />
+        </>}
+
+        {component.actionType !== "stop" && <ToggleSwitch
           label={t("Завершать диалог")}
           checked={Boolean(component.endStatus)}
           onChange={(event) =>
@@ -75,7 +84,7 @@ export const CommandSettingEditorModal: React.FC<CommandEditorModalProps> = ({
               endStatus: event.target.checked,
             })
           }
-        />
+        />}
 
         {component.actionType === "default_main" && <ToggleSwitch
           label={t("Передать команду серверу")}
