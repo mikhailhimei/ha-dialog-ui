@@ -16,6 +16,7 @@ from homeassistant.helpers.network import get_url
 from homeassistant.util import dt as dt_util
 
 from .audio.audio_notification import _resolve_media_player_entity_id
+from .audio.firmware_alert import native_service
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -159,22 +160,19 @@ class ReminderManager:
 
     async def _speak(self, item):
         satellite = self._satellite(item["device_id"])
+        player = _resolve_media_player_entity_id(self.hass, item["device_id"])
+        firmware_service = native_service(self.hass, player, "reminder_announce") if player else None
+        if firmware_service:
+            url = await self._speech_url(item["text"], satellite, player)
+            await self.hass.services.async_call("esphome", firmware_service, {"url": url}, blocking=True)
+            return
         if satellite:
             service = self.hass.services.async_services().get("assist_satellite", {}).get("announce")
-            if _schema_has_field(getattr(service, "schema", None), "preannounce"):
-                await self.hass.services.async_call("assist_satellite", "announce",
-                    {"message": item["text"], "preannounce": True},
-                    target={"entity_id": satellite}, blocking=True)
-                return
-            # HA versions without preannounce: wait for the firmware's announcement
-            # completion before sending the speech, rather than sleeping a fixed time.
-            chime_url = get_url(self.hass, allow_external=False).rstrip("/") + "/ha_dialog_ui_static/sounds/reminder-chime.wav"
+            # Older firmware can still speak, but HA does not supply the cue.
+            options = {"preannounce": False} if _schema_has_field(getattr(service, "schema", None), "preannounce") else {}
             await self.hass.services.async_call("assist_satellite", "announce",
-                {"media_id": chime_url}, target={"entity_id": satellite}, blocking=True)
-            await self.hass.services.async_call("assist_satellite", "announce",
-                {"message": item["text"]}, target={"entity_id": satellite}, blocking=True)
+                {"message": item["text"], **options}, target={"entity_id": satellite}, blocking=True)
             return
-        player = _resolve_media_player_entity_id(self.hass, item["device_id"])
         if not player:
             raise HomeAssistantError("Колонка недоступна")
         from homeassistant.components.assist_pipeline import async_get_pipeline
@@ -186,6 +184,35 @@ class ReminderManager:
              "language": pipeline.tts_language,
              **({"options": {"voice": pipeline.tts_voice}} if pipeline.tts_voice else {})},
             target={"entity_id": pipeline.tts_engine}, blocking=True)
+
+    async def _speech_url(self, text, satellite, player):
+        """Resolve speech with the satellite's selected Assist pipeline and voice."""
+        from homeassistant.components.assist_pipeline import async_get_pipeline, async_get_pipelines
+        from homeassistant.components import media_source
+        from homeassistant.components.media_player import async_process_play_media_url
+        from homeassistant.components.tts.media_source import generate_media_source_id
+
+        component = self.hass.data.get("assist_satellite")
+        entity = component.get_entity(satellite) if component and satellite else None
+        pipeline_id = None
+        if entity and entity.pipeline_entity_id:
+            state = self.hass.states.get(entity.pipeline_entity_id)
+            if state:
+                pipeline_id = next((pipeline.id for pipeline in async_get_pipelines(self.hass)
+                                    if pipeline.name == state.state), None)
+        pipeline = async_get_pipeline(self.hass, pipeline_id)
+        if not pipeline.tts_engine:
+            raise HomeAssistantError("Настройте TTS в Assist-пайплайне колонки")
+        options = {"voice": pipeline.tts_voice} if pipeline.tts_voice else {}
+        if entity and entity.tts_options:
+            options.update(entity.tts_options)
+        media_id = generate_media_source_id(self.hass, text, engine=pipeline.tts_engine,
+                                            language=pipeline.tts_language, options=options)
+        media = await media_source.async_resolve_media(self.hass, media_id, player)
+        url = async_process_play_media_url(self.hass, media.url, allow_relative_url=True)
+        if url.startswith("/"):
+            url = get_url(self.hass, allow_external=False).rstrip("/") + url
+        return url
 
     async def _fire(self, reminder_id):
         async with self._lock:

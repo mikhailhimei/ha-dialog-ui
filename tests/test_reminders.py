@@ -2,7 +2,7 @@
 import asyncio
 from datetime import timedelta
 from types import SimpleNamespace
-from unittest.mock import AsyncMock, Mock, call as mock_call, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 import pytest_asyncio
@@ -23,6 +23,7 @@ async def runtime(tmp_path):
     hass = HomeAssistant(str(tmp_path))
     hass.config.internal_url = 'http://homeassistant.test:8123'
     await er.async_get(hass).async_load()
+    await dr.async_load(hass)
     hass.states.async_set('media_player.kitchen', 'idle', {'friendly_name': 'Кухня'})
     hass.states.async_set('media_player.bedroom', 'idle')
     manager = reminders.ReminderManager(hass)
@@ -126,14 +127,8 @@ async def test_satellite_announcement_and_offline_failure(runtime):
     item = await manager.create('Весь текст', 'assist_satellite.voice', delay_seconds=10)
     with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as call:
         await manager._fire(item['id'])
-    assert call.await_args_list == [
-        # Both service calls wait for the device to finish.
-        mock_call('assist_satellite', 'announce',
-            {'media_id': 'http://homeassistant.test:8123/ha_dialog_ui_static/sounds/reminder-chime.wav'},
-            target={'entity_id': 'assist_satellite.voice'}, blocking=True),
-        mock_call('assist_satellite', 'announce', {'message': 'Весь текст'},
-            target={'entity_id': 'assist_satellite.voice'}, blocking=True),
-    ]
+    call.assert_awaited_once_with('assist_satellite', 'announce', {'message': 'Весь текст'},
+                                  target={'entity_id': 'assist_satellite.voice'}, blocking=True)
     item = await manager.create('Не другая колонка', 'media_player.kitchen', delay_seconds=10)
     hass.states.async_set('media_player.kitchen', 'unavailable')
     with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as call:
@@ -143,35 +138,21 @@ async def test_satellite_announcement_and_offline_failure(runtime):
     assert failed['status'] == 'failed' and failed['error']
 
 
-async def test_voice_pe_waits_for_chime_before_speaking(runtime):
+async def test_voice_pe_receives_only_speech_url_and_owns_chime(runtime):
     hass, manager = runtime
     hass.states.async_set('assist_satellite.voice', 'idle', {'supported_features': 1})
-    chime_started, chime_finished = asyncio.Event(), asyncio.Event()
-    played = []
-
-    async def announce(service_call):
-        played.append(service_call.data)
-        if 'media_id' in service_call.data:
-            chime_started.set()
-            await chime_finished.wait()
-
-    hass.services.async_register('assist_satellite', 'announce', announce)
     item = await manager.create('Напомнить насыпать еды через 30 минут', 'assist_satellite.voice', delay_seconds=1800)
-    task = asyncio.create_task(manager._fire(item['id']))
-    try:
-        await asyncio.wait_for(chime_started.wait(), timeout=1)
-        assert len(played) == 1 and 'media_id' in played[0]
-        assert manager.items()[0]['status'] == 'delivering'
-        chime_finished.set()
-        await task
-        assert played[1]['message'] == item['text']
-        assert manager.items()[0]['status'] == 'completed'
-    finally:
-        chime_finished.set()
-        await task
+    with patch.object(reminders, '_resolve_media_player_entity_id', return_value='media_player.voice'), \
+         patch.object(reminders, 'native_service', return_value='voice_reminder_announce'), \
+         patch.object(manager, '_speech_url', new_callable=AsyncMock, return_value='http://ha/tts.flac') as speech, \
+         patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as service:
+        await manager._fire(item['id'])
+    speech.assert_awaited_once_with(item['text'], 'assist_satellite.voice', 'media_player.voice')
+    service.assert_awaited_once_with('esphome', 'voice_reminder_announce', {'url': 'http://ha/tts.flac'}, blocking=True)
+    assert manager.items()[0]['status'] == 'completed'
 
 
-async def test_modern_ha_uses_native_preannouncement(runtime):
+async def test_older_firmware_does_not_get_a_host_preannouncement(runtime):
     hass, manager = runtime
     hass.states.async_set('assist_satellite.voice', 'idle', {'supported_features': 1})
     played = []
@@ -185,7 +166,7 @@ async def test_modern_ha_uses_native_preannouncement(runtime):
     item = await manager.create('Точный текст', 'assist_satellite.voice', delay_seconds=1800)
     await manager._fire(item['id'])
     assert len(played) == 1
-    assert played[0]['message'] == 'Точный текст' and played[0]['preannounce'] is True
+    assert played[0]['message'] == 'Точный текст' and played[0]['preannounce'] is False
     assert manager.items()[0]['status'] == 'completed'
 
 
@@ -194,7 +175,6 @@ async def test_voice_pe_player_uses_satellite_on_same_device(runtime):
 
     hass, manager = runtime
     hass.config_entries = ConfigEntries(hass, {})
-    await dr.async_load(hass)
     entry = config_entry('esphome')
     hass.config_entries._entries[entry.entry_id] = entry
     device = dr.async_get(hass).async_get_or_create(config_entry_id=entry.entry_id,
@@ -209,10 +189,29 @@ async def test_voice_pe_player_uses_satellite_on_same_device(runtime):
     item = await manager.create('Текст', player.entity_id, delay_seconds=1800)
     with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as service_call:
         await manager._fire(item['id'])
-    assert service_call.await_count == 2
+    assert service_call.await_count == 1
     assert all(args.args[:2] == ('assist_satellite', 'announce') and
                args.kwargs['target'] == {'entity_id': satellite.entity_id}
                for args in service_call.await_args_list)
+
+
+async def test_firmware_speech_uses_satellite_pipeline_and_voice(runtime):
+    hass, manager = runtime
+    hass.states.async_set('select.voice_pipeline', 'Bedroom assistant')
+    entity = SimpleNamespace(pipeline_entity_id='select.voice_pipeline', tts_options={'speed': 1.1})
+    hass.data['assist_satellite'] = SimpleNamespace(get_entity=lambda _: entity)
+    pipeline = SimpleNamespace(id='bedroom', name='Bedroom assistant', tts_engine='tts.piper',
+                                tts_language='ru', tts_voice='irina')
+    with patch('homeassistant.components.assist_pipeline.async_get_pipelines', return_value=[pipeline]), \
+         patch('homeassistant.components.assist_pipeline.async_get_pipeline', return_value=pipeline) as get_pipeline, \
+         patch('homeassistant.components.tts.media_source.generate_media_source_id', return_value='media-source://tts/voice') as generate, \
+         patch('homeassistant.components.media_source.async_resolve_media', new_callable=AsyncMock,
+               return_value=SimpleNamespace(url='/api/tts_proxy/voice.flac')):
+        url = await manager._speech_url('Точный текст', 'assist_satellite.voice', 'media_player.voice')
+    get_pipeline.assert_called_once_with(hass, 'bedroom')
+    generate.assert_called_once_with(hass, 'Точный текст', engine='tts.piper', language='ru',
+                                     options={'voice': 'irina', 'speed': 1.1})
+    assert url == 'http://homeassistant.test:8123/api/tts_proxy/voice.flac'
 
 
 async def test_overdue_restore_and_interrupted_not_replayed(runtime):

@@ -8547,7 +8547,8 @@ A ? after the parentheses makes the ending optional: зал(а|е)? matches «з
   "В выбранное время колонка озвучит текст напоминания целиком.": { ru: "В выбранное время колонка озвучит текст напоминания целиком.", en: "The speaker will announce the full reminder text at the scheduled time." },
   "Напомнить насыпать еды через 30 минут": { ru: "Напомнить насыпать еды через 30 минут", en: "Remind me to feed the pet in 30 minutes" },
   "Нет доступных колонок. Добавьте колонку в Home Assistant.": { ru: "Нет доступных колонок. Добавьте колонку в Home Assistant.", en: "No speakers available. Add a speaker in Home Assistant." },
-  "Дата и время — в часовом поясе вашего устройства.": { ru: "Дата и время — в часовом поясе вашего устройства.", en: "Date and time use your device’s timezone." }
+  "Дата и время — в часовом поясе вашего устройства.": { ru: "Дата и время — в часовом поясе вашего устройства.", en: "Date and time use your device’s timezone." },
+  "Передано на колонку": { ru: "Передано на колонку", en: "Sent to speaker" }
 }, fp = "ha-dialog-ui-language";
 let Zl = localStorage.getItem(fp) === "en" ? "en" : "ru";
 const Pl = /* @__PURE__ */ new Set();
@@ -13693,7 +13694,7 @@ const Lk = ({ command: r, open: a, onClose: i, onToggleStatus: u, onEdit: d, onD
   lead: qk,
   icon: Qk,
   meta: Kk
-}, Yk = { pending: "Ожидает", delivering: "Озвучивается", completed: "Озвучено", failed: "Не удалось озвучить" };
+}, Yk = { pending: "Ожидает", delivering: "Озвучивается", completed: "Передано на колонку", failed: "Не удалось озвучить" };
 function Jk() {
   const r = nt(), a = Rt(), i = Ye(), u = eu(), [d, f] = v.useState({ reminders: [], devices: [] }), [p, h] = v.useState(!0), [y, w] = v.useState(!1), [g, x] = v.useState(""), [k, j] = v.useState(""), [b, C] = v.useState("delay"), [E, P] = v.useState("30"), [F, $] = v.useState(""), A = v.useCallback(async () => {
     f(await r.getReminders());

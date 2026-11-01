@@ -17,7 +17,7 @@ import styles from "../GlobalsPage.module.scss";
 import cards from "./TimerAlarmPages.module.scss";
 import local from "./ReminderPage.module.scss";
 
-const statusLabels = {pending: "Ожидает", delivering: "Озвучивается", completed: "Озвучено", failed: "Не удалось озвучить"};
+const statusLabels = {pending: "Ожидает", delivering: "Озвучивается", completed: "Передано на колонку", failed: "Не удалось озвучить"};
 
 export function ReminderPage() {
   const api = useDialogApi();
