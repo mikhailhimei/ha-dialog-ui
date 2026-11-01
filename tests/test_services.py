@@ -57,10 +57,11 @@ async def test_registration_is_idempotent_and_response_support_is_preserved(runt
     before = dict(hass.services.async_services()[DOMAIN])
     services.async_register_services(hass)
     after = hass.services.async_services()[DOMAIN]
-    assert set(after) == {'send_command', 'alarm_create', 'alarm_info', 'alarm_delete', 'timer_create', 'timer_info', 'timer_delete'}
+    assert set(after) == {'send_command', 'activity_stop', 'alarm_create', 'alarm_info', 'alarm_delete', 'timer_create', 'timer_info', 'timer_delete', 'reminder_create', 'reminder_info', 'reminder_delete'}
     assert all(after[name] is service for name, service in before.items())
     assert after['send_command'].supports_response is SupportsResponse.NONE
-    assert all(service.supports_response is SupportsResponse.OPTIONAL for name, service in after.items() if name != 'send_command')
+    assert after['activity_stop'].supports_response is SupportsResponse.NONE
+    assert all(service.supports_response is SupportsResponse.OPTIONAL for name, service in after.items() if name not in {'send_command', 'activity_stop'})
 
 
 async def test_unregister_removes_legacy_services_and_preserves_unrelated(runtime):

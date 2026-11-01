@@ -35,6 +35,48 @@ async def boot(config_dir):
 
 
 @pytest.mark.asyncio
+async def test_reminder_service_delivery_and_reload(tmp_path):
+    (tmp_path / "custom_components").symlink_to(Path(__file__).resolve().parents[1] / "custom_components", target_is_directory=True)
+    hass = await boot(tmp_path)
+    try:
+        entry = config_entry()
+        await hass.config_entries.async_add(entry)
+        assert entry.state is ConfigEntryState.LOADED
+        hass.states.async_set('media_player.kitchen', 'idle')
+        manager = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.reminder_manager
+        text = 'Напомнить насыпать еды через 30 минут'
+        with patch.object(manager, '_speak', new_callable=AsyncMock) as speak:
+            result = await hass.services.async_call(DOMAIN, 'reminder_create', {
+                'text': text, 'device_id': 'media_player.kitchen', 'delay_seconds': 1,
+            }, blocking=True, return_response=True)
+            for _ in range(40):
+                if manager.items()[0]['status'] == 'completed':
+                    break
+                await asyncio.sleep(0.1)
+            assert manager.items()[0]['status'] == 'completed'
+            speak.assert_awaited_once()
+            assert speak.await_args.args[0]['text'] == text
+        pending = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'После перезагрузки', 'device_id': 'media_player.kitchen', 'delay_seconds': 1800,
+        }, blocking=True, return_response=True)
+        await hass.config_entries.async_reload(entry.entry_id)
+        assert entry.state is ConfigEntryState.LOADED
+        restored = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.reminder_manager
+        assert restored is not manager and manager._stopped
+        info = await hass.services.async_call(DOMAIN, 'reminder_info', {}, blocking=True, return_response=True)
+        assert {item['id']: item['status'] for item in info['reminders']} == {
+            result['reminder']['id']: 'completed', pending['reminder']['id']: 'pending',
+        }
+        assert set(restored._cancel) == {pending['reminder']['id']}
+        await hass.services.async_call(DOMAIN, 'reminder_delete', {'id': pending['reminder']['id']}, blocking=True)
+        assert not restored._cancel
+        assert await hass.config_entries.async_unload(entry.entry_id)
+        assert not hass.services.has_service(DOMAIN, 'reminder_create')
+    finally:
+        await hass.async_stop()
+
+
+@pytest.mark.asyncio
 async def test_full_setup_service_poll_unload_and_restart(tmp_path):
     (tmp_path / "custom_components").symlink_to(Path(__file__).resolve().parents[1] / "custom_components", target_is_directory=True)
     hass = await boot(tmp_path)

@@ -1,3 +1,56 @@
+reminder_create:
+  name: Создать напоминание
+  description: Озвучить текст целиком на выбранной колонке в указанную дату или через интервал.
+  fields:
+    text:
+      name: Что напомнить
+      required: true
+      example: Напомнить насыпать еды через 30 минут
+      selector:
+        text:
+          multiline: true
+    device_id:
+      name: Где напомнить
+      description: ID устройства HA либо entity_id assist_satellite или media_player.
+      required: true
+      selector:
+        text:
+    at:
+      name: Когда напомнить
+      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Не указывайте вместе с delay_seconds.
+      example: '2026-11-02T18:30:00+05:00'
+      selector:
+        text:
+    delay_seconds:
+      name: Через сколько секунд
+      description: Интервал от текущего момента. Не указывайте вместе с at.
+      example: 1800
+      selector:
+        number:
+          min: 1
+          max: 315360000
+          mode: box
+reminder_info:
+  name: Информация о напоминаниях
+  description: Возвращает список reminders с UUID, текстом, датой, колонкой и статусом. Без фильтров возвращает все записи.
+  fields:
+    id:
+      name: UUID напоминания
+      selector:
+        text:
+    device_id:
+      name: ID колонки
+      selector:
+        text:
+reminder_delete:
+  name: Удалить напоминание
+  description: Отменяет ожидающее напоминание или удаляет запись из истории по UUID.
+  fields:
+    id:
+      name: UUID напоминания
+      required: true
+      selector:
+        text:
 send_command:
   name: Ответить в диалог
   description: >-

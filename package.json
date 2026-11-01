@@ -7,6 +7,7 @@
     "dev:ha": "vite build --watch --config ui/vite.config.mjs --mode=development",
     "build": "npm run typecheck && vite build --config ui/vite.config.mjs --mode=production",
     "test:ui": "node tests/test_frontend_ui.mjs",
+    "test:reminders": "node tests/test_reminders_ui.mjs",
     "typecheck": "tsc --project ui/tsconfig.json",
     "test:unit": "node --experimental-strip-types --test tests/test_timer_frontend.mjs tests/test_data_transfer.mjs tests/test_ui_api.mjs tests/test_ui_errors.mjs",
     "test:monitor": "node --experimental-strip-types --test tests/test_monitor_audio.mjs && node tests/test_monitor_ui.mjs",

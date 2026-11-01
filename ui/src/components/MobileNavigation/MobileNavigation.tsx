@@ -27,6 +27,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
     ] : remoteEnabled === true ? [{ to: "/scripts", label: "Действия удалённых команд", icon: Workflow }] : []),
     { to: "/timer", label: "Таймеры", icon: Clock3 },
     { to: "/alarm", label: "Будильники", icon: AlarmClock },
+    { to: "/reminders", label: "Напоминания", icon: AlarmClock },
     { to: "/monitor", label: "Радионяня", icon: Baby },
     { to: "/calls", label: "Звонки", icon: Phone },
     ...(isAdmin ? [{ to: "/downloads", label: "Импорт и экспорт", icon: Download }] : []),

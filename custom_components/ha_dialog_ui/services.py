@@ -60,6 +60,8 @@ _SEND_COMMAND_SCHEMA = vol.Schema(
 
 def async_register_services(hass: HomeAssistant) -> None:
     """Register Dialog Custom UI services for scripts and automations."""
+    from .reminder_api import register_services
+    register_services(hass)
     async def async_handle_send_command(call: ServiceCall) -> None:
         await _async_handle_send_command(hass, call)
 
@@ -91,7 +93,8 @@ def async_register_services(hass: HomeAssistant) -> None:
             raise HomeAssistantError("Для остановки сигнала обновите прошивку колонки")
         await hass.services.async_call("esphome", service, {}, blocking=True)
 
-    hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
+    if not hass.services.has_service(DOMAIN, "activity_stop"):
+        hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
     if not hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_register(
             DOMAIN,
@@ -112,6 +115,9 @@ def async_unregister_services(hass: HomeAssistant) -> None:
     if hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_remove(DOMAIN, SERVICE_SEND_COMMAND)
     for service_name in (
+        "reminder_create",
+        "reminder_delete",
+        "reminder_info",
         "activity_stop",
         SERVICE_ALARM_CREATE,
         SERVICE_ALARM_INFO,

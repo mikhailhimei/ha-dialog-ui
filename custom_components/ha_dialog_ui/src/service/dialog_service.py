@@ -1,3 +1,5 @@
+import re
+
 from ...const import CURRENT_NODE_KEY
 from .dialog_commands import prepare_dialog_nodes, get_dialog_settings_list
 from ..service.dialog_execution import execute_active_node, execute_top_level_command, execute_top_level_template, _build_missing_number_response
@@ -89,9 +91,16 @@ async def _build_default_main_response(hass, client_text, client_id, device_id, 
         dialog_response.get("endStatus", True),
     )
 
+def _stop_matches(node, text):
+    # Unicode word boundaries exclude «стопка», «автостоп» and «стоп123».
+    return bool(re.search(r"(?<!\w)стоп(?!\w)", str(text), re.IGNORECASE)) or any(
+        voice_command_matches(phrase, text) for phrase in node.get("voiceCommands", [])
+    )
+
+
 def handle_stop_command(hass, top_level_nodes, client_text, client_id, device_id):
     stop_node = next((node for node in top_level_nodes if node.get("actionType") == "stop"), None)
-    if not stop_node or not any(voice_command_matches(command, client_text) for command in stop_node.get("voiceCommands", [])):
+    if not stop_node or not _stop_matches(stop_node, client_text):
         return None
 
     delete_dialog_state_value(CURRENT_NODE_KEY, client_id, device_id)
@@ -206,9 +215,7 @@ async def process_dialog_request(client_command):
     bound_special_node = next((
         node for node in top_level_nodes
         if "script_entity_id" in node and (
-            (node.get("actionType") == "stop" and any(
-                voice_command_matches(phrase, client_text) for phrase in node.get("voiceCommands", [])
-            ))
+            (node.get("actionType") == "stop" and _stop_matches(node, client_text))
             or (node.get("actionType") == "default" and client_new_dialog and client_text == "")
         )
     ), None)

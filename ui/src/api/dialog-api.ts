@@ -4,6 +4,15 @@ import type { CommandDetails, CommandSummary } from "../types/commandTypes";
 export type { HassLike } from "../types/api";
 
 export class DialogApi {
+  getReminders() {
+    return this.hass.connection.sendMessagePromise<import("../types/reminders").ReminderState>({type: "ha_dialog_ui/reminders/get"});
+  }
+  createReminder(data: {text: string; device_id: string; at?: string; delay_seconds?: number}) {
+    return this.hass.connection.sendMessagePromise({type: "ha_dialog_ui/reminders/create", ...data});
+  }
+  deleteReminder(id: string) {
+    return this.hass.connection.sendMessagePromise({type: "ha_dialog_ui/reminders/delete", reminder_id: id});
+  }
   callsWatch(viewId: string, callback: (event: import("../types/calls").CallsState) => void) {
     return this.monitorSubscribe(callback, { type: "ha_dialog_ui/calls/watch", view_id: viewId });
   }
