@@ -223,6 +223,8 @@ def _register_optional_response_service(
 _INFO_SCHEMA = vol.Schema(
     {
         vol.Optional(ATTR_CLIENT_ID): vol.Coerce(str),
+        vol.Optional(ATTR_DEVICE_ID): vol.Coerce(str),
+        vol.Optional("device_id"): vol.Coerce(str),
     }
 )
 

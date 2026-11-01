@@ -11,6 +11,8 @@ from .const import DOMAIN
 from .integration_helpers import get_integration_entry, get_timer_alarm_manager
 
 CREATE_FIELDS = {
+    vol.Optional("clientId"): str,
+    vol.Optional("client_id"): str,
     vol.Required("text"): vol.All(str, vol.Length(min=1, max=2000)),
     vol.Required("device_id"): str,
     vol.Optional("at"): str,
@@ -46,14 +48,22 @@ def _devices(hass):
 
 async def _action(hass, action, data):
     manager = _manager(hass)
+    client_camel = str(data.get("clientId") or "").strip()
+    client_snake = str(data.get("client_id") or "").strip()
+    if client_camel and client_snake and client_camel != client_snake:
+        raise HomeAssistantError("clientId and client_id refer to different clients")
+    client_id = client_camel or client_snake or manager.client_id
     if action == "create":
         item = await manager.create(data["text"], data["device_id"],
-                                    at=data.get("at"), delay_seconds=data.get("delay_seconds"))
+                                    at=data.get("at"), delay_seconds=data.get("delay_seconds"),
+                                    client_id=client_id)
         return {"reminder": item}
     if action == "delete":
         await manager.delete(data["id"])
         return {"deleted": data["id"]}
     items = manager.items()
+    if action == "info":
+        items = [item for item in items if item.get("clientId", manager.client_id) == client_id]
     if action == "info" and not data.get("include_history", False):
         items = [item for item in items if item["status"] in {"pending", "delivering"}]
     if data.get("id"):
@@ -70,6 +80,7 @@ def register_services(hass):
     for action, fields in (
         ("create", CREATE_FIELDS), ("delete", {vol.Required("id"): str}),
         ("info", {vol.Optional("id"): str,
+                  vol.Optional("clientId"): str, vol.Optional("client_id"): str,
                   vol.Required("device_id"): vol.All(str, lambda value: value.strip(), vol.Length(min=1)),
                   vol.Optional("query", default=""): str,
                   vol.Optional("include_history", default=False): vol.Boolean()}),

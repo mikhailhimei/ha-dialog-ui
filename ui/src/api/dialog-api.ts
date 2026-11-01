@@ -7,7 +7,7 @@ export class DialogApi {
   getReminders() {
     return this.hass.connection.sendMessagePromise<import("../types/reminders").ReminderState>({type: "ha_dialog_ui/reminders/get"});
   }
-  createReminder(data: {text: string; device_id: string; at?: string; delay_seconds?: number}) {
+  createReminder(data: {text: string; device_id: string; clientId?: string; at?: string; delay_seconds?: number}) {
     return this.hass.connection.sendMessagePromise({type: "ha_dialog_ui/reminders/create", ...data});
   }
   deleteReminder(id: string) {

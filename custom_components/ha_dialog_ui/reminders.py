@@ -28,15 +28,18 @@ class ReminderManager:
         self._deliveries = set()
         self._lock = asyncio.Lock()
         self._stopped = False
+        self.client_id = ""
 
     def items(self):
         return deepcopy(sorted(self._items.values(), key=lambda item: item["at"]))
 
-    async def restore(self):
+    async def restore(self, client_id=""):
+        self.client_id = str(client_id or "").strip()
         self._stopped = False
         loaded = await self._store.async_load() or []
         self._items = {item["id"]: item for item in loaded if isinstance(item, dict) and item.get("id")}
         for item in self._items.values():
+            item.setdefault("clientId", self.client_id)
             if item["status"] == "delivering":
                 item.update(status="failed", error="Озвучивание прервано перезапуском Home Assistant")
             elif item["status"] == "pending":
@@ -75,7 +78,7 @@ class ReminderManager:
             self.hass, deliver, max(dt_util.as_utc(when), dt_util.utcnow())
         )
 
-    async def create(self, text, device_id, *, at=None, delay_seconds=None):
+    async def create(self, text, device_id, *, at=None, delay_seconds=None, client_id=None):
         text, device_id = str(text).strip(), str(device_id).strip()
         if not text or len(text) > 2000 or not device_id:
             raise HomeAssistantError("Укажите текст (до 2000 символов) и колонку")
@@ -100,6 +103,7 @@ class ReminderManager:
         if not self._satellite(device_id) and not _resolve_media_player_entity_id(self.hass, device_id):
             raise HomeAssistantError("У выбранной колонки нет доступного устройства озвучивания")
         item = {"id": str(uuid4()), "text": text, "device_id": device_id,
+                "clientId": self.client_id if client_id is None else str(client_id).strip(),
                 "at": when.isoformat(), "status": "pending"}
         async with self._lock:
             if self._stopped:

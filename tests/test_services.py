@@ -147,3 +147,22 @@ async def test_explicit_client_and_agreeing_device_aliases_are_preserved(runtime
     _, config, client, device = runtime.manager.async_handle_service_action.await_args.args
     assert (client, device) == ('explicit-client', 'device')
     assert config['mm'] == '2'
+
+
+@pytest.mark.parametrize('kind', ['timer', 'alarm'])
+@pytest.mark.parametrize('alias', ['deviceId', 'device_id'])
+async def test_info_preserves_client_and_passes_device_filter(runtime, kind, alias):
+    await runtime.hass.services.async_call(DOMAIN, f'{kind}_info', {
+        'clientId': ' client ', alias: ' kitchen ',
+    }, blocking=True, return_response=True)
+    actual_kind, config, client, device = runtime.manager.async_handle_service_action.await_args.args
+    assert (actual_kind, config['action'], client, device) == (kind, 'info', 'client', 'kitchen')
+
+
+@pytest.mark.parametrize('kind', ['timer', 'alarm'])
+async def test_info_rejects_conflicting_device_aliases(runtime, kind):
+    with pytest.raises(HomeAssistantError, match='different devices'):
+        await runtime.hass.services.async_call(DOMAIN, f'{kind}_info', {
+            'clientId': 'client', 'deviceId': 'kitchen', 'device_id': 'bedroom',
+        }, blocking=True)
+    runtime.manager.async_handle_service_action.assert_not_awaited()

@@ -217,3 +217,48 @@ async def test_info_requires_device_and_searches_text_within_it(runtime):
         assert await search(query='еды', id='water') == set()
         assert await search(query='неизвестное') == set()
         assert await search(query='еды', device_id='media_player.bedroom') == {'other'}
+
+
+@pytest.mark.parametrize('alias', ['clientId', 'client_id'])
+async def test_create_and_info_use_client_and_device_together(runtime, alias):
+    hass, manager = runtime
+    manager.client_id = 'configured-client'
+    reminder_api.register_services(hass)
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        async def create(client, device):
+            return (await hass.services.async_call(DOMAIN, 'reminder_create', {
+                alias: client, 'device_id': device, 'text': 'Насыпать еды', 'delay_seconds': 1800,
+            }, blocking=True, return_response=True))['reminder']
+        wanted = await create(' own ', 'media_player.kitchen')
+        await create('other', 'media_player.kitchen')
+        await create('own', 'media_player.bedroom')
+        assert wanted['clientId'] == 'own'
+        response = await hass.services.async_call(DOMAIN, 'reminder_info', {
+            alias: ' own ', 'device_id': 'media_player.kitchen', 'query': 'еды',
+        }, blocking=True, return_response=True)
+        assert response['reminders'] == [wanted]
+        default = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'device_id': 'media_player.kitchen', 'text': 'По умолчанию', 'delay_seconds': 1800,
+        }, blocking=True, return_response=True)
+        assert default['reminder']['clientId'] == 'configured-client'
+        response = await hass.services.async_call(DOMAIN, 'reminder_info', {
+            'device_id': 'media_player.kitchen',
+        }, blocking=True, return_response=True)
+        assert response['reminders'] == [default['reminder']]
+        with pytest.raises(HomeAssistantError, match='different clients'):
+            await hass.services.async_call(DOMAIN, 'reminder_info', {
+                'clientId': 'own', 'client_id': 'other', 'device_id': 'media_player.kitchen',
+            }, blocking=True, return_response=True)
+        await manager.stop()
+        await manager.restore('configured-client')
+        assert next(item for item in manager.items() if item['id'] == wanted['id'])['clientId'] == 'own'
+
+
+async def test_legacy_reminders_get_configured_client_on_restore(runtime):
+    _, manager = runtime
+    item = await manager.create('Старая запись', 'media_player.kitchen', delay_seconds=1800)
+    item.pop('clientId')
+    await manager.stop()
+    with patch.object(manager._store, 'async_load', return_value=[item]):
+        await manager.restore('configured-client')
+    assert manager.items()[0]['clientId'] == 'configured-client'

@@ -78,7 +78,7 @@ class DialogTimerAlarmManager:
     async def async_restore_from_storage(self, shared_client_id: str) -> None:
         if self._restored:
             return
-        await self.reminder_manager.restore()
+        await self.reminder_manager.restore(shared_client_id)
         
         shared_client_id = _normalize_value(shared_client_id)
 
@@ -121,7 +121,7 @@ class DialogTimerAlarmManager:
                 return normalize_service_response(
                     build_service_json_response(
                         "timers",
-                        build_timer_info_items(self.timer_manager.get_active_items(), client_id),
+                        build_timer_info_items(self.timer_manager.get_active_items(), client_id, device_id),
                     )
                 )
             if action == "delete":
@@ -146,7 +146,7 @@ class DialogTimerAlarmManager:
                 return normalize_service_response(
                     build_service_json_response(
                         "alarms",
-                        build_alarm_info_items(self.alarm_manager.get_active_items(), client_id),
+                        build_alarm_info_items(self.alarm_manager.get_active_items(), client_id, device_id),
                     )
                 )
             if action == "delete":

@@ -2,6 +2,7 @@ export interface Reminder {
   id: string;
   text: string;
   device_id: string;
+  clientId: string;
   at: string;
   status: "pending" | "delivering" | "completed" | "failed";
   error?: string;

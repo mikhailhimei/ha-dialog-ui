@@ -181,3 +181,25 @@ async def test_service_info_formats_live_items_and_filters_client(persistence, k
         assert (item['total_seconds'], item['remaining_seconds']) == (120, 120)
     else:
         assert item['time'] == '07:00'
+
+
+@pytest.mark.parametrize('kind', ['timer', 'alarm'])
+async def test_service_info_filters_client_and_device_together(persistence, kind):
+    import json
+
+    manager = persistence.manager
+    for item_id, client, device in [('wanted', 'own', 'kitchen'), ('other-room', 'own', 'bedroom'),
+                                    ('other-client', 'other', 'kitchen'), ('no-device', 'own', '')]:
+        if kind == 'timer':
+            manager.timer_manager._create_timer(item_id, client, device, 120, True, 10)
+        else:
+            manager.alarm_manager._alarms[item_id] = {'id': item_id, 'client_id': client,
+                'device_id': device, 'time': '07:00', 'status': 'on'}
+    result = await manager.async_handle_service_action(kind, {'action': 'info'}, 'own', 'kitchen')
+    assert [item['uuid'] for item in result['items']] == ['wanted']
+    assert result['items'][0]['deviceId'] == 'kitchen'
+    assert json.loads(result['message']) == result['items']
+    missing = await manager.async_handle_service_action(kind, {'action': 'info'}, 'own', 'missing')
+    assert missing['items'] == [] and json.loads(missing['message']) == []
+    all_devices = await manager.async_handle_service_action(kind, {'action': 'info'}, 'own', '')
+    assert {'wanted', 'other-room'} <= {item['uuid'] for item in all_devices['items']}

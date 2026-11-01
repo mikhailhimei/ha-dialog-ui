@@ -480,6 +480,28 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 Ранее созданная основная команда с типом `stop` переносится в настройки
 с сохранением UUID, фраз, ответа, включённого состояния и привязанного скрипта.
 
+### Информация о таймерах и будильниках по колонке
+
+У `ha_dialog_ui.timer_info` и `ha_dialog_ui.alarm_info` сохраняется поле
+`clientId` и добавлен фильтр `deviceId` (в YAML также принимается `device_id`).
+При указании обоих полей возвращаются записи только этого клиента на этой
+колонке; каждая запись содержит свой `deviceId`. Если `clientId` не указан,
+используется клиент из настроек интеграции. Без `deviceId` сохраняется запрос
+по всем колонкам выбранного клиента.
+
+```yaml
+- action: ha_dialog_ui.timer_info
+  data:
+    clientId: "{{ dialog_payload.client_id }}"
+    deviceId: "{{ dialog_payload.device_id }}"
+  response_variable: timers
+- action: ha_dialog_ui.alarm_info
+  data:
+    clientId: "{{ dialog_payload.client_id }}"
+    deviceId: "{{ dialog_payload.device_id }}"
+  response_variable: alarms
+```
+
 ## Напоминания
 
 Во вкладке «Напоминания» нажмите «Добавить напоминание», введите текст,
@@ -494,6 +516,7 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 - action: ha_dialog_ui.reminder_create
   data:
     text: Напомнить насыпать еды через 30 минут
+    clientId: "{{ dialog_payload.client_id }}"  # необязательно
     device_id: assist_satellite.kuhnya
     delay_seconds: 1800
   response_variable: created_reminder
@@ -509,6 +532,7 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 ```yaml
 - action: ha_dialog_ui.reminder_info
   data:
+    clientId: "{{ dialog_payload.client_id }}"  # необязательно
     device_id: assist_satellite.kuhnya
     query: насыпать еды  # необязательный поиск по части текста
   response_variable: reminder_list
@@ -521,10 +545,14 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 `reminder_info` по умолчанию возвращает в `reminders` только ожидающие
 и озвучиваемые напоминания. Для истории (включая завершённые и ошибочные)
 передайте `include_history: true`. Поле `device_id` обязательно: используйте
-тот же ID колонки, что при создании. Необязательные фильтры — UUID `id`
+тот же ID колонки, что при создании. В `reminder_create` и `reminder_info`
+можно передать `clientId` (или `client_id`); без него используется клиент
+из настроек интеграции. `reminder_info` учитывает клиента и колонку одновременно.
+Существующие записи без клиента при восстановлении получают клиента интеграции.
+Необязательные фильтры — UUID `id`
 и `query` (часть текста без учёта регистра). Пустой `query` возвращает все
 подходящие записи только выбранной колонки.
-Каждая запись содержит `id`, `text`, `device_id`, `at`, `status`
+Каждая запись содержит `id`, `text`, `clientId`, `device_id`, `at`, `status`
 (`pending`, `delivering`, `completed`, `failed`), а при ошибке — `error`.
 В UI можно просмотреть статус и удалить запись. Удаление ожидающей записи
 отменяет её запуск; уже начавшуюся озвучку удалить нельзя.
