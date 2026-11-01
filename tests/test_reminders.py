@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 import pytest_asyncio
+import voluptuous as vol
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.util import dt as dt_util
@@ -153,7 +154,7 @@ async def test_service_create_info_delete_response_and_ws_ids(runtime):
             'text': 'Скрипт', 'device_id': 'media_player.kitchen', 'delay_seconds': 1800,
         }, blocking=True, return_response=True)
         item = created['reminder']
-        info = await hass.services.async_call(DOMAIN, 'reminder_info', {}, blocking=True, return_response=True)
+        info = await hass.services.async_call(DOMAIN, 'reminder_info', {'device_id': 'media_player.kitchen'}, blocking=True, return_response=True)
         assert info['reminders'] == [item]
         connection = Mock()
         await reminder_api._get.__wrapped__(hass, connection, {'id': 42, 'type': 'ha_dialog_ui/reminders/get'})
@@ -175,7 +176,7 @@ async def test_info_only_active_unless_history_requested(runtime):
                                   'device_id': 'media_player.kitchen', 'text': status}
     with patch.object(reminder_api, '_manager', return_value=manager):
         async def info(data):
-            return (await hass.services.async_call(DOMAIN, 'reminder_info', data,
+            return (await hass.services.async_call(DOMAIN, 'reminder_info', {'device_id': 'media_player.kitchen', **data},
                     blocking=True, return_response=True))['reminders']
         assert {item['id'] for item in await info({})} == {'pending', 'delivering'}
         assert {item['id'] for item in await info({'include_history': True})} == {'pending', 'delivering', 'completed', 'failed'}
@@ -185,3 +186,34 @@ async def test_info_only_active_unless_history_requested(runtime):
         connection = Mock()
         await reminder_api._get.__wrapped__(hass, connection, {'id': 1})
         assert len(connection.send_result.call_args.args[1]['reminders']) == 4
+
+
+async def test_info_requires_device_and_searches_text_within_it(runtime):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    for reminder_id, device, text, status in (
+        ('food', 'media_player.kitchen', 'Напомнить насыпать ЕДЫ через 30 минут', 'pending'),
+        ('water', 'media_player.kitchen', 'Выпить воды', 'pending'),
+        ('other', 'media_player.bedroom', 'Насыпать еды', 'pending'),
+        ('done', 'media_player.kitchen', 'Насыпать еды', 'completed'),
+    ):
+        manager._items[reminder_id] = {'id': reminder_id, 'device_id': device, 'text': text,
+                                      'status': status, 'at': '2099-01-01T00:00:00Z'}
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        for data in ({}, {'query': 'еды'}, {'device_id': ''}, {'device_id': '   '}):
+            with pytest.raises(vol.Invalid):
+                await hass.services.async_call(DOMAIN, 'reminder_info', data,
+                                               blocking=True, return_response=True)
+
+        async def search(**fields):
+            response = await hass.services.async_call(DOMAIN, 'reminder_info',
+                {'device_id': 'media_player.kitchen', **fields}, blocking=True, return_response=True)
+            return {item['id'] for item in response['reminders']}
+
+        assert await search() == {'food', 'water'}
+        assert await search(query='   ') == {'food', 'water'}
+        assert await search(query='  НАСЫПАТЬ еды  ') == {'food'}
+        assert await search(query='еды', include_history=True) == {'food', 'done'}
+        assert await search(query='еды', id='water') == set()
+        assert await search(query='неизвестное') == set()
+        assert await search(query='еды', device_id='media_player.bedroom') == {'other'}

@@ -60,13 +60,18 @@ async def _action(hass, action, data):
         items = [item for item in items if item["id"] == data["id"]]
     if data.get("device_id"):
         items = [item for item in items if item["device_id"] == data["device_id"]]
+    query = data.get("query", "").strip().casefold()
+    if query:
+        items = [item for item in items if query in item["text"].casefold()]
     return {"reminders": items}
 
 
 def register_services(hass):
     for action, fields in (
         ("create", CREATE_FIELDS), ("delete", {vol.Required("id"): str}),
-        ("info", {vol.Optional("id"): str, vol.Optional("device_id"): str,
+        ("info", {vol.Optional("id"): str,
+                  vol.Required("device_id"): vol.All(str, lambda value: value.strip(), vol.Length(min=1)),
+                  vol.Optional("query", default=""): str,
                   vol.Optional("include_history", default=False): vol.Boolean()}),
     ):
         name = f"reminder_{action}"

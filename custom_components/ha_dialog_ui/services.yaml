@@ -32,8 +32,15 @@ reminder_create:
           mode: box
 reminder_info:
   name: Информация о напоминаниях
-  description: Возвращает только ожидающие и озвучиваемые напоминания. Для завершённых и ошибочных записей включите include_history.
+  description: Возвращает ожидающие и озвучиваемые напоминания выбранной колонки. Поиск по тексту необязателен. Для завершённых и ошибочных записей включите include_history.
   fields:
+    query:
+      name: Поиск по тексту
+      description: Часть текста напоминания без учёта регистра. Пустое поле возвращает все подходящие записи выбранной колонки.
+      required: false
+      example: насыпать еды
+      selector:
+        text:
     include_history:
       name: Включить историю
       default: false
@@ -45,6 +52,8 @@ reminder_info:
         text:
     device_id:
       name: ID колонки
+      description: Тот же ID колонки, который передан при создании напоминания.
+      required: true
       selector:
         text:
 reminder_delete:

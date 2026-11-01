@@ -508,7 +508,9 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 
 ```yaml
 - action: ha_dialog_ui.reminder_info
-  data: {}
+  data:
+    device_id: assist_satellite.kuhnya
+    query: насыпать еды  # необязательный поиск по части текста
   response_variable: reminder_list
 # UUID новой записи: created_reminder.reminder.id
 - action: ha_dialog_ui.reminder_delete
@@ -518,8 +520,11 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 
 `reminder_info` по умолчанию возвращает в `reminders` только ожидающие
 и озвучиваемые напоминания. Для истории (включая завершённые и ошибочные)
-передайте `include_history: true`. Необязательные фильтры — `id` и
-`device_id`. Каждая запись содержит `id`, `text`, `device_id`, `at`, `status`
+передайте `include_history: true`. Поле `device_id` обязательно: используйте
+тот же ID колонки, что при создании. Необязательные фильтры — UUID `id`
+и `query` (часть текста без учёта регистра). Пустой `query` возвращает все
+подходящие записи только выбранной колонки.
+Каждая запись содержит `id`, `text`, `device_id`, `at`, `status`
 (`pending`, `delivering`, `completed`, `failed`), а при ошибке — `error`.
 В UI можно просмотреть статус и удалить запись. Удаление ожидающей записи
 отменяет её запуск; уже начавшуюся озвучку удалить нельзя.
