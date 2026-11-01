@@ -78,9 +78,10 @@ async def _action(hass, action, data):
 
 def register_services(hass):
     for action, fields in (
-        ("create", CREATE_FIELDS), ("delete", {vol.Required("id"): str}),
+        ("create", {key: value for key, value in CREATE_FIELDS.items()
+                    if str(key) not in {"clientId", "client_id"}}),
+        ("delete", {vol.Required("id"): str}),
         ("info", {vol.Optional("id"): str,
-                  vol.Optional("clientId"): str, vol.Optional("client_id"): str,
                   vol.Required("device_id"): vol.All(str, lambda value: value.strip(), vol.Length(min=1)),
                   vol.Optional("query", default=""): str,
                   vol.Optional("include_history", default=False): vol.Boolean()}),

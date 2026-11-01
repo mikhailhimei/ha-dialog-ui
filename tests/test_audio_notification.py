@@ -99,11 +99,12 @@ async def test_create_services_accept_both_device_fields(runtime, kind, field):
     hass, _ = runtime
     manager = SimpleNamespace(async_handle_service_action=AsyncMock(return_value={"actionType": "success"}))
     schema = services._TIMER_CREATE_SCHEMA if kind == "timer" else services._ALARM_CREATE_SCHEMA
-    data = schema({field: "f78b84553b463617269c25293950bb55", "clientId": "client"})
-    with patch.object(services, "get_integration_entry", return_value=config_entry()), patch.object(services, "get_timer_alarm_manager", return_value=manager), patch.object(services, "build_runtime_options", return_value={}):
+    data = schema({field: "f78b84553b463617269c25293950bb55"})
+    with patch.object(services, "get_integration_entry", return_value=config_entry()), patch.object(services, "get_timer_alarm_manager", return_value=manager), patch.object(services, "build_runtime_options", return_value={"client_id": "configured-client"}):
         services.async_register_services(hass)
         await hass.services.async_call("ha_dialog_ui", kind + "_create", data, blocking=True)
     assert manager.async_handle_service_action.await_args.args[3] == data[field]
+    assert manager.async_handle_service_action.await_args.args[2] == "configured-client"
 
 
 @pytest.mark.asyncio

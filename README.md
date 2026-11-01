@@ -73,7 +73,6 @@ alias: Ответить о температуре
 sequence:
   - action: ha_dialog_ui.send_command
     data:
-      clientId: "{{ dialog_payload.client_id }}"
       deviceId: "{{ dialog_payload.device_id }}"
       actionType: success
       variables:
@@ -108,7 +107,6 @@ sequence:
       reply: "Вы сказали: {{ dialog_payload.text }}"
   - action: ha_dialog_ui.send_command
     data:
-      clientId: "{{ dialog_payload.client_id }}"
       deviceId: "{{ dialog_payload.device_id }}"
       actionType: success
       variables:
@@ -127,15 +125,19 @@ TTS из скрипта не требуется.
 
 ## Поля `ha_dialog_ui.send_command`
 
+Во всех HA-сервисах клиент берётся из настройки `client_id` интеграции.
+Из существующих YAML-вызовов сервисов удалите `clientId` и `client_id`.
+Настройка клиента, внутренние идентификаторы диалога и HTTP/SSE API сохраняются.
+
 | Поле | Что передать |
 | --- | --- |
-| `clientId` | `{{ dialog_payload.client_id }}` — ID клиента из исходного запроса. |
 | `deviceId` | `{{ dialog_payload.device_id }}` — ID устройства из того же запроса, без изменений. |
 | `actionType` | Тип результата: например, `success`. Должен соответствовать настроенному ответу. Это не UUID команды. |
 | `variables` | Объект с данными: `{reply: "Готово", temperature: 22}`. Для подстановки используйте `${reply}` и `${temperature}`. Допускается также JSON-объект строкой. |
 | `useDeclension` | Подготовка чисел, дат и времени к произнесению. По умолчанию `true`; для уже подготовленного текста можно указать `false`. |
 
-Ответ сопоставляется одновременно по `clientId` и `deviceId`. Не подставляйте
+Клиент для `send_command` берётся автоматически из настроек интеграции.
+Внутреннее сопоставление ответа по клиенту и устройству сохраняется. Не подставляйте
 вместо исходного ID устройства `media_player.*` или ID другой колонки: такой
 ответ не попадёт в ожидающий диалог. `send_command` сам по себе не начинает
 новый голосовой диалог и не проигрывает аудио — он возвращает результат
@@ -482,22 +484,20 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 
 ### Информация о таймерах и будильниках по колонке
 
-У `ha_dialog_ui.timer_info` и `ha_dialog_ui.alarm_info` сохраняется поле
-`clientId` и добавлен фильтр `deviceId` (в YAML также принимается `device_id`).
-При указании обоих полей возвращаются записи только этого клиента на этой
-колонке; каждая запись содержит свой `deviceId`. Если `clientId` не указан,
-используется клиент из настроек интеграции. Без `deviceId` сохраняется запрос
-по всем колонкам выбранного клиента.
+У `ha_dialog_ui.timer_info` и `ha_dialog_ui.alarm_info` есть фильтр
+`deviceId` (в YAML также принимается `device_id`). Клиент всегда берётся
+из настроек интеграции, передавать его в HA-скрипте не нужно. Возвращаются
+записи настроенного клиента на выбранной колонке; каждая запись содержит
+свой `deviceId`. Без `deviceId` возвращаются записи на всех колонках
+настроенного клиента.
 
 ```yaml
 - action: ha_dialog_ui.timer_info
   data:
-    clientId: "{{ dialog_payload.client_id }}"
     deviceId: "{{ dialog_payload.device_id }}"
   response_variable: timers
 - action: ha_dialog_ui.alarm_info
   data:
-    clientId: "{{ dialog_payload.client_id }}"
     deviceId: "{{ dialog_payload.device_id }}"
   response_variable: alarms
 ```
@@ -516,7 +516,6 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 - action: ha_dialog_ui.reminder_create
   data:
     text: Напомнить насыпать еды через 30 минут
-    clientId: "{{ dialog_payload.client_id }}"  # необязательно
     device_id: assist_satellite.kuhnya
     delay_seconds: 1800
   response_variable: created_reminder
@@ -532,7 +531,6 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 ```yaml
 - action: ha_dialog_ui.reminder_info
   data:
-    clientId: "{{ dialog_payload.client_id }}"  # необязательно
     device_id: assist_satellite.kuhnya
     query: насыпать еды  # необязательный поиск по части текста
   response_variable: reminder_list
@@ -546,8 +544,8 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 и озвучиваемые напоминания. Для истории (включая завершённые и ошибочные)
 передайте `include_history: true`. Поле `device_id` обязательно: используйте
 тот же ID колонки, что при создании. В `reminder_create` и `reminder_info`
-можно передать `clientId` (или `client_id`); без него используется клиент
-из настроек интеграции. `reminder_info` учитывает клиента и колонку одновременно.
+клиент берётся автоматически из настроек интеграции; поля ввода клиента
+в HA-сервисах нет. `reminder_info` учитывает настроенного клиента и колонку одновременно.
 Существующие записи без клиента при восстановлении получают клиента интеграции.
 Необязательные фильтры — UUID `id`
 и `query` (часть текста без учёта регистра). Пустой `query` возвращает все

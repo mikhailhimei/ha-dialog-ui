@@ -2,12 +2,6 @@ reminder_create:
   name: Создать напоминание
   description: Озвучить текст целиком на выбранной колонке в указанную дату или через интервал.
   fields:
-    clientId:
-      name: ID клиента
-      description: Необязательный ID клиента. По умолчанию client_id из настроек интеграции. В YAML также принимается client_id.
-      required: false
-      selector:
-        text:
     text:
       name: Что напомнить
       required: true
@@ -40,12 +34,6 @@ reminder_info:
   name: Информация о напоминаниях
   description: Возвращает ожидающие и озвучиваемые напоминания выбранной колонки. Поиск по тексту необязателен. Для завершённых и ошибочных записей включите include_history.
   fields:
-    clientId:
-      name: ID клиента
-      description: Необязательный ID клиента. По умолчанию client_id из настроек интеграции. В YAML также принимается client_id.
-      required: false
-      selector:
-        text:
     query:
       name: Поиск по тексту
       description: Часть текста напоминания без учёта регистра. Пустое поле возвращает все подходящие записи выбранной колонки.
@@ -84,15 +72,6 @@ send_command:
     настроенный текст ответа, а variables подставляет в него значения.
     Озвучку выполняет TTS текущего Assist-пайплайна.
   fields:
-    clientId:
-      name: ID клиента
-      description: >-
-        Клиент, который ожидает ответ. Передайте {{ dialog_payload.client_id }}
-        из запущенного интеграцией скрипта. Значение должно совпадать с исходным запросом.
-      required: true
-      example: "{{ dialog_payload.client_id }}"
-      selector:
-        text:
     deviceId:
       name: ID устройства
       description: >-
@@ -155,12 +134,6 @@ alarm_create:
       example: "{{ alarm_mm }}"
       selector:
         text:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
     deviceId:
       name: Device ID
       description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
@@ -220,16 +193,9 @@ alarm_info:
   name: Alarm info
   description: List Dialog Custom UI alarms. Returns JSON items with time, uuid, clientId, and deviceId.
   fields:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
-
     deviceId:
       name: Device ID
-      description: Optional speaker identifier. Combined with clientId to return only this client’s records on the selected speaker. Also accepts device_id in YAML.
+      description: Optional speaker identifier. Uses the client configured in integration settings to return records on the selected speaker. Also accepts device_id in YAML.
       required: false
       selector:
         text:
@@ -270,12 +236,6 @@ timer_create:
       example: "{{ timer_ss }}"
       selector:
         text:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
     deviceId:
       name: Device ID
       description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
@@ -287,16 +247,9 @@ timer_info:
   name: Timer info
   description: List Dialog Custom UI timers. Returns JSON items with uuid, clientId, deviceId, current remaining timer duration (time/remaining_timer/remaining_seconds), and original timer duration (count_timer/total_seconds).
   fields:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
-
     deviceId:
       name: Device ID
-      description: Optional speaker identifier. Combined with clientId to return only this client’s records on the selected speaker. Also accepts device_id in YAML.
+      description: Optional speaker identifier. Uses the client configured in integration settings to return records on the selected speaker. Also accepts device_id in YAML.
       required: false
       selector:
         text:

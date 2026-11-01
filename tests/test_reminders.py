@@ -220,22 +220,22 @@ async def test_info_requires_device_and_searches_text_within_it(runtime):
 
 
 @pytest.mark.parametrize('alias', ['clientId', 'client_id'])
-async def test_create_and_info_use_client_and_device_together(runtime, alias):
+async def test_backend_client_overrides_remain_while_services_use_configured_client(runtime, alias):
     hass, manager = runtime
     manager.client_id = 'configured-client'
     reminder_api.register_services(hass)
     with patch.object(reminder_api, '_manager', return_value=manager):
         async def create(client, device):
-            return (await hass.services.async_call(DOMAIN, 'reminder_create', {
+            return (await reminder_api._action(hass, 'create', {
                 alias: client, 'device_id': device, 'text': 'Насыпать еды', 'delay_seconds': 1800,
-            }, blocking=True, return_response=True))['reminder']
+            }))['reminder']
         wanted = await create(' own ', 'media_player.kitchen')
         await create('other', 'media_player.kitchen')
         await create('own', 'media_player.bedroom')
         assert wanted['clientId'] == 'own'
-        response = await hass.services.async_call(DOMAIN, 'reminder_info', {
+        response = await reminder_api._action(hass, 'info', {
             alias: ' own ', 'device_id': 'media_player.kitchen', 'query': 'еды',
-        }, blocking=True, return_response=True)
+        })
         assert response['reminders'] == [wanted]
         default = await hass.services.async_call(DOMAIN, 'reminder_create', {
             'device_id': 'media_player.kitchen', 'text': 'По умолчанию', 'delay_seconds': 1800,
@@ -246,9 +246,9 @@ async def test_create_and_info_use_client_and_device_together(runtime, alias):
         }, blocking=True, return_response=True)
         assert response['reminders'] == [default['reminder']]
         with pytest.raises(HomeAssistantError, match='different clients'):
-            await hass.services.async_call(DOMAIN, 'reminder_info', {
+            await reminder_api._action(hass, 'info', {
                 'clientId': 'own', 'client_id': 'other', 'device_id': 'media_player.kitchen',
-            }, blocking=True, return_response=True)
+            })
         await manager.stop()
         await manager.restore('configured-client')
         assert next(item for item in manager.items() if item['id'] == wanted['id'])['clientId'] == 'own'
