@@ -32,8 +32,13 @@ reminder_create:
           mode: box
 reminder_info:
   name: Информация о напоминаниях
-  description: Возвращает список reminders с UUID, текстом, датой, колонкой и статусом. Без фильтров возвращает все записи.
+  description: Возвращает только ожидающие и озвучиваемые напоминания. Для завершённых и ошибочных записей включите include_history.
   fields:
+    include_history:
+      name: Включить историю
+      default: false
+      selector:
+        boolean: {}
     id:
       name: UUID напоминания
       selector:

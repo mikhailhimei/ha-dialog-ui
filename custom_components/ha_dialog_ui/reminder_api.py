@@ -54,6 +54,8 @@ async def _action(hass, action, data):
         await manager.delete(data["id"])
         return {"deleted": data["id"]}
     items = manager.items()
+    if action == "info" and not data.get("include_history", False):
+        items = [item for item in items if item["status"] in {"pending", "delivering"}]
     if data.get("id"):
         items = [item for item in items if item["id"] == data["id"]]
     if data.get("device_id"):
@@ -64,7 +66,8 @@ async def _action(hass, action, data):
 def register_services(hass):
     for action, fields in (
         ("create", CREATE_FIELDS), ("delete", {vol.Required("id"): str}),
-        ("info", {vol.Optional("id"): str, vol.Optional("device_id"): str}),
+        ("info", {vol.Optional("id"): str, vol.Optional("device_id"): str,
+                  vol.Optional("include_history", default=False): vol.Boolean()}),
     ):
         name = f"reminder_{action}"
         if hass.services.has_service(DOMAIN, name):
@@ -88,7 +91,7 @@ async def _respond(hass, connection, msg, action):
         if "reminder_id" in data:
             data["id"] = data.pop("reminder_id")
         result = await _action(hass, action, data)
-        if action == "info":
+        if action == "list":
             result["devices"] = _devices(hass)
         connection.send_result(msg["id"], result)
     except HomeAssistantError as err:
@@ -98,7 +101,7 @@ async def _respond(hass, connection, msg, action):
 @websocket_api.websocket_command({vol.Required("type"): "ha_dialog_ui/reminders/get"})
 @websocket_api.async_response
 async def _get(hass, connection, msg):
-    await _respond(hass, connection, msg, "info")
+    await _respond(hass, connection, msg, "list")
 
 
 @websocket_api.websocket_command({vol.Required("type"): "ha_dialog_ui/reminders/create", **CREATE_FIELDS})

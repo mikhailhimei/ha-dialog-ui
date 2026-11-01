@@ -64,6 +64,8 @@ async def test_reminder_service_delivery_and_reload(tmp_path):
         restored = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.reminder_manager
         assert restored is not manager and manager._stopped
         info = await hass.services.async_call(DOMAIN, 'reminder_info', {}, blocking=True, return_response=True)
+        assert info['reminders'] == [pending['reminder']]
+        info = await hass.services.async_call(DOMAIN, 'reminder_info', {'include_history': True}, blocking=True, return_response=True)
         assert {item['id']: item['status'] for item in info['reminders']} == {
             result['reminder']['id']: 'completed', pending['reminder']['id']: 'pending',
         }

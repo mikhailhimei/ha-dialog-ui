@@ -165,3 +165,23 @@ async def test_service_create_info_delete_response_and_ws_ids(runtime):
         assert not manager.items()
         await reminder_api._delete.__wrapped__(hass, connection, {'id': 44, 'reminder_id': item['id']})
         assert connection.send_error.call_args.args[0:2] == (44, 'reminder_error')
+
+
+async def test_info_only_active_unless_history_requested(runtime):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    for status in ('pending', 'delivering', 'completed', 'failed'):
+        manager._items[status] = {'id': status, 'status': status, 'at': '2099-01-01T00:00:00Z',
+                                  'device_id': 'media_player.kitchen', 'text': status}
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        async def info(data):
+            return (await hass.services.async_call(DOMAIN, 'reminder_info', data,
+                    blocking=True, return_response=True))['reminders']
+        assert {item['id'] for item in await info({})} == {'pending', 'delivering'}
+        assert {item['id'] for item in await info({'include_history': True})} == {'pending', 'delivering', 'completed', 'failed'}
+        assert await info({'id': 'completed'}) == []
+        assert [item['id'] for item in await info({'id': 'completed', 'include_history': True})] == ['completed']
+        assert await info({'device_id': 'media_player.other'}) == []
+        connection = Mock()
+        await reminder_api._get.__wrapped__(hass, connection, {'id': 1})
+        assert len(connection.send_result.call_args.args[1]['reminders']) == 4

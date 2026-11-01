@@ -516,7 +516,9 @@ ESPHome к HA; офлайн-события не сохраняются в оче
     id: "{{ created_reminder.reminder.id }}"
 ```
 
-`reminder_info` возвращает `reminders`; необязательные фильтры — `id` и
+`reminder_info` по умолчанию возвращает в `reminders` только ожидающие
+и озвучиваемые напоминания. Для истории (включая завершённые и ошибочные)
+передайте `include_history: true`. Необязательные фильтры — `id` и
 `device_id`. Каждая запись содержит `id`, `text`, `device_id`, `at`, `status`
 (`pending`, `delivering`, `completed`, `failed`), а при ошибке — `error`.
 В UI можно просмотреть статус и удалить запись. Удаление ожидающей записи
