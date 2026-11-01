@@ -13726,78 +13726,80 @@ function Jk() {
       }), w(!1), x(""), await A();
     }, { exclusive: !0 });
   }, O = b === "delay" ? Number(E) > 0 && Number(E) <= 5256e3 : !!F && new Date(F).getTime() > Date.now();
-  return /* @__PURE__ */ o.jsxs("div", { className: Y.page, children: [
+  return /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsx(lt, { title: "Напоминания" }),
-    /* @__PURE__ */ o.jsx(at, {}),
-    /* @__PURE__ */ o.jsxs("div", { className: Y.headerTop, children: [
-      !i && /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Напоминания") }),
-      /* @__PURE__ */ o.jsx(ne, { onClick: () => {
-        a.clearError(), w(!0);
-      }, children: _("Добавить напоминание") })
-    ] }),
-    !y && /* @__PURE__ */ o.jsx(Qe, { ...a }),
-    /* @__PURE__ */ o.jsx(Wt, { loading: p, itemCount: d.reminders.length, placeholderCount: 3, children: /* @__PURE__ */ o.jsxs("div", { className: yn.grid, children: [
-      d.reminders.map((B) => {
-        var U;
-        return /* @__PURE__ */ o.jsx("article", { className: `${he.card} ${yn.card}`, children: /* @__PURE__ */ o.jsxs("div", { className: he.cardHeader, children: [
-          /* @__PURE__ */ o.jsxs("div", { className: `${he.cardLead} ${yn.lead}`, children: [
-            /* @__PURE__ */ o.jsx(Xl, { size: 22, className: yn.icon }),
-            /* @__PURE__ */ o.jsxs("div", { children: [
-              /* @__PURE__ */ o.jsx("h2", { className: `${he.cardTitle} ${yn.text}`, children: B.text }),
-              /* @__PURE__ */ o.jsx("p", { className: yn.meta, children: new Date(B.at).toLocaleString(u === "ru" ? "ru-RU" : "en-US") }),
-              /* @__PURE__ */ o.jsxs("p", { className: yn.meta, children: [
-                ((U = d.devices.find((X) => X.id === B.device_id)) == null ? void 0 : U.name) || B.device_id,
-                " · ",
-                _(Yk[B.status])
-              ] }),
-              B.error && /* @__PURE__ */ o.jsx("p", { role: "alert", className: yn.meta, children: B.error })
-            ] })
-          ] }),
-          /* @__PURE__ */ o.jsx(
-            ne,
-            {
-              variant: "remove",
-              disabled: a.busy || B.status === "delivering",
-              "aria-label": `${_("Удалить напоминание")}: ${B.text}`,
-              onClick: () => void a.run(async () => {
-                await r.deleteReminder(B.id), await A();
-              }, { exclusive: !0 }),
-              children: _("Удалить")
-            }
-          )
-        ] }) }, B.id);
-      }),
-      !d.reminders.length && !p && !a.error && /* @__PURE__ */ o.jsx("div", { className: he.empty, children: _("Нет напоминаний.") })
-    ] }) }),
-    /* @__PURE__ */ o.jsx(
-      $t,
-      {
-        open: y,
-        onClose: () => {
-          a.busy || w(!1);
-        },
-        title: _("Добавить напоминание"),
-        feedback: a,
-        footer: /* @__PURE__ */ o.jsx(ne, { onClick: () => void z(), disabled: a.busy || !g.trim() || !k || !O, children: _("Создать") }),
-        children: /* @__PURE__ */ o.jsxs("div", { className: yn.form, children: [
-          /* @__PURE__ */ o.jsx(
-            He,
-            {
-              label: _("Что напомнить"),
-              value: g,
-              maxLength: 2e3,
-              onChange: (B) => x(B.target.value),
-              placeholder: _("Напомнить насыпать еды через 30 минут")
-            }
-          ),
-          /* @__PURE__ */ o.jsx(Un, { label: "Где напомнить", value: k, options: d.devices.map((B) => ({ label: B.name, value: B.id })), onSelect: j }),
-          !d.devices.length && /* @__PURE__ */ o.jsx("p", { children: _("Нет доступных колонок. Добавьте колонку в Home Assistant.") }),
-          /* @__PURE__ */ o.jsx(Un, { label: "Когда напомнить", value: b, options: [{ value: "delay", label: _("Через интервал") }, { value: "at", label: _("Дата и время") }], onSelect: C }),
-          b === "delay" ? /* @__PURE__ */ o.jsx(He, { label: _("Через сколько минут"), type: "number", min: "1", max: "5256000", value: E, onChange: (B) => P(B.target.value) }) : /* @__PURE__ */ o.jsx(He, { label: _("Дата и время"), type: "datetime-local", value: F, onChange: (B) => $(B.target.value) }),
-          /* @__PURE__ */ o.jsx("p", { className: he.meta, children: _("Дата и время — в часовом поясе вашего устройства.") })
-        ] })
-      }
-    )
+    /* @__PURE__ */ o.jsxs("div", { className: Y.page, children: [
+      /* @__PURE__ */ o.jsx(at, {}),
+      /* @__PURE__ */ o.jsxs("div", { className: Y.headerTop, children: [
+        !i && /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Напоминания") }),
+        /* @__PURE__ */ o.jsx(ne, { onClick: () => {
+          a.clearError(), w(!0);
+        }, children: _("Добавить напоминание") })
+      ] }),
+      !y && /* @__PURE__ */ o.jsx(Qe, { ...a }),
+      /* @__PURE__ */ o.jsx(Wt, { loading: p, itemCount: d.reminders.length, placeholderCount: 3, children: /* @__PURE__ */ o.jsxs("div", { className: yn.grid, children: [
+        d.reminders.map((B) => {
+          var U;
+          return /* @__PURE__ */ o.jsx("article", { className: `${he.card} ${yn.card}`, children: /* @__PURE__ */ o.jsxs("div", { className: he.cardHeader, children: [
+            /* @__PURE__ */ o.jsxs("div", { className: `${he.cardLead} ${yn.lead}`, children: [
+              /* @__PURE__ */ o.jsx(Xl, { size: 22, className: yn.icon }),
+              /* @__PURE__ */ o.jsxs("div", { children: [
+                /* @__PURE__ */ o.jsx("h2", { className: `${he.cardTitle} ${yn.text}`, children: B.text }),
+                /* @__PURE__ */ o.jsx("p", { className: yn.meta, children: new Date(B.at).toLocaleString(u === "ru" ? "ru-RU" : "en-US") }),
+                /* @__PURE__ */ o.jsxs("p", { className: yn.meta, children: [
+                  ((U = d.devices.find((X) => X.id === B.device_id)) == null ? void 0 : U.name) || B.device_id,
+                  " · ",
+                  _(Yk[B.status])
+                ] }),
+                B.error && /* @__PURE__ */ o.jsx("p", { role: "alert", className: yn.meta, children: B.error })
+              ] })
+            ] }),
+            /* @__PURE__ */ o.jsx(
+              ne,
+              {
+                variant: "remove",
+                disabled: a.busy || B.status === "delivering",
+                "aria-label": `${_("Удалить напоминание")}: ${B.text}`,
+                onClick: () => void a.run(async () => {
+                  await r.deleteReminder(B.id), await A();
+                }, { exclusive: !0 }),
+                children: _("Удалить")
+              }
+            )
+          ] }) }, B.id);
+        }),
+        !d.reminders.length && !p && !a.error && /* @__PURE__ */ o.jsx("div", { className: he.empty, children: _("Нет напоминаний.") })
+      ] }) }),
+      /* @__PURE__ */ o.jsx(
+        $t,
+        {
+          open: y,
+          onClose: () => {
+            a.busy || w(!1);
+          },
+          title: _("Добавить напоминание"),
+          feedback: a,
+          footer: /* @__PURE__ */ o.jsx(ne, { onClick: () => void z(), disabled: a.busy || !g.trim() || !k || !O, children: _("Создать") }),
+          children: /* @__PURE__ */ o.jsxs("div", { className: yn.form, children: [
+            /* @__PURE__ */ o.jsx(
+              He,
+              {
+                label: _("Что напомнить"),
+                value: g,
+                maxLength: 2e3,
+                onChange: (B) => x(B.target.value),
+                placeholder: _("Напомнить насыпать еды через 30 минут")
+              }
+            ),
+            /* @__PURE__ */ o.jsx(Un, { label: "Где напомнить", value: k, options: d.devices.map((B) => ({ label: B.name, value: B.id })), onSelect: j }),
+            !d.devices.length && /* @__PURE__ */ o.jsx("p", { children: _("Нет доступных колонок. Добавьте колонку в Home Assistant.") }),
+            /* @__PURE__ */ o.jsx(Un, { label: "Когда напомнить", value: b, options: [{ value: "delay", label: _("Через интервал") }, { value: "at", label: _("Дата и время") }], onSelect: C }),
+            b === "delay" ? /* @__PURE__ */ o.jsx(He, { label: _("Через сколько минут"), type: "number", min: "1", max: "5256000", value: E, onChange: (B) => P(B.target.value) }) : /* @__PURE__ */ o.jsx(He, { label: _("Дата и время"), type: "datetime-local", value: F, onChange: (B) => $(B.target.value) }),
+            /* @__PURE__ */ o.jsx("p", { className: he.meta, children: _("Дата и время — в часовом поясе вашего устройства.") })
+          ] })
+        }
+      )
+    ] })
   ] });
 }
 const Gk = () => {

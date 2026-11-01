@@ -43,6 +43,12 @@ try {
     });
     const panel = page.locator('ha-dialog-ui-panel');
     await panel.getByText('Нет напоминаний.', {exact: true}).waitFor();
+    if (width < 768) {
+      const header = await panel.locator('header').boundingBox();
+      assert(Math.abs(header.x) < 1 && Math.abs(header.width - width) < 1,
+        'Mobile reminder header fills the screen independently of content padding');
+      assert(Math.abs(header.y) < 1, 'Mobile header starts at the top of the panel');
+    }
     assert.equal(await panel.getByText('В выбранное время колонка озвучит текст напоминания целиком.', {exact: true}).count(), 0);
     if (width < 768) {
       await panel.getByRole('button', {name: 'Открыть меню разделов', exact: true}).click();

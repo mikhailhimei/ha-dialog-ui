@@ -54,8 +54,9 @@ export function ReminderPage() {
   const validTime = mode === "delay" ? Number(minutes) > 0 && Number(minutes) <= 5256000 :
     Boolean(at) && new Date(at).getTime() > Date.now();
 
-  return <div className={styles.page}>
+  return <>
     <MobileHeader title="Напоминания" />
+    <div className={styles.page}>
     <NavigationTabs />
     <div className={styles.headerTop}>
       {!mobile && <h1 className={styles.title}>{t("Напоминания")}</h1>}
@@ -94,5 +95,6 @@ export function ReminderPage() {
         <p className={cards.meta}>{t("Дата и время — в часовом поясе вашего устройства.")}</p>
       </div>
     </Modal>
-  </div>;
+    </div>
+  </>;
 }
