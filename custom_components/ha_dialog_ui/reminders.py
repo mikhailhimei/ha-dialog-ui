@@ -12,11 +12,21 @@ from homeassistant.core import callback
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.event import async_track_point_in_utc_time
 from homeassistant.helpers.storage import Store
+from homeassistant.helpers.network import get_url
 from homeassistant.util import dt as dt_util
 
 from .audio.audio_notification import _resolve_media_player_entity_id
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _schema_has_field(schema, field):
+    """Handle both plain service schemas and All-wrapped entity schemas."""
+    fields = getattr(schema, "schema", schema)
+    if isinstance(fields, dict):
+        return any(str(key) == field for key in fields)
+    return any(_schema_has_field(validator, field)
+               for validator in getattr(schema, "validators", ()))
 
 
 class ReminderManager:
@@ -139,7 +149,6 @@ class ReminderManager:
         reference = registry.async_get(device_ref)
         device_id = reference.device_id if reference else device_ref
         candidates = ([device_ref] if device_ref.startswith("assist_satellite.") else
-                      [] if device_ref.startswith("media_player.") else
                       [entry.entity_id for entry in er.async_entries_for_device(registry, device_id)
                        if entry.domain == "assist_satellite" and not entry.disabled])
         available = [entity_id for entity_id in candidates
@@ -151,6 +160,17 @@ class ReminderManager:
     async def _speak(self, item):
         satellite = self._satellite(item["device_id"])
         if satellite:
+            service = self.hass.services.async_services().get("assist_satellite", {}).get("announce")
+            if _schema_has_field(getattr(service, "schema", None), "preannounce"):
+                await self.hass.services.async_call("assist_satellite", "announce",
+                    {"message": item["text"], "preannounce": True},
+                    target={"entity_id": satellite}, blocking=True)
+                return
+            # HA versions without preannounce: wait for the firmware's announcement
+            # completion before sending the speech, rather than sleeping a fixed time.
+            chime_url = get_url(self.hass, allow_external=False).rstrip("/") + "/ha_dialog_ui_static/sounds/reminder-chime.wav"
+            await self.hass.services.async_call("assist_satellite", "announce",
+                {"media_id": chime_url}, target={"entity_id": satellite}, blocking=True)
             await self.hass.services.async_call("assist_satellite", "announce",
                 {"message": item["text"]}, target={"entity_id": satellite}, blocking=True)
             return

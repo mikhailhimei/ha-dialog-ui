@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Bell } from "lucide-react";
+import { StickyNote } from "lucide-react";
 import { useDialogApi } from "../../context/DialogContext";
 import { useApiFeedback } from "../../hooks/useApiFeedback";
 import { useIsMobile } from "../../hooks/useIsMobile";
@@ -58,21 +58,19 @@ export function ReminderPage() {
     <MobileHeader title="Напоминания" />
     <NavigationTabs />
     <div className={styles.headerTop}>
-      <div>{!mobile && <h1 className={styles.title}>{t("Напоминания")}</h1>}
-        <p className={styles.description}>{t("В выбранное время колонка озвучит текст напоминания целиком.")}</p>
-      </div>
+      {!mobile && <h1 className={styles.title}>{t("Напоминания")}</h1>}
       <Button onClick={() => { feedback.clearError(); setOpen(true); }}>{t("Добавить напоминание")}</Button>
     </div>
     {!open && <ApiError {...feedback} />}
     <ListSkeleton loading={loading} itemCount={state.reminders.length} placeholderCount={3}>
-      <div className={cards.grid}>
-        {state.reminders.map(item => <article className={cards.card} key={item.id}>
+      <div className={local.grid}>
+        {state.reminders.map(item => <article className={`${cards.card} ${local.card}`} key={item.id}>
           <div className={cards.cardHeader}>
-            <div className={cards.cardLead}><Bell size={24} className={cards.cardIcon} />
+            <div className={`${cards.cardLead} ${local.lead}`}><StickyNote size={22} className={local.icon} />
               <div><h2 className={`${cards.cardTitle} ${local.text}`}>{item.text}</h2>
-                <p className={cards.meta}>{new Date(item.at).toLocaleString(language === "ru" ? "ru-RU" : "en-US")} · {state.devices.find(d => d.id === item.device_id)?.name || item.device_id}</p>
-                <p className={cards.meta}>{t(statusLabels[item.status])}</p>
-                {item.error && <p role="alert" className={cards.meta}>{item.error}</p>}
+                <p className={local.meta}>{new Date(item.at).toLocaleString(language === "ru" ? "ru-RU" : "en-US")}</p>
+                <p className={local.meta}>{state.devices.find(d => d.id === item.device_id)?.name || item.device_id} · {t(statusLabels[item.status])}</p>
+                {item.error && <p role="alert" className={local.meta}>{item.error}</p>}
               </div>
             </div>
             <Button variant="remove" disabled={feedback.busy || item.status === "delivering"}

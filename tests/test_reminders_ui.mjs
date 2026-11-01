@@ -43,6 +43,7 @@ try {
     });
     const panel = page.locator('ha-dialog-ui-panel');
     await panel.getByText('Нет напоминаний.', {exact: true}).waitFor();
+    assert.equal(await panel.getByText('В выбранное время колонка озвучит текст напоминания целиком.', {exact: true}).count(), 0);
     if (width < 768) {
       await panel.getByRole('button', {name: 'Открыть меню разделов', exact: true}).click();
       await panel.getByRole('link', {name: 'Напоминания', exact: true}).click();
@@ -73,6 +74,11 @@ try {
     await panel.getByLabel('Дата и время', {exact: true}).fill('2099-11-02T18:30');
     await create.click();
     await panel.getByRole('heading', {name: 'Выпить воды', exact: true}).waitFor();
+    const card = panel.getByRole('article').filter({hasText: 'Выпить воды'});
+    const bounds = await card.boundingBox();
+    assert(bounds.width <= 421, 'Reminder card stays compact on desktop');
+    assert(bounds.height < 180, 'Reminder card has compact spacing');
+    assert.equal(await card.locator('svg.lucide-sticky-note').count(), 1);
     assert.equal(await page.evaluate(() => window.requests.findLast(r => r.type === 'ha_dialog_ui/reminders/create').at), '2099-11-02T13:30:00.000Z');
     await panel.getByRole('button', {name: `Удалить напоминание: ${text}`, exact: true}).click();
     await panel.getByRole('heading', {name: text, exact: true}).waitFor({state: 'detached'});

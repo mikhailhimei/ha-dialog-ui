@@ -2,7 +2,7 @@
 import asyncio
 from datetime import timedelta
 from types import SimpleNamespace
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import AsyncMock, Mock, call as mock_call, patch
 
 import pytest
 import pytest_asyncio
@@ -11,6 +11,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.util import dt as dt_util
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import device_registry as dr
+from homeassistant.config_entries import ConfigEntries
 
 from custom_components.ha_dialog_ui import reminder_api, reminders
 from custom_components.ha_dialog_ui.const import DOMAIN
@@ -19,6 +21,7 @@ from custom_components.ha_dialog_ui.const import DOMAIN
 @pytest_asyncio.fixture
 async def runtime(tmp_path):
     hass = HomeAssistant(str(tmp_path))
+    hass.config.internal_url = 'http://homeassistant.test:8123'
     await er.async_get(hass).async_load()
     hass.states.async_set('media_player.kitchen', 'idle', {'friendly_name': 'Кухня'})
     hass.states.async_set('media_player.bedroom', 'idle')
@@ -123,8 +126,14 @@ async def test_satellite_announcement_and_offline_failure(runtime):
     item = await manager.create('Весь текст', 'assist_satellite.voice', delay_seconds=10)
     with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as call:
         await manager._fire(item['id'])
-    call.assert_awaited_once_with('assist_satellite', 'announce', {'message': 'Весь текст'},
-                                 target={'entity_id': 'assist_satellite.voice'}, blocking=True)
+    assert call.await_args_list == [
+        # Both service calls wait for the device to finish.
+        mock_call('assist_satellite', 'announce',
+            {'media_id': 'http://homeassistant.test:8123/ha_dialog_ui_static/sounds/reminder-chime.wav'},
+            target={'entity_id': 'assist_satellite.voice'}, blocking=True),
+        mock_call('assist_satellite', 'announce', {'message': 'Весь текст'},
+            target={'entity_id': 'assist_satellite.voice'}, blocking=True),
+    ]
     item = await manager.create('Не другая колонка', 'media_player.kitchen', delay_seconds=10)
     hass.states.async_set('media_player.kitchen', 'unavailable')
     with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as call:
@@ -132,6 +141,78 @@ async def test_satellite_announcement_and_offline_failure(runtime):
     call.assert_not_awaited()
     failed = next(i for i in manager.items() if i['id'] == item['id'])
     assert failed['status'] == 'failed' and failed['error']
+
+
+async def test_voice_pe_waits_for_chime_before_speaking(runtime):
+    hass, manager = runtime
+    hass.states.async_set('assist_satellite.voice', 'idle', {'supported_features': 1})
+    chime_started, chime_finished = asyncio.Event(), asyncio.Event()
+    played = []
+
+    async def announce(service_call):
+        played.append(service_call.data)
+        if 'media_id' in service_call.data:
+            chime_started.set()
+            await chime_finished.wait()
+
+    hass.services.async_register('assist_satellite', 'announce', announce)
+    item = await manager.create('Напомнить насыпать еды через 30 минут', 'assist_satellite.voice', delay_seconds=1800)
+    task = asyncio.create_task(manager._fire(item['id']))
+    try:
+        await asyncio.wait_for(chime_started.wait(), timeout=1)
+        assert len(played) == 1 and 'media_id' in played[0]
+        assert manager.items()[0]['status'] == 'delivering'
+        chime_finished.set()
+        await task
+        assert played[1]['message'] == item['text']
+        assert manager.items()[0]['status'] == 'completed'
+    finally:
+        chime_finished.set()
+        await task
+
+
+async def test_modern_ha_uses_native_preannouncement(runtime):
+    hass, manager = runtime
+    hass.states.async_set('assist_satellite.voice', 'idle', {'supported_features': 1})
+    played = []
+
+    async def announce(service_call):
+        played.append(service_call.data)
+
+    hass.services.async_register('assist_satellite', 'announce', announce,
+        schema=vol.All(vol.Schema({vol.Required('message'): str, vol.Optional('preannounce'): bool,
+                                   vol.Optional('entity_id'): str}), lambda value: value))
+    item = await manager.create('Точный текст', 'assist_satellite.voice', delay_seconds=1800)
+    await manager._fire(item['id'])
+    assert len(played) == 1
+    assert played[0]['message'] == 'Точный текст' and played[0]['preannounce'] is True
+    assert manager.items()[0]['status'] == 'completed'
+
+
+async def test_voice_pe_player_uses_satellite_on_same_device(runtime):
+    from test_timer_runtime import config_entry
+
+    hass, manager = runtime
+    hass.config_entries = ConfigEntries(hass, {})
+    await dr.async_load(hass)
+    entry = config_entry('esphome')
+    hass.config_entries._entries[entry.entry_id] = entry
+    device = dr.async_get(hass).async_get_or_create(config_entry_id=entry.entry_id,
+                                                  identifiers={('esphome', 'voice-pe')})
+    registry = er.async_get(hass)
+    player = registry.async_get_or_create('media_player', 'esphome', 'voice-player',
+                                          device_id=device.id, config_entry=entry)
+    satellite = registry.async_get_or_create('assist_satellite', 'esphome', 'voice-assistant',
+                                             device_id=device.id, config_entry=entry)
+    hass.states.async_set(player.entity_id, 'idle')
+    hass.states.async_set(satellite.entity_id, 'idle', {'supported_features': 1})
+    item = await manager.create('Текст', player.entity_id, delay_seconds=1800)
+    with patch.object(type(hass.services), 'async_call', new_callable=AsyncMock) as service_call:
+        await manager._fire(item['id'])
+    assert service_call.await_count == 2
+    assert all(args.args[:2] == ('assist_satellite', 'announce') and
+               args.kwargs['target'] == {'entity_id': satellite.entity_id}
+               for args in service_call.await_args_list)
 
 
 async def test_overdue_restore_and_interrupted_not_replayed(runtime):

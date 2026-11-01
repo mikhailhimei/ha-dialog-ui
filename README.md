@@ -526,7 +526,12 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 пояс Home Assistant. `device_id` принимает entity_id `assist_satellite.*`,
 `media_player.*` либо ID устройства HA с однозначной колонкой.
 Для Assist Satellite используется `assist_satellite.announce` с его настроенным
-голосовым ассистентом; для media_player — TTS основного Assist-пайплайна HA.
+голосовым ассистентом. На Voice PE перед текстом звучит короткий сигнал.
+В новых версиях HA используется штатный `preannounce`; в версиях без него
+интеграция сначала отправляет короткий WAV-сигнал и ожидает подтверждение
+завершения от прошивки, затем отправляет текст. Фиксированной задержки нет.
+При выборе media_player устройства Voice PE используется его Assist Satellite,
+если он доступен; для остальных media_player — TTS основного Assist-пайплайна HA.
 
 ```yaml
 - action: ha_dialog_ui.reminder_info
