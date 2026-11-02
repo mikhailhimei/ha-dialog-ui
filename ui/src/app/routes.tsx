@@ -27,6 +27,7 @@ import { TimerPage } from "../pages/TimerAlarmPages/TimerPage";
 import { CallsPage } from "../pages/CallsPage/CallsPage";
 import { BabyMonitorPage } from "../pages/BabyMonitorPage/BabyMonitorPage";
 import { AlarmPage } from "../pages/TimerAlarmPages/AlarmPage";
+import { ReminderPage } from "../pages/TimerAlarmPages/ReminderPage";
 
 export const AppRoutes = () => {
   const apiEnabled = useApiEnabled();
@@ -104,6 +105,7 @@ export const AppRoutes = () => {
       />
 
       <Route path="/monitor" element={<BabyMonitorPage />} />
+      <Route path="/reminders" element={<ReminderPage />} />
       <Route path="/calls" element={<CallsPage />} />
       <Route
         path="/timer"

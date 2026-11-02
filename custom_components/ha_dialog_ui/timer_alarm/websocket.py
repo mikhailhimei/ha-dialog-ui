@@ -27,6 +27,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def async_register_timer_alarm_websockets(hass: HomeAssistant) -> None:
+    from ..reminder_api import register_websockets
+    register_websockets(hass)
     websocket_api.async_register_command(hass, _ws_get_timer_alarm_config)
     websocket_api.async_register_command(hass, _ws_save_timer_alarm_config)
 

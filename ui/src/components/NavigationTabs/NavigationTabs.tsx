@@ -13,6 +13,7 @@ import {
   Baby,
   Phone,
   AlarmClock,
+  StickyNote,
   Settings,
   Download,
   ChevronDown
@@ -141,6 +142,8 @@ export const NavigationTabs = () => {
         <AlarmClock size={16} strokeWidth={2} />
         <span>{t("Будильники")}</span>
       </NavLink>
+
+      <NavLink to="/reminders" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}><StickyNote size={16} /><span>{t("Напоминания")}</span></NavLink>
 
       <NavLink to="/monitor" className={({ isActive }) => isActive ? `${styles.tab} ${styles.active}` : styles.tab}><Baby size={16} /><span>{t("Радионяня")}</span></NavLink>
 

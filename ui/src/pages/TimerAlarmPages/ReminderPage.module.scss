@@ -1,0 +1,7 @@
+.form { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.text { overflow-wrap: anywhere; white-space: pre-wrap; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 420px)); gap: 12px; min-width: 0; }
+.card { padding: 16px; border-radius: 16px; }
+.lead { align-items: flex-start; gap: 10px; }
+.icon { flex-shrink: 0; margin-top: 2px; color: var(--text-secondary); }
+.meta { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: var(--text-secondary); overflow-wrap: anywhere; }

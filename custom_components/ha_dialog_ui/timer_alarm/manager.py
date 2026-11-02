@@ -9,6 +9,7 @@ from homeassistant.util import dt as dt_util
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
 from .alarm_manager import DialogAlarmManager
+from ..reminders import ReminderManager
 from .service_responses import (
     normalize_service_response,
     build_service_json_response,
@@ -49,6 +50,7 @@ class DialogTimerAlarmManager:
         on_timer_alarm_worked: Callable[[dict[str, Any]], Awaitable[None]] | None = None,
     ) -> None:
         self.hass = hass
+        self.reminder_manager = ReminderManager(hass)
         self._on_timer_alarm_worked = on_timer_alarm_worked
 
         self.timer_manager = DialogTimerManager(
@@ -76,6 +78,7 @@ class DialogTimerAlarmManager:
     async def async_restore_from_storage(self, shared_client_id: str) -> None:
         if self._restored:
             return
+        await self.reminder_manager.restore(shared_client_id)
         
         shared_client_id = _normalize_value(shared_client_id)
 
@@ -89,6 +92,7 @@ class DialogTimerAlarmManager:
         self._restored = True
 
     async def async_stop(self) -> None:
+        await self.reminder_manager.stop()
         if self._save_task is not None:
             await self._save_task
         await self.timer_manager.async_stop()
@@ -117,7 +121,7 @@ class DialogTimerAlarmManager:
                 return normalize_service_response(
                     build_service_json_response(
                         "timers",
-                        build_timer_info_items(self.timer_manager.get_active_items(), client_id),
+                        build_timer_info_items(self.timer_manager.get_active_items(), client_id, device_id),
                     )
                 )
             if action == "delete":
@@ -142,7 +146,7 @@ class DialogTimerAlarmManager:
                 return normalize_service_response(
                     build_service_json_response(
                         "alarms",
-                        build_alarm_info_items(self.alarm_manager.get_active_items(), client_id),
+                        build_alarm_info_items(self.alarm_manager.get_active_items(), client_id, device_id),
                     )
                 )
             if action == "delete":

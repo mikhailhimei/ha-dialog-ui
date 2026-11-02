@@ -55,7 +55,7 @@ export const CommandSubPage = () => {
                 <Button variant="primary" onClick={openCreateModal}>{t("🞢 Добавить сценарий")}</Button>
               </>
             ) : (
-              <BottomSlideButton>
+              <BottomSlideButton startVisible={true}>
                 <Button variant="primary" onClick={openCreateModal}>{t("Добавить сценарий")}</Button>
               </BottomSlideButton>
             )}

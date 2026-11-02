@@ -14,6 +14,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.components import conversation
 
 from custom_components.ha_dialog_ui.const import DOMAIN
+from custom_components.ha_dialog_ui.storage.settings_storage import async_load_settings, async_save_settings
 from test_timer_runtime import config_entry
 
 CONFIG = {"homeassistant": {"name": "Timer tests", "latitude": 0, "longitude": 0,
@@ -25,6 +26,10 @@ ENTITY = "sensor.ha_dialog_ui_timers"
 async def boot(config_dir):
     hass = HomeAssistant(str(config_dir))
     loader.async_setup(hass)
+    settings = await async_load_settings(hass)
+    if not settings['client_id']:
+        settings['client_id'] = 'configured-client'
+        await async_save_settings(hass, settings)
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
@@ -32,6 +37,50 @@ async def boot(config_dir):
     assert await async_from_config_dict(config, hass) is hass
     await hass.async_start()
     return hass
+
+
+@pytest.mark.asyncio
+async def test_reminder_service_delivery_and_reload(tmp_path):
+    (tmp_path / "custom_components").symlink_to(Path(__file__).resolve().parents[1] / "custom_components", target_is_directory=True)
+    hass = await boot(tmp_path)
+    try:
+        entry = config_entry()
+        await hass.config_entries.async_add(entry)
+        assert entry.state is ConfigEntryState.LOADED
+        hass.states.async_set('media_player.kitchen', 'idle')
+        manager = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.reminder_manager
+        text = 'Напомнить насыпать еды через 30 минут'
+        with patch.object(manager, '_speak', new_callable=AsyncMock) as speak:
+            result = await hass.services.async_call(DOMAIN, 'reminder_create', {
+                'text': text, 'device_id': 'media_player.kitchen', 'delay_minutes': 1 / 60,
+            }, blocking=True, return_response=True)
+            for _ in range(40):
+                if manager.items()[0]['status'] == 'completed':
+                    break
+                await asyncio.sleep(0.1)
+            assert manager.items()[0]['status'] == 'completed'
+            speak.assert_awaited_once()
+            assert speak.await_args.args[0]['text'] == text
+        pending = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'После перезагрузки', 'device_id': 'media_player.kitchen', 'delay_minutes': 30,
+        }, blocking=True, return_response=True)
+        await hass.config_entries.async_reload(entry.entry_id)
+        assert entry.state is ConfigEntryState.LOADED
+        restored = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.reminder_manager
+        assert restored is not manager and manager._stopped
+        info = await hass.services.async_call(DOMAIN, 'reminder_info', {'device_id': 'media_player.kitchen'}, blocking=True, return_response=True)
+        assert info['reminders'] == [pending['reminder']]
+        info = await hass.services.async_call(DOMAIN, 'reminder_info', {'device_id': 'media_player.kitchen', 'include_history': True}, blocking=True, return_response=True)
+        assert {item['id']: item['status'] for item in info['reminders']} == {
+            result['reminder']['id']: 'completed', pending['reminder']['id']: 'pending',
+        }
+        assert set(restored._cancel) == {pending['reminder']['id']}
+        await hass.services.async_call(DOMAIN, 'reminder_delete', {'id': pending['reminder']['id']}, blocking=True)
+        assert not restored._cancel
+        assert await hass.config_entries.async_unload(entry.entry_id)
+        assert not hass.services.has_service(DOMAIN, 'reminder_create')
+    finally:
+        await hass.async_stop()
 
 
 @pytest.mark.asyncio
@@ -63,7 +112,7 @@ async def test_full_setup_service_poll_unload_and_restart(tmp_path):
         before = state.attributes["_updated_at"]
         await asyncio.sleep(2.2)
         assert hass.states.get(ENTITY).attributes["_updated_at"] > before
-        await hass.services.async_call(DOMAIN, "timer_create", {"clientId": "test", "deviceId": "voice", "ss": 120}, blocking=True)
+        await hass.services.async_call(DOMAIN, "timer_create", {"deviceId": "voice", "ss": 120}, blocking=True)
         manager = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager.timer_manager
         timer_id = next(iter(manager._timers))
         await asyncio.sleep(2.2)
@@ -101,7 +150,7 @@ async def test_full_setup_service_poll_unload_and_restart(tmp_path):
         assert hass.states.get(ENTITY).state == "1"
         payload = hass.states.get(ENTITY).attributes["payload"]
         assert payload[0] == expected
-        assert payload[0]["client_id"] == "test"
+        assert payload[0]["client_id"] == expected["client_id"]
         assert len([s for s in hass.states.async_all("sensor") if s.entity_id.startswith(ENTITY)]) == 1
     finally:
         await hass.async_stop()
@@ -116,7 +165,7 @@ async def test_two_service_timers_sensor_continues_after_one_expires(tmp_path):
         await hass.config_entries.async_add(entry)
         wrapper = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager
         async def create(seconds):
-            await hass.services.async_call(DOMAIN, "timer_create", {"clientId": "voice-client", "deviceId": "voice-device", "ss": seconds}, blocking=True)
+            await hass.services.async_call(DOMAIN, "timer_create", {"deviceId": "voice-device", "ss": seconds}, blocking=True)
         await create(120)
         older = next(iter(wrapper.timer_manager._timers))
         await create(3)
@@ -161,7 +210,7 @@ async def test_alarm_sensor_setup_updates_restore_and_unload(tmp_path):
         await hass.config_entries.async_add(entry)
         await expect(hass, "off", 0)
         future = datetime.now() + timedelta(minutes=10)
-        await hass.services.async_call(DOMAIN, "alarm_create", {"clientId": "test", "deviceId": "voice", "hh": future.hour, "mm": future.minute}, blocking=True)
+        await hass.services.async_call(DOMAIN, "alarm_create", {"deviceId": "voice", "hh": future.hour, "mm": future.minute}, blocking=True)
         await expect(hass, "on", 1)
         wrapper = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager
         alarm = wrapper.get_alarm_items()[0]
@@ -179,7 +228,7 @@ async def test_alarm_sensor_setup_updates_restore_and_unload(tmp_path):
     hass = await boot(tmp_path)
     try:
         await expect(hass, "on", 1)
-        assert hass.states.get(alarm_entity).attributes["payload"][0]["client_id"] == "test"
+        assert hass.states.get(alarm_entity).attributes["payload"][0]["client_id"] == saved[0]["client_id"]
         entries = hass.config_entries.async_entries(DOMAIN)
         entry = entries[0]
         wrapper = hass.data[DOMAIN][entry.entry_id].timer_alarm_manager

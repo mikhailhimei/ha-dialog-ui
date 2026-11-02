@@ -1,3 +1,67 @@
+reminder_create:
+  name: Создать напоминание
+  description: Озвучить текст целиком на выбранной колонке в указанную дату или через интервал.
+  fields:
+    text:
+      name: Что напомнить
+      required: true
+      example: Напомнить насыпать еды через 30 минут
+      selector:
+        text:
+          multiline: true
+    device_id:
+      name: Где напомнить
+      description: ID устройства HA либо entity_id assist_satellite или media_player.
+      required: true
+      selector:
+        text:
+    at:
+      name: Когда напомнить
+      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Не указывайте вместе с delay_minutes.
+      example: '2026-11-02T18:30:00+05:00'
+      selector:
+        text:
+    delay_minutes:
+      name: Через сколько минут
+      description: Интервал в минутах от текущего момента. Можно указать число или шаблон Home Assistant, например {{ reminder_minutes }}. Не указывайте вместе с at.
+      example: "{{ reminder_minutes }}"
+      selector:
+        text:
+reminder_info:
+  name: Информация о напоминаниях
+  description: Возвращает ожидающие и озвучиваемые напоминания выбранной колонки. Поиск по тексту необязателен. Для завершённых и ошибочных записей включите include_history.
+  fields:
+    query:
+      name: Поиск по тексту
+      description: Часть текста напоминания без учёта регистра. Пустое поле возвращает все подходящие записи выбранной колонки.
+      required: false
+      example: насыпать еды
+      selector:
+        text:
+    include_history:
+      name: Включить историю
+      default: false
+      selector:
+        boolean: {}
+    id:
+      name: UUID напоминания
+      selector:
+        text:
+    device_id:
+      name: ID колонки
+      description: Тот же ID колонки, который передан при создании напоминания.
+      required: true
+      selector:
+        text:
+reminder_delete:
+  name: Удалить напоминание
+  description: Отменяет ожидающее напоминание или удаляет запись из истории по UUID.
+  fields:
+    id:
+      name: UUID напоминания
+      required: true
+      selector:
+        text:
 send_command:
   name: Ответить в диалог
   description: >-
@@ -5,15 +69,6 @@ send_command:
     настроенный текст ответа, а variables подставляет в него значения.
     Озвучку выполняет TTS текущего Assist-пайплайна.
   fields:
-    clientId:
-      name: ID клиента
-      description: >-
-        Клиент, который ожидает ответ. Передайте {{ dialog_payload.client_id }}
-        из запущенного интеграцией скрипта. Значение должно совпадать с исходным запросом.
-      required: true
-      example: "{{ dialog_payload.client_id }}"
-      selector:
-        text:
     deviceId:
       name: ID устройства
       description: >-
@@ -76,12 +131,6 @@ alarm_create:
       example: "{{ alarm_mm }}"
       selector:
         text:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
     deviceId:
       name: Device ID
       description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
@@ -139,11 +188,11 @@ alarm_create:
 
 alarm_info:
   name: Alarm info
-  description: List Dialog Custom UI alarms. Returns JSON items with time, uuid, and clientId.
+  description: List Dialog Custom UI alarms. Returns JSON items with time, uuid, clientId, and deviceId.
   fields:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
+    deviceId:
+      name: Device ID
+      description: Optional speaker identifier. Uses the client configured in integration settings to return records on the selected speaker. Also accepts device_id in YAML.
       required: false
       selector:
         text:
@@ -184,12 +233,6 @@ timer_create:
       example: "{{ timer_ss }}"
       selector:
         text:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
-      required: false
-      selector:
-        text:
     deviceId:
       name: Device ID
       description: Home Assistant device ID or media_player entity ID. device_id is also accepted.
@@ -199,11 +242,11 @@ timer_create:
 
 timer_info:
   name: Timer info
-  description: List Dialog Custom UI timers. Returns JSON items with uuid, clientId, current remaining timer duration (time/remaining_timer/remaining_seconds), and original timer duration (count_timer/total_seconds).
+  description: List Dialog Custom UI timers. Returns JSON items with uuid, clientId, deviceId, current remaining timer duration (time/remaining_timer/remaining_seconds), and original timer duration (count_timer/total_seconds).
   fields:
-    clientId:
-      name: Client ID
-      description: Optional client identifier. Defaults to integration client_id.
+    deviceId:
+      name: Device ID
+      description: Optional speaker identifier. Uses the client configured in integration settings to return records on the selected speaker. Also accepts device_id in YAML.
       required: false
       selector:
         text:

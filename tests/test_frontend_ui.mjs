@@ -23,6 +23,7 @@ try {
     window.apiRequests = [];
     window.hass = { user: {is_admin:true}, states: {'script.bound':{entity_id:'script.bound',state:'off',attributes:{friendly_name:'Управление светом'}}}, connection: { sendMessagePromise: async message => {
       window.apiRequests.push(message.type);
+      if (message.type === "ha_dialog_ui/reminders/get") return {reminders: [], devices: []};
       const requestType = message.type.split('/').pop();
       if (requestType==='get_whisper_prompt') return window.whisperSettings || JSON.parse(localStorage.getItem('test-whisper-settings') || 'null') || {url:'',initial_prompt:'',has_token:false};
       if (requestType==='read_whisper_prompt') return {initial_prompt:['Пылесос, коридор, коты.']};
@@ -623,7 +624,7 @@ try {
   const destinations=[
     ['Основные команды','/commands/main'],['Второстепенные команды','/commands/sub'],
     ['Прямые команды','/commands/direct/main'],['Вложенные команды','/commands/direct/template'],
-    ['Ответы по умолчанию','/commands/settings'],['Таймеры','/timer'],['Будильники','/alarm'],['Радионяня','/monitor'],['Звонки','/calls'],
+    ['Ответы по умолчанию','/commands/settings'],['Таймеры','/timer'],['Будильники','/alarm'],['Напоминания','/reminders'],['Радионяня','/monitor'],['Звонки','/calls'],
     ['Импорт и экспорт','/downloads'],['Настройки','/settings'],
   ];
   const mobileSections=panel.getByRole('navigation',{name:'Навигация интеграции',exact:true});
@@ -637,7 +638,7 @@ try {
       await panel.getByRole('button',{name:'Открыть меню разделов',exact:true}).click();
       await mobileSections.waitFor();
       assert.equal(await page.evaluate(()=>location.hash),currentRoute,'Opening the section menu must not navigate');
-      assert.equal(await mobileSections.getByRole('link').count(),13);
+      assert.equal(await mobileSections.getByRole('link').count(),14);
       assert.equal(await mobileSections.getByRole('button').count(),0,'All destinations are flat links');
       for (const [name] of destinations) {
         const rect=await mobileSections.getByRole('link',{name,exact:true}).boundingBox();
@@ -650,6 +651,11 @@ try {
       await mobileSections.waitFor({state:'hidden'});
       await page.waitForFunction(()=>!history.state?.dialogCustomUiOverlay);
       assert.equal(await panel.getByRole('button',{name:'Назад',exact:true}).count(),0);
+      if (['/commands/main','/commands/sub','/commands/direct/main','/commands/direct/template'].includes(route)) {
+        const add = panel.getByRole('button',{name:'Добавить сценарий',exact:true});
+        assert.equal(await add.evaluate(button => getComputedStyle(button.parentElement).pointerEvents), 'auto',
+          `Create button is available immediately after navigation to ${route}`);
+      }
     }
   }
   await page.setViewportSize({width:390,height:900});

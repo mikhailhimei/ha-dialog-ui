@@ -49,7 +49,6 @@ ATTR_ALARM_UUID = "alarm_uuid"
 
 _SEND_COMMAND_SCHEMA = vol.Schema(
     {
-        vol.Required(ATTR_CLIENT_ID): vol.Coerce(str),
         vol.Required(ATTR_DEVICE_ID): vol.Coerce(str),
         vol.Required(ATTR_ACTION_TYPE): vol.Coerce(str),
         vol.Optional(ATTR_VARIABLES, default={}): vol.Any(str, dict),
@@ -60,6 +59,8 @@ _SEND_COMMAND_SCHEMA = vol.Schema(
 
 def async_register_services(hass: HomeAssistant) -> None:
     """Register Dialog Custom UI services for scripts and automations."""
+    from .reminder_api import register_services
+    register_services(hass)
     async def async_handle_send_command(call: ServiceCall) -> None:
         await _async_handle_send_command(hass, call)
 
@@ -91,7 +92,8 @@ def async_register_services(hass: HomeAssistant) -> None:
             raise HomeAssistantError("Для остановки сигнала обновите прошивку колонки")
         await hass.services.async_call("esphome", service, {}, blocking=True)
 
-    hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
+    if not hass.services.has_service(DOMAIN, "activity_stop"):
+        hass.services.async_register(DOMAIN, "activity_stop", stop_activity, schema=vol.Schema({vol.Required("device_id"): str}))
     if not hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_register(
             DOMAIN,
@@ -112,6 +114,9 @@ def async_unregister_services(hass: HomeAssistant) -> None:
     if hass.services.has_service(DOMAIN, SERVICE_SEND_COMMAND):
         hass.services.async_remove(DOMAIN, SERVICE_SEND_COMMAND)
     for service_name in (
+        "reminder_create",
+        "reminder_delete",
+        "reminder_info",
         "activity_stop",
         SERVICE_ALARM_CREATE,
         SERVICE_ALARM_INFO,
@@ -135,7 +140,7 @@ async def _async_handle_send_command(hass: HomeAssistant, call: ServiceCall) -> 
     options = build_runtime_options(entry, get_cached_settings(hass))
     variables = _parse_response_variables(call.data.get(ATTR_VARIABLES))
     payload = {
-        ATTR_CLIENT_ID: _normalize_value(call.data.get(ATTR_CLIENT_ID)) or _normalize_value(options.get("client_id")),
+        ATTR_CLIENT_ID: _normalize_value(options.get("client_id")),
         ATTR_DEVICE_ID: _normalize_value(call.data.get(ATTR_DEVICE_ID)),
         ATTR_ACTION_TYPE: _normalize_value(call.data.get(ATTR_ACTION_TYPE)),
         ATTR_VARIABLES: variables,
@@ -164,7 +169,7 @@ async def _async_handle_timer_alarm_action(hass: HomeAssistant, item_type: str, 
         raise HomeAssistantError("Dialog timer/alarm manager not found")
 
     options = build_runtime_options(entry, get_cached_settings(hass))
-    client_id = _normalize_value(call.data.get(ATTR_CLIENT_ID)) or _normalize_value(options.get("client_id"))
+    client_id = _normalize_value(options.get("client_id"))
     device_id_camel = _normalize_value(call.data.get(ATTR_DEVICE_ID))
     device_id_snake = _normalize_value(call.data.get("device_id"))
     if device_id_camel and device_id_snake and device_id_camel != device_id_snake:
@@ -216,7 +221,8 @@ def _register_optional_response_service(
 
 _INFO_SCHEMA = vol.Schema(
     {
-        vol.Optional(ATTR_CLIENT_ID): vol.Coerce(str),
+        vol.Optional(ATTR_DEVICE_ID): vol.Coerce(str),
+        vol.Optional("device_id"): vol.Coerce(str),
     }
 )
 
@@ -224,7 +230,6 @@ _ALARM_CREATE_SCHEMA = vol.Schema(
     {
         vol.Optional(ATTR_HH, default=0): vol.Any(str, int),
         vol.Optional(ATTR_MM, default=0): vol.Any(str, int),
-        vol.Optional(ATTR_CLIENT_ID): vol.Coerce(str),
         vol.Optional(ATTR_DEVICE_ID): vol.Coerce(str),
         vol.Optional("device_id"): vol.Coerce(str),
         vol.Optional(ATTR_REPEAT_TYPE, default="once"): _REPEAT_TYPE_VALIDATOR,
@@ -244,7 +249,6 @@ _TIMER_CREATE_SCHEMA = vol.Schema(
         vol.Optional(ATTR_HH, default=0): vol.Any(str, int),
         vol.Optional(ATTR_MM, default=0): vol.Any(str, int),
         vol.Optional(ATTR_SS, default=0): vol.Any(str, int),
-        vol.Optional(ATTR_CLIENT_ID): vol.Coerce(str),
         vol.Optional(ATTR_DEVICE_ID): vol.Coerce(str),
         vol.Optional("device_id"): vol.Coerce(str),
     }
