@@ -89,12 +89,25 @@ def _migrate_settings(settings):
     return result
 
 
+def _complete_saved_value(value, template):
+    """Keep old group overrides when a release adds new editable dictionary keys."""
+    if isinstance(value, dict) and isinstance(template, dict):
+        if not value.keys() <= template.keys():
+            raise ValueError('Unknown dictionary key')
+        result = deepcopy(template)
+        for key, child in value.items():
+            result[key] = _complete_saved_value(child, template[key])
+        return result
+    return deepcopy(value)
+
+
 def _effective(defaults, settings):
     result = deepcopy(defaults)
     for encoded_path, value in settings.get("overrides", {}).items():
         try:
             path = json.loads(encoded_path)
             template = _node(defaults, path)
+            value = _complete_saved_value(value, template)
             _validate(value, template)
             parent = _node(result, path[:-1])
             parent[path[-1]] = deepcopy(value)

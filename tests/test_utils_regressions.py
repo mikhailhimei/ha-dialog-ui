@@ -52,7 +52,7 @@ def test_relative_date_inside_reminder_sentence(word, expected):
 
 
 @pytest.mark.parametrize('text', ['насыпать еды после завтрака', 'сегодняшний план',
-                                 'послезавтрашний день', 'вчера', 'snow'])
+                                 'послезавтрашний день', 'вчерашний', 'snow'])
 def test_relative_date_requires_whole_words(text):
     assert _parse_date_value(text, now=datetime(2026, 11, 2)) is None
 

@@ -3,17 +3,12 @@ import re
 from datetime import date, datetime, timedelta
 from .normalization_dictionary import get_section, get_subsection
 from .text_normalization import sanitize_location_text
+from .relative_dates import RelativeDates
 
 
 def refresh_normalization_dictionary():
-    global _RELATIVE_DATE_PATTERNS
-    _RELATIVE_DATE_PATTERNS = []
-    for key, offset in (('today', 0), ('tomorrow', 1), ('day_after_tomorrow', 2)):
-        for phrase in get_subsection('date_keywords', key):
-            normalized = ' '.join(phrase.lower().split())
-            if normalized:
-                pattern = re.escape(normalized).replace(r'\ ', r'\s+')
-                _RELATIVE_DATE_PATTERNS.append((re.compile(rf'(?<!\w){pattern}(?!\w)'), offset))
+    global _RELATIVE_DATES
+    _RELATIVE_DATES = RelativeDates()
     global _MONTH_PATTERN, _MONTH_DATA, _MONTH_NAME_TO_NUMBER, _MORNING_MARKERS, _EVENING_MARKERS, _DAY_MARKERS, _NIGHT_MARKERS, _TIME_MINUTES, _TIME_HOURS, _TIME_SECONDS, _NON_CLOCK_DURATION_MARKERS, _DAY_NUMBER_PATTERN
     day_markers = [re.escape(' '.join(word.lower().split())).replace(r'\ ', r'\s+')
                    for word in get_section('date_day_markers') if word.strip()]
@@ -161,13 +156,9 @@ def _parse_date_value(value, now=None):
     if not text:
         return None
 
-    relative_matches = [(match.start(), -len(match.group()), offset)
-                        for pattern, offset in _RELATIVE_DATE_PATTERNS
-                        if (match := pattern.search(text))]
-    if relative_matches:
-        # Prefer the first phrase, and the longest alias when phrases overlap.
-        offset = min(relative_matches)[2]
-        return (now + timedelta(days=offset)).strftime("%d.%m.%y")
+    relative_match, relative_date = _RELATIVE_DATES.parse(text, now.date())
+    if relative_match:
+        return relative_date.strftime("%d.%m.%y") if relative_date else None
 
     parsed_day_month = _parse_day_month_date(text, now)
     if parsed_day_month is not None:

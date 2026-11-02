@@ -87,6 +87,36 @@ async def test_relative_date_aliases_work_inside_sentences_after_save_and_restor
     assert value_parser._parse_date_value(text, now=now) == '04.11.26'
 
 
+@pytest.mark.parametrize('path,aliases,phrase,expected', [
+    (['date_keywords', 'yesterday'], ['вчерась'], 'напомни вчерась в 7 утра', '01.11.26'),
+    (['date_weekdays', 'friday'], ['пятничку'], 'напомни в пятничку', '06.11.26'),
+    (['date_relative_units', 'days'], ['денечка'], 'напомни через 2 денечка', '04.11.26'),
+    (['date_modifiers', 'future'], ['погодя'], 'напомни погодя 2 дня', '04.11.26'),
+    (['date_modifiers', 'next'], ['грядущую'], 'напомни в грядущую пятницу', '13.11.26'),
+])
+async def test_relative_date_vocabulary_is_editable_live_and_persistent(runtime, path, aliases, phrase, expected):
+    from datetime import datetime
+    hass, _ = runtime
+    conn = connection()
+    await async_handler(editor._save_dictionary)(hass, conn, {'id': 1, 'data': {
+        'path': path, 'value': aliases, 'title': 'Мои варианты'}})
+    conn.send_error.assert_not_called()
+    assert value_parser._parse_date_value(phrase, now=datetime(2026, 11, 2)) == expected
+    apply_normalization_dictionary(editor._defaults())
+    await editor.async_setup_normalization_settings(hass)
+    assert value_parser._parse_date_value(phrase, now=datetime(2026, 11, 2)) == expected
+
+
+def test_new_date_fields_preserve_previously_saved_group_overrides():
+    import json
+    defaults = editor._defaults()
+    old_group = {'today': ['нынче'], 'tomorrow': ['завтрева'], 'day_after_tomorrow': ['через два дня']}
+    result = editor._effective(defaults, {'overrides': {json.dumps(['date_keywords']): old_group}})
+    assert result['date_keywords']['today'] == ['нынче']
+    assert result['date_keywords']['tomorrow'] == ['завтрева']
+    assert result['date_keywords']['yesterday'] == defaults['date_keywords']['yesterday']
+
+
 async def test_refresh_keeps_exported_month_marker_identity(runtime):
     hass, _ = runtime
     markers = dates.MONTH_MARKERS

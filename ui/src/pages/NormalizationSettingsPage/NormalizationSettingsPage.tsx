@@ -19,6 +19,12 @@ import editorStyles from "./NormalizationSettingsPage.module.scss";
 type DictionaryValue = string | number | string[] | { [key: string]: DictionaryValue };
 interface Settings { words: Record<string, DictionaryValue>; labels: Record<string, string>; }
 const names: Record<string, string> = {
+  date_relative_units: "Единицы относительных дат", date_modifiers: "Указатели относительных дат", date_weekdays: "Дни недели",
+  yesterday: "Вчера", day_before_yesterday: "Позавчера", days: "Дни", weeks: "Недели", years: "Годы",
+  future: "В будущем: через, спустя", past: "В прошлом: назад", next: "Следующий период", previous: "Предыдущий период",
+  current: "Текущий период", nearest: "Ближайший день", on: "Предлоги перед периодом",
+  monday: "Понедельник", tuesday: "Вторник", wednesday: "Среда", thursday: "Четверг",
+  friday: "Пятница", saturday: "Суббота", sunday: "Воскресенье",
   date_day_markers: "Слова для номера дня",
   units: "Числа от 0 до 9", teens: "Числа от 10 до 19", tens: "Десятки", hundreds: "Сотни",
   thousands: "Тысяча: варианты произношения", location_stop_words: "Служебные слова в названиях мест",
@@ -59,6 +65,8 @@ export function NormalizationSettingsPage() {
     ? <Textarea key={JSON.stringify(keys)} label={title(keys)} rows={3} disabled={feedback.busy}
         hint={t(keys[0] === "date_day_markers"
           ? "Укажите слова через ;. Например: число; числа. Дата распознаётся в «7 числа» или «число 7», но не в «7 утра». Пустой список отключает распознавание номера дня без месяца."
+          : ["date_keywords", "date_relative_units", "date_modifiers", "date_weekdays"].includes(keys[0])
+          ? "Укажите слова или фразы через ;. Все варианты в одном поле имеют одинаковый смысл. Пустой список отключает этот вариант распознавания."
           : "Укажите варианты через ;. Например: ноль; ноля; нолю. Пустые элементы не сохраняются.")}
         value={textDrafts[JSON.stringify(keys)] ?? value.join("; ")} onChange={event=>{setTextDrafts(current=>({...current,[JSON.stringify(keys)]:event.target.value}));update(keys, event.target.value.split(";").map(word=>word.trim()).filter(Boolean));}} />
     : <Input key={JSON.stringify(keys)} label={title(keys)} disabled={feedback.busy} type={typeof value === "number" ? "number" : "text"}

@@ -3,6 +3,7 @@ import {readFile} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {chromium} from 'playwright';
 const bundle=await readFile(new URL('../custom_components/ha_dialog_ui/static/ha-dialog-ui-panel.js',import.meta.url),'utf8');
+const dateWords=JSON.parse(await readFile(new URL('../custom_components/ha_dialog_ui/src/data/text_normalize_words.json',import.meta.url),'utf8'));
 const server=createServer((req,res)=>{res.setHeader('Content-Type',req.url==='/panel.js'?'text/javascript':'text/html');res.end(req.url==='/panel.js'?bundle:'<html><body><script type="module" src="/panel.js"></script></body></html>');});
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium'});
@@ -12,11 +13,16 @@ try {
   const page=await context.newPage();
   page.setDefaultTimeout(7000);
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.addInitScript(()=>{
+  await page.addInitScript(dateWords=>{
+   window.dateWords=dateWords;
    window.hass={user:{is_admin:true},states:{},connection:{sendMessagePromise:async message=>{
     const key=message.type.split('/').pop();
     if(key==='get_settings')return {active_remout:false,theme:'dark'};
-    if(key==='get_normalization_words')return JSON.parse(localStorage.getItem('words')||'{"words":{"date_day_markers":["число","числа"],"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"date_pronunciation":{"month_numbers_by_name":{"января":1},"month_name_forms":{"январь":"января"}}},"labels":{}}');
+    if(key==='get_normalization_words'){
+     const settings=JSON.parse(localStorage.getItem('words')||'{"words":{"date_day_markers":["число","числа"],"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"date_pronunciation":{"month_numbers_by_name":{"января":1},"month_name_forms":{"январь":"января"}}},"labels":{}}');
+     for(const key of ['date_keywords','date_relative_units','date_modifiers','date_weekdays']) settings.words[key]??=structuredClone(window.dateWords[key]);
+     return settings;
+    }
     if(key==='save_normalization_words'){
      if(window.failSave)throw {code:'storage_error',message:'failure'};
      window.lastSave=message.data;
@@ -27,7 +33,7 @@ try {
     }
     return {data:[],page:1,total_pages:1};
    }}};
-  });
+  },dateWords);
   await page.goto(`http://127.0.0.1:${server.address().port}/#/commands/normalization`);
   const mount=()=>page.evaluate(async()=>{await customElements.whenDefined('ha-dialog-ui-panel');const el=document.createElement('ha-dialog-ui-panel');el.hass=window.hass;document.body.appendChild(el);});
   await mount();const panel=page.locator('ha-dialog-ui-panel');
@@ -71,6 +77,22 @@ try {
   await panel.getByRole('button',{name:/Слова для номера дня/}).click();
   assert.equal(await dayMarkers.inputValue(),'число; числа; дата');
   await page.keyboard.press('Escape');
+  for(const [section,label,key,value] of [
+    ['Относительные даты','Вчера','yesterday','вчера; вчерась'],
+    ['Дни недели','Пятница','friday','пятница; пятницу; пятничку'],
+    ['Единицы относительных дат','Недели','weeks','неделя; неделю; недельку'],
+    ['Указатели относительных дат','В будущем: через, спустя','future','через; спустя; погодя'],
+  ]) {
+   await panel.getByRole('button',{name:new RegExp(section)}).click();
+   await dialog.getByLabel(label,{exact:true}).fill(value);
+   await dialog.getByRole('button',{name:'Сохранить',exact:true}).click();
+   await dialog.waitFor({state:'hidden'});
+   assert.deepEqual(await page.evaluate(key=>window.lastSave.value[key],key),value.split(';').map(word=>word.trim()));
+   await page.reload();await mount();
+   await panel.getByRole('button',{name:new RegExp(section)}).click();
+   assert.equal(await dialog.getByLabel(label,{exact:true}).inputValue(),value);
+   await page.keyboard.press('Escape');
+  }
   assert.equal(await panel.locator('.appShell').evaluate(el=>el.scrollWidth>el.clientWidth+1),false);
   await panel.evaluate(el=>{el.hass={...window.hass,user:{is_admin:false}}});
   await page.waitForFunction(()=>location.hash!=='#/commands/normalization');
