@@ -167,7 +167,10 @@ def find_top_level_candidates(top_level_nodes, client_text):
         for voice_command in node_copy.get("voiceCommands", []) or []:
             for variant in [variant.strip() for variant in str(voice_command).split(";") if variant.strip()]:
                 template_tokens = tokenize_template(variant)
-                new_text_tokens = normalize_text_tokens(text_tokens, template_tokens)
+                keep_vars = collect_all_type_template_vars(node_copy)
+                new_text_tokens = normalize_text_tokens(text_tokens, template_tokens,
+                    keep_stopwords=any(is_slot(token) and token[2:-1].strip().lower() in keep_vars
+                                       for token in template_tokens))
                 match = match_stream(template_tokens, new_text_tokens, command_templates)
                 if match is None:
                     continue

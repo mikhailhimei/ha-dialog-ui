@@ -95,10 +95,8 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
         if not placeholders:
             return {}
 
-        keep_raw_tokens = (
-            len(placeholders) == 1
-            and str(placeholders[0] or "").strip().lower() in keep_stopword_vars
-        )
+        keep_raw_tokens = any(str(name or "").strip().lower() in keep_stopword_vars
+                              for name in placeholders)
         cleaned_tokens = list(span_tokens) if keep_raw_tokens else clean_span(span_tokens)
         if not cleaned_tokens:
             return None
@@ -126,7 +124,10 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
                 chunk = tokens_left[:take_count]
                 tokens_left = tokens_left[take_count:]
 
-            value = sanitize_location_text(" ".join(chunk).strip())
+            if str(placeholder_name or "").strip().lower() in keep_stopword_vars:
+                value = " ".join(chunk).strip()
+            else:
+                value = sanitize_location_text(" ".join(clean_span(chunk)).strip())
             if not value:
                 return None
             assigned[placeholder_name] = value
@@ -154,7 +155,7 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
 
         count_suffix_tokens = {"раз", "раза", "разов"}
 
-        def split_count_suffix(raw_value):
+        def split_count_suffix(raw_value, preserve_prepositions=False):
             tokens = tokenize_command_text(raw_value)
             if not tokens:
                 return None, raw_value
@@ -176,7 +177,9 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
 
             value_tokens = work_tokens[:idx + 1]
             count_value = sanitize_location_text(" ".join(count_tokens).strip())
-            value_text = sanitize_location_text(" ".join(value_tokens).strip())
+            value_text = " ".join(value_tokens).strip()
+            if not preserve_prepositions:
+                value_text = sanitize_location_text(value_text)
             return count_value, value_text
 
         for count_name in count_like_names:
@@ -193,7 +196,8 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
             if not donor_value:
                 continue
 
-            extracted_count, donor_trimmed = split_count_suffix(donor_value)
+            extracted_count, donor_trimmed = split_count_suffix(
+                donor_value, str(donor_name).strip().lower() in keep_stopword_vars)
             if extracted_count:
                 values[count_name] = extracted_count
                 if donor_trimmed:
