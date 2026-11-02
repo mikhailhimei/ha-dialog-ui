@@ -212,8 +212,7 @@ def resolve_matched_slot_entries(node, slot_match):
     remaining = " ".join(slot_match.get("remaining", []))
     node_direct_controls = node.get("direct", [])
     for slot_name in slot_names:
-        captured = slot_match.get('slot_values', {}).get(slot_name, remaining)
-        direct_entries = resolve_direct_types(node_direct_controls, captured, slot_name)
+        direct_entries = resolve_direct_types(node_direct_controls, remaining, slot_name)
         if direct_entries:
             result.append(direct_entries)
 

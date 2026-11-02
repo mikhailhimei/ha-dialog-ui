@@ -1,7 +1,6 @@
 """Разбор шаблонов и извлечение значений параметров."""
 
 import re
-from .typed_slots import split_typed_span, tokenize_typed_text
 from ...utils.text_normalization import sanitize_location_text
 from .text import (
     STOP_TOKENS,
@@ -74,13 +73,12 @@ def score_template_fixed_tokens(query_text, template_text):
     return score
 
 
-def extract_template_variables(template_text, client_text, keep_stopword_vars=None, value_types=None):
+def extract_template_variables(template_text, client_text, keep_stopword_vars=None):
     parts = split_template_parts(template_text)
     if not parts or not any(kind == "value" for kind, _ in parts):
         return None
 
-    query_tokens = (tokenize_typed_text(client_text) if any(kind in {'date', 'time'} for kind in (value_types or {}).values())
-                    else tokenize_command_text(client_text))
+    query_tokens = tokenize_command_text(client_text)
     if not query_tokens:
         return None
     keep_stopword_vars = {
@@ -96,8 +94,6 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
     def allocate_span(placeholders, span_tokens):
         if not placeholders:
             return {}
-        if any((value_types or {}).get(name) in {'date', 'time'} for name in placeholders):
-            return split_typed_span(placeholders, span_tokens, value_types)
 
         keep_raw_tokens = any(str(name or "").strip().lower() in keep_stopword_vars
                               for name in placeholders)
@@ -265,7 +261,7 @@ def extract_template_variables(template_text, client_text, keep_stopword_vars=No
     return result or None
 
 
-def find_weighted_template_match(voice_commands, client_text, min_score=3.5, keep_stopword_vars=None, value_types=None):
+def find_weighted_template_match(voice_commands, client_text, min_score=3.5, keep_stopword_vars=None):
     best_template = None
     best_score = float("-inf")
 
@@ -285,11 +281,10 @@ def find_weighted_template_match(voice_commands, client_text, min_score=3.5, kee
         best_template,
         client_text,
         keep_stopword_vars=keep_stopword_vars,
-        value_types=value_types,
     )
 
 
-def match_template_command(voice_commands, client_text, require_fixed_start=False, keep_stopword_vars=None, value_types=None):
+def match_template_command(voice_commands, client_text, require_fixed_start=False, keep_stopword_vars=None):
     # Сортируем шаблоны по специфичности: сначала более специфичные (со множеством фиксированных частей)
     def get_template_specificity(cmd):
         if not cmd or "${" not in str(cmd):
@@ -308,7 +303,7 @@ def match_template_command(voice_commands, client_text, require_fixed_start=Fals
         if "${" not in command_pattern:
             continue
 
-        template_vars = extract_template_variables(command_pattern, client_text, keep_stopword_vars=keep_stopword_vars, value_types=value_types)
+        template_vars = extract_template_variables(command_pattern, client_text, keep_stopword_vars=keep_stopword_vars)
         if template_vars is None:
             continue
 

@@ -1,6 +1,5 @@
 import re
 import json
-from .matching.typed_slots import slot_types
 
 from ..utils.dialog_response import build_dialog_response
 
@@ -339,7 +338,6 @@ async def execute_active_node(hass, sub_level_nodes, client_new_dialog, client_t
         active_template_vars = match_template_command(
             active_node.get("voiceCommands", []), client_text,
             keep_stopword_vars=collect_all_type_template_vars(active_node),
-            value_types=slot_types(active_node.get('direct')),
         )
         if active_template_vars is not None:
             matched_node = active_node
@@ -358,7 +356,6 @@ async def execute_active_node(hass, sub_level_nodes, client_new_dialog, client_t
             template_vars = match_template_command(
                 matched_node.get("voiceCommands", []), client_text,
                 keep_stopword_vars=collect_all_type_template_vars(matched_node),
-                value_types=slot_types(matched_node.get('direct')),
             )
         direct_items = _get_node_direct_controls(matched_node)
         resolved_direct_entries = resolve_template_direct_entries(
