@@ -1,6 +1,7 @@
 """Выбор команд, дочерних ветвей и главного действия."""
 
 import copy
+from .typed_slots import slot_types, tokenize_typed_text
 from .text import (
     _voice_commands,
     tokenize_template,
@@ -105,6 +106,7 @@ def find_matching_node_by_voice_command(nodes, client_text):
             client_text,
             require_fixed_start=has_forward_text,
             keep_stopword_vars=collect_all_type_template_vars(node),
+            value_types=slot_types(node.get('direct')),
         )
         if template_vars:
             return node, False, template_vars
@@ -119,6 +121,7 @@ def find_matching_node_by_voice_command(nodes, client_text):
                 client_text,
                 min_score=0.5,
                 keep_stopword_vars=collect_all_type_template_vars(node),
+                value_types=slot_types(node.get('direct')),
             )
             if template_vars:
                 return node, False, template_vars
@@ -168,10 +171,13 @@ def find_top_level_candidates(top_level_nodes, client_text):
             for variant in [variant.strip() for variant in str(voice_command).split(";") if variant.strip()]:
                 template_tokens = tokenize_template(variant)
                 keep_vars = collect_all_type_template_vars(node_copy)
-                new_text_tokens = normalize_text_tokens(text_tokens, template_tokens,
+                types = slot_types(node_copy.get('direct'))
+                node_text_tokens = tokenize_typed_text(client_text) if any(kind in {'date', 'time'} for kind in types.values()) else text_tokens
+                new_text_tokens = normalize_text_tokens(node_text_tokens, template_tokens,
                     keep_stopwords=any(is_slot(token) and token[2:-1].strip().lower() in keep_vars
                                        for token in template_tokens))
-                match = match_stream(template_tokens, new_text_tokens, command_templates)
+                match = match_stream(template_tokens, new_text_tokens, command_templates,
+                                     value_types=types)
                 if match is None:
                     continue
 
@@ -210,7 +216,8 @@ def find_top_level_candidates(top_level_nodes, client_text):
                 
                 best_vars = {
                     "vars": combined_vars,
-                    "remaining": list(best_remaining)
+                    "remaining": list(best_remaining),
+                    "slot_values": best_primary.get('slot_values', {}),
                 }
                 
                 clean_vars = {entry_key: entry_value for entry_key, entry_value in best_vars.items() if entry_value not in (None, "")}

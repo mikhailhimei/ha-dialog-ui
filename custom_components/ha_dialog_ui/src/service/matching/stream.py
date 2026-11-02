@@ -5,6 +5,7 @@ from .text import (
     STOP_TOKENS,
     tokenize_template,
 )
+from .typed_slots import split_typed_span
 
 
 def is_slot(token):
@@ -44,7 +45,7 @@ def match_token(token, current_word):
         return token.startswith(current_word)
 
 
-def match_stream(template_tokens, text_tokens, command_templates):
+def match_stream(template_tokens, text_tokens, command_templates, value_types=None):
     # Precompute first tokens for efficient checking
     first_tokens = set()
     regex_first_tokens = []
@@ -114,6 +115,7 @@ def match_stream(template_tokens, text_tokens, command_templates):
     text_index = 0
     slot_names = []
     remaining_tokens = []
+    groups = []
     started = False
 
     while template_index < len(template_tokens):
@@ -125,6 +127,10 @@ def match_stream(template_tokens, text_tokens, command_templates):
         if is_slot(token):
             placeholder_name = slot_name(token)
             slot_names.append(placeholder_name)
+            if template_index > 0 and is_slot(template_tokens[template_index - 1]):
+                groups[-1]['names'].append(placeholder_name)
+            else:
+                groups.append({'names': [placeholder_name], 'tokens': []})
 
             next_fixed = None
 
@@ -154,6 +160,7 @@ def match_stream(template_tokens, text_tokens, command_templates):
                     text_index += 1
 
                 remaining_tokens.extend(tail_tokens)
+                groups[-1]['tokens'].extend(tail_tokens)
 
                 template_index += 1
                 continue
@@ -182,6 +189,7 @@ def match_stream(template_tokens, text_tokens, command_templates):
                 return None
 
             remaining_tokens.extend(span_tokens)
+            groups[-1]['tokens'].extend(span_tokens)
 
             template_index += 1
             continue
@@ -215,10 +223,21 @@ def match_stream(template_tokens, text_tokens, command_templates):
 
         return None
 
-    return {
+    result = {
         "vars": slot_names,
         "remaining": remaining_tokens
     }
+    values = {}
+    typed = any((value_types or {}).get(name) in {'date', 'time'} for name in slot_names)
+    for group in groups:
+        if typed:
+            assigned = split_typed_span(group['names'], group['tokens'], value_types)
+            if assigned is None:
+                return None
+            values.update(assigned)
+    if values:
+        result['slot_values'] = values
+    return result
 
 
 def normalize_text_tokens(text_tokens, template_tokens, keep_stopwords=False):

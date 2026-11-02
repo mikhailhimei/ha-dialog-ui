@@ -29,7 +29,7 @@ from .schemas import (
 )
 
 _REQUIRED_FIELDS = ("status", "title", "uuid")
-_REQUIRED_DIRECT_CONTROL_FIELDS = ("mappingType", "valueType", "manual")
+_REQUIRED_DIRECT_CONTROL_FIELDS = ("mappingType", "valueType")
 
 
 def async_register_assistant_sub_direct_controls_websockets(hass: HomeAssistant) -> None:
@@ -100,7 +100,13 @@ def _missing_required(payload: dict[str, Any], *, include_uuid: bool) -> list[st
         if field not in direct_control
     )
 
+    # Scalar values have no nested commands. Old records can omit these fields
+    # or retain a list/reference from a previously selected command type.
+    if direct_control.get("valueType") != "command":
+        return missing
+
     if "manual" not in direct_control:
+        missing.append("directControl.manual")
         return missing
 
     manual = direct_control.get("manual")
