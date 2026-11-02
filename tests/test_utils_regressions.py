@@ -12,11 +12,37 @@ def test_invalid_full_date_is_not_reinterpreted_as_day_of_month(text):
 
 
 @pytest.mark.parametrize(('text','expected'), [
-    ('31', '31.01.26'), ('31.01.2026', '31.01.26'),
+    ('31 числа', '31.01.26'), ('31.01.2026', '31.01.26'),
     ('29 февраля', '29.02.28'), ('завтра', '02.01.26'),
 ])
 def test_valid_date_formats_and_day_only_remain_supported(text, expected):
     assert _parse_date_value(text, now=datetime(2026, 1, 1)) == expected
+
+
+@pytest.mark.parametrize('text', ['7', '7 утра', 'напомни насыпать еды в 7 утра',
+                                 '14:00', 'в 14 часов', 'через 7 минут', '7 числатель', 'число 70', '0 числа'])
+def test_day_number_requires_a_valid_adjacent_keyword(text):
+    assert _parse_date_value(text, now=datetime(2026, 11, 2)) is None
+
+
+@pytest.mark.parametrize(('text', 'expected'), [
+    ('7 числа', '07.11.26'), ('число 7', '07.11.26'), ('7 ЧИСЛА в 7 утра', '07.11.26'),
+    ('1 числа', '01.12.26'), ('31 числа', '31.12.26'),
+    ('7 ноября', '07.11.26'), ('07.11.2026', '07.11.26'), ('завтра', '03.11.26'),
+])
+def test_explicit_day_keywords_and_other_date_forms(text, expected):
+    assert _parse_date_value(text, now=datetime(2026, 11, 2)) == expected
+
+
+def test_reminder_clock_does_not_produce_a_date_entry():
+    from custom_components.ha_dialog_ui.src.service.matching.selection import find_top_level_candidates
+    node = {'uuid': 'reminder', 'voiceCommands': ['Напомн(и|ю|им)? ${date} ${string2} ${cotimers}'],
+            'direct': [{'mappingType': 'date', 'valueType': 'date'},
+                       {'mappingType': 'string2', 'valueType': 'all'},
+                       {'mappingType': 'cotimers', 'valueType': 'time'}]}
+    entries = find_top_level_candidates([node], 'напомни насыпать еды в 7 утра')[0]['direct_entries']
+    assert not any(entry['mapping_type'] == 'date' for entry in entries)
+    assert next(entry['value'] for entry in entries if entry['mapping_type'] == 'cotimers')['hour'] == 7
 
 
 @pytest.mark.parametrize('text', ['Дата 31.13.2026', 'Дата 31.02.2026', 'Дата 2026-13-31', 'Дата 31.13', '31.13.2026 и 31.02.2026'])

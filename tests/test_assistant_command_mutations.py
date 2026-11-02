@@ -14,6 +14,33 @@ from test_request_mutations import async_handler
 from test_timer_runtime import runtime
 
 
+@pytest.mark.parametrize('kind', ['date', 'time', 'all', 'string', 'int'])
+@pytest.mark.parametrize('legacy', [{}, {'manual': False}, {'manual': False, 'subDirectControl': []}])
+async def test_scalar_direct_create_and_edit_do_not_require_nested_fields(runtime, kind, legacy):
+    hass, _ = runtime
+    module = assistant_sub_direct_controls_api
+    connection = SimpleNamespace(send_result=Mock(), send_error=Mock())
+    payload = {'title': 'Дата', 'directControl': {'mappingType': 'day', 'valueType': kind, **legacy}}
+    await async_handler(module._ws_save_assistant_sub_direct_control)(hass, connection, {'id': 1, 'data': payload})
+    saved = connection.send_result.call_args.args[1]['data']
+    await async_handler(module._ws_update_assistant_sub_direct_control)(hass, connection,
+        {'id': 2, 'uuid': saved['uuid'], 'data': {'title': 'Новая дата'}})
+    connection.send_error.assert_not_called()
+    assert connection.send_result.call_count == 2
+    loaded = await module.async_load_assistant_sub_direct_controls(hass)
+    assert loaded[0]['title'] == 'Новая дата'
+    assert loaded[0]['directControl'] == payload['directControl']
+
+
+def test_nested_command_still_requires_manual_mode_and_correct_reference_shape():
+    module = assistant_sub_direct_controls_api
+    payload = {'title': 'Команда', 'status': True,
+               'directControl': {'mappingType': 'rooms', 'valueType': 'command'}}
+    assert 'directControl.manual' in module._missing_required(payload, include_uuid=False)
+    payload['directControl'].update(manual=False, subDirectControl=[])
+    assert 'directControl.subDirectControl(str)' in module._missing_required(payload, include_uuid=False)
+
+
 def command(command_id, title, dialog_key="componentDialog"):
     if dialog_key == 'directControl':
         return {'uuid': command_id, 'title': title, 'status': True,

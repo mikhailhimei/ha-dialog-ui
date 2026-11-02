@@ -19,6 +19,7 @@ import editorStyles from "./NormalizationSettingsPage.module.scss";
 type DictionaryValue = string | number | string[] | { [key: string]: DictionaryValue };
 interface Settings { words: Record<string, DictionaryValue>; labels: Record<string, string>; }
 const names: Record<string, string> = {
+  date_day_markers: "Слова для номера дня",
   units: "Числа от 0 до 9", teens: "Числа от 10 до 19", tens: "Десятки", hundreds: "Сотни",
   thousands: "Тысяча: варианты произношения", location_stop_words: "Служебные слова в названиях мест",
   months: "Месяцы", time_markers: "Время суток", time_prefixes: "Предлоги перед временем", time_units: "Единицы времени",
@@ -56,7 +57,9 @@ export function NormalizationSettingsPage() {
   }, {exclusive: true});
   const field = (keys: string[], value: DictionaryValue) => Array.isArray(value)
     ? <Textarea key={JSON.stringify(keys)} label={title(keys)} rows={3} disabled={feedback.busy}
-        hint={t("Укажите варианты через ;. Например: ноль; ноля; нолю. Пустые элементы не сохраняются.")}
+        hint={t(keys[0] === "date_day_markers"
+          ? "Укажите слова через ;. Например: число; числа. Дата распознаётся в «7 числа» или «число 7», но не в «7 утра». Пустой список отключает распознавание номера дня без месяца."
+          : "Укажите варианты через ;. Например: ноль; ноля; нолю. Пустые элементы не сохраняются.")}
         value={textDrafts[JSON.stringify(keys)] ?? value.join("; ")} onChange={event=>{setTextDrafts(current=>({...current,[JSON.stringify(keys)]:event.target.value}));update(keys, event.target.value.split(";").map(word=>word.trim()).filter(Boolean));}} />
     : <Input key={JSON.stringify(keys)} label={title(keys)} disabled={feedback.busy} type={typeof value === "number" ? "number" : "text"}
         min={typeof value === "number" ? 1 : undefined} max={typeof value === "number" ? 12 : undefined}

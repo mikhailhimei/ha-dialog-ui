@@ -385,6 +385,10 @@
       "ч"
     ]
   },
+  "date_day_markers": [
+    "число",
+    "числа"
+  ],
   "date_keywords": {
     "today": [
       "сегодня",

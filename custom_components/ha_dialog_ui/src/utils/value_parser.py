@@ -6,7 +6,14 @@ from .text_normalization import sanitize_location_text
 
 
 def refresh_normalization_dictionary():
-    global _MONTH_PATTERN, _MONTH_DATA, _MONTH_NAME_TO_NUMBER, _MORNING_MARKERS, _EVENING_MARKERS, _DAY_MARKERS, _NIGHT_MARKERS, _TIME_MINUTES, _TIME_HOURS, _TIME_SECONDS, _NON_CLOCK_DURATION_MARKERS
+    global _MONTH_PATTERN, _MONTH_DATA, _MONTH_NAME_TO_NUMBER, _MORNING_MARKERS, _EVENING_MARKERS, _DAY_MARKERS, _NIGHT_MARKERS, _TIME_MINUTES, _TIME_HOURS, _TIME_SECONDS, _NON_CLOCK_DURATION_MARKERS, _DAY_NUMBER_PATTERN
+    day_markers = [re.escape(' '.join(word.lower().split())).replace(r'\ ', r'\s+')
+                   for word in get_section('date_day_markers') if word.strip()]
+    markers = '|'.join(sorted(day_markers, key=len, reverse=True))
+    _DAY_NUMBER_PATTERN = re.compile(
+        rf'(?<!\w)(?:{markers})\s+(?P<before>\d{{1,2}})(?!\w)'
+        rf'|(?<!\w)(?P<after>\d{{1,2}})\s+(?:{markers})(?!\w)'
+    ) if markers else None
     _MONTH_DATA = get_section("months")
     _MONTH_NAME_TO_NUMBER = {
         name: int(month_number)
@@ -160,11 +167,11 @@ def _parse_date_value(value, now=None):
     if _NUMERIC_DATE_PATTERN.search(text) or re.search(rf"\b\d+\s+(?:{_MONTH_PATTERN})\b", text):
         return None
 
-    day_match = re.search(r"\b([0-2]?\d|3[01])\b", text)
+    day_match = _DAY_NUMBER_PATTERN.search(text) if _DAY_NUMBER_PATTERN else None
     if not day_match:
         return None
 
-    nearest_date = _nearest_date_by_day(int(day_match.group(1)), now.date())
+    nearest_date = _nearest_date_by_day(int(day_match.group('before') or day_match.group('after')), now.date())
     if nearest_date is None:
         return None
     return nearest_date.strftime("%d.%m.%y")
