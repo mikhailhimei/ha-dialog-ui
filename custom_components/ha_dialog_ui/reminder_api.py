@@ -78,8 +78,12 @@ async def _action(hass, action, data):
 
 def register_services(hass):
     for action, fields in (
-        ("create", {key: value for key, value in CREATE_FIELDS.items()
-                    if str(key) not in {"clientId", "client_id"}}),
+        ("create", {
+            **{key: value for key, value in CREATE_FIELDS.items()
+               if str(key) not in {"clientId", "client_id", "delay_seconds"}},
+            vol.Optional("delay_minutes"): vol.All(vol.Coerce(float),
+                vol.Range(min=0, min_included=False, max=5256000)),
+        }),
         ("delete", {vol.Required("id"): str}),
         ("info", {vol.Optional("id"): str,
                   vol.Required("device_id"): vol.All(str, lambda value: value.strip(), vol.Length(min=1)),
@@ -91,7 +95,10 @@ def register_services(hass):
             continue
 
         async def handle(call, action=action):
-            return await _action(hass, action, call.data)
+            data = dict(call.data)
+            if action == "create" and "delay_minutes" in data:
+                data["delay_seconds"] = data.pop("delay_minutes") * 60
+            return await _action(hass, action, data)
 
         hass.services.async_register(DOMAIN, name, handle, schema=vol.Schema(fields),
                                      supports_response=SupportsResponse.OPTIONAL)

@@ -52,7 +52,7 @@ async def test_reminder_service_delivery_and_reload(tmp_path):
         text = 'Напомнить насыпать еды через 30 минут'
         with patch.object(manager, '_speak', new_callable=AsyncMock) as speak:
             result = await hass.services.async_call(DOMAIN, 'reminder_create', {
-                'text': text, 'device_id': 'media_player.kitchen', 'delay_seconds': 1,
+                'text': text, 'device_id': 'media_player.kitchen', 'delay_minutes': 1 / 60,
             }, blocking=True, return_response=True)
             for _ in range(40):
                 if manager.items()[0]['status'] == 'completed':
@@ -62,7 +62,7 @@ async def test_reminder_service_delivery_and_reload(tmp_path):
             speak.assert_awaited_once()
             assert speak.await_args.args[0]['text'] == text
         pending = await hass.services.async_call(DOMAIN, 'reminder_create', {
-            'text': 'После перезагрузки', 'device_id': 'media_player.kitchen', 'delay_seconds': 1800,
+            'text': 'После перезагрузки', 'device_id': 'media_player.kitchen', 'delay_minutes': 30,
         }, blocking=True, return_response=True)
         await hass.config_entries.async_reload(entry.entry_id)
         assert entry.state is ConfigEntryState.LOADED

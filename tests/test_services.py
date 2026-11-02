@@ -173,7 +173,7 @@ async def test_info_rejects_conflicting_device_aliases(runtime, kind):
     ('send_command', {'deviceId': 'device', 'actionType': 'success'}),
     ('timer_create', {}), ('timer_info', {}), ('timer_delete', {'uuid': 'timer'}),
     ('alarm_create', {}), ('alarm_info', {}), ('alarm_delete', {'uuid': 'alarm'}),
-    ('reminder_create', {'text': 'Текст', 'device_id': 'device', 'delay_seconds': 60}),
+    ('reminder_create', {'text': 'Текст', 'device_id': 'device', 'delay_minutes': 1}),
     ('reminder_info', {'device_id': 'device'}), ('reminder_delete', {'id': 'reminder'}),
 ])
 @pytest.mark.parametrize('field', ['clientId', 'client_id'])

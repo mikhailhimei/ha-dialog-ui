@@ -231,7 +231,7 @@ async def test_service_create_info_delete_response_and_ws_ids(runtime):
     reminder_api.register_services(hass)
     with patch.object(reminder_api, '_manager', return_value=manager):
         created = await hass.services.async_call(DOMAIN, 'reminder_create', {
-            'text': 'Скрипт', 'device_id': 'media_player.kitchen', 'delay_seconds': 1800,
+            'text': 'Скрипт', 'device_id': 'media_player.kitchen', 'delay_minutes': 30,
         }, blocking=True, return_response=True)
         item = created['reminder']
         info = await hass.services.async_call(DOMAIN, 'reminder_info', {'device_id': 'media_player.kitchen'}, blocking=True, return_response=True)
@@ -318,7 +318,7 @@ async def test_backend_client_overrides_remain_while_services_use_configured_cli
         })
         assert response['reminders'] == [wanted]
         default = await hass.services.async_call(DOMAIN, 'reminder_create', {
-            'device_id': 'media_player.kitchen', 'text': 'По умолчанию', 'delay_seconds': 1800,
+            'device_id': 'media_player.kitchen', 'text': 'По умолчанию', 'delay_minutes': 30,
         }, blocking=True, return_response=True)
         assert default['reminder']['clientId'] == 'configured-client'
         response = await hass.services.async_call(DOMAIN, 'reminder_info', {
@@ -342,3 +342,49 @@ async def test_legacy_reminders_get_configured_client_on_restore(runtime):
     with patch.object(manager._store, 'async_load', return_value=[item]):
         await manager.restore('configured-client')
     assert manager.items()[0]['clientId'] == 'configured-client'
+
+
+@pytest.mark.parametrize('minutes', [30, '30', ' 2.5 ', 0.5])
+async def test_create_service_accepts_minutes_as_numbers_or_strings(runtime, minutes):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    before = dt_util.utcnow()
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        response = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'Напомнить', 'device_id': 'media_player.kitchen', 'delay_minutes': minutes,
+        }, blocking=True, return_response=True)
+    at = dt_util.parse_datetime(response['reminder']['at'])
+    assert float(minutes) * 60 <= (at - before).total_seconds() < float(minutes) * 60 + 2
+
+
+async def test_ha_script_renders_minutes_variable(runtime):
+    from homeassistant.helpers.script import Script
+    from homeassistant.helpers import config_validation as cv
+    from homeassistant import loader
+
+    hass, manager = runtime
+    loader.async_setup(hass)
+    reminder_api.register_services(hass)
+    script = Script(hass, cv.SCRIPT_SCHEMA([
+        {'variables': {'reminder_minutes': 30}},
+        {'action': 'ha_dialog_ui.reminder_create', 'data': {
+            'text': 'Насыпать еды', 'device_id': 'media_player.kitchen',
+            'delay_minutes': '{{ reminder_minutes }}',
+        }},
+    ]), 'Reminder template test', DOMAIN)
+    before = dt_util.utcnow()
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        await script.async_run()
+    assert len(manager.items()) == 1
+    assert 1800 <= (dt_util.parse_datetime(manager.items()[0]['at']) - before).total_seconds() < 1802
+
+
+@pytest.mark.parametrize('minutes', [0, -1, '', 'not a number', float('nan'), float('inf'), 5256001])
+async def test_create_service_rejects_invalid_minutes(runtime, minutes):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    with patch.object(reminder_api, '_manager', return_value=manager), pytest.raises((vol.Invalid, HomeAssistantError)):
+        await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'Напомнить', 'device_id': 'media_player.kitchen', 'delay_minutes': minutes,
+        }, blocking=True)
+    assert not manager.items()

@@ -17,19 +17,16 @@ reminder_create:
         text:
     at:
       name: Когда напомнить
-      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Не указывайте вместе с delay_seconds.
+      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Не указывайте вместе с delay_minutes.
       example: '2026-11-02T18:30:00+05:00'
       selector:
         text:
-    delay_seconds:
-      name: Через сколько секунд
-      description: Интервал от текущего момента. Не указывайте вместе с at.
-      example: 1800
+    delay_minutes:
+      name: Через сколько минут
+      description: Интервал в минутах от текущего момента. Можно указать число или шаблон Home Assistant, например {{ reminder_minutes }}. Не указывайте вместе с at.
+      example: "{{ reminder_minutes }}"
       selector:
-        number:
-          min: 1
-          max: 315360000
-          mode: box
+        text:
 reminder_info:
   name: Информация о напоминаниях
   description: Возвращает ожидающие и озвучиваемые напоминания выбранной колонки. Поиск по тексту необязателен. Для завершённых и ошибочных записей включите include_history.

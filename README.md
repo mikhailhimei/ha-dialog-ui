@@ -513,15 +513,20 @@ ESPHome к HA; офлайн-события не сохраняются в оче
 автоматический разбор произвольной фразы для создания напоминания не добавляется.
 
 ```yaml
+- variables:
+    reminder_minutes: 30
 - action: ha_dialog_ui.reminder_create
   data:
     text: Напомнить насыпать еды через 30 минут
     device_id: assist_satellite.kuhnya
-    delay_seconds: 1800
+    delay_minutes: "{{ reminder_minutes }}"
   response_variable: created_reminder
 ```
 
-Вместо `delay_seconds` можно указать `at: "2026-11-02T18:30:00+05:00"`.
+В сервисе `reminder_create` интервал задаётся полем `delay_minutes` в минутах:
+можно передать число, числовую строку или переменную/шаблон HA, как в примере.
+Поле в редакторе действий текстовое. Вместо `delay_minutes` можно указать
+`at: "2026-11-02T18:30:00+05:00"`.
 Указывается ровно одно из этих полей. Дата без смещения использует часовой
 пояс Home Assistant. `device_id` принимает entity_id `assist_satellite.*`,
 `media_player.*` либо ID устройства HA с однозначной колонкой.
