@@ -651,6 +651,11 @@ try {
       await mobileSections.waitFor({state:'hidden'});
       await page.waitForFunction(()=>!history.state?.dialogCustomUiOverlay);
       assert.equal(await panel.getByRole('button',{name:'Назад',exact:true}).count(),0);
+      if (['/commands/main','/commands/sub','/commands/direct/main','/commands/direct/template'].includes(route)) {
+        const add = panel.getByRole('button',{name:'Добавить сценарий',exact:true});
+        assert.equal(await add.evaluate(button => getComputedStyle(button.parentElement).pointerEvents), 'auto',
+          `Create button is available immediately after navigation to ${route}`);
+      }
     }
   }
   await page.setViewportSize({width:390,height:900});

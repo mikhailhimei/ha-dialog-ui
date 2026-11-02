@@ -52,7 +52,7 @@ export const CommandMainPage = () => {
             {!isMobile ? (
               <Button variant="primary" onClick={openCreateModal}>{t("🞢 Добавить сценарий")}</Button>
             ) : (
-              <BottomSlideButton>
+              <BottomSlideButton startVisible={true}>
                 <Button variant="primary" onClick={openCreateModal}>{t("Добавить сценарий")}</Button>
               </BottomSlideButton>
             )}

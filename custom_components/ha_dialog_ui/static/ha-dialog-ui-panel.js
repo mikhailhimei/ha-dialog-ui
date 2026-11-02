@@ -11603,7 +11603,7 @@ const Ef = () => ({
       /* @__PURE__ */ o.jsx(at, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${Y.header} ${Y.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsx("div", { className: Y.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Основные команды") }) }),
-        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { startVisible: !0, children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ o.jsx(Qr, { value: a, onChange: i })
       ] }),
       /* @__PURE__ */ o.jsxs("div", { className: Y.list, children: [
@@ -11690,7 +11690,7 @@ const Ef = () => ({
       r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx(at, {}),
       /* @__PURE__ */ o.jsxs("div", { className: `${Y.header} ${Y.collectionHeader}`, children: [
         /* @__PURE__ */ o.jsx("div", { className: Y.heading, children: r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Второстепенные команды") }) }),
-        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(o.Fragment, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }) }),
+        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { startVisible: !0, children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(o.Fragment, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }) }),
         !r && /* @__PURE__ */ o.jsx(Qr, { value: a, onChange: i })
       ] }),
       /* @__PURE__ */ o.jsxs("div", { className: Y.list, children: [
@@ -11807,7 +11807,7 @@ const Ef = () => ({
           r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Прямые команды") }),
           !r && /* @__PURE__ */ o.jsx(gi, {})
         ] }),
-        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { startVisible: !0, children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ o.jsx(Qr, { value: a, onChange: i })
       ] }),
       /* @__PURE__ */ o.jsxs("div", { className: Y.list, children: [
@@ -12030,7 +12030,7 @@ const Ef = () => ({
           r ? /* @__PURE__ */ o.jsx(o.Fragment, {}) : /* @__PURE__ */ o.jsx("h1", { className: Y.title, children: _("Вложенные команды") }),
           !r && /* @__PURE__ */ o.jsx(gi, {})
         ] }),
-        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
+        /* @__PURE__ */ o.jsx("div", { className: Y.actions, children: r ? /* @__PURE__ */ o.jsx(mr, { startVisible: !0, children: /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("Добавить сценарий") }) }) : /* @__PURE__ */ o.jsx(ne, { variant: "primary", onClick: C, children: _("🞢 Добавить сценарий") }) }),
         !r && /* @__PURE__ */ o.jsx(Qr, { value: a, onChange: i })
       ] }),
       /* @__PURE__ */ o.jsxs("div", { className: Y.list, children: [
