@@ -8,6 +8,7 @@ import type { ReminderState } from "../../types/reminders";
 import { NavigationTabs } from "../../components/NavigationTabs/NavigationTabs";
 import { MobileHeader } from "../../components/MobileHeader/MobileHeader";
 import { Button } from "../../components/ui/Button/Button";
+import { BottomSlideButton } from "../../components/ui/BottomSlideButton/BottomSlideButton";
 import { Modal } from "../../components/ui/Modal/Modal";
 import { Input } from "../../components/ui/Input/Input";
 import { Dropdown } from "../../components/ui/Dropdown/Dropdown";
@@ -53,14 +54,15 @@ export function ReminderPage() {
   };
   const validTime = mode === "delay" ? Number(minutes) > 0 && Number(minutes) <= 5256000 :
     Boolean(at) && new Date(at).getTime() > Date.now();
+  const addButton = <Button onClick={() => { feedback.clearError(); setOpen(true); }}>{t("Добавить напоминание")}</Button>;
 
   return <>
     <MobileHeader title="Напоминания" />
-    <div className={styles.page}>
+    <div className={`${styles.page} ${mobile ? local.mobilePage : ""}`}>
     <NavigationTabs />
     <div className={styles.headerTop}>
       {!mobile && <h1 className={styles.title}>{t("Напоминания")}</h1>}
-      <Button onClick={() => { feedback.clearError(); setOpen(true); }}>{t("Добавить напоминание")}</Button>
+      {mobile ? !open && <BottomSlideButton startVisible>{addButton}</BottomSlideButton> : addButton}
     </div>
     {!open && <ApiError {...feedback} />}
     <ListSkeleton loading={loading} itemCount={state.reminders.length} placeholderCount={3}>

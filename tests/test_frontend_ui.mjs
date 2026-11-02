@@ -1340,6 +1340,12 @@ try {
   await page.waitForFunction(()=>{
     const root=document.querySelector('ha-dialog-ui-panel').shadowRoot;
     const create=[...root.querySelectorAll('button')].find(button=>button.textContent.trim()==='Добавить сценарий');
+    return create && getComputedStyle(create.parentElement).pointerEvents==='none';
+  });
+  await panel.evaluate(element=>{element.scrollTop=100});
+  await page.waitForFunction(()=>{
+    const root=document.querySelector('ha-dialog-ui-panel').shadowRoot;
+    const create=[...root.querySelectorAll('button')].find(button=>button.textContent.trim()==='Добавить сценарий');
     return create && getComputedStyle(create.parentElement).pointerEvents==='auto';
   });
   await panel.evaluate(element=>{
