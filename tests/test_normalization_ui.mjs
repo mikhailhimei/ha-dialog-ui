@@ -16,7 +16,7 @@ try {
    window.hass={user:{is_admin:true},states:{},connection:{sendMessagePromise:async message=>{
     const key=message.type.split('/').pop();
     if(key==='get_settings')return {active_remout:false,theme:'dark'};
-    if(key==='get_normalization_words')return JSON.parse(localStorage.getItem('words')||'{"words":{"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"date_pronunciation":{"month_numbers_by_name":{"января":1},"month_name_forms":{"январь":"января"}}},"labels":{}}');
+    if(key==='get_normalization_words')return JSON.parse(localStorage.getItem('words')||'{"words":{"date_day_markers":["число","числа"],"units":{"0":["ноль","ноля"],"1":["один"]},"location_stop_words":["и","в"],"date_pronunciation":{"month_numbers_by_name":{"января":1},"month_name_forms":{"январь":"января"}}},"labels":{}}');
     if(key==='save_normalization_words'){
      if(window.failSave)throw {code:'storage_error',message:'failure'};
      window.lastSave=message.data;
@@ -60,6 +60,17 @@ try {
   await dialog.getByRole('button',{name:'Сохранить',exact:true}).click();
   await dialog.waitFor({state:'hidden'});
   assert.equal(await page.evaluate(()=>window.lastSave.value['января']),2);
+  await panel.getByRole('button',{name:/Слова для номера дня/}).click();
+  const dayMarkers=dialog.getByLabel('Слова для номера дня',{exact:true});
+  assert.equal(await dayMarkers.inputValue(),'число; числа');
+  await dayMarkers.fill('число; числа; дата; ;');
+  await dialog.getByRole('button',{name:'Сохранить',exact:true}).click();
+  await dialog.waitFor({state:'hidden'});
+  assert.deepEqual(await page.evaluate(()=>window.lastSave.value),['число','числа','дата']);
+  await page.reload();await mount();
+  await panel.getByRole('button',{name:/Слова для номера дня/}).click();
+  assert.equal(await dayMarkers.inputValue(),'число; числа; дата');
+  await page.keyboard.press('Escape');
   assert.equal(await panel.locator('.appShell').evaluate(el=>el.scrollWidth>el.clientWidth+1),false);
   await panel.evaluate(el=>{el.hass={...window.hass,user:{is_admin:false}}});
   await page.waitForFunction(()=>location.hash!=='#/commands/normalization');

@@ -8548,6 +8548,8 @@ A ? after the parentheses makes the ending optional: зал(а|е)? matches «з
   "Напомнить насыпать еды через 30 минут": { ru: "Напомнить насыпать еды через 30 минут", en: "Remind me to feed the pet in 30 minutes" },
   "Нет доступных колонок. Добавьте колонку в Home Assistant.": { ru: "Нет доступных колонок. Добавьте колонку в Home Assistant.", en: "No speakers available. Add a speaker in Home Assistant." },
   "Дата и время — в часовом поясе вашего устройства.": { ru: "Дата и время — в часовом поясе вашего устройства.", en: "Date and time use your device’s timezone." },
+  "Слова для номера дня": { ru: "Слова для номера дня", en: "Day-of-month keywords" },
+  "Укажите слова через ;. Например: число; числа. Дата распознаётся в «7 числа» или «число 7», но не в «7 утра». Пустой список отключает распознавание номера дня без месяца.": { ru: "Укажите слова через ;. Например: число; числа. Дата распознаётся в «7 числа» или «число 7», но не в «7 утра». Пустой список отключает распознавание номера дня без месяца.", en: "Separate keywords with ;, for example: число; числа. Recognizes «7 числа» or «число 7» as a date, but not «7 утра». An empty list disables day-only dates." },
   "Передано на колонку": { ru: "Передано на колонку", en: "Sent to speaker" }
 }, fp = "ha-dialog-ui-language";
 let Zl = localStorage.getItem(fp) === "en" ? "en" : "ru";
@@ -9570,6 +9572,7 @@ const M1 = "_page_z6937_7", I1 = "_header_z6937_19", D1 = "_headerTop_z6937_24",
 }, X1 = "_fields_d4bkn_1", Z1 = {
   fields: X1
 }, e0 = {
+  date_day_markers: "Слова для номера дня",
   units: "Числа от 0 до 9",
   teens: "Числа от 10 до 19",
   tens: "Десятки",
@@ -9622,7 +9625,7 @@ function t0() {
       label: j(A),
       rows: 3,
       disabled: a.busy,
-      hint: _("Укажите варианты через ;. Например: ноль; ноля; нолю. Пустые элементы не сохраняются."),
+      hint: _(A[0] === "date_day_markers" ? "Укажите слова через ;. Например: число; числа. Дата распознаётся в «7 числа» или «число 7», но не в «7 утра». Пустой список отключает распознавание номера дня без месяца." : "Укажите варианты через ;. Например: ноль; ноля; нолю. Пустые элементы не сохраняются."),
       value: w[JSON.stringify(A)] ?? z.join("; "),
       onChange: (O) => {
         g((B) => ({ ...B, [JSON.stringify(A)]: O.target.value })), E(A, O.target.value.split(";").map((B) => B.trim()).filter(Boolean));

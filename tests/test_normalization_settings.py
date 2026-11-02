@@ -50,6 +50,27 @@ async def test_nested_month_edits_refresh_derived_tables(runtime):
     assert 'первомесяц' in value_parser._MONTH_PATTERN
 
 
+async def test_day_keywords_apply_live_and_survive_restart(runtime):
+    from datetime import datetime
+    hass, _ = runtime
+    conn = connection()
+    await async_handler(editor._save_dictionary)(hass, conn, {'id': 1, 'data': {
+        'path': ['date_day_markers'], 'value': ['дата', 'на дату'], 'title': 'Слова для номера дня'}})
+    conn.send_error.assert_not_called()
+    now = datetime(2026, 11, 2)
+    assert value_parser._parse_date_value('дата 7', now=now) == '07.11.26'
+    assert value_parser._parse_date_value('7 на дату', now=now) == '07.11.26'
+    assert value_parser._parse_date_value('7 числа', now=now) is None
+    assert value_parser._parse_date_value('7 утра', now=now) is None
+    apply_normalization_dictionary(editor._defaults())
+    await editor.async_setup_normalization_settings(hass)
+    assert value_parser._parse_date_value('дата 7', now=now) == '07.11.26'
+    await async_handler(editor._save_dictionary)(hass, conn, {'id': 2, 'data': {
+        'path': ['date_day_markers'], 'value': [], 'title': 'Слова для номера дня'}})
+    assert value_parser._parse_date_value('дата 7', now=now) is None
+    assert value_parser._parse_date_value('7 ноября', now=now) == '07.11.26'
+
+
 async def test_refresh_keeps_exported_month_marker_identity(runtime):
     hass, _ = runtime
     markers = dates.MONTH_MARKERS
