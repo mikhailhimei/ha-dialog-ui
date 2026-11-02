@@ -221,12 +221,12 @@ def match_stream(template_tokens, text_tokens, command_templates):
     }
 
 
-def normalize_text_tokens(text_tokens, template_tokens):
+def normalize_text_tokens(text_tokens, template_tokens, keep_stopwords=False):
     template_has_stop_tokens = any(
         token in STOP_TOKENS for token in template_tokens
     )
 
-    if template_has_stop_tokens:
+    if template_has_stop_tokens or keep_stopwords:
         return text_tokens
 
     return [token for token in text_tokens if token not in STOP_TOKENS]

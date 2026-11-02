@@ -24,13 +24,14 @@ def normalize_direct_control_commands(raw_value):
 
 
 def collect_all_type_template_vars(node):
+    """Collect free-text variables whose captured prepositions must be retained."""
     result = set()
     direct_items = (node or {}).get("direct") or []
     for direct_item in direct_items:
         if not isinstance(direct_item, dict):
             continue
         value_type = str(direct_item.get("valueType") or "").strip().lower()
-        if value_type != "all":
+        if value_type not in {"all", "string"}:
             continue
         direct_type = str(direct_item.get("mappingType") or "").strip()
         if not direct_type:
