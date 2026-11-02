@@ -71,6 +71,22 @@ async def test_day_keywords_apply_live_and_survive_restart(runtime):
     assert value_parser._parse_date_value('7 ноября', now=now) == '07.11.26'
 
 
+async def test_relative_date_aliases_work_inside_sentences_after_save_and_restore(runtime):
+    from datetime import datetime
+    hass, _ = runtime
+    conn = connection()
+    await async_handler(editor._save_dictionary)(hass, conn, {'id': 1, 'data': {
+        'path': ['date_keywords', 'day_after_tomorrow'], 'value': ['через два дня'], 'title': 'Послезавтра'}})
+    conn.send_error.assert_not_called()
+    now = datetime(2026, 11, 2)
+    text = 'насыпать еды через два дня в 7 утра'
+    assert value_parser._parse_date_value(text, now=now) == '04.11.26'
+    assert value_parser._parse_date_value('послезавтра', now=now) is None
+    apply_normalization_dictionary(editor._defaults())
+    await editor.async_setup_normalization_settings(hass)
+    assert value_parser._parse_date_value(text, now=now) == '04.11.26'
+
+
 async def test_refresh_keeps_exported_month_marker_identity(runtime):
     hass, _ = runtime
     markers = dates.MONTH_MARKERS

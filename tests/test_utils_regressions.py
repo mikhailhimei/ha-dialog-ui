@@ -45,6 +45,31 @@ def test_reminder_clock_does_not_produce_a_date_entry():
     assert next(entry['value'] for entry in entries if entry['mapping_type'] == 'cotimers')['hour'] == 7
 
 
+@pytest.mark.parametrize(('word', 'expected'), [('сегодня', '02.11.26'), ('завтра', '03.11.26'),
+                                              ('послезавтра', '04.11.26')])
+def test_relative_date_inside_reminder_sentence(word, expected):
+    assert _parse_date_value(f'насыпать еды {word} в 7 утра', now=datetime(2026, 11, 2)) == expected
+
+
+@pytest.mark.parametrize('text', ['насыпать еды после завтрака', 'сегодняшний план',
+                                 'послезавтрашний день', 'вчера', 'snow'])
+def test_relative_date_requires_whole_words(text):
+    assert _parse_date_value(text, now=datetime(2026, 11, 2)) is None
+
+
+def test_reminder_sentence_includes_relative_date_in_direct_values():
+    from custom_components.ha_dialog_ui.src.service.matching.selection import find_top_level_candidates
+    from datetime import timedelta
+    node = {'uuid': 'reminder', 'voiceCommands': ['Напомн(и|ю|им)? ${date} ${string2} ${cotimers}'],
+            'direct': [{'mappingType': 'date', 'valueType': 'date'},
+                       {'mappingType': 'string2', 'valueType': 'string'},
+                       {'mappingType': 'cotimers', 'valueType': 'time'}]}
+    entries = find_top_level_candidates([node], 'напомни насыпать еды завтра в 7 утра')[0]['direct_entries']
+    value = next(entry['value'] for entry in entries if entry['mapping_type'] == 'date')
+    assert value == (datetime.now() + timedelta(days=1)).strftime('%d.%m.%y')
+    assert next(entry['value'] for entry in entries if entry['mapping_type'] == 'cotimers')['hour'] == 7
+
+
 @pytest.mark.parametrize('text', ['Дата 31.13.2026', 'Дата 31.02.2026', 'Дата 2026-13-31', 'Дата 31.13', '31.13.2026 и 31.02.2026'])
 def test_invalid_date_in_speech_is_preserved_without_exception(text):
     assert prepare_speech_text(text) == text
