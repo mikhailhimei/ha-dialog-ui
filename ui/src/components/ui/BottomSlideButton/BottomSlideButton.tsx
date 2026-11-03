@@ -26,14 +26,7 @@ export const BottomSlideButton = ({
       const currentScrollY = scrollY();
       if (currentScrollY === lastScrollY) return;
 
-      if (
-        currentScrollY > lastScrollY &&
-        currentScrollY > offset
-      ) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      setVisible(currentScrollY <= offset || currentScrollY < lastScrollY);
 
       lastScrollY = currentScrollY;
     };

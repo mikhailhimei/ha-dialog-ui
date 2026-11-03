@@ -17,7 +17,7 @@ reminder_create:
         text:
     at:
       name: Когда напомнить
-      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Не указывайте вместе с delay_minutes.
+      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. При заданном at пустой delay_minutes игнорируется.
       example: '2026-11-02T18:30:00+05:00'
       selector:
         text:

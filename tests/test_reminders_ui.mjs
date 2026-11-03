@@ -43,6 +43,15 @@ try {
     });
     const panel = page.locator('ha-dialog-ui-panel');
     await panel.getByText('Нет напоминаний.', {exact: true}).waitFor();
+    const addReminder = panel.getByRole('button', {name: 'Добавить напоминание', exact: true});
+    if (width < 768) {
+      const floating = await addReminder.evaluate(button => {
+        const container = button.parentElement;
+        return {position: getComputedStyle(container).position, bottom: container.getBoundingClientRect().bottom};
+      });
+      assert.equal(floating.position, 'fixed');
+      assert(Math.abs(floating.bottom - 884) < 2, 'Mobile add reminder floats above the bottom edge');
+    }
     if (width < 768) {
       const header = await panel.locator('header').boundingBox();
       assert(Math.abs(header.x) < 1 && Math.abs(header.width - width) < 1,
