@@ -357,7 +357,38 @@ async def test_create_service_accepts_minutes_as_numbers_or_strings(runtime, min
     assert float(minutes) * 60 <= (at - before).total_seconds() < float(minutes) * 60 + 2
 
 
-async def test_ha_script_renders_minutes_variable(runtime):
+@pytest.mark.parametrize('interval,minutes', [('2:00', 120), ('00:30', 30), ('1:05', 65),
+                                            (' 02:00 ', 120), ('0:01', 1), ('24:00', 1440)])
+async def test_create_service_accepts_hour_minute_intervals(runtime, interval, minutes):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    before = dt_util.utcnow()
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        response = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'Напоминаю насыпать еды', 'device_id': 'media_player.kitchen',
+            'delay_minutes': interval, 'at': 'invalid',
+        }, blocking=True, return_response=True)
+    when = dt_util.parse_datetime(response['reminder']['at'])
+    assert minutes * 60 <= (when - before).total_seconds() < minutes * 60 + 2
+
+
+@pytest.mark.parametrize('interval,seconds', [('02:10:40', 7840), ('00:00:01', 1),
+                                            ('00:30:59', 1859), ('24:00:01', 86401)])
+async def test_create_service_preserves_interval_seconds(runtime, interval, seconds):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    before = dt_util.utcnow()
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        response = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'Насыпать еды', 'device_id': 'media_player.kitchen', 'delay_minutes': interval,
+        }, blocking=True, return_response=True)
+    assert reminder_api._delay_minutes(interval) * 60 == pytest.approx(seconds)
+    when = dt_util.parse_datetime(response['reminder']['at'])
+    assert seconds <= (when - before).total_seconds() < seconds + 2
+
+
+@pytest.mark.parametrize('interval,seconds', [(30, 1800), ('2:00', 7200), ('02:10:40', 7840)])
+async def test_ha_script_renders_minutes_variable(runtime, interval, seconds):
     from homeassistant.helpers.script import Script
     from homeassistant.helpers import config_validation as cv
     from homeassistant import loader
@@ -366,7 +397,7 @@ async def test_ha_script_renders_minutes_variable(runtime):
     loader.async_setup(hass)
     reminder_api.register_services(hass)
     script = Script(hass, cv.SCRIPT_SCHEMA([
-        {'variables': {'reminder_minutes': 30}},
+        {'variables': {'reminder_minutes': interval}},
         {'action': 'ha_dialog_ui.reminder_create', 'data': {
             'text': 'Насыпать еды', 'device_id': 'media_player.kitchen',
             'delay_minutes': '{{ reminder_minutes }}',
@@ -376,7 +407,7 @@ async def test_ha_script_renders_minutes_variable(runtime):
     with patch.object(reminder_api, '_manager', return_value=manager):
         await script.async_run()
     assert len(manager.items()) == 1
-    assert 1800 <= (dt_util.parse_datetime(manager.items()[0]['at']) - before).total_seconds() < 1802
+    assert seconds <= (dt_util.parse_datetime(manager.items()[0]['at']) - before).total_seconds() < seconds + 2
 
 
 @pytest.mark.parametrize('minutes', ['', '   '])
@@ -418,7 +449,9 @@ async def test_create_service_rejects_empty_time_fields(runtime, at):
     assert not manager.items()
 
 
-@pytest.mark.parametrize('minutes', [0, -1, '', 'not a number', float('nan'), float('inf'), 5256001])
+@pytest.mark.parametrize('minutes', [0, -1, '', 'not a number', float('nan'), float('inf'), 5256001,
+                                     '0:00', '1:60', '-2:00', '2:0', '2:00:60', '00:00:00',
+                                     '2:00:0', '2:00:00:00', '87600:01', '87600:00:01'])
 async def test_create_service_rejects_invalid_minutes(runtime, minutes):
     hass, manager = runtime
     reminder_api.register_services(hass)

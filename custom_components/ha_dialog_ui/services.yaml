@@ -22,8 +22,8 @@ reminder_create:
       selector:
         text:
     delay_minutes:
-      name: Через сколько минут
-      description: Интервал в минутах от текущего момента. Можно указать число или шаблон Home Assistant, например {{ reminder_minutes }}. Если заполнен, поле at игнорируется.
+      name: Через сколько времени
+      description: Число минут или интервал ЧЧ:ММ / ЧЧ:ММ:СС. Например, 2:00 — 2 часа, 00:30 — 30 минут, 02:10:40 — 2 часа 10 минут 40 секунд. Можно передать шаблон Home Assistant. Если заполнен, поле at игнорируется.
       example: "{{ reminder_minutes }}"
       selector:
         text:

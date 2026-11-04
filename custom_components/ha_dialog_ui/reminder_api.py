@@ -1,6 +1,7 @@
 """Shared reminder services and WebSocket operations."""
 from __future__ import annotations
 
+import re
 import voluptuous as vol
 from homeassistant.components import websocket_api
 from homeassistant.core import SupportsResponse
@@ -18,6 +19,20 @@ CREATE_FIELDS = {
     vol.Optional("at"): str,
     vol.Optional("delay_seconds"): vol.All(vol.Coerce(float), vol.Range(min=1, max=315360000)),
 }
+
+
+def _delay_minutes(value):
+    """Keep numbers in minutes; accept H:MM[:SS] without dropping seconds."""
+    if isinstance(value, str) and ':' in value:
+        match = re.fullmatch(r'(\d+):([0-5]\d)(?::([0-5]\d))?', value.strip())
+        if match is None:
+            raise vol.Invalid('Укажите минуты или интервал ЧЧ:ММ[:СС], например 2:00 или 02:10:40')
+        try:
+            seconds = int(match.group(1)) * 3600 + int(match.group(2)) * 60 + int(match.group(3) or 0)
+            return seconds / 60
+        except (ValueError, OverflowError) as err:
+            raise vol.Invalid('Слишком большой интервал напоминания') from err
+    return vol.Coerce(float)(value)
 
 
 def _manager(hass):
@@ -83,7 +98,7 @@ def register_services(hass):
                if str(key) not in {"clientId", "client_id", "delay_seconds"}},
             vol.Optional("delay_minutes"): vol.Any(
                 vol.All(str, lambda value: value.strip(), ""),
-                vol.All(vol.Coerce(float), vol.Range(min=0, min_included=False, max=5256000))),
+                vol.All(_delay_minutes, vol.Range(min=0, min_included=False, max=5256000))),
         }),
         ("delete", {vol.Required("id"): str}),
         ("info", {vol.Optional("id"): str,
