@@ -11,7 +11,7 @@ from .dates import (
     expand_time_marker,
     year_to_text,
 )
-from .inflections import number_with_noun
+from .inflections import number_with_noun, number_with_noun_in_genitive
 from .numbers import expand_marked_words
 
 
@@ -40,6 +40,29 @@ def prepare_speech_text(text: str) -> str:
         r"(?:(?<=^)|(?<=\s))([1-9]\d*)\.(?!\d)",
         lambda match: f"Номер {num2words(int(match.group(1)), lang='ru')}",
         text,
+    )
+
+    # Handle case-governing prepositions before generic number + unit expansion
+    # turns the numbers into nominative words and loses their context.
+    time_unit = r'час(?:а|ов)?|минут(?:а|ы)?|секунд(?:а|ы)?'
+
+    def unit_noun(word):
+        return 'час' if word.lower().startswith('час') else 'минута' if word.lower().startswith('минут') else 'секунда'
+
+    def time_range(match):
+        noun = unit_noun(match.group('unit'))
+        first = number_with_noun_in_genitive(int(match.group('start')), noun).rsplit(' ', 1)[0]
+        last = number_with_noun_in_genitive(int(match.group('end')), noun)
+        return f"{match.group('prefix')} {first} до {last}"
+
+    text = re.sub(
+        rf'(?<!\w)(?P<prefix>с|от)\s+(?P<start>\d+)\s+до\s+(?P<end>\d+)\s+(?P<unit>{time_unit})\b',
+        time_range, text, flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        rf'(?<!\w)(?P<prefix>с|от|до|около)\s+(?P<number>\d+)\s+(?P<unit>{time_unit})\b',
+        lambda match: f"{match.group('prefix')} {number_with_noun_in_genitive(int(match.group('number')), unit_noun(match.group('unit')))}",
+        text, flags=re.IGNORECASE,
     )
 
     text = re.sub(

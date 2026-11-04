@@ -146,3 +146,19 @@ def test_clock_refactor_preserves_supported_text_formats(text,hour,minute,clock)
 ])
 def test_marked_ranges_are_correct_through_speech_pipeline(text, expected):
     assert prepare_speech_text(text) == expected
+
+
+@pytest.mark.parametrize('text,expected', [
+    ('ожидаются осадки с 16 до 17 часов.', 'ожидаются осадки с шестнадцати до семнадцати часов.'),
+    ('осадки с 1 до 2 часов', 'осадки с одного до двух часов'),
+    ('от 21 до 22 часов', 'от двадцати одного до двадцати двух часов'),
+    ('с 1 до 2 минут', 'с одной до двух минут'),
+    ('от 21 до 24 секунд', 'от двадцати одной до двадцати четырёх секунд'),
+    ('около 16 часов', 'около шестнадцати часов'),
+    ('до 17 часов', 'до семнадцати часов'),
+    ('с 16 часов до 17 часов', 'с шестнадцати часов до семнадцати часов'),
+    ('через 17 часов', 'через семнадцать часов'),
+    ('в 16 часов', 'в шестнадцать часов'),
+])
+def test_plain_time_ranges_use_genitive_after_prepositions(text, expected):
+    assert prepare_speech_text(text) == expected
