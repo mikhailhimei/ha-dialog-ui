@@ -42,7 +42,6 @@ ATTR_MM = "mm"
 ATTR_SS = "ss"
 ATTR_REPEAT_TYPE = "repeat_type"
 ATTR_REPEAT_DAYS = "repeat_days"
-ATTR_CONVERT_DAY_PERIOD = "convert_day_period"
 ATTR_UUID = "uuid"
 ATTR_TIMER_UUID = "timer_uuid"
 ATTR_ALARM_UUID = "alarm_uuid"
@@ -234,7 +233,6 @@ _ALARM_CREATE_SCHEMA = vol.Schema(
         vol.Optional("device_id"): vol.Coerce(str),
         vol.Optional(ATTR_REPEAT_TYPE, default="once"): _REPEAT_TYPE_VALIDATOR,
         vol.Optional(ATTR_REPEAT_DAYS, default=""): vol.Any(str, [str]),
-        vol.Optional(ATTR_CONVERT_DAY_PERIOD, default=False): vol.Boolean(),
     }
 )
 

@@ -381,7 +381,7 @@ async def test_service_alarm_keeps_original_id_and_client_when_persisted(runtime
     try:
         future = datetime.now() + timedelta(minutes=10)
         with patch.object(wrapper, "_async_save_to_request_storages", side_effect=save):
-            await wrapper.async_handle_service_action("alarm", {"action": "create", "hh": future.hour, "mm": future.minute, "convert_day_period": True}, "alarm-client", "voice")
+            await wrapper.async_handle_service_action("alarm", {"action": "create", "hh": future.hour, "mm": future.minute}, "alarm-client", "voice")
             await wrapper._async_save_to_request_storages()
         assert len(captured) == 1
         assert captured[0]["uuid"] == wrapper.get_alarm_items()[0]["id"]

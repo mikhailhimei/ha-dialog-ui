@@ -17,10 +17,13 @@ from custom_components.ha_dialog_ui.timer_alarm import manager as module
     ((18, 59), {'hh': 7, 'mm': 0}, '19:00'),
     ((19, 0), {'hh': 7, 'mm': 0}, '07:00'),
     ((23, 0), {'hh': 7, 'mm': 0}, '07:00'),
-    ((8, 0), {'hh': 7, 'mm': 0, 'convert_day_period': True}, '07:00'),
-    ((8, 0), {'hh': '7', 'mm': '5', 'convert_day_period': 'true'}, '07:05'),
+    ((8, 0), {'hh': '7', 'mm': '5'}, '19:05'),
     ((8, 0), {'hh': 0, 'mm': 0}, '00:00'),
-    ((13, 0), {'hh': 12, 'mm': 0}, '12:00'),
+    ((11, 59), {'hh': 12, 'mm': 0}, '12:00'),
+    ((12, 0), {'hh': 12, 'mm': 0}, '00:00'),
+    ((13, 0), {'hh': 12, 'mm': 0}, '00:00'),
+    ((23, 59), {'hh': 12, 'mm': 0}, '00:00'),
+    ((0, 0), {'hh': 12, 'mm': 0}, '12:00'),
     ((8, 0), {'hh': 23, 'mm': 59}, '23:59'),
     ((8, 0), {'hh': 99, 'mm': 99}, '23:59'),
     ((8, 0), {'hh': -1, 'mm': -1}, '00:00'),
@@ -51,10 +54,10 @@ async def test_timer_service_create_keeps_hours_minutes_seconds_and_identity(res
 
 async def test_alarm_service_create_passes_repeat_and_identity(restoration):
     manager = restoration.manager
-    with patch.object(manager.alarm_manager, 'async_handle_alarm_start', new_callable=AsyncMock,
+    with patch.object(module.dt_util, 'now', return_value=datetime(2026, 11, 4, 6)), patch.object(manager.alarm_manager, 'async_handle_alarm_start', new_callable=AsyncMock,
                       return_value={'actionType': 'success', 'client_id': 'client', 'device_id': 'speaker'}) as create:
         result = await manager.async_handle_service_action('alarm', {
-            'action': 'create', 'hh': 7, 'mm': 50, 'convert_day_period': True,
+            'action': 'create', 'hh': 7, 'mm': 50,
             'repeat_type': 'custom', 'repeat_days': ['пн', 'Friday', 'пн'],
         }, 'client', 'speaker')
     create.assert_awaited_once_with('07:50', 'client', 'speaker', True, 'custom', ['mon', 'fri'])

@@ -177,11 +177,10 @@ class DialogTimerAlarmManager:
     def _service_alarm_time_from_config(self, config: dict[str, Any]) -> str:
         hour = max(0, min(_safe_config_int(config.get("hh")), 23))
         minute = max(0, min(_safe_config_int(config.get("mm")), 59))
-        convert_day_period = _normalize_value(config.get("convert_day_period")).lower() in {"1", "true", "yes", "on"}
-        if not convert_day_period and 1 <= hour <= 11:
+        if 1 <= hour <= 12:
             now = dt_util.now()
-            morning_hour = hour
-            evening_hour = hour + 12
+            morning_hour = hour % 12
+            evening_hour = morning_hour + 12
             if (now.hour, now.minute) < (morning_hour, minute):
                 hour = morning_hour
             elif (now.hour, now.minute) < (evening_hour, minute):

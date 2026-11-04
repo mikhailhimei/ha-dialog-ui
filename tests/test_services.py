@@ -49,7 +49,7 @@ async def test_registered_services_route_action_and_return_manager_response(runt
         else:
             assert config['repeat_type'] == 'once'
             assert config['repeat_days'] == ''
-            assert config['convert_day_period'] is False
+            assert 'convert_day_period' not in config
     assert payload == before
 
 
@@ -118,6 +118,7 @@ async def test_invalid_json_variables_do_not_publish_response(runtime, variables
 @pytest.mark.parametrize(('service', 'payload'), [
     ('timer_delete', {}), ('alarm_delete', {}),
     ('timer_create', {'hh': []}), ('alarm_create', {'repeat_type': 'invalid'}),
+    ('alarm_create', {'hh': 7, 'convert_day_period': True}),
     ('send_command', {'actionType': 'default'}),
 ])
 async def test_service_schemas_reject_invalid_parameters(runtime, service, payload):

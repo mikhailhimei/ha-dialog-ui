@@ -119,7 +119,7 @@ alarm_create:
   fields:
     hh:
       name: HH
-      description: Alarm hour. Accepts a number or a Home Assistant template/variable.
+      description: Час будильника. Значения 1–12 выбирают ближайшее будущее утро или вечер; 0 и 13–23 задают точное время. Можно передать число или шаблон Home Assistant.
       required: false
       example: "{{ alarm_hh }}"
       selector:
@@ -178,14 +178,6 @@ alarm_create:
               label: Суббота
             - value: sunday
               label: Воскресенье
-    convert_day_period:
-      name: Convert morning/evening
-      description: Convert an entered morning hour to evening time by adding 12 hours.
-      required: false
-      default: false
-      selector:
-        boolean: {}
-
 alarm_info:
   name: Alarm info
   description: List Dialog Custom UI alarms. Returns JSON items with time, uuid, clientId, and deviceId.
