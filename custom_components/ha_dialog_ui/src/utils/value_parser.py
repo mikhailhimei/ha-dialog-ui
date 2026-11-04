@@ -227,7 +227,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
         second = int(clock_match.group("second") or 0)
         if has_times_of_day:
             hour = _apply_day_period(hour, text)
-        return {"hour": hour, "minut": minute, "second": second, "times_of_day": has_times_of_day}
+        return {"hour": hour, "minut": minute, "second": second, "is_clock_time": True}
 
     hour_minute_units_match = _HOUR_MINUTE_UNITS_PATTERN.search(text)
     if hour_minute_units_match:
@@ -235,7 +235,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
         minute = int(hour_minute_units_match.group("minut"))
         if has_times_of_day:
             hour = _apply_day_period(hour, text)
-        return {"hour": hour, "minut": minute, "second": 0, "times_of_day": has_times_of_day}
+        return {"hour": hour, "minut": minute, "second": 0, "is_clock_time": True}
 
     tokens = set(re.findall(r"[a-zа-яё]+", text.lower()))
     has_non_clock_units = bool(tokens & _NON_CLOCK_DURATION_MARKERS)
@@ -246,14 +246,14 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
         second = int(spaced_clock_match.group("second") or 0)
         if has_times_of_day:
             hour = _apply_day_period(hour, text)
-        return {"hour": hour, "minut": minute, "second": second, "times_of_day": has_times_of_day}
+        return {"hour": hour, "minut": minute, "second": second, "is_clock_time": True}
 
     hour_match = _HOUR_ONLY_PATTERN.search(text)
     if hour_match:
         hour = int(hour_match.group("hour"))
         if has_times_of_day:
             hour = _apply_day_period(hour, text)
-        return {"hour": hour, "minut": 0, "second": 0, "times_of_day": has_times_of_day}
+        return {"hour": hour, "minut": 0, "second": 0, "is_clock_time": True}
 
     digit_clock_match = _DIGIT_CLOCK_TIME_PATTERN.search(text)
     if digit_clock_match and not has_non_clock_units:
@@ -263,7 +263,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
             minute = int(digit_clock_match.group("minut"))
             if has_times_of_day:
                 hour = _apply_day_period(hour, text)
-            return {"hour": hour, "minut": minute, "second": 0, "times_of_day": has_times_of_day}
+            return {"hour": hour, "minut": minute, "second": 0, "is_clock_time": True}
 
     all_numbers = re.findall(r"\d+", text)
     if not has_non_clock_units and len(all_numbers) == 1:
@@ -275,7 +275,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
                 if len(only_number) == 4 or has_times_of_day:
                     if has_times_of_day:
                         hour = _apply_day_period(hour, text)
-                    return {"hour": hour, "minut": minute, "second": 0, "times_of_day": has_times_of_day}
+                    return {"hour": hour, "minut": minute, "second": 0, "is_clock_time": True}
 
     if not has_non_clock_units and len(all_numbers) == 1:
         only_number = int(all_numbers[0])
@@ -283,7 +283,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
             hour = only_number
             if has_times_of_day:
                 hour = _apply_day_period(hour, text)
-            return {"hour": hour, "minut": 0, "second": 0, "times_of_day": has_times_of_day}
+            return {"hour": hour, "minut": 0, "second": 0, "is_clock_time": True}
 
     day_period_number_match = re.search(
         r"\b([01]?\d|2[0-3])\s*(утра|утром|вечер|вечера|вечером|дня|днем|днём|ночи|ночью|am|pm)\b",
@@ -292,7 +292,7 @@ def _parse_clock_time(command_text: str, now: datetime) -> dict | None:
     if day_period_number_match:
         hour = int(day_period_number_match.group(1))
         hour = _apply_day_period(hour, text)
-        return {"hour": hour, "minut": 0, "second": 0, "times_of_day": True}
+        return {"hour": hour, "minut": 0, "second": 0, "is_clock_time": True}
 
     return None
 
@@ -334,28 +334,28 @@ def _parse_duration_time(command_text: str) -> dict | None:
     if hour == 0 and minute == 0 and second == 0:
         return None
 
-    return {"hour": hour, "minut": minute, "second": second, "times_of_day": False}
+    return {"hour": hour, "minut": minute, "second": second, "is_clock_time": False}
 
 
 def _parse_time_value(value, now=None):
     now = now or datetime.now()
     if isinstance(value, dict):
-        hour = value.get("hour", value.get("час", 0))
-        minute = value.get("minut", value.get("minute", value.get("минут", 0)))
-        second = value.get("second", value.get("секунд", 0))
-        raw_clock_flag = value.get("times_of_day", value.get("timesOfDay", False))
+        hour = value.get("hour", value.get("hours", value.get("час", 0)))
+        minute = value.get("minut", value.get("minutes", value.get("minute", value.get("минут", 0))))
+        second = value.get("second", value.get("seconds", value.get("секунд", 0)))
+        raw_clock_flag = value.get("is_clock_time", value.get("times_of_day", value.get("timesOfDay", False)))
         if isinstance(raw_clock_flag, str):
             normalized_clock_flag = raw_clock_flag.strip().lower()
             if normalized_clock_flag not in {"true", "false", "1", "0", "yes", "no", "on", "off", ""}:
                 return None
-            times_of_day = normalized_clock_flag in {"true", "1", "yes", "on"}
+            is_clock_time = normalized_clock_flag in {"true", "1", "yes", "on"}
         elif isinstance(raw_clock_flag, bool) or (type(raw_clock_flag) is int and raw_clock_flag in (0, 1)):
-            times_of_day = bool(raw_clock_flag)
+            is_clock_time = bool(raw_clock_flag)
         else:
             return None
         if any(type(time_component) is not int or time_component < 0 for time_component in (hour, minute, second)):
             return None
-        if times_of_day:
+        if is_clock_time:
             if hour > 23 or minute > 59 or second > 59:
                 return None
         else:
@@ -364,18 +364,32 @@ def _parse_time_value(value, now=None):
                 return None
             hour, remainder = divmod(total_seconds, 3600)
             minute, second = divmod(remainder, 60)
-        return {"hour": hour, "minut": minute, "second": second, "times_of_day": times_of_day}
+        return {"hour": hour, "minut": minute, "second": second, "is_clock_time": is_clock_time}
 
-    command_text = sanitize_location_text(" ".join(str(value or "").strip().split()))
-    # Explicit durations must win over bare-hour/clock heuristics. In
-    # particular, accusative "минуту" is a minute, and mixed units must
-    # retain their seconds rather than stopping at the first hour match.
+    raw_text = " ".join(str(value or "").strip().lower().split())
+    command_text = sanitize_location_text(raw_text)
+    # Keep the prepositions for classification: location cleanup removes "в".
+    duration_prefix = re.search(r"\b(?:через|спустя)\b", raw_text)
+    clock_prefix = re.search(r"\b(?:в|к)\s+\d", raw_text)
+    has_day_period = _has_times_of_day_marker(command_text)
     has_duration_units = re.search(
         r"\d+\s*(?:час(?:а|ов)?|ч|мин(?:ут(?:а|ы|у)?)?|м|сек(?:унд(?:а|ы|у)?)?|с|дн(?:я|ей)?|д|нед(?:еля|ели|ель)?|н|мес(?:яц(?:а|ев)?)?)\b",
         command_text,
         re.IGNORECASE,
     )
-    if has_duration_units and not _has_times_of_day_marker(command_text):
+    long_duration = re.search(r"\d+\s*(?:дн(?:я|ей)?|д|нед(?:еля|ели|ель)?|н|мес(?:яц(?:а|ев)?)?)\b", command_text)
+    if clock_prefix and long_duration:
+        # In "через 3 дня в 7 утра", the date belongs to the date slot.
+        return _parse_clock_time(raw_text[clock_prefix.start():], now)
+    if duration_prefix:
+        # "через 00:30" is a 30-minute interval, not a clock reading.
+        if _CLOCK_TIME_PATTERN.search(command_text):
+            result = _parse_clock_time(command_text, now)
+            if result is not None:
+                result["is_clock_time"] = False
+                return result if any(result[key] for key in ("hour", "minut", "second")) else None
+        return _parse_duration_time(command_text)
+    if has_duration_units and not clock_prefix and (not has_day_period or long_duration):
         return _parse_duration_time(command_text)
     clock_time = _parse_clock_time(command_text, now)
     if clock_time is not None:

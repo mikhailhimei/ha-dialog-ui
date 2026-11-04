@@ -20,8 +20,7 @@ def build_script_payload(payload: dict) -> dict:
     result.setdefault("continuation_id", None)
     direct_values = result.pop("children_direct_type", None)
     if direct_values is None:
-        result.setdefault("direct_values", [])
-        return result
+        direct_values = result.get("direct_values", [])
     # Older external events can contain one direct value instead of a list.
     if isinstance(direct_values, dict):
         direct_values = [direct_values]
@@ -42,6 +41,13 @@ def _build_direct_value(entry: dict) -> dict:
             result[new_key] = result.pop(old_key)
     if result.get("value_type") == "time" and isinstance(result.get("value"), dict):
         value = dict(result["value"])
+        if 'is_clock_time' not in value:
+            if 'times_of_day' in value:
+                value['is_clock_time'] = value['times_of_day']
+            elif 'timesOfDay' in value:
+                value['is_clock_time'] = value['timesOfDay']
+        value.pop('times_of_day', None)
+        value.pop('timesOfDay', None)
         for old_key, new_key in (("hour", "hours"), ("minut", "minutes"), ("second", "seconds")):
             if old_key in value:
                 value[new_key] = value.pop(old_key)

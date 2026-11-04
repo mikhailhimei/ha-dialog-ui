@@ -64,7 +64,7 @@ def test_direct_values_keep_nested_data_and_do_not_mutate_input(single):
     before = deepcopy(payload)
     result = script_runner.build_script_payload(payload)
     expected = [
-        {'value_type': 'time', 'name': 'timer', 'value': {'hours': 0, 'minutes': 5, 'seconds': 0, 'times_of_day': False}},
+        {'value_type': 'time', 'name': 'timer', 'value': {'hours': 0, 'minutes': 5, 'seconds': 0, 'is_clock_time': False}},
         {'value_type': 'command', 'name': 'room', 'value': 'зал', 'matched_codes': ['_hall', '_kitchen']},
         {'value_type': 'int', 'name': 'brightness', 'value': 50},
         {'value_type': 'all', 'name': 'data', 'value': {'minut': 7, 'nested': [1, {'hour': 3}]}},

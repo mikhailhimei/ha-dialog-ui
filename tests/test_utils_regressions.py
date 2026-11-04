@@ -104,13 +104,13 @@ def test_shared_gender_helper_preserves_regular_phrases(number, word, expected):
 @pytest.mark.parametrize('flag', [False, 'false', '0', 'off', 'no', 0])
 def test_false_time_flag_is_not_truthy_string(flag):
     result = _parse_time_value({'hour':1, 'times_of_day':flag})
-    assert result['times_of_day'] is False
+    assert result['is_clock_time'] is False
 
 
 @pytest.mark.parametrize('flag', [True, 'true', '1', 'on', 'yes', 1])
 def test_midnight_is_valid_clock_time(flag):
     assert _parse_time_value({'hour':0, 'times_of_day':flag}) == {
-        'hour':0, 'minut':0, 'second':0, 'times_of_day':True,
+        'hour':0, 'minut':0, 'second':0, 'is_clock_time':True,
     }
 
 
@@ -126,18 +126,18 @@ def test_invalid_time_dictionary_is_rejected(data):
 
 def test_duration_normalizes_overflow_and_allows_more_than_24_hours():
     assert _parse_time_value({'hour':25,'minut':90,'second':90}) == {
-        'hour':26, 'minut':31, 'second':30, 'times_of_day':False,
+        'hour':26, 'minut':31, 'second':30, 'is_clock_time':False,
     }
     assert _parse_time_value({'hour':0,'minut':0,'second':0}) is None
 
 
 @pytest.mark.parametrize(('text','hour','minute','clock'), [
     ('7 часов 30 минут утра',7,30,True), ('7 30 минут вечера',19,30,True),
-    ('7 30',7,30,False), ('07:30',7,30,False), ('1 минуту',0,1,False),
+    ('7 30',7,30,True), ('07:30',7,30,True), ('1 минуту',0,1,False),
 ])
 def test_clock_refactor_preserves_supported_text_formats(text,hour,minute,clock):
     result = _parse_time_value(text, now=datetime(2026, 1, 1, 17))
-    assert result == {'hour':hour,'minut':minute,'second':0,'times_of_day':clock}
+    assert result == {'hour':hour,'minut':minute,'second':0,'is_clock_time':clock}
 
 
 @pytest.mark.parametrize(('text', 'expected'), [

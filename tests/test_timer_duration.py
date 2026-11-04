@@ -18,7 +18,7 @@ from custom_components.ha_dialog_ui.timer_alarm.timer_alarm_utils import _format
 def test_explicit_duration_units(command, expected):
     result = _parse_time_value(command)
     assert (result['hour'], result['minut'], result['second']) == expected
-    assert not result['times_of_day']
+    assert not result['is_clock_time']
 
 
 @pytest.mark.parametrize('command', ['07:30', '7 часов 30 минут утра'])
