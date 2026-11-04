@@ -100,7 +100,10 @@ def register_services(hass):
             if action == "create" and "delay_minutes" in data:
                 minutes = data.pop("delay_minutes")
                 if minutes != "":
+                    data.pop("at", None)
                     data["delay_seconds"] = minutes * 60
+            if action == "create" and not str(data.get("at") or "").strip():
+                data.pop("at", None)
             return await _action(hass, action, data)
 
         hass.services.async_register(DOMAIN, name, handle, schema=vol.Schema(fields),

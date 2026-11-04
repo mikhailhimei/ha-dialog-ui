@@ -17,13 +17,13 @@ reminder_create:
         text:
     at:
       name: Когда напомнить
-      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. При заданном at пустой delay_minutes игнорируется.
+      description: Дата и время ISO 8601. Без часового пояса используется часовой пояс HA. Используется, только если delay_minutes не заполнен.
       example: '2026-11-02T18:30:00+05:00'
       selector:
         text:
     delay_minutes:
       name: Через сколько минут
-      description: Интервал в минутах от текущего момента. Можно указать число или шаблон Home Assistant, например {{ reminder_minutes }}. Не указывайте вместе с at.
+      description: Интервал в минутах от текущего момента. Можно указать число или шаблон Home Assistant, например {{ reminder_minutes }}. Если заполнен, поле at игнорируется.
       example: "{{ reminder_minutes }}"
       selector:
         text:

@@ -392,13 +392,28 @@ async def test_create_service_ignores_empty_minutes_with_at(runtime, minutes):
     assert response['reminder']['at'] == when
 
 
-async def test_create_service_rejects_both_nonempty_time_fields(runtime):
+@pytest.mark.parametrize('at', ['', '   ', '2099-11-02T20:00:00', 'invalid', '2000-01-01T00:00:00Z'])
+async def test_create_service_prioritizes_minutes_over_at(runtime, at):
     hass, manager = runtime
     reminder_api.register_services(hass)
-    with patch.object(reminder_api, '_manager', return_value=manager), pytest.raises(HomeAssistantError):
+    before = dt_util.utcnow()
+    with patch.object(reminder_api, '_manager', return_value=manager):
+        response = await hass.services.async_call(DOMAIN, 'reminder_create', {
+            'text': 'Напоминаю насыпать еды', 'device_id': 'media_player.kitchen',
+            'delay_minutes': 10, 'at': at,
+        }, blocking=True, return_response=True)
+    when = dt_util.parse_datetime(response['reminder']['at'])
+    assert 600 <= (when - before).total_seconds() < 602
+
+
+@pytest.mark.parametrize('at', ['', '   '])
+async def test_create_service_rejects_empty_time_fields(runtime, at):
+    hass, manager = runtime
+    reminder_api.register_services(hass)
+    with patch.object(reminder_api, '_manager', return_value=manager), pytest.raises(HomeAssistantError, match='либо'):
         await hass.services.async_call(DOMAIN, 'reminder_create', {
-            'text': 'Съесть пирог', 'device_id': 'media_player.kitchen',
-            'delay_minutes': 30, 'at': (dt_util.utcnow() + timedelta(hours=1)).isoformat(),
+            'text': 'Напоминаю насыпать еды', 'device_id': 'media_player.kitchen',
+            'delay_minutes': '', 'at': at,
         }, blocking=True)
     assert not manager.items()
 
