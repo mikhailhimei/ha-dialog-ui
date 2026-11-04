@@ -10,6 +10,7 @@ from homeassistant.helpers import entity_registry as er
 
 from .const import DOMAIN
 from .integration_helpers import get_integration_entry, get_timer_alarm_manager
+from .src.utils.reminder_search import filter_reminders_by_query
 
 CREATE_FIELDS = {
     vol.Optional("clientId"): str,
@@ -87,7 +88,7 @@ async def _action(hass, action, data):
         items = [item for item in items if item["device_id"] == data["device_id"]]
     query = data.get("query", "").strip().casefold()
     if query:
-        items = [item for item in items if query in item["text"].casefold()]
+        items = await hass.async_add_executor_job(filter_reminders_by_query, items, query)
     return {"reminders": items}
 
 
